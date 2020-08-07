@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>如何优雅的实现C++编译期静态反射 | Netcan on Programming</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="C/C++," />
+  
+
+  <meta name="description" content="部门请来了软件专家袁英杰咨询师指导我们软件开发，从中我也学到了很多姿势，在此记录下来宝贵的经验。苹果的mbp品控真是差劲，写这个东西把LShift键按坏了，真是难受。 反射能做什么最近和大师聊软件设计，其中一个点是关于反射，反射最大的作用就是序列化、解序列化一个结构体，然后就能够在各个模块之间进行通信交互，不管是跨进程也好，还是跨机器也好，都缺不了反射这个功能，这也是OO世界对象交互的载体。 不然">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何优雅的实现C++编译期静态反射">
+<meta property="og:url" content="https://netcan.github.io/2020/08/01/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E7%9A%84%E5%AE%9E%E7%8E%B0C-%E7%BC%96%E8%AF%91%E6%9C%9F%E9%9D%99%E6%80%81%E5%8F%8D%E5%B0%84/index.html">
+<meta property="og:site_name" content="Netcan on Programming">
+<meta property="og:description" content="部门请来了软件专家袁英杰咨询师指导我们软件开发，从中我也学到了很多姿势，在此记录下来宝贵的经验。苹果的mbp品控真是差劲，写这个东西把LShift键按坏了，真是难受。 反射能做什么最近和大师聊软件设计，其中一个点是关于反射，反射最大的作用就是序列化、解序列化一个结构体，然后就能够在各个模块之间进行通信交互，不管是跨进程也好，还是跨机器也好，都缺不了反射这个功能，这也是OO世界对象交互的载体。 不然">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-08-01T10:49:31.000Z">
+<meta property="article:modified_time" content="2020-08-01T12:23:06.831Z">
+<meta property="article:author" content="Netcan">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta name="twitter:card" content="summary">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/personal-style.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-174901164-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d2c292719a76d8c0fa7f9874379cfd25";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 5.0.0"></head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">ROOT</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8D%E5%B0%84%E8%83%BD%E5%81%9A%E4%BB%80%E4%B9%88"><span class="toc-text">反射能做什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E5%AD%90"><span class="toc-text">引子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E6%B1%82%E5%AE%8F%E7%9A%84%E5%8F%AF%E5%8F%98%E5%8F%82%E6%95%B0%E4%B8%AA%E6%95%B0%EF%BC%9F"><span class="toc-text">如何求宏的可变参数个数？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E4%B8%80%E5%A5%97%E4%BC%98%E9%9B%85%E7%9A%84%E5%8F%8D%E5%B0%84%E7%B3%BB%E7%BB%9F"><span class="toc-text">实现一套优雅的反射系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%81%8D%E5%8E%86%E6%9F%A5%E8%AF%A2%E5%8F%8D%E5%B0%84%E4%BF%A1%E6%81%AF"><span class="toc-text">遍历查询反射信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8D%E5%B0%84%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%BA%94%E7%94%A8"><span class="toc-text">反射系统的应用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AE%BA%E3%80%81%E5%B1%95%E6%9C%9B%E6%9C%AA%E6%9D%A5"><span class="toc-text">结论、展望未来</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-如何优雅的实现C-编译期静态反射" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">如何优雅的实现C++编译期静态反射</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2020.08.01</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Netcan</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p>部门请来了软件专家袁英杰咨询师指导我们软件开发，从中我也学到了很多姿势，在此记录下来宝贵的经验。苹果的mbp品控真是差劲，写这个东西把<code>LShift键</code>按坏了，真是难受。</p>
+<h2 id="反射能做什么"><a href="#反射能做什么" class="headerlink" title="反射能做什么"></a>反射能做什么</h2><p>最近和大师聊软件设计，其中一个点是关于反射，反射最大的作用就是序列化、解序列化一个结构体，然后就能够在各个模块之间进行通信交互，不管是跨进程也好，还是跨机器也好，都缺不了反射这个功能，这也是OO世界对象交互的载体。</p>
+<p>不然就需要人工手写一堆序列化、反序列代码，不仅代码难看，而且工作量大，容易出错。印象最深的一个例子是，大师在一个电信项目，模块之间通过TLV格式的消息进行通信，而这些TLV格式也是内部实现的，还不是标准的，然后大师定义了一套机制，只需要统一声明一次元数据的信息，然后通过<code>include</code>不同头文件，就能对同一个元数据进行不同的解释，比如序列化、解序列到数据库，序列化、解序列到网络，这也是预编译多态技术，仅用<code>C++98</code>的特性就能做到。</p>
+<p>举一个直观一点的例子，比如打印一个结构体内容（其实就是把结构体转换成字符串）：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Point</span> &#123;</span></span><br><span class="line">    <span class="keyword">double</span> x;</span><br><span class="line">    <span class="keyword">double</span> y;</span><br><span class="line">&#125;;</span><br><span class="line">Point p &#123; <span class="number">1</span>, <span class="number">2</span> &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>那么你可能会这样写：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;Point x = %d y = %d&quot;</span>, p.x, p.y);</span><br></pre></td></tr></table></figure>
+
+<p>如果有成千上百个结构体，对应的打印函数（序列化到字符串）也就成千上百个，如果利用反射手段，只需要写一次，就能给所有反射对象自动生成打印函数（转换）代码。</p>
+<h2 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h2><p>后来我在C++社区看到一个讨论，说<code>C++20</code>在元编程方面提供了很多便利，其中最大的遍历就是<code>if-constexpr</code>，再也不用模式匹配写一堆<code>enable_if</code>了，然后题主给了一个例子，用<code>C++20</code>的模板元求结构体的字段数量，代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">AnyType</span> &#123;</span></span><br><span class="line">    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">    <span class="function"><span class="keyword">operator</span> <span class="title">T</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">consteval</span> <span class="keyword">size_t</span> <span class="title">CountMember</span><span class="params">(<span class="keyword">auto</span>&amp;&amp;... Args)</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">if</span> <span class="title">constexpr</span> <span class="params">(! <span class="keyword">requires</span> &#123; T&#123; Args... &#125;; &#125;)</span> </span>&#123; <span class="comment">// (1)</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">sizeof</span>...(Args) - <span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> CountMember&lt;T&gt;(Args..., AnyType&#123;&#125;); <span class="comment">// (2)</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>** argv)</span> </span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Test</span> &#123;</span> <span class="keyword">int</span> a; <span class="keyword">int</span> b; <span class="keyword">int</span> c; <span class="keyword">int</span> d; &#125;;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%zu\n&quot;</span>, CountMember&lt;Test&gt;());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>看到这坨代码，我愣了一会，然后问大师这个求结构体字段数量是怎么做到呢？C++目前最大缺陷是缺少静态反射能力（这里指的是语言层面提供的静态反射信息，<code>C++23</code>估计会落地），应该很难做到的，分析了一会，终于看懂了，太巧妙了：</p>
+<ul>
+<li><code>AnyType</code>声明了类型转换操作符（《C++ Modern design》书中的术语是稻草人函数），可以转换成任意类型</li>
+<li>分支(2)通过不断构造所求类型<code>T = Test</code>，当无法构造时(1)，也就是输入的参数过多，这时候<code>参数个数 - 1</code>就是字段个数。</li>
+</ul>
+<p>那么只能<code>C++20</code>才能做到么？这里主要用到了<code>C++17</code>的<code>if-constexpr</code>特性，<code>C++11</code>可以通过<code>enable-if</code>做到，而最主要的是那个<code>requires</code>，<code>C++20</code>才支持<code>concept</code>，<code>C++17</code>都无法做到。</p>
+<p>然后我思考了一下，类型构造，《C++ Modern design》这本书讲过，用<code>sizeof</code>做类型推导，给的一个例子是判断一个类是否是另一个类的基类，仅通过<code>C++98</code>实现。</p>
+<p>C++11编译期有有两大神器：<code>sizeof</code> + <code>decltype</code>，然后用这两者就能实现同样的功能，这里我用<code>decltype</code>来解决上述的<code>concept</code>问题：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> = <span class="keyword">void</span>, <span class="keyword">typename</span> ...Ts&gt;</span><br><span class="line">struct CountMember &#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="keyword">static</span> <span class="keyword">size_t</span> value = <span class="keyword">sizeof</span>...(Ts) - <span class="number">1</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> ...Ts&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">CountMember</span>&lt;T, std::void_t&lt;decltype(T&#123;Ts&#123;&#125;...&#125;)&gt;, Ts...&gt; &#123;</span></span><br><span class="line">    <span class="keyword">constexpr</span> <span class="keyword">static</span> <span class="keyword">size_t</span> value = CountMember&lt;T, <span class="keyword">void</span>, Ts..., AnyType&gt;::value;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>** argv)</span> </span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Test</span> &#123;</span> <span class="keyword">int</span> a; <span class="keyword">int</span> b; <span class="keyword">int</span> c; <span class="keyword">int</span> d; &#125;;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%zu\n&quot;</span>, CountMember&lt;Test&gt;::value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>同样两种情况，用<code>decltype(T&#123;Ts&#123;&#125;...&#125;)</code>来判断是否能够构造对象T。</p>
+<h2 id="如何求宏的可变参数个数？"><a href="#如何求宏的可变参数个数？" class="headerlink" title="如何求宏的可变参数个数？"></a>如何求宏的可变参数个数？</h2><p>其实这个问题价值不大，而且强依赖平凡构造函数，最大价值在后面的讨论，大师给我出了一道题，如何求宏的可变参数个数？虽然一时半会写不出来，但是之前还是看过一些框架代码的，最终实现方式如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> GET_NTH_ARG(                                                                        \</span></span><br><span class="line">    _1,  _2,  _3,  _4,  _5,  _6,  _7,  _8,  _9,  _10, _11, _12, _13, _14, _15, _16,         \</span><br><span class="line">    _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32,         \</span><br><span class="line">    _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44, _45, _46, _47, _48,         \</span><br><span class="line">    _49, _50, _51, _52, _53, _54, _55, _56, _57, _58, _59, _60, _61, _62, _63, _64, n, ...) n</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> GET_ARG_COUNT(...) GET_NTH_ARG(__VA_ARGS__,                     \</span></span><br><span class="line">        <span class="number">64</span>, <span class="number">63</span>, <span class="number">62</span>, <span class="number">61</span>, <span class="number">60</span>, <span class="number">59</span>, <span class="number">58</span>, <span class="number">57</span>, <span class="number">56</span>, <span class="number">55</span>, <span class="number">54</span>, <span class="number">53</span>, <span class="number">52</span>, <span class="number">51</span>, <span class="number">50</span>, <span class="number">49</span>, \</span><br><span class="line">        <span class="number">48</span>, <span class="number">47</span>, <span class="number">46</span>, <span class="number">45</span>, <span class="number">44</span>, <span class="number">43</span>, <span class="number">42</span>, <span class="number">41</span>, <span class="number">40</span>, <span class="number">39</span>, <span class="number">38</span>, <span class="number">37</span>, <span class="number">36</span>, <span class="number">35</span>, <span class="number">34</span>, <span class="number">33</span>, \</span><br><span class="line">        <span class="number">32</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">29</span>, <span class="number">28</span>, <span class="number">27</span>, <span class="number">26</span>, <span class="number">25</span>, <span class="number">24</span>, <span class="number">23</span>, <span class="number">22</span>, <span class="number">21</span>, <span class="number">20</span>, <span class="number">19</span>, <span class="number">18</span>, <span class="number">17</span>, \</span><br><span class="line">        <span class="number">16</span>, <span class="number">15</span>, <span class="number">14</span>, <span class="number">13</span>, <span class="number">12</span>, <span class="number">11</span>, <span class="number">10</span>, <span class="number">9</span>,  <span class="number">8</span>,  <span class="number">7</span>,  <span class="number">6</span>,  <span class="number">5</span>,  <span class="number">4</span>,  <span class="number">3</span>,  <span class="number">2</span>,  <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<p><code>GET_ARG_COUNT(a, b, c)</code>展开后，会调用<code>GET_NTH_ARG</code>，然后得到<code>GET_NTH_ARG(a, b, c, 64, 63, ..., 3, 2, 1) 3</code>，从而得到最终长度3，进一步延伸，这个宏有什么作用呢？那就是对结构体进行反射，用宏提供结构体的元数据信息，从而生成一些类型信息代码。</p>
+<p>结合之前看到的那个框架，与大师进一步交流，发现新世界，解决多年来cpp静态反射问题，一下子让很多事变成了可能。（后来找到这个实现方法的最早出处：<a target="_blank" rel="noopener" href="http://pfultz2.com/blog/2012/07/31/reflection-in-under-100-lines/">http://pfultz2.com/blog/2012/07/31/reflection-in-under-100-lines/</a>）</p>
+<p>来看看大师<code>actor</code>框架中的反射例子：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">CAF_begin_message_def(Point)</span><br><span class="line">    CAF_msg_field(x, <span class="keyword">double</span>)</span><br><span class="line">    CAF_msg_field(y, <span class="keyword">double</span>)</span><br><span class="line">CAF_end_message_def()</span><br><span class="line"></span><br><span class="line">CAF_begin_message_def(Rect)</span><br><span class="line">    CAF_msg_field(p1, Point)</span><br><span class="line">    CAF_msg_field(p2, Point)</span><br><span class="line">    CAF_msg_field(color, <span class="keyword">uint32_t</span>)</span><br><span class="line">CAF_end_message_def()</span><br></pre></td></tr></table></figure>
+
+<p>现在可以做到这样：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">DEFINE_STRUCT(Point,</span><br><span class="line">    (<span class="keyword">double</span>) x,</span><br><span class="line">    (<span class="keyword">double</span>) y)</span><br><span class="line"></span><br><span class="line">DEFINE_STRUCT(Rect,</span><br><span class="line">    (Point) p1,</span><br><span class="line">    (Point) p2,</span><br><span class="line">    (<span class="keyword">uint32_t</span>) color)</span><br><span class="line"></span><br><span class="line">Rect rect &#123;</span><br><span class="line">    &#123;<span class="number">1.2</span>, <span class="number">3.4</span>&#125;,</span><br><span class="line">    &#123;<span class="number">5.6</span>, <span class="number">7.8</span>&#125;,</span><br><span class="line">    <span class="number">12345678</span>,</span><br><span class="line">&#125;;</span><br><span class="line">dumpObj(rect);</span><br><span class="line"><span class="comment">/* output:</span></span><br><span class="line"><span class="comment">&#123;</span></span><br><span class="line"><span class="comment">    p1: &#123;</span></span><br><span class="line"><span class="comment">        x: 1.2,</span></span><br><span class="line"><span class="comment">        y: 3.4,</span></span><br><span class="line"><span class="comment">    &#125;,</span></span><br><span class="line"><span class="comment">    p2: &#123;</span></span><br><span class="line"><span class="comment">        x: 5.6,</span></span><br><span class="line"><span class="comment">        y: 7.8,</span></span><br><span class="line"><span class="comment">    &#125;,</span></span><br><span class="line"><span class="comment">    color: 12345678,</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<p>后者和通常结构体定义方式非常接近，不需要再写<code>begin/end</code>原语了。完整的代码请见：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/netcan/Practice/blob/master/cpp/metaproggramming/reflection/StaticRefl.hpp">https://github.com/netcan/Practice/blob/master/cpp/metaproggramming/reflection/StaticRefl.hpp</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/netcan/Practice/blob/master/cpp/metaproggramming/reflection/StaticRefl.cpp">https://github.com/netcan/Practice/blob/master/cpp/metaproggramming/reflection/StaticRefl.cpp</a></li>
+</ul>
+<p>接下来我们一步步看看是如何实现这个的。</p>
+<h2 id="实现一套优雅的反射系统"><a href="#实现一套优雅的反射系统" class="headerlink" title="实现一套优雅的反射系统"></a>实现一套优雅的反射系统</h2><p>首先来看看<code>Point</code>这个用宏声明生成展开的代码，如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Point</span> &#123;</span></span><br><span class="line">    <span class="keyword">template</span>&lt;<span class="keyword">typename</span>, <span class="keyword">size_t</span>&gt;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">FIELD</span>;</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keyword">size_t</span> _field_count_ = <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">double</span> x;</span><br><span class="line">    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">FIELD</span>&lt;T, 0&gt; &#123;</span></span><br><span class="line">        T &amp;obj;</span><br><span class="line">        FIELD(T &amp;obj) : obj(obj) &#123;&#125;</span><br><span class="line">        auto value() -&gt; decltype(auto) &#123; return (obj.x); &#125;</span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keyword">const</span> <span class="keyword">char</span> *<span class="title">name</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> <span class="string">&quot;x&quot;</span>; &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">double</span> y;</span><br><span class="line">    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">FIELD</span>&lt;T, 0 + 1&gt; &#123;</span></span><br><span class="line">        T &amp;obj;</span><br><span class="line">        FIELD(T &amp;obj) : obj(obj) &#123;&#125;</span><br><span class="line">        auto value() -&gt; decltype(auto) &#123; return (obj.y); &#125;</span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keyword">const</span> <span class="keyword">char</span> *<span class="title">name</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> <span class="string">&quot;y&quot;</span>; &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><code>Point</code>所需要的元数据都保存在<code>Point::FIELD&lt;T, N&gt;</code>里，而所拥有的字段数在<code>Point::_field_count_</code>中，反射只需要这两个信息，就能够生成通用的序列化、反序列化代码。</p>
+<p>最核心的<code>DEFINE_STRUCT</code>宏定义如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> DEFINE_STRUCT(st, ...)                                                \</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">st</span> &#123;</span>                                                                   \</span><br><span class="line">    <span class="keyword">template</span> &lt;<span class="keyword">typename</span>, <span class="keyword">size_t</span>&gt; <span class="class"><span class="keyword">struct</span> <span class="title">FIELD</span>;</span>                                 \</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keyword">size_t</span> _field_count_ = GET_ARG_COUNT(__VA_ARGS__);       \</span><br><span class="line">    PASTE(FOR_EACH_, GET_ARG_COUNT(__VA_ARGS__)) (FIELD_EACH, <span class="number">0</span>, __VA_ARGS__) \</span><br><span class="line">&#125;;                                                                            \</span><br></pre></td></tr></table></figure>
+
+<p><code>_field_count</code>信息就是由之前提到的求宏变参个数获取的：<code>GET_ARG_COUNT</code>。</p>
+<p>接下来是<code>FOR_EACH</code>宏，作用是执行元宏<code>FIELD_EACH</code>一定次数（字段数量），而<code>FIELD_EACH</code>接收两个参数：</p>
+<ul>
+<li>当前字段<code>id</code>（用于生成<code>FIELD&lt;T, id&gt;</code>）</li>
+<li>当前字段声明信息，例如<code>(double) x</code>（用于定义<code>double x</code>，并实现<code>FIELD&lt;T, id&gt;</code>内容）</li>
+</ul>
+<p>先来看看<code>FIELD_EACH</code>的定义：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> FIELD_EACH(i, arg)                    \</span></span><br><span class="line">    PAIR(arg);                                \</span><br><span class="line">    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;                     \</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">FIELD</span>&lt;T, i&gt; &#123;</span>                      \</span><br><span class="line">        T&amp; obj;                               \</span><br><span class="line">        FIELD(T&amp; obj): obj(obj) &#123;&#125;            \</span><br><span class="line">        auto value() -&gt; decltype(auto) &#123;      \</span><br><span class="line">            <span class="keyword">return</span> (obj.STRIP(arg));          \</span><br><span class="line">        &#125;                                     \</span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keyword">const</span> <span class="keyword">char</span>* <span class="title">name</span><span class="params">()</span> </span>&#123; \</span><br><span class="line">            <span class="keyword">return</span> STRING(STRIP(arg));        \</span><br><span class="line">        &#125;                                     \</span><br><span class="line">    &#125;                                         \</span><br></pre></td></tr></table></figure>
+
+<p><code>PAIR(arg)</code>这个宏比较有意思，定义如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PAIR(x) PARE x <span class="comment">// PAIR((double) x) =&gt; PARE(double) x =&gt; double x</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PARE(...) __VA_ARGS__</span></span><br></pre></td></tr></table></figure>
+
+<p>举个例子，<code>PAIR((double) x)</code>会展开成<code>PARE(double) x</code>，因为<code>PARE(double)</code>得到的是<code>double</code>，所以最终结果是<code>double x</code>，从而定义字段。</p>
+<p>另一个关键点是<code>return (obj.STRIP(arg))</code>，看看<code>STRIP</code>实现：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> STRIP(x) EAT x <span class="comment">// STRIP((double) x) =&gt; EAT(double) x =&gt; x</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> EAT(...)</span></span><br></pre></td></tr></table></figure>
+
+<p>同样的例子，<code>STRIP((double) x)</code>会展开成<code>EAT(double) x</code>，而<code>EAT(double)</code>得到空结果，所以最终结果是<code>return (obj.x);</code>，这样就能通过<code>value()</code>函数拿到成员字段的<strong>引用</strong>。</p>
+<p>而最后一个<code>STRING(STRIP(arg))</code>就比较简单了，通过<code>STRING</code>得到对应参数字符串，宏的基本用法了：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> STRING(x) STR(x)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> STR(x) #x</span></span><br></pre></td></tr></table></figure>
+
+<p><code>PASTE(FOR_EACH_, GET_ARG_COUNT(__VA_ARGS__))</code>这句是为了拼出<code>FOR_EACH_N</code>，<code>PASTE</code>实现如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PASTE(x, y) CONCATE(x, y)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> CONCATE(x, y) x ## y</span></span><br></pre></td></tr></table></figure>
+
+<p>比如这个例子最终会展开成<code>FOR_EACH_2(FIELD_EACH, 0, (double) x, (double) y)</code>，继续看看<code>FOR_EACH_2</code>定义：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> FOR_EACH_1(func, i, arg)        func(i, arg);</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> FOR_EACH_2(func, i, arg, ...)   func(i, arg); FOR_EACH_1(func, i + 1, __VA_ARGS__)</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>也很简单，直接看展开结果吧：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">FIELD_EACH(<span class="number">0</span>, (<span class="keyword">double</span>) x);</span><br><span class="line">FIELD_EACH(<span class="number">0</span> + <span class="number">1</span>, (<span class="keyword">double</span>) y);</span><br></pre></td></tr></table></figure>
+
+<p>最后这一切，通过宏展开拼装在一起，从而得到所有元信息代码。</p>
+<h2 id="遍历查询反射信息"><a href="#遍历查询反射信息" class="headerlink" title="遍历查询反射信息"></a>遍历查询反射信息</h2><p>有了宏的一臂之力，接下来就是模板元编程发挥威力的地方了，首先我们需要定义一个高阶函数<code>forEach</code>，实现<em>Vistor模式</em>，其接受两个参数：</p>
+<ul>
+<li>传递反射的对象<code>T&amp;&amp; obj</code></li>
+<li>一个函数<code>f</code>，对对象各个字段进行访问、操作，签名为<code>void(const char* fieldName, FieldT&amp; value)</code></li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> F, <span class="keyword">size_t</span>... Is&gt; <span class="comment">// (1)</span></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">constexpr</span> <span class="keyword">void</span> <span class="title">forEach</span><span class="params">(T&amp;&amp; obj, F&amp;&amp; f, <span class="built_in">std</span>::index_sequence&lt;Is...&gt;)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">using</span> TDECAY = <span class="built_in">std</span>::<span class="keyword">decay_t</span>&lt;T&gt;;</span><br><span class="line">    (<span class="keyword">void</span>(f(<span class="keyword">typename</span> TDECAY::<span class="keyword">template</span> FIELD&lt;TDECAY, Is&gt;(obj).name(),</span><br><span class="line">            <span class="keyword">typename</span> TDECAY::<span class="keyword">template</span> FIELD&lt;TDECAY, Is&gt;(obj).value())), ...);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> F&gt; <span class="comment">// (2)</span></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">constexpr</span> <span class="keyword">void</span> <span class="title">forEach</span><span class="params">(T&amp;&amp; obj, F&amp;&amp; f)</span> </span>&#123;</span><br><span class="line">    forEach(<span class="built_in">std</span>::forward&lt;T&gt;(obj),</span><br><span class="line">            <span class="built_in">std</span>::forward&lt;F&gt;(f),</span><br><span class="line">            <span class="built_in">std</span>::make_index_sequence&lt;<span class="built_in">std</span>::<span class="keyword">decay_t</span>&lt;T&gt;::_field_count_&gt;&#123;&#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>先看版本(1)，通过参数包<code>Is...</code>展开代码，从而将函数<code>f</code> <code>apply</code>到各个参数上，还是以<code>Point</code>为例，展开代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(f(Point::FIELD&lt;<span class="number">0</span>&gt;(obj).name(), Point::FIELD&lt;<span class="number">0</span>&gt;(obj).value()),</span><br><span class="line">f(Point::FIELD&lt;<span class="number">1</span>&gt;(obj).name(), Point::FIELD&lt;<span class="number">1</span>&gt;(obj).value()));</span><br></pre></td></tr></table></figure>
+
+<p>而<code>std::index_sequence&lt;0, 1&gt;</code>可以通过<code>std::make_index_sequence</code>得到，避免用户指定字段个数，这也是最终版本(2)所做的事。</p>
+<h2 id="反射系统的应用"><a href="#反射系统的应用" class="headerlink" title="反射系统的应用"></a>反射系统的应用</h2><p>最后来看看反射最基本的一个应用，也就是序列化，将结构体序列化成字符串，从而打印出来，我们通过实现<code>dumpObj</code>来做到：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dumpObj</span><span class="params">(T&amp;&amp; obj, <span class="keyword">const</span> <span class="keyword">char</span>* fieldName = <span class="string">&quot;&quot;</span>, <span class="keyword">int</span> depth = <span class="number">0</span>)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">auto</span> indent = [depth] &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; depth; ++i) &#123;</span><br><span class="line">            <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;    &quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">if</span> <span class="title">constexpr</span><span class="params">(<span class="built_in">std</span>::is_class_v&lt;<span class="built_in">std</span>::<span class="keyword">decay_t</span>&lt;T&gt;&gt;)</span> </span>&#123; <span class="comment">// (1)</span></span><br><span class="line">        indent();</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; fieldName &lt;&lt; (*fieldName ? <span class="string">&quot;: &#123;&quot;</span> : <span class="string">&quot;&#123;&quot;</span>) &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">        forEach(obj, [depth](<span class="keyword">auto</span>&amp;&amp; fieldName, <span class="keyword">auto</span>&amp;&amp; value) &#123;</span><br><span class="line">            dumpObj(value, fieldName, depth + <span class="number">1</span>);</span><br><span class="line">        &#125;);</span><br><span class="line">        indent();</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;&#125;&quot;</span> &lt;&lt; (depth == <span class="number">0</span> ? <span class="string">&quot;&quot;</span> : <span class="string">&quot;,&quot;</span>) &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123; <span class="comment">// (2)</span></span><br><span class="line">        indent();</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; fieldName &lt;&lt; <span class="string">&quot;: &quot;</span> &lt;&lt; obj &lt;&lt; <span class="string">&quot;,&quot;</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这是一个递归版本，通过检查是否为基本类型，来判断是否需要递归打印。如果是基本类型，走分支(2)，直接将其打印出来，如果是结构体，走分支(1)，进一步递归遍历结构体各个字段，直到基本类型为止。</p>
+<h2 id="结论、展望未来"><a href="#结论、展望未来" class="headerlink" title="结论、展望未来"></a>结论、展望未来</h2><p>可惜目前C++语言未能提供反射信息，目前只能手动描述对应的元信息，综上是C++反射的优雅实现，仅需要实现一遍，通过宏展开生成代码，结合模板元编程的威力，就能为任意结构体生成对应的序列化、反序列化代码，减少程序员重复劳动、容易出错的问题。</p>
+<p>期待未来<code>C++23</code>能提供反射信息，利用其模板元生成局部代码来替代宏，将减少这些<code>tricky</code>代码，不过目前该方案已经足够好用。</p>
+<p><code>Rust</code>的宏能力也很强，能够匹配<code>&#123;</code>, <code>[</code>, <code>(</code>，而C的宏只能匹配<code>(</code>，最后定义出来的语句就不够直观了。在C++中需要结合宏与模板元来生成代码，而Rust只需要<em>过程宏/属性宏</em>和<em>声明宏</em>，统一的宏机制就能达到类似效果，而且宏内还能做模式匹配。若<code>C++23</code>的模板能够生成局部代码，那么也能统一用模板机制搞定很多事了。</p>
+<p>最后引用大师说的，<code>C++</code>就像一片大海，给程序员足够的自由，挖掘的越多，乐趣也就越多，每个点都能挖掘出来很多玩法，比如宏，比如模板。世界是复杂的，需要一门大而全的语言来应对这一切复杂。</p>
+
+    
+  </div>
+
+</article>
+
+
+   
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2020/06/07/%E7%94%A8Rust%E5%86%99%E4%B8%80%E4%B8%AA%E6%96%97%E5%85%BD%E6%A3%8B%E6%B8%B8%E6%88%8F/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2020/08/07/%E5%A6%82%E4%BD%95%E4%B8%BAClang%E7%BC%96%E8%AF%91%E5%99%A8%E5%86%99%E6%8F%92%E4%BB%B6%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E5%8C%96%E9%87%8D%E6%9E%84/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '893a4103795fc66cd8e7',
+  clientSecret: '35c92c3dca938831b67dc22e46d64bc9073ebacf',
+  repo: 'netcan.github.io',
+  owner: 'Netcan',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: md5(location.pathname),
+  admin: ['Netcan'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>
