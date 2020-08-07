@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>PHP操作MySQL数据库 | Netcan on Programming</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="PHP,MySQL,数据库," />
+  
+
+  <meta name="description" content="使用mysqli_connect()函数连接到MySQL数据库mysqli_connect(&#39;MySQL服务器地址&#39;,&#39;用户名&#39;,&#39;密码&#39;,&#39;要连接的数据库&#39;); Example: $db&#x3D;mysqli_connect(&#39;localhost&#39;,&#39;root&#39;,&#39;password&#39;,&amp;#39">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP操作MySQL数据库">
+<meta property="og:url" content="https://netcan.github.io/2015/03/21/PHP%E6%93%8D%E4%BD%9CMySQL%E6%95%B0%E6%8D%AE%E5%BA%93/index.html">
+<meta property="og:site_name" content="Netcan on Programming">
+<meta property="og:description" content="使用mysqli_connect()函数连接到MySQL数据库mysqli_connect(&#39;MySQL服务器地址&#39;,&#39;用户名&#39;,&#39;密码&#39;,&#39;要连接的数据库&#39;); Example: $db&#x3D;mysqli_connect(&#39;localhost&#39;,&#39;root&#39;,&#39;password&#39;,&amp;#39">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://7xibui.com1.z0.glb.clouddn.com/2015/03/blob10.png">
+<meta property="og:image" content="http://7xibui.com1.z0.glb.clouddn.com/2015/03/blob11.png">
+<meta property="og:image" content="http://7xibui.com1.z0.glb.clouddn.com/2015/03/blob12.png">
+<meta property="article:published_time" content="2015-03-21T14:34:23.000Z">
+<meta property="article:modified_time" content="2015-03-21T14:34:23.000Z">
+<meta property="article:author" content="Netcan">
+<meta property="article:tag" content="PHP">
+<meta property="article:tag" content="MySQL">
+<meta property="article:tag" content="数据库">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://7xibui.com1.z0.glb.clouddn.com/2015/03/blob10.png">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/personal-style.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-174901164-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d2c292719a76d8c0fa7f9874379cfd25";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 5.0.0"></head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">ROOT</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8mysqli-connect-%E5%87%BD%E6%95%B0%E8%BF%9E%E6%8E%A5%E5%88%B0MySQL%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-text">使用mysqli_connect()函数连接到MySQL数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8mysqli-select-db-%E5%87%BD%E6%95%B0%E9%80%89%E6%8B%A9%E6%95%B0%E6%8D%AE%E5%BA%93%E6%96%87%E4%BB%B6"><span class="toc-text">使用mysqli_select_db()函数选择数据库文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8mysqli-query-%E5%87%BD%E6%95%B0%E6%89%A7%E8%A1%8CSQL%E8%AF%AD%E5%8F%A5"><span class="toc-text">使用mysqli_query()函数执行SQL语句</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8mysqli-fetch-assoc-%E5%87%BD%E6%95%B0%E4%BB%8E%E6%9F%A5%E8%AF%A2%E7%BB%93%E6%9E%9C%E9%9B%86%E4%B8%AD%E8%8E%B7%E5%8F%96%E4%B8%80%E8%A1%8C%E4%BF%A1%E6%81%AF%E6%9C%80%E4%B8%BA%E5%85%B3%E8%81%94%E6%95%B0%E7%BB%84"><span class="toc-text">使用mysqli_fetch_assoc()函数从查询结果集中获取一行信息最为关联数组</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8mysqli-fetch-object-%E5%87%BD%E6%95%B0%E4%BB%8E%E6%9F%A5%E8%AF%A2%E7%BB%93%E6%9E%9C%E9%9B%86%E4%B8%AD%E8%8E%B7%E5%8F%96%E4%B8%80%E8%A1%8C%E4%BF%A1%E6%81%AF%E4%BD%9C%E4%B8%BA%E5%AF%B9%E8%B1%A1"><span class="toc-text">使用mysqli_fetch_object()函数从查询结果集中获取一行信息作为对象</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8mysqli-num-rows-%E5%87%BD%E6%95%B0%E8%8E%B7%E5%8F%96%E6%9F%A5%E8%AF%A2%E7%BB%93%E6%9E%9C%E9%9B%86%E4%B8%AD%E7%9A%84%E8%AE%B0%E5%BD%95%E6%95%B0"><span class="toc-text">使用mysqli_num_rows()函数获取查询结果集中的记录数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8mysqli-free-result-%E5%87%BD%E6%95%B0%E9%87%8A%E6%94%BE%E8%B5%84%E6%BA%90%EF%BC%8C"><span class="toc-text">使用mysqli_free_result()函数释放资源，</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8mysqli-close-%E5%87%BD%E6%95%B0%E5%85%B3%E9%97%AD%E8%BF%9E%E6%8E%A5"><span class="toc-text">使用mysqli_close()函数关闭连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E7%9A%84%E6%B3%A8%E5%86%8C%EF%BC%8C%E6%9F%A5%E8%AF%A2%E5%AE%9E%E4%BE%8B"><span class="toc-text">简单的注册，查询实例</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-PHP操作MySQL数据库" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">PHP操作MySQL数据库</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2015.03.21</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Netcan</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h3 id="使用mysqli-connect-函数连接到MySQL数据库"><a href="#使用mysqli-connect-函数连接到MySQL数据库" class="headerlink" title="使用mysqli_connect()函数连接到MySQL数据库"></a>使用<code>mysqli_connect()</code>函数连接到MySQL数据库</h3><pre><code>mysqli_connect(&#39;MySQL服务器地址&#39;,&#39;用户名&#39;,&#39;密码&#39;,&#39;要连接的数据库&#39;);</code></pre>
+<p>Example:</p>
+<pre><code>$db=mysqli_connect(&#39;localhost&#39;,&#39;root&#39;,&#39;password&#39;,&#39;test&#39;);</code></pre>
+<h3 id="使用mysqli-select-db-函数选择数据库文件"><a href="#使用mysqli-select-db-函数选择数据库文件" class="headerlink" title="使用mysqli_select_db()函数选择数据库文件"></a>使用<code>mysqli_select_db()</code>函数选择数据库文件</h3><pre><code>mysqli_select_db(数据库服务器连接对象,目标数据库名);</code></pre>
+<p>Example:</p>
+<pre><code>$db=mysqli_connect(&#39;localhost&#39;,&#39;root&#39;,&#39;password&#39;);
+mysqli_select_db($db,&#39;test&#39;);</code></pre>
+<h3 id="使用mysqli-query-函数执行SQL语句"><a href="#使用mysqli-query-函数执行SQL语句" class="headerlink" title="使用mysqli_query()函数执行SQL语句"></a>使用<code>mysqli_query()</code>函数执行SQL语句</h3><a id="more"></a>
+
+<pre><code>mysqli_query(数据库服务器连接对象,SQL语句);</code></pre>
+<p>Example:</p>
+<pre><code>$fruits=mysqli_query($db,&quot;SELECT * FROM fruits&quot;);</code></pre>
+<h4 id="使用mysqli-fetch-assoc-函数从查询结果集中获取一行信息最为关联数组"><a href="#使用mysqli-fetch-assoc-函数从查询结果集中获取一行信息最为关联数组" class="headerlink" title="使用mysqli_fetch_assoc()函数从查询结果集中获取一行信息最为关联数组"></a>使用<code>mysqli_fetch_assoc()</code>函数从查询结果集中获取一行信息最为关联数组</h4><pre><code>mysqli_fetch_assoc(SQL请求返回的对象)，将返回一个关联数组。</code></pre>
+<p>Example:</p>
+<pre><code>$fruit = mysqli_fetch_assoc($fruits);
+echo $fruit[&#39;f_name&#39;];</code></pre>
+<h4 id="使用mysqli-fetch-object-函数从查询结果集中获取一行信息作为对象"><a href="#使用mysqli-fetch-object-函数从查询结果集中获取一行信息作为对象" class="headerlink" title="使用mysqli_fetch_object()函数从查询结果集中获取一行信息作为对象"></a>使用<code>mysqli_fetch_object()</code>函数从查询结果集中获取一行信息作为对象</h4><pre><code>mysqli_fetch_object(SQL请求返回的对象)，将返回一个对象。</code></pre>
+<p>Example:</p>
+<pre><code>$fruit = mysqli_fetch_assoc($fruits);
+echo $fruit-&gt;f_name;</code></pre>
+<h3 id="使用mysqli-num-rows-函数获取查询结果集中的记录数"><a href="#使用mysqli-num-rows-函数获取查询结果集中的记录数" class="headerlink" title="使用mysqli_num_rows()函数获取查询结果集中的记录数"></a>使用<code>mysqli_num_rows()</code>函数获取查询结果集中的记录数</h3><pre><code>mysqli_num_rows(SQL请求返回的对象)，返回记录数目。</code></pre>
+<p>Example:</p>
+<pre><code>fruit_nums = mysqli_num_rows($fruits);</code></pre>
+<h3 id="使用mysqli-free-result-函数释放资源，"><a href="#使用mysqli-free-result-函数释放资源，" class="headerlink" title="使用mysqli_free_result()函数释放资源，"></a>使用<code>mysqli_free_result()</code>函数释放资源，</h3><pre><code>mysqli_free_result(SQL请求返回的对象),释放查询结果资源。</code></pre>
+<p>Example:</p>
+<pre><code>mysqli_free_result($fruits);</code></pre>
+<h3 id="使用mysqli-close-函数关闭连接"><a href="#使用mysqli-close-函数关闭连接" class="headerlink" title="使用mysqli_close()函数关闭连接"></a>使用<code>mysqli_close()</code>函数关闭连接</h3><pre><code>mysqli_close(需要关闭的数据库连接对象);</code></pre>
+<p>Example:</p>
+<pre><code>mysqli_close($db);</code></pre>
+<h3 id="简单的注册，查询实例"><a href="#简单的注册，查询实例" class="headerlink" title="简单的注册，查询实例"></a>简单的注册，查询实例</h3><p>先上register_mysql.html页面文件，</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>PHP操作MySQL数据库<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">center</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h2</span>&gt;</span>PHP操作MySQL数据库<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;register_mysql.php&quot;</span> <span class="attr">method</span>=<span class="string">&quot;post&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">table</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">tr</span> <span class="attr">bgcolor</span>=<span class="string">&quot;#3399ff&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">td</span>&gt;</span>用户名:<span class="tag">&lt;/<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">name</span>=<span class="string">&quot;name&quot;</span> <span class="attr">size</span>=<span class="string">&quot;20&quot;</span> <span class="attr">maxLength</span>=<span class="string">&quot;20&quot;</span> /&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">tr</span> <span class="attr">bgcolor</span>=<span class="string">&quot;#CCCCCC&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">td</span>&gt;</span>性别:<span class="tag">&lt;/<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">center</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;radio&quot;</span> <span class="attr">name</span>=<span class="string">&quot;sex&quot;</span> <span class="attr">value</span>=<span class="string">&quot;1&quot;</span> <span class="attr">checked</span>/&gt;</span>男<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;radio&quot;</span> <span class="attr">name</span>=<span class="string">&quot;sex&quot;</span> <span class="attr">value</span>=<span class="string">&quot;2&quot;</span> /&gt;</span>女<span class="tag">&lt;/<span class="name">center</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">tr</span> <span class="attr">bgcolor</span>=<span class="string">&quot;#4ADDFF&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">td</span>&gt;</span>擅长:<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">td</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">center</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">select</span> <span class="attr">name</span>=<span class="string">&quot;fav&quot;</span> &gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">&quot;1&quot;</span>&gt;</span>C/C++<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">&quot;2&quot;</span>&gt;</span>Java<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">&quot;3&quot;</span>&gt;</span>PHP<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">&quot;4&quot;</span>&gt;</span>Python<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">&quot;5&quot;</span>&gt;</span>HTML5/CSS<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">center</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">tr</span> <span class="attr">bgcolor</span>=<span class="string">&quot;#CAFF0D&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">td</span>&gt;</span>密码:<span class="tag">&lt;/<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;password&quot;</span> <span class="attr">name</span>=<span class="string">&quot;passwd&quot;</span> <span class="attr">size</span>=<span class="string">&quot;20&quot;</span> <span class="attr">maxLength</span>=<span class="string">&quot;20&quot;</span>/&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">tr</span> <span class="attr">bgcolor</span>=<span class="string">&quot;#CAFF0D&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">td</span>&gt;</span>确认:<span class="tag">&lt;/<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;password&quot;</span> <span class="attr">name</span>=<span class="string">&quot;repasswd&quot;</span> <span class="attr">size</span>=<span class="string">&quot;20&quot;</span> <span class="attr">maxLength</span>=<span class="string">&quot;20&quot;</span>/&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">tr</span> <span class="attr">bgcolor</span>=<span class="string">&quot;#9966cc&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">td</span>&gt;</span>备注<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">textarea</span> <span class="attr">name</span>=<span class="string">&quot;info&quot;</span> <span class="attr">cols</span>=<span class="string">&quot;22&quot;</span> <span class="attr">rows</span>=<span class="string">&quot;3&quot;</span>&gt;</span>在这里留下备注信息<span class="tag">&lt;/<span class="name">textarea</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line"></span><br><span class="line">            <span class="tag">&lt;<span class="name">tr</span> <span class="attr">bgcolor</span>=<span class="string">&quot;#E8950C&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">td</span> <span class="attr">colspan</span>=<span class="string">2</span>&gt;</span><span class="tag">&lt;<span class="name">center</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;reset&quot;</span> <span class="attr">value</span>=<span class="string">&quot;重置&quot;</span>/&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">value</span>=<span class="string">&quot;提交&quot;</span>/&gt;</span><span class="tag">&lt;/<span class="name">center</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h2</span>&gt;</span>MySQL数据库查询<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;register_query.php&quot;</span> <span class="attr">method</span>=<span class="string">&quot;post&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">table</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">tr</span> <span class="attr">bgcolor</span>=<span class="string">&quot;#FF0DFF&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">td</span>&gt;</span>用户名<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">size</span>=<span class="string">&quot;20&quot;</span> <span class="attr">maxLength</span>=<span class="string">&quot;20&quot;</span> <span class="attr">name</span>=<span class="string">&quot;query_name&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">tr</span> <span class="attr">bgcolor</span>=<span class="string">&quot;#4DFFC4&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">td</span> <span class="attr">colspan</span>=<span class="string">2</span>&gt;</span><span class="tag">&lt;<span class="name">center</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;reset&quot;</span> <span class="attr">value</span>=<span class="string">&quot;重置&quot;</span>/&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">value</span>=<span class="string">&quot;查询&quot;</span>/&gt;</span><span class="tag">&lt;/<span class="name">center</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>页面图：<br><img src="http://7xibui.com1.z0.glb.clouddn.com/2015/03/blob10.png" alt="http://7xibui.com1.z0.glb.clouddn.com/2015/03/blob10.png"></p>
+<p>其次是输入数据至数据库的register_mysql.php文件，</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta charset=<span class="string">&quot;utf-8&quot;</span>&gt;</span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">   <span class="keyword">echo</span> <span class="string">&quot;&lt;h2&gt;PHP操作MySQL数据库&lt;/h2&gt;&quot;</span>;</span><br><span class="line"></span><br><span class="line">   $name = trim($_POST[<span class="string">&#x27;name&#x27;</span>]);</span><br><span class="line">   $sex = trim($_POST[<span class="string">&#x27;sex&#x27;</span>]);</span><br><span class="line">   $fav = trim($_POST[<span class="string">&#x27;fav&#x27;</span>]);</span><br><span class="line">   $passwd = trim($_POST[<span class="string">&#x27;passwd&#x27;</span>]);</span><br><span class="line">   $repasswd = trim($_POST[<span class="string">&#x27;repasswd&#x27;</span>]);</span><br><span class="line">   $info = trim($_POST[<span class="string">&#x27;info&#x27;</span>]);</span><br><span class="line">   $sexa = <span class="keyword">array</span>(<span class="number">0</span>,<span class="string">&quot;男&quot;</span>,<span class="string">&quot;女&quot;</span>);</span><br><span class="line">   $fava = <span class="keyword">array</span>(<span class="number">0</span>,<span class="string">&quot;C/C++语言&quot;</span>,<span class="string">&quot;Java语言&quot;</span>,<span class="string">&quot;PHP语言&quot;</span>,<span class="string">&quot;Python语言&quot;</span>,<span class="string">&quot;HTML5/CSS&quot;</span>);</span><br><span class="line">   $sex = $sexa[$sex];</span><br><span class="line">   $fav = $fava[$fav];</span><br><span class="line"></span><br><span class="line">   <span class="keyword">if</span>($passwd != $repasswd) &#123;</span><br><span class="line">      <span class="keyword">echo</span> <span class="string">&quot;&lt;script&gt;alert(\&quot;密码不一致!\&quot;);history.go(-1);&lt;/script&gt;&quot;</span>;</span><br><span class="line">      <span class="keyword">exit</span>();</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">if</span>(!$name || !$sex || !$fav || !$passwd || !$repasswd || !$info) &#123;</span><br><span class="line">      <span class="keyword">echo</span> <span class="string">&quot;&lt;script&gt;alert(\&quot;请填满数据!\&quot;);history.go(-1);&lt;/script&gt;&quot;</span>;</span><br><span class="line">      <span class="keyword">exit</span>();</span><br><span class="line">   &#125;</span><br><span class="line">   $user = mysqli_connect(<span class="string">&#x27;localhost&#x27;</span>,<span class="string">&#x27;root&#x27;</span>,<span class="string">&#x27;&#x27;</span>);</span><br><span class="line">   mysqli_select_db($user,<span class="string">&#x27;test&#x27;</span>);</span><br><span class="line">   <span class="keyword">if</span>(mysqli_connect_errno()) &#123;</span><br><span class="line">      <span class="keyword">echo</span> <span class="string">&quot;&lt;h3&gt;MySQL数据库连接失败！&lt;/h3&gt;&quot;</span>;</span><br><span class="line">      <span class="keyword">exit</span>();</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">else</span></span><br><span class="line">   <span class="keyword">echo</span> <span class="string">&quot;&lt;h3&gt;MySQL数据库连接成功！&lt;/h3&gt;&quot;</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">   $insert = <span class="string">&quot;INSERT INTO user(name,sex,fav,passwd,info) value(&#x27;$name&#x27;,&#x27;$sex&#x27;,&#x27;$fav&#x27;,&#x27;$passwd&#x27;,&#x27;$info&#x27;)&quot;</span>;</span><br><span class="line">   $insert = iconv(<span class="string">&quot;utf-8&quot;</span>,<span class="string">&quot;gb2312&quot;</span>,$insert);</span><br><span class="line">   <span class="keyword">if</span>(mysqli_query($user,$insert))</span><br><span class="line">   <span class="keyword">echo</span> <span class="string">&quot;&lt;h3&gt;数据添加成功！&lt;/h3&gt;&quot;</span>;</span><br><span class="line">   <span class="keyword">else</span></span><br><span class="line">   <span class="keyword">echo</span> <span class="string">&quot;&lt;h3&gt;数据添加失败！&lt;/h3&gt;&quot;</span>;</span><br><span class="line">   mysqli_close($user);</span><br><span class="line">   <span class="keyword">echo</span> <span class="string">&quot;&lt;input type=button onClick=\&quot;javascript:history.go(-1)\&quot; value=\&quot;返回上一页\&quot;&gt;&quot;</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>最后是查询数据的register_query.php。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta charset=<span class="string">&quot;utf-8&quot;</span>&gt;</span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">   $user = mysqli_connect(<span class="string">&#x27;localhost&#x27;</span>,<span class="string">&#x27;root&#x27;</span>,<span class="string">&#x27;&#x27;</span>);</span><br><span class="line">   mysqli_select_db($user,<span class="string">&#x27;test&#x27;</span>);</span><br><span class="line">   <span class="keyword">if</span>(mysqli_connect_errno()) &#123;</span><br><span class="line">      <span class="keyword">echo</span> <span class="string">&quot;&lt;center&gt;&lt;h3&gt;MySQL数据库连接失败！&lt;/h3&gt;&lt;/center&gt;&quot;</span>;</span><br><span class="line">      <span class="keyword">exit</span>();</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">else</span></span><br><span class="line">   <span class="keyword">echo</span> <span class="string">&quot;&lt;center&gt;&lt;h3&gt;MySQL数据库连接成功！&lt;/h3&gt;&lt;/center&gt;&quot;</span>;</span><br><span class="line">   mysqli_query($user,<span class="string">&quot;set names utf8&quot;</span>);</span><br><span class="line">   $query_name = trim($_POST[<span class="string">&#x27;query_name&#x27;</span>]);</span><br><span class="line">   $query_users = mysqli_query($user,<span class="string">&quot;SELECT * FROM user WHERE name LIKE &#x27;%$query_name%&#x27;&quot;</span>);</span><br><span class="line">   $query_users_num = mysqli_num_rows($query_users);</span><br><span class="line">   <span class="keyword">echo</span> <span class="string">&quot;&lt;center&gt;&lt;table border=1&gt;</span></span><br><span class="line"><span class="string">         &lt;tr bgcolor=#4dffc4&gt;</span></span><br><span class="line"><span class="string">         &lt;td&gt;&lt;center&gt;ID&lt;/center&gt;&lt;/td&gt;&lt;td&gt;&lt;center&gt;昵称&lt;/center&gt;&lt;/td&gt;&lt;td&gt;&lt;center&gt;性别&lt;/center&gt;&lt;/td&gt;&lt;td&gt;&lt;center&gt;擅长&lt;/center&gt;&lt;/td&gt;&lt;td&gt;&lt;center&gt;密码&lt;/center&gt;&lt;/td&gt;&lt;td&gt;&lt;center&gt;备注&lt;/center&gt;&lt;/td&gt;</span></span><br><span class="line"><span class="string">      &lt;/tr&gt;</span></span><br><span class="line"><span class="string">      &quot;</span>;</span><br><span class="line">   <span class="keyword">for</span>($i=<span class="number">0</span>; $i&lt;$query_users_num; ++$i) &#123;</span><br><span class="line">      $query_user = mysqli_fetch_assoc($query_users);</span><br><span class="line">      <span class="keyword">echo</span> <span class="string">&quot;&lt;tr bgcolor=4addff&gt;</span></span><br><span class="line"><span class="string">         &lt;td&gt;&lt;center&gt;$query_user[id]&lt;/center&gt;&lt;/td&gt;&lt;td&gt;&lt;center&gt;$query_user[name]&lt;/center&gt;&lt;/td&gt;&lt;td&gt;&lt;center&gt;$query_user[sex]&lt;/center&gt;&lt;/td&gt;&lt;td&gt;&lt;center&gt;$query_user[fav]&lt;/center&gt;&lt;/td&gt;&lt;td&gt;&lt;center&gt;$query_user[passwd]&lt;/center&gt;&lt;/td&gt;&lt;td&gt;&lt;center&gt;$query_user[info]&lt;/center&gt;&lt;/td&gt;</span></span><br><span class="line"><span class="string">      &lt;/tr&gt;</span></span><br><span class="line"><span class="string">         &quot;</span>;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">echo</span> <span class="string">&quot;&lt;/table&gt;记录条数：$query_users_num</span></span><br><span class="line"><span class="string">&lt;input type=button onClick=\&quot;javascript:history.go(-1)\&quot; value=\&quot;返回上一页\&quot;&gt;&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>最终效果图，</p>
+<p>提交数据：<br><img src="http://7xibui.com1.z0.glb.clouddn.com/2015/03/blob11.png" alt="http://7xibui.com1.z0.glb.clouddn.com/2015/03/blob11.png"><br>查询数据：<br><img src="http://7xibui.com1.z0.glb.clouddn.com/2015/03/blob12.png" alt="http://7xibui.com1.z0.glb.clouddn.com/2015/03/blob12.png"></p>
+
+    
+  </div>
+
+</article>
+
+
+   
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2015/03/21/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%A4%87%E4%BB%BD%E5%92%8C%E8%BF%98%E5%8E%9F/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2015/03/24/CSS%E7%9A%84%E6%8F%92%E5%85%A5%E4%B8%8E%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '893a4103795fc66cd8e7',
+  clientSecret: '35c92c3dca938831b67dc22e46d64bc9073ebacf',
+  repo: 'netcan.github.io',
+  owner: 'Netcan',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: md5(location.pathname),
+  admin: ['Netcan'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>

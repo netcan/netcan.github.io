@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>编译原理实验之LL(1)语法分析器设计 | Netcan on Programming</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="C/C++,编译原理," />
+  
+
+  <meta name="description" content="编译原理第二个实验是LL(1)语法分析，这里我来写一下关于LL(1)的内容，虽然书上都有，但是总结一遍，应该印象更加深刻的，也有助于写代码。目前LL(1)实验已全部完成，项目地址：http:&#x2F;&#x2F;115.159.147.250:666&#x2F;LL1&#x2F;，代码地址：https:&#x2F;&#x2F;github.com&#x2F;netcan&#x2F;compilingTheory，效果图：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="编译原理实验之LL(1)语法分析器设计">
+<meta property="og:url" content="https://netcan.github.io/2016/10/09/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B9%8BLL-1-%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="Netcan on Programming">
+<meta property="og:description" content="编译原理第二个实验是LL(1)语法分析，这里我来写一下关于LL(1)的内容，虽然书上都有，但是总结一遍，应该印象更加深刻的，也有助于写代码。目前LL(1)实验已全部完成，项目地址：http:&#x2F;&#x2F;115.159.147.250:666&#x2F;LL1&#x2F;，代码地址：https:&#x2F;&#x2F;github.com&#x2F;netcan&#x2F;compilingTheory，效果图：">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/netcan/compilingTheory/master/ll1.gif">
+<meta property="article:published_time" content="2016-10-09T08:08:50.000Z">
+<meta property="article:modified_time" content="2016-11-05T08:22:20.000Z">
+<meta property="article:author" content="Netcan">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="编译原理">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/netcan/compilingTheory/master/ll1.gif">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/personal-style.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-174901164-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d2c292719a76d8c0fa7f9874379cfd25";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 5.0.0"></head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">ROOT</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#first-%E9%9B%86"><span class="toc-text">$first$集</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#follow-%E9%9B%86"><span class="toc-text">$follow$集</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%84%E6%B5%8B%E5%88%86%E6%9E%90%E8%A1%A8"><span class="toc-text">预测分析表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1"><span class="toc-text">程序设计</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-编译原理之LL-1-语法分析" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">编译原理实验之LL(1)语法分析器设计</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2016.10.09</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Netcan</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p>编译原理第二个实验是LL(1)语法分析，这里我来写一下关于LL(1)的内容，虽然书上都有，但是总结一遍，应该印象更加深刻的，也有助于写代码。目前LL(1)实验已全部完成，项目地址：<a target="_blank" rel="noopener" href="http://115.159.147.250:666/LL1/">http://115.159.147.250:666/LL1/</a>，代码地址：<a target="_blank" rel="noopener" href="https://github.com/netcan/compilingTheory">https://github.com/netcan/compilingTheory</a>，效果图：<br><img src="https://raw.githubusercontent.com/netcan/compilingTheory/master/ll1.gif" alt="https://raw.githubusercontent.com/netcan/compilingTheory/master/ll1.gif"></p>
+<a id="more"></a>
+
+<p>我写这篇博文写了好几天了，描述比较凌乱，建议大家还是看书吧，或者直接看我<a href="#%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1">程序设计部分</a>。一定要搞懂$first$集和$follow$集的求法，不然写程序也会遇到困难的，这里有篇不错的关于求$first$和$follow$集的论文，推荐看看：<a target="_blank" rel="noopener" href="https://www.cs.virginia.edu/~weimer/2008-415/reading/FirstFollowLL.pdf">https://www.cs.virginia.edu/~weimer/2008-415/reading/FirstFollowLL.pdf</a></p>
+<p>LL(1)文法主要是求$first$集和$follow$集，个人觉得$follow$集比较麻烦点，然后就是用这两个集合求预测分析表。</p>
+<h2 id="first-集"><a href="#first-集" class="headerlink" title="$first$集"></a>$first$集</h2><p>$first$集就是求文法符号串$\alpha$的开始符号集合$first(\alpha)$，例如有以下文法$G(E)$：</p>
+
+$$ 
+E\to TE' \\
+E'\to +TE'|\varepsilon\\
+T\to FT'\\
+T'\to *FT'|\varepsilon\\
+F\to (E)|\bf{id}
+$$
+
+
+<p>用例子还是比较好说明的，很容易求出各非终结符的$first$集。</p>
+
+$$
+first(E) = first(T) = first(F) = \{(, \bf{id}\}\\
+first(E') = \{+, \varepsilon\}\\
+first(T') = \{*, \varepsilon\}
+$$
+
+
+<p>这里给出$first$集的一般描述。</p>
+
+$$
+FIRST(\alpha) =\{t|(t\ is\ a\ terminal\ and\ \alpha\Rightarrow^∗ t\beta)or(t=\varepsilon\ and\ \alpha \Rightarrow^* \varepsilon)\}
+$$
+
+
+<p>也就是说，如果非终结符$E$有产生式$T\beta$，那么它们$first(E)=first(T)$，这个不难理解，因为我（$E$）能推出你（$T$），你又能推出它（开始符号，终结符），那我们都能推出它。</p>
+<p>$first$集的作用是，当用来匹配开头为$a$的文本时，有产生式$A\to X\alpha|Y\beta$，若$a\in X$，则选择候选式$A\to X\alpha$，若$a\in Y$，选择$A\to Y\beta$，说了那么多，我只想说，不是用$first(A)$这个来匹配$a$，而是用它的候选式$first(X)$或者$first(Y)$来匹配。</p>
+<p>用上面的例子来说，匹配$(233$，因为$(\in first(TE’)$，应该选择$E’\to +TE’$这个候选式。</p>
+<h2 id="follow-集"><a href="#follow-集" class="headerlink" title="$follow$集"></a>$follow$集</h2><p>$follow$集比较抽象，它用来解决这个问题的，如果非终结符$E’$的$first(E’)$含有$\varepsilon$，那么选择会不确定，比如说$G(E)$，</p>
+
+$$
+E\to Tb|F\\
+T\to a|\varepsilon\\
+F\to c
+$$
+
+
+<p>很容易求得</p>
+
+$$
+first(Tb) = \{a, \varepsilon\} \\
+first(F) = {c}
+$$
+
+
+<p>匹配开头为$a$，因为$a\in first(Tb)$，选择$E\to Tb$产生式，匹配开头为$c$，因为$c\in first(F)$，选择$E\to F$产生式。然而当我匹配$b$时，因为$b\not \in first(Tb)\land \not \in first(F)$，这时候就不知道选择哪个产生式了，但是因为$\varepsilon\in first(Tb)$，且$E\to Tb|F\Rightarrow (a|\varepsilon)b|F\Rightarrow ab|b|F$，应该选择$E\to Tb$的，这说明了$first$集的不足，从而引进$follow$集。</p>
+<p>给出定义，$follow(A)$即为非终结符$A$后面可能接的符号集。</p>
+<p>至于怎么求$follow(A)$，我就直接摘抄PPT的定义吧，然后在说明。</p>
+<p>连续使用下面的规则，直至每个$follow$不再增大为止。</p>
+<ul>
+<li>对于文法的开始符号$S$，置#于$follow(S)$中。</li>
+<li>若$A\to \alpha B\beta$是一个产生式，则把$first(\beta)\backslash {\varepsilon }$加至$follow(B)$中；</li>
+<li>若$A\to \alpha B$是一个产生式，或$A\to \alpha B\beta $是一个产生式而$\varepsilon\in FIRST(\beta)$，则把$follow(A)$加至$follow(B)$中。 </li>
+</ul>
+<p>第三条规则可以这么理解，因为$B$后面啥都没，$A$又能推出$B$，所以应该把$A$后面的符号（$follow(A)$）加入$follow(B)$中。需要注意的是，$follow$集不含$\varepsilon$。</p>
+<p>所以要求某个非终结符的$follow$集，只要在<strong>产生式右边</strong>中找，然后根据它后面一个<strong>符号</strong>按照上述规则计算就行了。</p>
+<h2 id="预测分析表"><a href="#预测分析表" class="headerlink" title="预测分析表"></a>预测分析表</h2><p>求得$first$集和$follow$集后，求分析表就比较容易了。这里简单说下构建方法。</p>
+<p>对文法的每个产生式，执行下面步骤。</p>
+<ul>
+<li>对$first(\alpha)$的每个<strong>终结符</strong>$a$，将候选式$A\to \alpha$加入$M[A, a]$</li>
+<li>如果$\varepsilon\in first(\alpha)$，把$follow(A)$的每个<strong>终结符</strong>$b$（包括#），把$A\to \alpha$加入$M[A, b]$。</li>
+</ul>
+<h2 id="程序设计"><a href="#程序设计" class="headerlink" title="程序设计"></a>程序设计</h2><p>代码的核心部分就是求$first$集和$follow$集了，这也是程序的精髓所在。</p>
+<p>首先我约定字符@代表$\varepsilon$，因为键盘上没那个符号，所以随便找了个合适的符号代替。约定单个大写字母代表非终结符，小写字母或某些符号代表终结符。</p>
+<p>然后设计一个叫做产生式的类<code>Prod</code>，它的构造函数接受一个字符串，字符串描述了一个产生式。然后分割字符串，把它的非终结符存入<code>noTerminal</code>成员中，候选式存入<code>selection</code>集合中。</p>
+<p>接着设计一个叫<code>LL1</code>的类，也就是核心部分了，它提供了求<code>first</code>、<code>follow</code>、分析表等方法。因为<code>first</code>集和<code>follow</code>集可能会求未知表达式的<code>first</code>集和<code>follow</code>集，比如说<code>A-&gt;B，B-&gt;C</code>，欲求<code>first(A)</code>，需求<code>first(B)</code>，欲求<code>first(B)</code>，需求<code>first(C)</code>，从而确定了这两种集合求法只能用递归来求，这也是我所能想到的最简单求法，可以参考我代码。</p>
+<p>然而现在（2016/10/21）补充下，经过反复调教，<code>first</code>集都重写了5次，而<code>follow</code>集是<strong>不能用递归</strong>来求的，因为有可能出现这种情况：</p>
+
+$$
+A\to bAS\\
+S\to aA\\
+S\to d\\
+A\to \varepsilon
+$$
+
+
+<p>求<code>follow(A)</code>需要<code>first(S)</code>和<code>follow(S)</code>，递归求<code>follow(S)</code>需要<code>follow(A)</code>，然而这样就进入了死递归。所以最后我改写成5个循环搞定。</p>
+<p>求出了<code>first</code>和<code>follow</code>，剩下的就好办了。至于图形界面，和<a href="/2016/10/07/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B9%8B%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90%E5%99%A8%E8%AE%BE%E8%AE%A1/">上次</a>一样，套了个<code>php</code>，通过<code>php</code>传json数据到前端，前端输入数据取数据，渲染页面。那颗语法树的画法，通过前序遍历画得。</p>
+
+    
+  </div>
+
+</article>
+
+
+   
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2016/10/07/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B9%8B%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90%E5%99%A8%E8%AE%BE%E8%AE%A1/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2016/10/21/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E5%AE%9E%E9%AA%8C%E4%B9%8BLR-1-%E5%88%86%E6%9E%90%E5%99%A8%E8%AE%BE%E8%AE%A1/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '893a4103795fc66cd8e7',
+  clientSecret: '35c92c3dca938831b67dc22e46d64bc9073ebacf',
+  repo: 'netcan.github.io',
+  owner: 'Netcan',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: md5(location.pathname),
+  admin: ['Netcan'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>python之数据挖掘 | Netcan on Programming</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="python,数据挖掘," />
+  
+
+  <meta name="description" content="前言自用笔记，目前在看《Learning Data Mining with python 2nd Edition》。 在图书馆发现这本书（第一版译本），顿时就吸引了我的注意力，之前学校也开过《数据挖掘》的课，蛮有意思的，也就纯理论相关，一直没实践。 然后通过书上给的源代码链接，发现这本书今年4月份出了第二版，就下了电子版来研究了。 Getting Started with Data Mininga">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python之数据挖掘">
+<meta property="og:url" content="https://netcan.github.io/2017/12/25/Python%E4%B9%8B%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98/index.html">
+<meta property="og:site_name" content="Netcan on Programming">
+<meta property="og:description" content="前言自用笔记，目前在看《Learning Data Mining with python 2nd Edition》。 在图书馆发现这本书（第一版译本），顿时就吸引了我的注意力，之前学校也开过《数据挖掘》的课，蛮有意思的，也就纯理论相关，一直没实践。 然后通过书上给的源代码链接，发现这本书今年4月份出了第二版，就下了电子版来研究了。 Getting Started with Data Mininga">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-12-25T02:21:21.000Z">
+<meta property="article:modified_time" content="2018-02-02T08:20:29.000Z">
+<meta property="article:author" content="Netcan">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="数据挖掘">
+<meta name="twitter:card" content="summary">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/personal-style.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-174901164-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d2c292719a76d8c0fa7f9874379cfd25";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 5.0.0"></head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">ROOT</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Getting-Started-with-Data-Mining"><span class="toc-text">Getting Started with Data Mining</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#affinity-analysis"><span class="toc-text">affinity analysis</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0OneR%E7%AE%97%E6%B3%95"><span class="toc-text">实现OneR算法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%94%A8scikit-learn%E7%9A%84Estimators%E5%88%86%E7%B1%BB"><span class="toc-text">用scikit-learn的Estimators分类</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Estimators"><span class="toc-text">Estimators</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Nearest-neighbors%E7%AE%97%E6%B3%95"><span class="toc-text">Nearest neighbors算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F"><span class="toc-text">距离度量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%BB%E5%8F%96%E6%95%B0%E6%8D%AE%E9%9B%86"><span class="toc-text">读取数据集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%87%E5%87%86%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="toc-text">标准工作流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Cross-fold-validation-CV"><span class="toc-text">Cross-fold validation(CV)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%83%E5%8F%82"><span class="toc-text">调参</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%84%E5%A4%84%E7%90%86"><span class="toc-text">预处理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%87%E5%87%86%E9%A2%84%E5%A4%84%E7%90%86"><span class="toc-text">标准预处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%94%BE%E5%88%B0%E4%B8%80%E8%B5%B7"><span class="toc-text">放到一起</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Pipelines"><span class="toc-text">Pipelines</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%86%B3%E7%AD%96%E6%A0%91%E6%9D%A5%E9%A2%84%E6%B5%8B%E6%AF%94%E8%B5%9B%E7%BB%93%E6%9E%9C"><span class="toc-text">使用决策树来预测比赛结果</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%BB%E5%8F%96%E6%95%B0%E6%8D%AE%E9%9B%86-1"><span class="toc-text">读取数据集</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE%E9%9B%86"><span class="toc-text">获取数据集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8pandas%E8%AF%BB%E5%8F%96%E6%95%B0%E6%8D%AE%E9%9B%86"><span class="toc-text">使用pandas读取数据集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B8%85%E6%B4%97%E6%95%B0%E6%8D%AE%E9%9B%86"><span class="toc-text">清洗数据集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%90%E5%8F%96%E7%89%B9%E5%BE%81"><span class="toc-text">提取特征</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%B3%E7%AD%96%E6%A0%91"><span class="toc-text">决策树</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E6%95%B0"><span class="toc-text">参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%86%B3%E7%AD%96%E6%A0%91"><span class="toc-text">使用决策树</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E5%8A%A8%E7%BB%93%E6%9E%9C%E9%A2%84%E6%B5%8B"><span class="toc-text">运动结果预测</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%94%BE%E5%88%B0%E4%B8%80%E8%B5%B7-1"><span class="toc-text">放到一起</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9A%8F%E6%9C%BA%E6%A3%AE%E6%9E%97"><span class="toc-text">随机森林</span></a></li></ol></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-Python之数据挖掘" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">python之数据挖掘</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2017.12.25</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Netcan</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>自用笔记，目前在看《Learning Data Mining with python 2nd Edition》。</p>
+<p>在图书馆发现这本书（第一版译本），顿时就吸引了我的注意力，之前学校也开过《数据挖掘》的课，蛮有意思的，也就纯理论相关，一直没实践。</p>
+<p>然后通过书上给的源代码链接，发现这本书今年4月份出了第二版，就下了电子版来研究了。</p>
+<h1 id="Getting-Started-with-Data-Mining"><a href="#Getting-Started-with-Data-Mining" class="headerlink" title="Getting Started with Data Mining"></a>Getting Started with Data Mining</h1><h2 id="affinity-analysis"><a href="#affinity-analysis" class="headerlink" title="affinity analysis"></a>affinity analysis</h2><p>第一个例子是关于<em>affinity analysis</em>，给出历史订单，当X和Y同时购买时，可以找出如下规则：</p>
+<blockquote>
+<p>当用户买了X(<em>premise</em>)，有多大可能性买Y(<em>conclusion</em>)。</p>
+</blockquote>
+<ul>
+<li>支持度(<em>support</em>): 历史订单中出现premise-&gt;conclusion的个数</li>
+<li>置信度(<em>confidence</em>)：支持度/历史订单中出现premise的个数</li>
+</ul>
+<p>最后可以根据置信度从大到小排序，从而帮助我们做出决策。</p>
+<h2 id="实现OneR算法"><a href="#实现OneR算法" class="headerlink" title="实现OneR算法"></a>实现OneR算法</h2><p>第二个例子是分类问题，通过<code>scikit-learn</code>库的数据集IRIS（花的数据集，有3种类别）来介绍OneR(<em>One Rule</em>)算法，也就是通过选择<strong>一个</strong>最好的特征来判断类别。</p>
+<p>该数据集有150个样本，4个特征，以及每个样本对应的类别。首先对各个特征值进行<strong>离散化</strong>，书上是通过各个特征值的均值来作为阈值，大于均值为1，否则为0，这样各个特征值只有2种数值了。</p>
+<p>然后实现OneR算法：</p>
+<ul>
+<li>依次遍历每个特征<ul>
+<li>遍历特征的每个值(<code>train_feature_value</code>)<ul>
+<li>根据所有样本中的特征为该值找出最频繁的类</li>
+<li>计算错误的样本（不属于最频繁的类）个数</li>
+</ul>
+</li>
+<li>计算该特征总的错误个数</li>
+</ul>
+</li>
+<li>使用错误个数最少的特征来分类</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># X样本, y_true样本对应的类别，feature选择的特征，value特征的值</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">train_feature_value</span>(<span class="params">X, y_true, feature, value</span>):</span></span><br><span class="line">    class_count = defaultdict(int)</span><br><span class="line">    <span class="keyword">for</span> sample, cls <span class="keyword">in</span> zip(X, y_true):</span><br><span class="line">        <span class="keyword">if</span> sample[feature] == value:</span><br><span class="line">            class_count[cls] += <span class="number">1</span></span><br><span class="line">    most_frequent_class = sorted(class_count.items(), key=itemgetter(<span class="number">1</span>), reverse=<span class="literal">True</span>)[<span class="number">0</span>][<span class="number">0</span>]</span><br><span class="line">    error = sum([cnt <span class="keyword">for</span> cls, cnt <span class="keyword">in</span> class_count.items() <span class="keyword">if</span> cls != most_frequent_class])</span><br><span class="line">    <span class="keyword">return</span> most_frequent_class, error</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">train</span>(<span class="params">X, y_true, feature</span>):</span></span><br><span class="line">    n_samples, n_features = X.shape</span><br><span class="line">    values = set(X[:, feature])</span><br><span class="line">    predictors = &#123;&#125;</span><br><span class="line">    errors = []</span><br><span class="line">    <span class="keyword">for</span> current_value <span class="keyword">in</span> values:</span><br><span class="line">        most_frequent_class, error = train_feature_value(X, y_true, feature, current_value)</span><br><span class="line">        predictors[current_value] = most_frequent_class</span><br><span class="line">        errors.append(error)</span><br><span class="line">    total_error = sum(errors)</span><br><span class="line">    <span class="keyword">return</span> predictors, total_error</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">OneR</span>(<span class="params">X, y_true</span>):</span></span><br><span class="line">    all_predictors = &#123;&#125;</span><br><span class="line">    errors = &#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> feature <span class="keyword">in</span> range(X.shape[<span class="number">1</span>]):</span><br><span class="line">        predictor, total_error = train(X, y_true, feature)</span><br><span class="line">        all_predictors[feature] = predictor</span><br><span class="line">        errors[feature] = total_error</span><br><span class="line">    feature = sorted(errors.items(), key=itemgetter(<span class="number">1</span>))[<span class="number">0</span>][<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">&#x27;feature&#x27;</span>: feature, <span class="string">&#x27;predictor&#x27;</span>: all_predictors[feature]&#125;</span><br></pre></td></tr></table></figure>
+
+<p>解下来就是测试算法了，需要将数据集划分为两个部分：<strong>训练集</strong>和<strong>测试集</strong>，以防出现<em>overfitting</em>问题，也就是说训练的模型对训练集能进行很好的分类，但是遇到新的样本效果就会很差了。</p>
+<p>用<code>sklearn.cross_validation</code>(cross validation简称<strong>CV</strong>)的<code>train_test_split</code>来划分数据集，默认随机抽取75%样本作为训练集，剩下的为测试集：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.cross_validation <span class="keyword">import</span> train_test_split</span><br><span class="line">Xd_train, Xd_test, y_train, y_test = train_test_split(X_d, Y)</span><br></pre></td></tr></table></figure>
+
+<p>测试精度，65.8%，还行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">def predict(X_test, model):</span><br><span class="line">    var &#x3D; model[&#39;feature&#39;]</span><br><span class="line">    predictor &#x3D; model[&#39;predictor&#39;]</span><br><span class="line">    y_predicted &#x3D; np.array([predictor[int(sample[var])] for sample in X_test])</span><br><span class="line">    return y_predicted</span><br><span class="line"></span><br><span class="line">In [371]: np.mean(predict(Xd_test, model) &#x3D;&#x3D;  y_test)</span><br><span class="line">Out[371]: 0.65789473684210531</span><br></pre></td></tr></table></figure>
+
+<h1 id="用scikit-learn的Estimators分类"><a href="#用scikit-learn的Estimators分类" class="headerlink" title="用scikit-learn的Estimators分类"></a>用<code>scikit-learn</code>的<code>Estimators</code>分类</h1><p><code>scikit-learn</code>库与很多数据挖掘算法，这一章介绍如何调用它来运行一些数据挖掘算法（分类）。</p>
+<p>有3个概念需要注意：</p>
+<ul>
+<li>Estimators: 用于分类、聚类、回归</li>
+<li>Transformers: 用于预处理、选择数据</li>
+<li>Pipelines: 将工作流程整合到一块复用</li>
+</ul>
+<h2 id="Estimators"><a href="#Estimators" class="headerlink" title="Estimators"></a>Estimators</h2><p>Estimators有2个比较重要的函数：</p>
+<ul>
+<li><code>fit()</code>: 执行训练用算法，设置内部参数。有2个输入：训练集和对应的类型（就像前面提到的<code>OneR(X, y_true)</code>）</li>
+<li><code>predict()</code>：只有一个测试集输入，输出预测的分类。（就像前面提到的<code>predict(X_test, model)</code>）</li>
+</ul>
+<h3 id="Nearest-neighbors算法"><a href="#Nearest-neighbors算法" class="headerlink" title="Nearest neighbors算法"></a>Nearest neighbors算法</h3><p>这个算法根据样本周围最近的几个邻居的计数（复杂点的有权重）来判断类型。</p>
+<p>由于需要计算每个样本的距离，无疑增加了计算量，有很多优化的算法，比如使用树来进行距离计算，这些算法相当复杂，好在<code>scikit-learn</code>库实现了这些算法。</p>
+<p>对于<em>categorical-based</em>数据集效果比较差，可能需要预处理。</p>
+<h3 id="距离度量"><a href="#距离度量" class="headerlink" title="距离度量"></a>距离度量</h3><p>因为涉及到最近，那么需要距离来度量。书上介绍了3种度量的方法：</p>
+<ul>
+<li>Euclidean距离，也就是每个特征平方差的和的平方根（当特征比较多的时候，各个样本可能都差不多近。。）</li>
+<li>Manhattan距离，每个特征的绝对差的和（当特征比较大的时候，可能会无视那些比较小的特征值了，可以通过正规化来解决）</li>
+<li>Cosine距离，特征向量的夹角，丢失了长度信息（由于不考虑向量长度，适合多个特征的情况。比如可以用于文本挖掘）</li>
+</ul>
+<h3 id="读取数据集"><a href="#读取数据集" class="headerlink" title="读取数据集"></a>读取数据集</h3><p>从这开始，书上介绍了一个利用<code>Estimators</code>进行训练的数据集。数据集(<a target="_blank" rel="noopener" href="http://archive.ics.uci.edu/ml/machine-learning-databases/ionosphere/">http://archive.ics.uci.edu/ml/machine-learning-databases/ionosphere/</a>)为csv格式，共有351个样本，每个34个特征，2个分类：good和bad。每行前34个为特征，最后一个为分类。</p>
+<p>然后读到X，Y中：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">X = np.zeros((<span class="number">351</span>, <span class="number">34</span>), dtype=<span class="string">&#x27;float&#x27;</span>)</span><br><span class="line">y = np.zeros((<span class="number">351</span>,), dtype=<span class="string">&#x27;bool&#x27;</span>)</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">&#x27;../data/ionosphere.data&#x27;</span>, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    reader = csv.reader(f)</span><br><span class="line">    <span class="keyword">for</span> i, row <span class="keyword">in</span> enumerate(reader):</span><br><span class="line">        data = [float(dat) <span class="keyword">for</span> dat <span class="keyword">in</span> row[:<span class="number">-1</span>]]</span><br><span class="line">        X[i] = data</span><br><span class="line">        Y[i] = row[<span class="number">-1</span>] == <span class="string">&#x27;g&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="标准工作流程"><a href="#标准工作流程" class="headerlink" title="标准工作流程"></a>标准工作流程</h3><p>首先划分数据集，分为训练集和测试集。</p>
+<p>在开始之前，我来测试一下之前的OneR算法精度：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Xd = (X &gt; X.mean(axis=<span class="number">0</span>)).astype(int)</span><br><span class="line">Xd_train, Xd_test, Y_train, Y_test = train_test_split(Xd, Y)</span><br><span class="line">model = OneR(Xd_train, Y_train)</span><br><span class="line">In [<span class="number">590</span>]: (predict(Xd_test, model) == Y_test).mean()</span><br><span class="line">Out[<span class="number">590</span>]: <span class="number">0.76136363636363635</span></span><br></pre></td></tr></table></figure>
+<p>精度76.14%，还不错啊。。</p>
+<p>现在来试试estimators的精度，同样地划分数据集。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier</span><br><span class="line">X_train, X_test, Y_train, Y_test = train_test_split(X, Y)</span><br><span class="line">estimator = KNeighborsClassifier()</span><br></pre></td></tr></table></figure>
+
+<p>开始<strong>训练</strong>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">593</span>]: estimator.fit(X_train, Y_train)</span><br><span class="line">Out[<span class="number">593</span>]:</span><br><span class="line">KNeighborsClassifier(algorithm=<span class="string">&#x27;auto&#x27;</span>, leaf_size=<span class="number">30</span>, metric=<span class="string">&#x27;minkowski&#x27;</span>,</span><br><span class="line">           metric_params=<span class="literal">None</span>, n_jobs=<span class="number">1</span>, n_neighbors=<span class="number">5</span>, p=<span class="number">2</span>,</span><br><span class="line">           weights=<span class="string">&#x27;uniform&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>测试精度：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">594</span>]: (estimator.predict(X_test) == Y_test).mean()</span><br><span class="line">Out[<span class="number">594</span>]: <span class="number">0.86363636363636365</span></span><br></pre></td></tr></table></figure>
+
+<p>86.37%，精度明显提高了。还是默认参数，要是自己对应用比较熟悉的话，调参大法好。后面章节还会介绍参数搜索。(<em>parameter search</em>)</p>
+<p>当然精度提高的代价伴随着运算量的增加。</p>
+<h3 id="Cross-fold-validation-CV"><a href="#Cross-fold-validation-CV" class="headerlink" title="Cross-fold validation(CV)"></a>Cross-fold validation(CV)</h3><p>若数据只划分成一组训练集和测试集，那么难免会出现在幸运的情况下结果比较好。</p>
+<p>若将数据划分成多组（<em>fold</em>）训练集和测试集的话，训练每一组求出其精度，在求出平均精度，能够较好的反映出算法的效果。</p>
+<p><strong>cross-fold validation</strong>框架很好地解决这个问题，过程如下：</p>
+<ol>
+<li>将整个数据集划分成K个部分(<em>folds</em>)，基本等大</li>
+<li>每部分，执行如下步骤<ol>
+<li>将该部分作为测试集</li>
+<li>剩余(K-1)部分作为训练集</li>
+<li>评估当前测试集的精度</li>
+</ol>
+</li>
+<li>得出每部分的精度，求出均值</li>
+</ol>
+<p>具体如下，先来看看<code>OneR</code>的效果，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.base <span class="keyword">import</span> BaseEstimator, ClassifierMixin</span><br><span class="line"><span class="keyword">from</span> sklearn.cross_validation <span class="keyword">import</span> cross_val_score</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">OneRES</span>(<span class="params">BaseEstimator, ClassifierMixin</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.model = &#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fit</span>(<span class="params">self, X, Y</span>):</span></span><br><span class="line">        Xd = (X &gt;= X.mean(axis=<span class="number">0</span>)).astype(int)</span><br><span class="line">        self.model = OneR(Xd, Y)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">predict</span>(<span class="params">self, X</span>):</span></span><br><span class="line">        Xd = (X &gt;= X.mean(axis=<span class="number">0</span>)).astype(int)</span><br><span class="line">        <span class="keyword">return</span> predict(Xd, self.model)</span><br><span class="line">        </span><br><span class="line">scores = cross_val_score(estimator, X, Y, scoring=<span class="string">&#x27;accuracy&#x27;</span>)</span><br><span class="line">In [<span class="number">669</span>]: scores</span><br><span class="line">Out[<span class="number">669</span>]: array([ <span class="number">0.66666667</span>,  <span class="number">0.65811966</span>,  <span class="number">0.68376068</span>])</span><br><span class="line">In [<span class="number">670</span>]: scores.mean()</span><br><span class="line">Out[<span class="number">670</span>]: <span class="number">0.66951566951566954</span></span><br></pre></td></tr></table></figure>
+<p>精度66.95%，效果很差了。</p>
+<p>再来看看estimator的精度：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.cross_validation <span class="keyword">import</span> cross_val_score</span><br><span class="line">scores = cross_val_score(estimator, X, Y, scoring=<span class="string">&#x27;accuracy&#x27;</span>)</span><br><span class="line">In [<span class="number">623</span>]: scores</span><br><span class="line">Out[<span class="number">623</span>]: array([ <span class="number">0.82051282</span>,  <span class="number">0.78632479</span>,  <span class="number">0.86324786</span>])</span><br><span class="line">In [<span class="number">624</span>]: scores.mean()</span><br><span class="line">Out[<span class="number">624</span>]: <span class="number">0.8233618233618234</span></span><br></pre></td></tr></table></figure>
+<p>得出平均精度82.34%，很高了。</p>
+<h3 id="调参"><a href="#调参" class="headerlink" title="调参"></a>调参</h3><p>因为参数可以任意调整，那么当针对特定应用使用特定的参数的效果比使用随意的参数要好。</p>
+<p>就拿这个Nearest neighbors算法来说，影响最大的参数应该是被预测样本的邻居数了，邻居过多或过少效果都不好，一般取5到10个。</p>
+<p>在scikit-learn中，邻居参数名为<code>n_neighbors</code>，可以通过设置为一个范围的值，来观察参数对结果的影响。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</span><br><span class="line">avg_score = []</span><br><span class="line">para_values = list(range(<span class="number">1</span>, <span class="number">25</span> + <span class="number">1</span>))</span><br><span class="line"><span class="keyword">for</span> n_neighbors <span class="keyword">in</span> para_values:</span><br><span class="line">    estimator = KNeighborsClassifier(n_neighbors=n_neighbors)</span><br><span class="line">    scores = cross_val_score(estimator, X, Y, scoring=<span class="string">&#x27;accuracy&#x27;</span>)</span><br><span class="line">    avg_score.append(scores.mean())</span><br><span class="line">    </span><br><span class="line">plt.plot(para_values, avg_score, <span class="string">&#x27;-o&#x27;</span>)</span><br><span class="line">plt.xlabel(<span class="string">&#x27;n_neighbors&#x27;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&#x27;accuracy&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>如图，显然随着邻居增加的情况下，精度越来越低了。在2个邻居的情况下效果比较好：</p>
+<p>![Nearest neighbors](Nearest neighbors.png)</p>
+<h2 id="预处理"><a href="#预处理" class="headerlink" title="预处理"></a>预处理</h2><p>因为有些特征的值比较大，会影响到其他特征。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">X_broken = X.copy()</span><br><span class="line">X_broken[:, ::<span class="number">2</span>] /= <span class="number">10</span></span><br><span class="line">estimator = KNeighborsClassifier()</span><br><span class="line">In [<span class="number">732</span>]: cross_val_score(estimator, X, Y, scoring=<span class="string">&#x27;accuracy&#x27;</span>)</span><br><span class="line">Out[<span class="number">732</span>]: array([ <span class="number">0.82051282</span>,  <span class="number">0.78632479</span>,  <span class="number">0.86324786</span>])</span><br><span class="line">In [<span class="number">733</span>]: cross_val_score(estimator, X_broken, Y, scoring=<span class="string">&#x27;accuracy&#x27;</span>)</span><br><span class="line">Out[<span class="number">733</span>]: array([ <span class="number">0.75213675</span>,  <span class="number">0.64957265</span>,  <span class="number">0.74358974</span>])</span><br></pre></td></tr></table></figure>
+
+<p>所以如果将所有特征缩小到0-1范围内的值，就能很好解决这个问题。</p>
+<h3 id="标准预处理"><a href="#标准预处理" class="headerlink" title="标准预处理"></a>标准预处理</h3><p>将特征正规化，可以用<code>scikit-learn</code>的<code>MinMaxScaler</code>类。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> MinMaxScaler</span><br></pre></td></tr></table></figure>
+
+<p>默认将特征缩放到0-1范围，若设置为其他值，将线性映射到这个范围内。</p>
+<p>进行预处理，使用<code>transform</code>函数，首先需要像分类器那样训练，若直接使用<code>fit_transform</code>则可以合并那些步骤。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">X_transformed = MinMaxScaler().fit_transform(X)</span><br></pre></td></tr></table></figure>
+
+<h3 id="放到一起"><a href="#放到一起" class="headerlink" title="放到一起"></a>放到一起</h3><p>将前面几个步骤整合起来：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">X_transformed = MinMaxScaler().fit_transform(X_broken)</span><br><span class="line">estimator = KNeighborsClassifier()</span><br><span class="line">In [<span class="number">765</span>]: cross_val_score(estimator, X_transformed, Y, scoring=<span class="string">&#x27;accuracy&#x27;</span>)</span><br><span class="line">Out[<span class="number">765</span>]: array([ <span class="number">0.82905983</span>,  <span class="number">0.77777778</span>,  <span class="number">0.86324786</span>])</span><br></pre></td></tr></table></figure>
+
+<h2 id="Pipelines"><a href="#Pipelines" class="headerlink" title="Pipelines"></a>Pipelines</h2><p>使用Pipelines可以将几个过程串起来（比如数据预处理、训练），来减少代码复杂度。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.pipeline <span class="keyword">import</span> Pipeline</span><br></pre></td></tr></table></figure>
+
+<p>要求最后一步的结果为一个Estimator，前面步骤为Transformers。在Transformers中，数据被依次改变，前一步的输出作为下一步的输入。</p>
+<p>前面的例子，可以分为如下两步：</p>
+<ul>
+<li>使用<code>MinMaxScaler</code>来缩放特征（Transformer）</li>
+<li>使用<code>KNeighborsClassifier</code>来分类（Estimator）</li>
+</ul>
+<p>每步可以用一个元组来描述<code>(&#39;name&#39;, step)</code>，放到列表作为Pipeline的输入：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">scaling_pipeline = Pipeline([(<span class="string">&#x27;scale&#x27;</span>, MinMaxScaler()),</span><br><span class="line">                             (<span class="string">&#x27;predict&#x27;</span>, KNeighborsClassifier())])</span><br><span class="line">In [<span class="number">776</span>]: cross_val_score(scaling_pipeline, X, Y, scoring=<span class="string">&#x27;accuracy&#x27;</span>)</span><br><span class="line">Out[<span class="number">776</span>]: array([ <span class="number">0.82905983</span>,  <span class="number">0.77777778</span>,  <span class="number">0.86324786</span>])</span><br></pre></td></tr></table></figure>
+
+<h1 id="使用决策树来预测比赛结果"><a href="#使用决策树来预测比赛结果" class="headerlink" title="使用决策树来预测比赛结果"></a>使用决策树来预测比赛结果</h1><p>这一章介绍用决策树来预测NBA比赛的结果，首先使用pandas读取、操作数据集，然后使用决策树来分类，再用随机森林优化决策树效果，挖掘现实中的数据，最后创建一个robust模型。</p>
+<h2 id="读取数据集-1"><a href="#读取数据集-1" class="headerlink" title="读取数据集"></a>读取数据集</h2><h3 id="获取数据集"><a href="#获取数据集" class="headerlink" title="获取数据集"></a>获取数据集</h3><p>首先获取数据集，2015-2016年各月的比赛数据可以到这个网址中获取：<a target="_blank" rel="noopener" href="https://www.basketball-reference.com/leagues/NBA_2016_games.html">https://www.basketball-reference.com/leagues/NBA_2016_games.html</a>，我已经下载好了，一共1316场比赛：<a href="basketball.csv">basketball.csv</a></p>
+<h3 id="使用pandas读取数据集"><a href="#使用pandas读取数据集" class="headerlink" title="使用pandas读取数据集"></a>使用pandas读取数据集</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line">ds = pd.read_csv(<span class="string">&#x27;basketball.csv&#x27;</span>)</span><br><span class="line">In [<span class="number">194</span>]: ds.head(<span class="number">5</span>)</span><br><span class="line">Out[<span class="number">194</span>]:</span><br><span class="line">              Date Start (ET)       Visitor/Neutral  PTS  \</span><br><span class="line"><span class="number">0</span>  Tue Oct <span class="number">27</span> <span class="number">2015</span>    <span class="number">8</span>:<span class="number">00</span> pm       Detroit Pistons  <span class="number">106</span></span><br><span class="line"><span class="number">1</span>  Tue Oct <span class="number">27</span> <span class="number">2015</span>    <span class="number">8</span>:<span class="number">00</span> pm   Cleveland Cavaliers   <span class="number">95</span></span><br><span class="line"><span class="number">2</span>  Tue Oct <span class="number">27</span> <span class="number">2015</span>   <span class="number">10</span>:<span class="number">30</span> pm  New Orleans Pelicans   <span class="number">95</span></span><br><span class="line"><span class="number">3</span>  Wed Oct <span class="number">28</span> <span class="number">2015</span>    <span class="number">7</span>:<span class="number">30</span> pm    Philadelphia <span class="number">76</span>ers   <span class="number">95</span></span><br><span class="line"><span class="number">4</span>  Wed Oct <span class="number">28</span> <span class="number">2015</span>    <span class="number">7</span>:<span class="number">30</span> pm         Chicago Bulls  <span class="number">115</span></span><br><span class="line"></span><br><span class="line">            Home/Neutral  PTS<span class="number">.1</span> Unnamed: <span class="number">6</span> Unnamed: <span class="number">7</span> Notes</span><br><span class="line"><span class="number">0</span>          Atlanta Hawks     <span class="number">94</span>  Box Score        NaN   NaN</span><br><span class="line"><span class="number">1</span>          Chicago Bulls     <span class="number">97</span>  Box Score        NaN   NaN</span><br><span class="line"><span class="number">2</span>  Golden State Warriors    <span class="number">111</span>  Box Score        NaN   NaN</span><br><span class="line"><span class="number">3</span>         Boston Celtics    <span class="number">112</span>  Box Score        NaN   NaN</span><br><span class="line"><span class="number">4</span>          Brooklyn Nets    <span class="number">100</span>  Box Score        NaN   NaN</span><br></pre></td></tr></table></figure>
+
+<h3 id="清洗数据集"><a href="#清洗数据集" class="headerlink" title="清洗数据集"></a>清洗数据集</h3><p>仔细观察ds的结果发现，日期字段是字符串，我们需要转换成日期对象，还有各个字段的含义不明，这可以在<code>read_csv</code>的时候通过参数来解决。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">ds = pd.read_csv(<span class="string">&#x27;basketball.csv&#x27;</span>, parse_dates=[<span class="string">&quot;Date&quot;</span>])</span><br><span class="line">ds.columns = [<span class="string">&quot;Date&quot;</span>, <span class="string">&quot;Start (ET)&quot;</span>, <span class="string">&quot;Visitor Team&quot;</span>, <span class="string">&quot;VisitorPts&quot;</span>, <span class="string">&quot;Home Team&quot;</span>, <span class="string">&quot;HomePts&quot;</span>, <span class="string">&quot;OT?&quot;</span>, <span class="string">&quot;Score Type&quot;</span>, <span class="string">&quot;Notes&quot;</span>]</span><br><span class="line">In [<span class="number">200</span>]: ds.head()</span><br><span class="line">Out[<span class="number">200</span>]:</span><br><span class="line">        Date Start (ET)          Visitor Team  VisitorPts  \</span><br><span class="line"><span class="number">0</span> <span class="number">2015</span><span class="number">-10</span><span class="number">-27</span>    <span class="number">8</span>:<span class="number">00</span> pm       Detroit Pistons         <span class="number">106</span></span><br><span class="line"><span class="number">1</span> <span class="number">2015</span><span class="number">-10</span><span class="number">-27</span>    <span class="number">8</span>:<span class="number">00</span> pm   Cleveland Cavaliers          <span class="number">95</span></span><br><span class="line"><span class="number">2</span> <span class="number">2015</span><span class="number">-10</span><span class="number">-27</span>   <span class="number">10</span>:<span class="number">30</span> pm  New Orleans Pelicans          <span class="number">95</span></span><br><span class="line"><span class="number">3</span> <span class="number">2015</span><span class="number">-10</span><span class="number">-28</span>    <span class="number">7</span>:<span class="number">30</span> pm    Philadelphia <span class="number">76</span>ers          <span class="number">95</span></span><br><span class="line"><span class="number">4</span> <span class="number">2015</span><span class="number">-10</span><span class="number">-28</span>    <span class="number">7</span>:<span class="number">30</span> pm         Chicago Bulls         <span class="number">115</span></span><br><span class="line"></span><br><span class="line">               Home Team  HomePts        OT? Score Type Notes</span><br><span class="line"><span class="number">0</span>          Atlanta Hawks       <span class="number">94</span>  Box Score        NaN   NaN</span><br><span class="line"><span class="number">1</span>          Chicago Bulls       <span class="number">97</span>  Box Score        NaN   NaN</span><br><span class="line"><span class="number">2</span>  Golden State Warriors      <span class="number">111</span>  Box Score        NaN   NaN</span><br><span class="line"><span class="number">3</span>         Boston Celtics      <span class="number">112</span>  Box Score        NaN   NaN</span><br><span class="line"><span class="number">4</span>          Brooklyn Nets      <span class="number">100</span>  Box Score        NaN   NaN</span><br></pre></td></tr></table></figure>
+
+<p>在检查一下数据类型是否正确：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">202</span>]: ds.dtypes</span><br><span class="line">Out[<span class="number">202</span>]:</span><br><span class="line">Date            datetime64[ns]</span><br><span class="line">Start (ET)              object</span><br><span class="line">Visitor Team            object</span><br><span class="line">VisitorPts               int64</span><br><span class="line">Home Team               object</span><br><span class="line">HomePts                  int64</span><br><span class="line">OT?                     object</span><br><span class="line">Score Type              object</span><br><span class="line">Notes                   object</span><br><span class="line">dtype: object</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="提取特征"><a href="#提取特征" class="headerlink" title="提取特征"></a>提取特征</h3><p>数据集没有明确告诉我们是哪一方胜利，在篮球比赛中，谁比分高谁获胜，从而可以建立新特征：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ds[<span class="string">&quot;HomeWin&quot;</span>] = ds[<span class="string">&quot;VisitorPts&quot;</span>] &lt; ds[<span class="string">&quot;HomePts&quot;</span>]</span><br></pre></td></tr></table></figure>
+
+<p>由于后面需要用scikit-learn分类，而它不支持从pandas读取数据，所以可以先存到numpy数组中：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">y_true = ds[<span class="string">&quot;HomeWin&quot;</span>].values</span><br></pre></td></tr></table></figure>
+
+<p>在体育运动中，Home Team优势比较大，那么先来预估获胜几率有多大呢：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">355</span>]: ds[<span class="string">&#x27;HomeWin&#x27;</span>].mean()</span><br><span class="line">Out[<span class="number">355</span>]: <span class="number">0.5942249240121581</span></span><br></pre></td></tr></table></figure>
+<p>达到0.59，比50%要高，也验证了这个说法= =</p>
+<p>有了HomeWin这个新特征，我们可以继续创建特征，用来表示在这一场比赛中的两个参赛队各自在前一场的胜负情况。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">won_last = defaultdict(bool)</span><br><span class="line">ds[<span class="string">&quot;VisitorLastWin&quot;</span>] = <span class="literal">False</span></span><br><span class="line">ds[<span class="string">&quot;HomeLastWin&quot;</span>] = <span class="literal">False</span></span><br><span class="line"><span class="keyword">for</span> idx, row <span class="keyword">in</span> ds.sort_values(by=<span class="string">&#x27;Date&#x27;</span>).iterrows():</span><br><span class="line">    home_team = row[<span class="string">&quot;Home Team&quot;</span>]</span><br><span class="line">    visitor_team = row[<span class="string">&quot;Visitor Team&quot;</span>]</span><br><span class="line">    row[<span class="string">&quot;HomeLastWin&quot;</span>] = won_last[home_team]</span><br><span class="line">    ds.set_value(idx, <span class="string">&quot;HomeLastWin&quot;</span>, won_last[home_team])</span><br><span class="line">    ds.set_value(idx, <span class="string">&quot;VisitorLastWin&quot;</span>, won_last[visitor_team])</span><br><span class="line">    won_last[home_team] = row[<span class="string">&quot;HomeWin&quot;</span>]</span><br><span class="line">    won_last[visitor_team] = <span class="keyword">not</span> row[<span class="string">&quot;HomeWin&quot;</span>]</span><br></pre></td></tr></table></figure>
+
+<p>需要注意的是两个参赛队第一次比赛的话，结果都是False，这个可以从前年的比赛情况中获取:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">390</span>]: ds[<span class="number">1000</span>:<span class="number">1005</span>]</span><br><span class="line">Out[<span class="number">390</span>]:</span><br><span class="line">           Date Start (ET)           Visitor Team  VisitorPts  \</span><br><span class="line"><span class="number">1000</span> <span class="number">2016</span><span class="number">-03</span><span class="number">-15</span>    <span class="number">7</span>:<span class="number">00</span> pm         Denver Nuggets         <span class="number">110</span></span><br><span class="line"><span class="number">1001</span> <span class="number">2016</span><span class="number">-03</span><span class="number">-15</span>    <span class="number">8</span>:<span class="number">30</span> pm   Los Angeles Clippers          <span class="number">87</span></span><br><span class="line"><span class="number">1002</span> <span class="number">2016</span><span class="number">-03</span><span class="number">-16</span>    <span class="number">7</span>:<span class="number">00</span> pm  Oklahoma City Thunder         <span class="number">130</span></span><br><span class="line"><span class="number">1003</span> <span class="number">2016</span><span class="number">-03</span><span class="number">-16</span>    <span class="number">7</span>:<span class="number">00</span> pm          Orlando Magic          <span class="number">99</span></span><br><span class="line"><span class="number">1004</span> <span class="number">2016</span><span class="number">-03</span><span class="number">-16</span>    <span class="number">7</span>:<span class="number">00</span> pm       Dallas Mavericks          <span class="number">98</span></span><br><span class="line"></span><br><span class="line">                Home Team  HomePts        OT? Score Type Notes  HomeWin  \</span><br><span class="line"><span class="number">1000</span>        Orlando Magic      <span class="number">116</span>  Box Score        NaN   NaN     <span class="literal">True</span></span><br><span class="line"><span class="number">1001</span>    San Antonio Spurs      <span class="number">108</span>  Box Score        NaN   NaN     <span class="literal">True</span></span><br><span class="line"><span class="number">1002</span>       Boston Celtics      <span class="number">109</span>  Box Score        NaN   NaN    <span class="literal">False</span></span><br><span class="line"><span class="number">1003</span>    Charlotte Hornets      <span class="number">107</span>  Box Score        NaN   NaN     <span class="literal">True</span></span><br><span class="line"><span class="number">1004</span>  Cleveland Cavaliers       <span class="number">99</span>  Box Score        NaN   NaN     <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">      HomeLastWin  VisitorLastWin</span><br><span class="line"><span class="number">1000</span>        <span class="literal">False</span>           <span class="literal">False</span></span><br><span class="line"><span class="number">1001</span>         <span class="literal">True</span>           <span class="literal">False</span></span><br><span class="line"><span class="number">1002</span>        <span class="literal">False</span>            <span class="literal">True</span></span><br><span class="line"><span class="number">1003</span>        <span class="literal">False</span>            <span class="literal">True</span></span><br><span class="line"><span class="number">1004</span>        <span class="literal">False</span>            <span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="决策树"><a href="#决策树" class="headerlink" title="决策树"></a>决策树</h2><p>先来看看决策树的样子，有点像流程图了，是一个监督算法：</p>
+<p>![Decision Tree](Decision Tree.png)</p>
+<p>大多数分类算法，都有两个阶段：</p>
+<ul>
+<li>训练阶段(training)，使用训练集构建决策树。之前介绍的最近邻居算法是<em>lazy learner</em>，也就是仅在预测的时候才工作，而这个是<em>eager learner</em>，在训练阶段做工作，在预测阶段需要做的就少了。</li>
+<li>预测阶段(predicting)，使用构建好的决策树来预测新样本的类型。</li>
+</ul>
+<p>构建决策树算法大多数一样，从最开始的节点走，选最好的特征来创建下一个节点，再选次好的特征创建，以此类推。</p>
+<p>scikit-learn实现*<em>Classification and Regression Tree(CART)**算法，也就是</em>dDecision tree*类所默认使用的，它可以使用分类(categorical)或连续值(continuous)的特征。</p>
+<h3 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h3><p>决策树中最重要的一个参数是<strong>stopping criterion</strong>，也就是决定了构建树的程度，避免过拟合的问题。</p>
+<p>另一个避免过拟合的是剪枝(<strong>pruning</strong>)，除去一些提供的信息较少的节点。</p>
+<p>在scikit-learn中，决策树使用以下参数来决定何时完成构建：</p>
+<ul>
+<li>min_samples_split: 创建一个节点需要多少样本信息</li>
+<li>min_samples_leaf: 保留一个节点需要多少样本信息</li>
+</ul>
+<p>创建决策树过程中，常用的2个参数：</p>
+<ul>
+<li>Gini impurity</li>
+<li>Information gain</li>
+</ul>
+<h3 id="使用决策树"><a href="#使用决策树" class="headerlink" title="使用决策树"></a>使用决策树</h3><p>首先创建一个决策树对象：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.tree <span class="keyword">import</span> DecisionTreeClassifier</span><br><span class="line">clf = DecisionTreeClassifier()</span><br></pre></td></tr></table></figure>
+
+<p>决策树也是estimators，因此有<code>fit</code>和<code>predict</code>方法。可以使用<code>cross_val_score</code>方法来测试平均精度。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">409</span>]: cross_val_score(clf, X_previouswins, y_true, scoring=<span class="string">&#x27;accuracy&#x27;</span>).mean()</span><br><span class="line">Out[<span class="number">409</span>]: <span class="number">0.59422445505386179</span></span><br></pre></td></tr></table></figure>
+
+<p>显然平均精度比瞎猜要高一些，但是和之前预估只采用Home Team的精度差不多。。</p>
+<p>特征工程(<strong>Feature engineering</strong>)在数据挖掘中相当重要，选择好的特征可以导致好的结果，甚至比算法还重要。</p>
+<h2 id="运动结果预测"><a href="#运动结果预测" class="headerlink" title="运动结果预测"></a>运动结果预测</h2><p>接下来可以尝试其他特征了，将各个队输入到算法，检测一下效果。</p>
+<h3 id="放到一起-1"><a href="#放到一起-1" class="headerlink" title="放到一起"></a>放到一起</h3><p>首先我们需要创建一个特征，来告诉我们home team是否比visitor team有优势，这个可以从前一年2015年比赛结果获得，<a target="_blank" rel="noopener" href="https://www.basketball-reference.com/leagues/NBA_2015_standings.html#all_expanded_standings">https://www.basketball-reference.com/leagues/NBA_2015_standings.html#all_expanded_standings</a>，数据我已经下载下来了：<a href="standings.csv">standings.csv</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">standings = pd.read_csv(<span class="string">&#x27;standings.csv&#x27;</span>, skiprows=<span class="number">1</span>)</span><br><span class="line">In [<span class="number">411</span>]: standings.head(<span class="number">5</span>)</span><br><span class="line">Out[<span class="number">411</span>]:</span><br><span class="line">   Rk                   Team Overall   Home   Road      E      W     A     C  \</span><br><span class="line"><span class="number">0</span>   <span class="number">1</span>  Golden State Warriors   <span class="number">67</span><span class="number">-15</span>   <span class="number">39</span><span class="number">-2</span>  <span class="number">28</span><span class="number">-13</span>   <span class="number">25</span><span class="number">-5</span>  <span class="number">42</span><span class="number">-10</span>   <span class="number">9</span><span class="number">-1</span>   <span class="number">7</span><span class="number">-3</span></span><br><span class="line"><span class="number">1</span>   <span class="number">2</span>          Atlanta Hawks   <span class="number">60</span><span class="number">-22</span>   <span class="number">35</span><span class="number">-6</span>  <span class="number">25</span><span class="number">-16</span>  <span class="number">38</span><span class="number">-14</span>   <span class="number">22</span><span class="number">-8</span>  <span class="number">12</span><span class="number">-6</span>  <span class="number">14</span><span class="number">-4</span></span><br><span class="line"><span class="number">2</span>   <span class="number">3</span>        Houston Rockets   <span class="number">56</span><span class="number">-26</span>  <span class="number">30</span><span class="number">-11</span>  <span class="number">26</span><span class="number">-15</span>   <span class="number">23</span><span class="number">-7</span>  <span class="number">33</span><span class="number">-19</span>   <span class="number">9</span><span class="number">-1</span>   <span class="number">8</span><span class="number">-2</span></span><br><span class="line"><span class="number">3</span>   <span class="number">4</span>   Los Angeles Clippers   <span class="number">56</span><span class="number">-26</span>  <span class="number">30</span><span class="number">-11</span>  <span class="number">26</span><span class="number">-15</span>  <span class="number">19</span><span class="number">-11</span>  <span class="number">37</span><span class="number">-15</span>   <span class="number">7</span><span class="number">-3</span>   <span class="number">6</span><span class="number">-4</span></span><br><span class="line"><span class="number">4</span>   <span class="number">5</span>      Memphis Grizzlies   <span class="number">55</span><span class="number">-27</span>  <span class="number">31</span><span class="number">-10</span>  <span class="number">24</span><span class="number">-17</span>  <span class="number">20</span><span class="number">-10</span>  <span class="number">35</span><span class="number">-17</span>   <span class="number">8</span><span class="number">-2</span>   <span class="number">5</span><span class="number">-5</span></span><br><span class="line"></span><br><span class="line">     SE ...    Post   ≤<span class="number">3</span>    ≥<span class="number">10</span>  Oct   Nov   Dec   Jan  Feb   Mar  Apr</span><br><span class="line"><span class="number">0</span>   <span class="number">9</span><span class="number">-1</span> ...    <span class="number">25</span><span class="number">-6</span>  <span class="number">5</span><span class="number">-3</span>   <span class="number">45</span><span class="number">-9</span>  <span class="number">1</span><span class="number">-0</span>  <span class="number">13</span><span class="number">-2</span>  <span class="number">11</span><span class="number">-3</span>  <span class="number">12</span><span class="number">-3</span>  <span class="number">8</span><span class="number">-3</span>  <span class="number">16</span><span class="number">-2</span>  <span class="number">6</span><span class="number">-2</span></span><br><span class="line"><span class="number">1</span>  <span class="number">12</span><span class="number">-4</span> ...   <span class="number">17</span><span class="number">-11</span>  <span class="number">6</span><span class="number">-4</span>  <span class="number">30</span><span class="number">-10</span>  <span class="number">0</span><span class="number">-1</span>   <span class="number">9</span><span class="number">-5</span>  <span class="number">14</span><span class="number">-2</span>  <span class="number">17</span><span class="number">-0</span>  <span class="number">7</span><span class="number">-4</span>   <span class="number">9</span><span class="number">-7</span>  <span class="number">4</span><span class="number">-3</span></span><br><span class="line"><span class="number">2</span>   <span class="number">6</span><span class="number">-4</span> ...    <span class="number">20</span><span class="number">-9</span>  <span class="number">8</span><span class="number">-4</span>  <span class="number">31</span><span class="number">-14</span>  <span class="number">2</span><span class="number">-0</span>  <span class="number">11</span><span class="number">-4</span>   <span class="number">9</span><span class="number">-5</span>  <span class="number">11</span><span class="number">-6</span>  <span class="number">7</span><span class="number">-3</span>  <span class="number">10</span><span class="number">-6</span>  <span class="number">6</span><span class="number">-2</span></span><br><span class="line"><span class="number">3</span>   <span class="number">6</span><span class="number">-4</span> ...    <span class="number">21</span><span class="number">-7</span>  <span class="number">3</span><span class="number">-5</span>   <span class="number">33</span><span class="number">-9</span>  <span class="number">2</span><span class="number">-0</span>   <span class="number">9</span><span class="number">-5</span>  <span class="number">11</span><span class="number">-6</span>  <span class="number">11</span><span class="number">-4</span>  <span class="number">5</span><span class="number">-6</span>  <span class="number">11</span><span class="number">-5</span>  <span class="number">7</span><span class="number">-0</span></span><br><span class="line"><span class="number">4</span>   <span class="number">7</span><span class="number">-3</span> ...   <span class="number">16</span><span class="number">-13</span>  <span class="number">9</span><span class="number">-3</span>  <span class="number">26</span><span class="number">-13</span>  <span class="number">2</span><span class="number">-0</span>  <span class="number">13</span><span class="number">-2</span>   <span class="number">8</span><span class="number">-6</span>  <span class="number">12</span><span class="number">-4</span>  <span class="number">7</span><span class="number">-4</span>   <span class="number">9</span><span class="number">-8</span>  <span class="number">4</span><span class="number">-3</span></span><br><span class="line"></span><br><span class="line">[<span class="number">5</span> rows x <span class="number">24</span> columns]</span><br></pre></td></tr></table></figure>
+
+<p>创建一个新特征，表明Home team比Visitor Team有优势：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ds[<span class="string">&quot;HomeTeamRanksHigher&quot;</span>] = <span class="literal">False</span></span><br><span class="line"><span class="keyword">for</span> idx, row <span class="keyword">in</span> ds.iterrows():</span><br><span class="line">    home_team = row[<span class="string">&quot;Home Team&quot;</span>]</span><br><span class="line">    visitor_team = row[<span class="string">&quot;Visitor Team&quot;</span>]</span><br><span class="line">    home_rank = standings[standings[<span class="string">&quot;Team&quot;</span>] == home_team][<span class="string">&quot;Rk&quot;</span>].values[<span class="number">0</span>]</span><br><span class="line">    visitor_rank = standings[standings[<span class="string">&quot;Team&quot;</span>] == visitor_team][<span class="string">&quot;Rk&quot;</span>].values[<span class="number">0</span>]</span><br><span class="line">    ds.set_value(idx, <span class="string">&quot;HomeTeamRanksHigher&quot;</span>, home_rank &lt; visitor_rank)</span><br></pre></td></tr></table></figure>
+
+<p>接下来试试精度，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">X_homehigher = ds[[ <span class="string">&quot;HomeTeamRanksHigher&quot;</span>, <span class="string">&quot;HomeLastWin&quot;</span>, <span class="string">&quot;VisitorLastWin&quot;</span>,]].values</span><br><span class="line">clf = DecisionTreeClassifier()</span><br><span class="line">In [<span class="number">460</span>]: cross_val_score(clf, X_homehigher, y_true, scoring=<span class="string">&#x27;accuracy&#x27;</span>).mean()</span><br><span class="line">Out[<span class="number">460</span>]: <span class="number">0.60865985028933201</span></span><br></pre></td></tr></table></figure>
+
+<p>精度达到60%，比只选Home team好那么一丢丢，应该还能更好吧。</p>
+<p>虽然名次高的参赛队更有优势更有可能获胜，但是不同的队有不同的策略，或者某些队针对另一些队从而更容易获胜。所以可以考虑在创建一个特征，表明这两个参赛队在上一场比赛中两队的获胜情况。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">last_match_winner = defaultdict(str)</span><br><span class="line">ds[<span class="string">&quot;HomeTeamWonLast&quot;</span>] = <span class="literal">False</span></span><br><span class="line"><span class="keyword">for</span> idx, row <span class="keyword">in</span> ds.iterrows():</span><br><span class="line">    home_team = row[<span class="string">&quot;Home Team&quot;</span>]</span><br><span class="line">    visitor_team = row[<span class="string">&quot;Visitor Team&quot;</span>]</span><br><span class="line">    team = tuple(sorted([home_team, visitor_team]))</span><br><span class="line">    home_team_won_last = last_match_winner[team] == home_team</span><br><span class="line">    ds.set_value(idx, <span class="string">&quot;HomeTeamWonLast&quot;</span>, home_team_won_last)</span><br><span class="line">    winner = home_team <span class="keyword">if</span> row[<span class="string">&quot;HomeWin&quot;</span>] <span class="keyword">else</span> visitor_team</span><br><span class="line">    last_match_winner[team] = winner</span><br></pre></td></tr></table></figure>
+
+<p>再来看看精度：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">X_lastwinner = ds[[ <span class="string">&quot;HomeTeamWonLast&quot;</span>, <span class="string">&quot;HomeTeamRanksHigher&quot;</span>, <span class="string">&quot;HomeLastWin&quot;</span>, <span class="string">&quot;VisitorLastWin&quot;</span>,]].values</span><br><span class="line">clf = DecisionTreeClassifier()</span><br><span class="line">In [<span class="number">479</span>]: cross_val_score(clf, X_lastwinner, y_true, scoring=<span class="string">&#x27;accuracy&#x27;</span>).mean()</span><br><span class="line">Out[<span class="number">479</span>]: <span class="number">0.62158877759401987</span></span><br></pre></td></tr></table></figure>
+
+<p>再次提高到一个层次了…</p>
+<p>最后，如果将特征仅仅设为两个参赛队（名）来构建决策树，效果如何呢？</p>
+<p>虽然scikit-learn支持分类数据，但是实现的时候需要将它们转换成数值数据，而不是字符串。可以用<code>LabelEncoder</code> transformer来将参赛队（名）转换成数值数据，给参赛队（名）依次编个号。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> LabelEncoder</span><br><span class="line">encoding = LabelEncoder()</span><br><span class="line"><span class="comment"># 为所有参赛队（名）设置编号</span></span><br><span class="line">encoding.fit(ds[<span class="string">&quot;Home Team&quot;</span>].values)</span><br><span class="line">home_teams = encoding.transform(dataset[<span class="string">&quot;Home Team&quot;</span>].values)</span><br><span class="line">visitor_teams = encoding.transform(dataset[<span class="string">&quot;Visitor Team&quot;</span>].values)</span><br><span class="line"><span class="comment"># X_teams的每一行表示两个参赛队（名）的编号</span></span><br><span class="line">X_teams = np.vstack((home_teams, visitor_teams)).T</span><br></pre></td></tr></table></figure>
+
+<p>问题来了，这里的参赛队编号都是连续的数值，那么在训练过程中，会将参赛队1和参赛队2看成是相似的，而参赛队1和10是不相似的，然而各个参赛队本来就没有相不相似的说法，所以还需要处理一下。</p>
+<p>可以使用<code>OneHotEncoder</code> transformer来将编号转换成一个个二进制串（长度为编号个数），具体是这样的，有30个参赛队，那么编号将从0, 1, …, 29，二进制串的长度将会是30，第几个参赛队的那一位将是1，其他位是0。比如7号参赛队，第7位是1，其他位是0，从而形成这个队的二进制串。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> OneHotEncoder</span><br><span class="line">onehot = OneHotEncoder()</span><br><span class="line">X_teams = onehot.fit_transform(X_teams).todense()</span><br></pre></td></tr></table></figure>
+
+<p>来看看精度：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">clf = DecisionTreeClassifier()</span><br><span class="line">In [<span class="number">520</span>]: cross_val_score(clf, X_teams, y_true, scoring=<span class="string">&#x27;accuracy&#x27;</span>).mean()</span><br><span class="line">Out[<span class="number">520</span>]: <span class="number">0.62538355124244605</span></span><br></pre></td></tr></table></figure>
+
+<p>似乎又提高了一点点。</p>
+<h2 id="随机森林"><a href="#随机森林" class="headerlink" title="随机森林"></a>随机森林</h2><p>续…</p>
+
+    
+  </div>
+
+</article>
+
+
+   
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2017/10/26/Python%E4%B9%8B%E7%88%AC%E8%99%AB%E5%AD%A6%E4%B9%A0/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2018/05/27/%E4%BB%8E%E5%A4%B4%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E5%BA%93%EF%BC%9A%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0%E7%AF%87/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '893a4103795fc66cd8e7',
+  clientSecret: '35c92c3dca938831b67dc22e46d64bc9073ebacf',
+  repo: 'netcan.github.io',
+  owner: 'Netcan',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: md5(location.pathname),
+  admin: ['Netcan'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>

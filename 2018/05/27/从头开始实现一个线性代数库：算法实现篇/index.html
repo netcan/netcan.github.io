@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>从头开始实现一个线性代数库：算法实现篇 | Netcan on Programming</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="C/C++,数学,线性代数," />
+  
+
+  <meta name="description" content="最近重新学习了一下线性代数，读完了《程序猿的数学3 线性代数》，为深刻理解内容，打算实现一个矩阵库，并写Python模块。计划涉及如下部分：  向量内积 矩阵乘法 LU分解 线性方程组求解 行列式计算 逆矩阵 实对称矩阵Jocobi方法（求解特征值） QR分解  目前项目地址：https:&#x2F;&#x2F;github.com&#x2F;netcan&#x2F;LinAlg 关于Python模块的实现，可以参考我的这一篇文章：从头">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从头开始实现一个线性代数库：算法实现篇">
+<meta property="og:url" content="https://netcan.github.io/2018/05/27/%E4%BB%8E%E5%A4%B4%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E5%BA%93%EF%BC%9A%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0%E7%AF%87/index.html">
+<meta property="og:site_name" content="Netcan on Programming">
+<meta property="og:description" content="最近重新学习了一下线性代数，读完了《程序猿的数学3 线性代数》，为深刻理解内容，打算实现一个矩阵库，并写Python模块。计划涉及如下部分：  向量内积 矩阵乘法 LU分解 线性方程组求解 行列式计算 逆矩阵 实对称矩阵Jocobi方法（求解特征值） QR分解  目前项目地址：https:&#x2F;&#x2F;github.com&#x2F;netcan&#x2F;LinAlg 关于Python模块的实现，可以参考我的这一篇文章：从头">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-05-27T01:51:59.000Z">
+<meta property="article:modified_time" content="2018-05-30T02:58:45.575Z">
+<meta property="article:author" content="Netcan">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="数学">
+<meta property="article:tag" content="线性代数">
+<meta name="twitter:card" content="summary">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/personal-style.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-174901164-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d2c292719a76d8c0fa7f9874379cfd25";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 5.0.0"></head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">ROOT</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="toc-text">实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LU%E5%88%86%E8%A7%A3"><span class="toc-text">LU分解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E8%A7%A3%E6%96%B9%E6%B3%95%EF%BC%9A"><span class="toc-text">分解方法：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A1%8C%E5%88%97%E5%BC%8F%E8%AE%A1%E7%AE%97"><span class="toc-text">行列式计算</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B1%82%E8%A7%A3%E7%BA%BF%E6%80%A7%E6%96%B9%E7%A8%8B%E7%BB%84-Ax-y"><span class="toc-text">求解线性方程组$Ax&#x3D;y$</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B1%82%E8%A7%A3%E9%80%86%E7%9F%A9%E9%98%B5"><span class="toc-text">求解逆矩阵</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%94%A8Jacobi%E7%AE%97%E6%B3%95%E6%B1%82%E8%A7%A3%E5%AE%9E%E5%AF%B9%E7%A7%B0%E7%9F%A9%E9%98%B5%E7%89%B9%E5%BE%81%E5%80%BC"><span class="toc-text">利用Jacobi算法求解实对称矩阵特征值</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-从头开始实现一个线性代数库：算法实现篇" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">从头开始实现一个线性代数库：算法实现篇</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2018.05.27</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Netcan</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p>最近重新学习了一下线性代数，读完了《程序猿的数学3 线性代数》，为深刻理解内容，打算实现一个矩阵库，并写Python模块。计划涉及如下部分：</p>
+<ul>
+<li><del>向量内积</del></li>
+<li><del>矩阵乘法</del></li>
+<li><del>LU分解</del></li>
+<li><del>线性方程组求解</del></li>
+<li><del>行列式计算</del></li>
+<li><del>逆矩阵</del></li>
+<li><del>实对称矩阵Jocobi方法（求解特征值）</del></li>
+<li>QR分解</li>
+</ul>
+<p>目前项目地址：<a target="_blank" rel="noopener" href="https://github.com/netcan/LinAlg">https://github.com/netcan/LinAlg</a></p>
+<p>关于Python模块的实现，可以参考我的这一篇文章：<a target="_blank" rel="noopener" href="http://www.netcan666.com/2018/05/29/%E4%BB%8E%E5%A4%B4%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E5%BA%93%EF%BC%9APython%E6%A8%A1%E5%9D%97%E7%AF%87/">从头开始实现一个线性代数库：Python模块篇</a></p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>内部统一采用double数据类型。</p>
+<h2 id="LU分解"><a href="#LU分解" class="headerlink" title="LU分解"></a>LU分解</h2><p>LU分解将矩阵A分解为两个矩阵的乘积$A=LU$，其中$L$为下三角矩阵，而$U$为上三角矩阵，$LU$的形式如下，实现的时候采用一个矩阵来存储$LU$的结果。<br>$$<br>L = \left(<br>\begin{matrix}<br>1 &amp; 0 &amp; 0\\<br>x &amp; 1 &amp; 0\\<br>x &amp; x &amp; 1\end{matrix}<br>\right)<br>U = \left(<br>\begin{matrix}<br>x &amp; x &amp; x &amp; x\\<br>0 &amp; x &amp; x &amp; x\\<br>0 &amp; 0 &amp; x &amp; x\end{matrix}<br>\right)<br>$$</p>
+<p>LU分解可用来方便的求解线性方程组、行列式的值以及逆矩阵。</p>
+<h3 id="分解方法："><a href="#分解方法：" class="headerlink" title="分解方法："></a>分解方法：</h3><p>将L, U改写成分块矩阵的形式：<br>$$<br>L = (l_1, \cdots, l_s), U = \left(\begin{matrix}u_1^T\\\vdots\\u_s^T\end{matrix}\right)<br>$$<br>有<br>$$<br>A = l_1u_1^t + \cdots + l_su_s^T<br>$$</p>
+<p>对$A\equiv A(1)=(a_{ij}(1))$，令<br>$$<br>l_1 = \dfrac{1}{a_{11}(1)}\left(\begin{matrix}a_{11}(1)\\\vdots\\a_{m1}(1)\end{matrix}\right) \quad<br>u_1^t = (a_{11}(1), \cdots, a_{1n}(1))<br>$$</p>
+<p>则<br>$$<br>A(1) -l_1u_1^T =<br>\left(<br>\begin{array}{c|ccc}<br>0 &amp; 0 &amp; \cdots &amp; 0 \\ \hline<br>0 &amp;  &amp;  &amp;  \\<br>\vdots &amp;  &amp; A(2) &amp;  \\<br>0 &amp;  &amp;  &amp; \\<br>\end{array}<br>\right)<br>$$<br>即<br>$$<br>A(1)  = l_1u_1^T +<br>\left(<br>\begin{array}{c|ccc}<br>0 &amp; 0 &amp; \cdots &amp; 0 \\ \hline<br>0 &amp;  &amp;  &amp;  \\<br>\vdots &amp;  &amp; A(2) &amp;  \\<br>0 &amp;  &amp;  &amp; \\<br>\end{array}<br>\right)<br>$$</p>
+<p>对$A(s), s = 2, 3,\cdots$进行和$A(1)$一样的操作，最终得到零矩阵分解完毕可以得到$L$, $U$。</p>
+<p>核心代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Matrix <span class="title">Matrix::LUdecomp</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">    <span class="function">Matrix <span class="title">LU</span><span class="params">(*<span class="keyword">this</span>)</span></span>; <span class="comment">// 最终结果存放到一个矩阵中</span></span><br><span class="line">    <span class="keyword">size_t</span> s = <span class="built_in">std</span>::min(getRowSize(), getColSize());</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">size_t</span> k = <span class="number">0</span>; k &lt; s; ++k) &#123;</span><br><span class="line">        <span class="keyword">double</span> x = <span class="number">1.0</span> / LU.data[k][k];</span><br><span class="line">        <span class="comment">// l1 = 1/a_&#123;11&#125; * ...</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">size_t</span> i = k + <span class="number">1</span>; i &lt; getRowSize(); ++i)</span><br><span class="line">            LU.data[i][k] *= x;</span><br><span class="line">        <span class="comment">// A -= lu^t,</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">size_t</span> i = k + <span class="number">1</span>; i &lt; getRowSize(); ++i)</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">size_t</span> j = k + <span class="number">1</span>; j &lt; getColSize(); ++j)</span><br><span class="line">                LU.data[i][j] -= LU.data[i][k] * LU.data[k][j];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> LU;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>若分解过程中出现除数为零，这需要添加一个置换矩阵$P$，分解得到$A = PLU$的形式，详见<code>Matrix::PLUdecomp()</code>。</p>
+<h2 id="行列式计算"><a href="#行列式计算" class="headerlink" title="行列式计算"></a>行列式计算</h2><p>对$A$进行$A=PLU$分解后，有<br>$$<br>det(A) = det(PLU) = det(P)det(L)det(U) = det(P)det(U)<br>$$</p>
+<p>值即为$U$对角线上元素的乘积。 核心代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">Matrix::det</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">    assert(getRowSize() == getColSize());</span><br><span class="line">    <span class="keyword">auto</span> PLU = PLUdecomp();</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;P = PLU.first;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;LU = PLU.second;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">bool</span> sign = <span class="literal">false</span>; <span class="comment">// 负号</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; PLU.first.size(); ++i)</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">size_t</span> j = i + <span class="number">1</span>; j &lt; PLU.first.size(); ++j)</span><br><span class="line">            <span class="keyword">if</span>(PLU.first[i] &gt; PLU.first[j]) sign = !sign;</span><br><span class="line">    <span class="keyword">double</span> ret = sign?<span class="number">-1.0</span>:<span class="number">1.0</span>;</span><br><span class="line">    <span class="comment">// det(A) = det(PLU) = det(P)det(L)det(U) = det(P)det(U)</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; LU.data.size(); ++i)</span><br><span class="line">        ret *= LU.data[P[i]][i];</span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="求解线性方程组-Ax-y"><a href="#求解线性方程组-Ax-y" class="headerlink" title="求解线性方程组$Ax=y$"></a>求解线性方程组$Ax=y$</h2><p>对$A$进行$A=PLU$分解后，有<br>$$<br>Ax = LUx = L(Ux) = Lz = y\\<br>Lz = \left(<br>\begin{matrix}<br>1 &amp;   &amp;   &amp;  \\<br>a_{21} &amp; 1 &amp;  &amp; \\<br>a_{31} &amp; a_{32} &amp; 1 &amp;  \\<br>a_{41} &amp; a_{42} &amp; a_{43}  &amp; 1\\<br>\end{matrix}<br>\right)<br>\left(\begin{matrix}z_1\\z_2\\z_3\\z_4\end{matrix}\right)<br>=<br>\left(\begin{matrix}y_1\\y_2\\y_3\\y_4\end{matrix}\right) = y\\<br>Ux = \left(<br>\begin{matrix}<br>a_{11} &amp; a_{12} &amp; a_{13} &amp; a_{14} \\<br> &amp; a_{22} &amp; a_{23} &amp; a_{24}\\<br> &amp;  &amp; a_{33} &amp; a_{34} \\<br> &amp;  &amp;  &amp;a_{44}\\<br>\end{matrix}<br>\right)<br>\left(\begin{matrix}x_1\\x_2\\x_3\\x_4\end{matrix}\right)<br>=<br>\left(\begin{matrix}z_1\\z_2\\z_3\\z_4\end{matrix}\right) = z\\<br>$$</p>
+<p>先用$y$解出$z$，在用$z$解出$x$。在解$Lz=y$时，从头开始计算；而在解$Ux = z$时，从尾开始计算。 核心代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Vector <span class="title">Matrix::LUsolve_L</span><span class="params">(<span class="keyword">const</span> Matrix &amp;LU, <span class="keyword">const</span> Vector &amp;y)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 求出Lz = y的z</span></span><br><span class="line">    <span class="function">Vector <span class="title">z</span><span class="params">(y.getSize())</span></span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; z.getSize(); ++i) &#123;</span><br><span class="line">        z.data[i] = y.data[i];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">size_t</span> j = <span class="number">0</span>; j &lt; i; ++j)</span><br><span class="line">            z.data[i] -= LU.data[i][j] * z.data[j];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> z;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">Vector <span class="title">Matrix::LUsolve_U</span><span class="params">(<span class="keyword">const</span> Matrix &amp;LU, <span class="keyword">const</span> Vector &amp;z)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 求出Ux = z的x</span></span><br><span class="line">    <span class="function">Vector <span class="title">x</span><span class="params">(z.getSize())</span></span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = z.getSize() - <span class="number">1</span>; i &gt;=<span class="number">0</span>; --i) &#123;</span><br><span class="line">        x.data[i] = z.data[i];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = i + <span class="number">1</span>; j &lt; z.getSize(); ++j)</span><br><span class="line">            x.data[i] -= LU.data[i][j] * x.data[j];</span><br><span class="line">        x.data[i] /= LU.data[i][i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">Vector <span class="title">Matrix::LUsolve</span><span class="params">(<span class="keyword">const</span> Vector &amp;y)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">    <span class="comment">// Ax = y</span></span><br><span class="line">    assert(y.getSize() == getRowSize());</span><br><span class="line">    assert(! isZero(det()) &amp;&amp; <span class="string">&quot;det is equal 0&quot;</span>);</span><br><span class="line">    Matrix LU = <span class="built_in">std</span>::move(LUdecomp());</span><br><span class="line">    <span class="function">Vector <span class="title">x</span><span class="params">(y.getSize())</span></span>;</span><br><span class="line">    x = <span class="built_in">std</span>::move(LUsolve_L(LU, y));</span><br><span class="line">    x = <span class="built_in">std</span>::move(LUsolve_U(LU, x));</span><br><span class="line">    <span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="求解逆矩阵"><a href="#求解逆矩阵" class="headerlink" title="求解逆矩阵"></a>求解逆矩阵</h2><p>对于$AX=AA^{-1}=I$，有<br>$$<br>A(x_1, \cdots, x_n) = (e_1, \cdots, e_n)展开得\\<br>Ax_1 = e_1, \cdots, Ax_n = e_n<br>$$</p>
+<p>利用前面求解线性方程组的方法，得到$X=A^{-1}$。核心代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Matrix <span class="title">Matrix::inv</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">    <span class="comment">// A(x_1, ..., x_n) = (e_1, ..., e_n)</span></span><br><span class="line">    assert(! isZero(det()) &amp;&amp; <span class="string">&quot;matrix is not invertible&quot;</span>);</span><br><span class="line">    <span class="keyword">size_t</span> n = getRowSize();</span><br><span class="line">    Matrix LU = <span class="built_in">std</span>::move(LUdecomp());</span><br><span class="line">    <span class="function">Matrix <span class="title">ret</span><span class="params">(n, n)</span></span>;</span><br><span class="line">    Vector e(n), x(n);</span><br><span class="line">    e[<span class="number">0</span>] = <span class="number">1.0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">size_t</span> j = <span class="number">0</span>; j &lt; n; ++j) &#123;</span><br><span class="line">        <span class="keyword">if</span>(j &gt;= <span class="number">1</span>) <span class="built_in">std</span>::swap(e[j], e[j<span class="number">-1</span>]);</span><br><span class="line">        <span class="comment">// 解出Ax = e</span></span><br><span class="line">        x = <span class="built_in">std</span>::move(LUsolve_L(LU, e));</span><br><span class="line">        x = <span class="built_in">std</span>::move(LUsolve_U(LU, x));</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; n; ++i)</span><br><span class="line">            ret.data[i][j] = x[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="利用Jacobi算法求解实对称矩阵特征值"><a href="#利用Jacobi算法求解实对称矩阵特征值" class="headerlink" title="利用Jacobi算法求解实对称矩阵特征值"></a>利用Jacobi算法求解实对称矩阵特征值</h2><p>对于<strong>实对称</strong>矩阵$A$，将其对角化，有$P^{-1}AP=D$，这里的$D$为对角矩阵，对角线上的值即为特征值，$P$为特征向量组成的矩阵。</p>
+<p>而解实对角矩阵的特征值算法有Jacobi，主要通过不断平面旋转变化，使得矩阵$A$朝着$D$的方向变换。</p>
+<p>定义如下平面旋转矩阵（正交矩阵）$R(\theta, p, q)$：<br>$$<br>R(\theta, p, q) =<br>\begin{array}{cc}<br>&amp; \begin{array}{ccccccccccc}<br>&amp; &amp; &amp; 第p列 &amp;  &amp; &amp; &amp; 第q列 &amp; &amp; &amp; &amp;<br>\end{array}\\<br>\begin{array}{c}<br>\\<br>\\<br>\\<br>第p行\\<br>\\<br>\\<br>\\<br>第q行\\<br>\\<br>\\<br>\\<br>\end{array}<br>&amp; \left(<br>    \begin{array}{ccccccccccc}<br>    1 &amp; &amp; &amp; &amp; &amp; &amp; &amp; &amp; &amp; &amp; \\<br>    &amp; \ddots &amp; &amp; &amp; &amp; &amp; &amp; &amp; &amp; &amp; \\<br>    &amp;  &amp; 1 &amp; &amp; &amp; &amp; &amp; &amp; &amp; &amp; \\<br>    &amp; &amp; &amp;\cos\theta  &amp; &amp; &amp; -\sin\theta &amp; &amp; &amp; &amp; \\<br>    &amp; &amp; &amp; &amp; 1  &amp; &amp;  &amp; &amp; &amp; &amp; \\<br>    &amp; &amp;  &amp;  &amp;  &amp;\ddots  &amp;  &amp; &amp; &amp; &amp; \\<br>    &amp; &amp;  &amp;  &amp;  &amp; &amp; 1   &amp; &amp; &amp; &amp; \\<br>    &amp; &amp; &amp; \sin\theta  &amp; &amp; &amp; \cos\theta &amp; &amp; &amp; &amp; \\<br>    &amp; &amp; &amp;  &amp; &amp; &amp; &amp;  &amp; 1  &amp; &amp; \\<br>    &amp; &amp;  &amp; &amp; &amp; &amp;  &amp;  &amp;  &amp; \ddots  &amp; \\<br>    &amp; &amp;  &amp; &amp; &amp; &amp;  &amp;  &amp;  &amp; &amp; 1 \\<br>    \end{array}<br>\right) \\<br>\end{array}<br>$$</p>
+<p>易知$R^T R = I$，所以有$R^{-1} = R^T$。通过正交矩阵将对称矩阵$A$不断旋转变换进行对角化，$D = R(\theta, p, q)^{-1}AR(\theta, p, q) = R(\theta, p, q)^TAR(\theta, p, q)$。对$A$左乘$R^T$后，$p, q$两行将发生变化，而右乘$R$后，$p,q$两列发生变化。</p>
+<p>$$<br>R(\theta, p, q)^T<br>\left(\begin{matrix}a_{1j}\\\vdots\\a_{pj}\\\vdots\\a_{qj}\\\vdots\\a_{nj}\end{matrix}\right)<br>= \left(\begin{matrix}a_{1j}\\\vdots\\a_{pj}\cos\theta + a_{qj}\sin\theta \\\vdots\\ -a_{pj}\sin\theta + a_{qj}\cos\theta \\\vdots\\a_{nj}\end{matrix}\right) =<br>\left(\begin{matrix}a_{1j}\\\vdots\\a_{pj}’\\\vdots\\a_{qj}’\\\vdots\\a_{nj}\end{matrix}\right) \\<br>\begin{array}{ccc}<br>(a_{i1}, \cdots, a_{ip}, \cdots, a_{iq}, \cdots, a_{in}) R(\theta, p, q) &amp;=&amp; (a_{i1},&amp; \cdots,&amp; a_{ip} \cos\theta + a_{iq} \sin\theta,&amp; \cdots,&amp; -a_{ip}\sin\theta + a_{iq}\cos\theta,&amp; \cdots,&amp; a_{in})\\<br>&amp; &amp; (a_{i1},&amp; \cdots,&amp; a_{ip}’,&amp; \cdots,&amp; a_{iq}’,&amp; \cdots,&amp; a_{in})<br>\end{array}<br>$$</p>
+<p>将p, q两行两列的将四个交叉点的结果写出来，由于只有这四个交叉点同时受到行列影响，所以它们的公式略有不同（由于$A$是对称矩阵有$a_{pq} = a_{qp}$）：<br>$$<br>\begin{array}{ccl}<br>a_{pp}’ &amp;=&amp; (a_{pp}\cos\theta + a_{qp}\sin\theta)\cos\theta + (a_{pq}cos\theta + a_{qq}\sin\theta)\sin\theta\\<br>&amp; = &amp; a_{pp}\cos^2\theta + a_{qq}\sin^2\theta + 2a_{pq}\sin\theta\cos\theta\\<br>a_{pq}’ &amp;=&amp; -(a_{pp}\cos\theta + a_{qp}\sin\theta)\sin\theta + (a_{pq}cos\theta + a_{qq}\sin\theta)\cos\theta\\<br>&amp; = &amp; a_{pq}(\cos^2\theta - \sin^2\theta) + (a_{qq} - a_{pp})\sin\theta\cos\theta\\<br>a_{qp}’ &amp;=&amp; (-a_{pp}\cos\theta + a_{qp}\sin\theta)\cos\theta + (-a_{pq}cos\theta + a_{qq}\sin\theta)\sin\theta\\<br>&amp; = &amp; a_{pq}(\cos^2\theta - \sin^2\theta) + (a_{qq} - a_{pp})\sin\theta\cos\theta\\<br>a_{qq}’ &amp;=&amp; -(-a_{pp}\cos\theta + a_{qp}\sin\theta)\sin\theta + (-a_{pq}cos\theta + a_{qq}\sin\theta)\cos\theta\\<br>&amp; = &amp; a_{pp}\sin^2\theta + a_{qq}\cos^2\theta - 2a_{pq}\sin\theta\cos\theta\\<br>\end{array}<br>$$</p>
+<p>经过反复旋转变换后，矩阵$A$依旧保持着对称性$a_{pq} = a_{qp}$，依次选择$a_{pq}$，令$a_{pq}$旋转变化为$0$得到$\theta$，在这个$\theta$作用下更新其他$p, q$的行、列值。简而言之，每次将两行两列相交的四个交叉点中的斜对角交叉点变为0，最终趋向于对角矩阵。<br>$$<br>a_{pq}’ = a_{qp}’ = a_{pq}(\cos^2\theta - \sin^2\theta) + (a_{qq} - a_{pp})\sin\theta\cos\theta = 0\\<br>\Rightarrow \dfrac{a_{pq}}{a_{pp} - a_{qq}} = \dfrac{\sin\theta\cos\theta}{\cos^2\theta - \sin^2\theta} = \dfrac{1}{2}\tan2\theta<br>$$</p>
+<p>通过$\tan2\theta$得到$\cos\theta$的值，有：<br>$$<br>1+\tan^{2}2\theta = \dfrac{\cos^{2}2\theta + \sin^{2}2\theta}{\cos^{2}2\theta} = \dfrac{1}{\cos^{2}{2\theta}}\\<br>\Rightarrow \cos2\theta = \dfrac{1}{\sqrt{1+\tan^{2}{2\theta}}} = \cos^2\theta - \sin^2\theta = 2\cos^2\theta - 1(0\leq \theta \leq \dfrac{\pi}{4})\\<br>\Rightarrow \cos\theta = \sqrt{\dfrac{1}{2}(1+\dfrac{1}{\sqrt{1+\tan^{2}2\theta}})}\\<br>\Rightarrow \sin\theta = \sqrt{1-\cos^2\theta}<br>$$</p>
+<p>设$g(A) = \sum_{i}^na_{ii}^2$，当$g(A)$不在增大时，可视为$A$近似于对角矩阵$D$。核心代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Matrix::R</span><span class="params">(<span class="keyword">double</span> cosphi, <span class="keyword">size_t</span> p, <span class="keyword">size_t</span> q, <span class="keyword">bool</span> T)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 通过平面旋转进行相似变换</span></span><br><span class="line">    <span class="keyword">double</span> sinphi = <span class="built_in">sqrt</span>(<span class="number">1</span> - cosphi * cosphi);</span><br><span class="line">    <span class="keyword">size_t</span> n = getRowSize();</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">size_t</span> k = <span class="number">0</span>; k &lt; n; ++k) &#123;</span><br><span class="line">        <span class="keyword">double</span>  ap =  data[T?p:k][T?k:p] * cosphi + data[T?q:k][T?k:q] * sinphi,</span><br><span class="line">                aq = -data[T?p:k][T?k:p] * sinphi + data[T?q:k][T?k:q] * cosphi;</span><br><span class="line">        data[T?p:k][T?k:p] = ap; data[T?q:k][T?k:q] = aq;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">double</span>&gt; <span class="title">Matrix::Jacobi</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">    assert(getRowSize() == getColSize());</span><br><span class="line">    <span class="keyword">size_t</span> n = getRowSize();</span><br><span class="line">    <span class="comment">// 判断是否对称</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; n; ++i)</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">size_t</span> j = <span class="number">0</span>; j &lt; n; ++j)</span><br><span class="line">            assert(Eq(data[i][j], data[j][i]));</span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">double</span>&gt; <span class="title">eigenvals</span><span class="params">(n)</span></span>;</span><br><span class="line">    <span class="function">Matrix <span class="title">D</span><span class="params">(*<span class="keyword">this</span>)</span></span>; <span class="comment">// 对角化</span></span><br><span class="line">    <span class="comment">// g(A) = \sum a[i][i]^2</span></span><br><span class="line">    <span class="keyword">auto</span> g = [](<span class="keyword">const</span> Matrix &amp;A)-&gt;<span class="keyword">double</span> &#123;</span><br><span class="line">        <span class="keyword">double</span> ret = <span class="number">0.0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; A.getRowSize(); ++i)</span><br><span class="line">            ret += A.data[i][i] * A.data[i][i];</span><br><span class="line">        <span class="keyword">return</span> ret;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="comment">// f(A) -&gt; 0表明近似于对角化矩阵</span></span><br><span class="line">    <span class="keyword">auto</span> f = [](<span class="keyword">const</span> Matrix &amp;A)-&gt;<span class="keyword">double</span> &#123;</span><br><span class="line">        <span class="keyword">double</span> ret = <span class="number">0.0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; A.getRowSize(); ++i)</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">size_t</span> j = <span class="number">0</span>; j &lt; A.getRowSize(); ++j)</span><br><span class="line">                <span class="keyword">if</span>(i!=j) ret += A.data[i][j] * A.data[i][j];</span><br><span class="line">        <span class="keyword">return</span> ret;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">double</span> cur_g = g(D), last_g = <span class="number">0.0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (! Eq(cur_g, last_g)) &#123; <span class="comment">// 当g(D)不变时，对角化完成</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">size_t</span> p = <span class="number">0</span>; p &lt; n; ++p) &#123; <span class="comment">// 逐个处理a_&#123;pq&#125;</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">size_t</span> q = p + <span class="number">1</span>; q &lt; n; ++q) &#123;</span><br><span class="line">                <span class="keyword">if</span> (isZero(D.data[p][q])) <span class="keyword">continue</span>;</span><br><span class="line">                <span class="keyword">double</span>  tan2phi = <span class="number">2</span> * D.data[p][q] / (D.data[p][p] - D.data[q][q]),</span><br><span class="line">                        cosphi = <span class="built_in">sqrt</span>(<span class="number">0.5</span> * (<span class="number">1.0</span> + <span class="number">1.0</span>/<span class="built_in">sqrt</span>(<span class="number">1</span>+tan2phi * tan2phi)));</span><br><span class="line">                <span class="comment">// D = R^T A R，旋转变换</span></span><br><span class="line">                D.R(cosphi, p, q, <span class="literal">true</span>);</span><br><span class="line">                D.R(cosphi, p, q, <span class="literal">false</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        last_g = cur_g;</span><br><span class="line">        cur_g = g(D);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; n; ++i) eigenvals[i] = D.data[i][i];</span><br><span class="line">    <span class="keyword">return</span> eigenvals;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    
+  </div>
+
+</article>
+
+
+   
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2017/12/25/Python%E4%B9%8B%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2018/05/29/%E4%BB%8E%E5%A4%B4%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E5%BA%93%EF%BC%9APython%E6%A8%A1%E5%9D%97%E7%AF%87/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '893a4103795fc66cd8e7',
+  clientSecret: '35c92c3dca938831b67dc22e46d64bc9073ebacf',
+  repo: 'netcan.github.io',
+  owner: 'Netcan',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: md5(location.pathname),
+  admin: ['Netcan'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>

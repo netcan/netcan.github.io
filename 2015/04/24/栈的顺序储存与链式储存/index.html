@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>栈的顺序储存与链式储存 | Netcan on Programming</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="C/C++,算法,数据结构," />
+  
+
+  <meta name="description" content="栈(stack)是限定仅在表尾进行插入与删除的线性表，栈中允许插入和删除的一端叫做栈顶(top)，另一端叫做栈底(bottom)。不含任何数据元素的栈称为空栈。栈中元素的个数称为栈的高度或长度。 将元素插入到栈的操作称为入栈（或进栈）操作，元素入栈后就变成新的栈顶。将元素从栈中删除的操作称为出栈（或退栈）操作，出栈时被删除的总是原来的栈顶元素。因此每次出栈的元素总是当前栈中“最新”的元素，即最后入">
+<meta property="og:type" content="article">
+<meta property="og:title" content="栈的顺序储存与链式储存">
+<meta property="og:url" content="https://netcan.github.io/2015/04/24/%E6%A0%88%E7%9A%84%E9%A1%BA%E5%BA%8F%E5%82%A8%E5%AD%98%E4%B8%8E%E9%93%BE%E5%BC%8F%E5%82%A8%E5%AD%98/index.html">
+<meta property="og:site_name" content="Netcan on Programming">
+<meta property="og:description" content="栈(stack)是限定仅在表尾进行插入与删除的线性表，栈中允许插入和删除的一端叫做栈顶(top)，另一端叫做栈底(bottom)。不含任何数据元素的栈称为空栈。栈中元素的个数称为栈的高度或长度。 将元素插入到栈的操作称为入栈（或进栈）操作，元素入栈后就变成新的栈顶。将元素从栈中删除的操作称为出栈（或退栈）操作，出栈时被删除的总是原来的栈顶元素。因此每次出栈的元素总是当前栈中“最新”的元素，即最后入">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2015-04-24T00:53:03.000Z">
+<meta property="article:modified_time" content="2015-04-24T00:53:03.000Z">
+<meta property="article:author" content="Netcan">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="数据结构">
+<meta name="twitter:card" content="summary">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/personal-style.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-174901164-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d2c292719a76d8c0fa7f9874379cfd25";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 5.0.0"></head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">ROOT</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%88-stack"><span class="toc-text">栈(stack)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89"><span class="toc-text">定义</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A1%BA%E5%BA%8F%E6%A0%88"><span class="toc-text">顺序栈</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%BE%E6%A0%88"><span class="toc-text">链栈</span></a></li></ol></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-栈的顺序储存与链式储存" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">栈的顺序储存与链式储存</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2015.04.24</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Netcan</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h2 id="栈-stack"><a href="#栈-stack" class="headerlink" title="栈(stack)"></a>栈(stack)</h2><p>是限定仅在表尾进行插入与删除的线性表，栈中允许插入和删除的一端叫做栈顶(top)，另一端叫做栈底(bottom)。不含任何数据元素的栈称为空栈。栈中元素的个数称为栈的高度或长度。</p>
+<p>将元素插入到栈的操作称为入栈（或进栈）操作，元素入栈后就变成新的栈顶。将元素从栈中删除的操作称为出栈（或退栈）操作，出栈时被删除的总是原来的栈顶元素。因此每次出栈的元素总是当前栈中“最新”的元素，即最后入栈的元素，而最先插入的元素被放到了栈底，待其他元素都已经出栈，栈底元素才能被删除。</p>
+<p>栈的操作是按照先进先出（LIFO,Last In First Out)原则进行的。</p>
+<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><a id="more"></a>
+<p>给出栈类的定义（基本方法一致）：</p>
+<pre><code>const int StackSize = 1024;
+template&lt;class T&gt;
+class SeqStack &#123;
+    public:
+        SeqStack() &#123; top = -1; &#125; // 构造函数
+        void Push(T); // 压栈
+        T Pop(); // 出栈
+        T GetTop() ; // 获取栈顶元素
+        bool Empty(); // 判断空栈
+        int Size() &#123; // 栈大小
+            return top+1;
+        &#125;
+    private:
+        T data[StackSize];
+        int top;
+&#125;;</code></pre>
+<h3 id="顺序栈"><a href="#顺序栈" class="headerlink" title="顺序栈"></a>顺序栈</h3><p>栈的顺序储存结构称作顺序栈，类似于顺序表，顺序栈也可以用数组来实现，由于栈底位置固定不变，因此可以将栈底设置在数组两端的任一端，通常把下标为0的一端作为栈底。同时设置top顶指针作为栈顶位置。当进行入栈操作时，top++，当出栈时，top–。当栈为空时，top=-1。设置数组大小为StackSize，当栈满时，top=StackSize-1。</p>
+<p>下面是顺序栈程序：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*************************************************************************</span></span><br><span class="line"><span class="comment">    &gt; File Name: SeqStack.cpp</span></span><br><span class="line"><span class="comment">    &gt; Author: Netcan</span></span><br><span class="line"><span class="comment">    &gt; Mail: 1469709759@qq.com</span></span><br><span class="line"><span class="comment">    &gt; Created Time: Thu 23 Apr 2015 22:18:19 CST</span></span><br><span class="line"><span class="comment"> ************************************************************************/</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> StackSize = <span class="number">1024</span>;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">SeqStack</span> &#123;</span></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        SeqStack() &#123; top = <span class="number">-1</span>; &#125;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">Push</span><span class="params">(T)</span></span>;</span><br><span class="line">        <span class="function">T <span class="title">Pop</span><span class="params">()</span></span>;</span><br><span class="line">        <span class="function">T <span class="title">GetTop</span><span class="params">()</span> </span>;</span><br><span class="line">        <span class="function"><span class="keyword">bool</span> <span class="title">Empty</span><span class="params">()</span></span>;</span><br><span class="line">        <span class="function"><span class="keyword">int</span> <span class="title">Size</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> top+<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">        T data[StackSize];</span><br><span class="line">        <span class="keyword">int</span> top;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">SeqStack</span>&lt;T&gt;:</span>:Push(T x) &#123;</span><br><span class="line">    <span class="keyword">if</span>(++top &gt;= StackSize) <span class="keyword">throw</span> <span class="string">&quot;上溢&quot;</span>;</span><br><span class="line">    data[top] = x;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">bool</span> <span class="title">SeqStack</span>&lt;T&gt;:</span>:Empty() &#123;</span><br><span class="line">    <span class="keyword">if</span>(top == <span class="number">-1</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">T</span> <span class="title">SeqStack</span>&lt;T&gt;:</span>:Pop() &#123;</span><br><span class="line">    <span class="keyword">if</span>(Empty()) <span class="keyword">throw</span> <span class="string">&quot;下溢&quot;</span>;</span><br><span class="line">    <span class="keyword">return</span> data[top--];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">T</span> <span class="title">SeqStack</span>&lt;T&gt;:</span>:GetTop() &#123;</span><br><span class="line">    <span class="keyword">if</span>(Empty()) <span class="keyword">throw</span> <span class="string">&quot;下溢&quot;</span>;</span><br><span class="line">    <span class="keyword">return</span> data[top];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    SeqStack&lt;<span class="keyword">int</span>&gt; <span class="built_in">stack</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=<span class="number">10</span>; ++i)</span><br><span class="line">        <span class="built_in">stack</span>.Push(i);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=<span class="number">10</span>; ++i) &#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;stack顶元素：&quot;</span> &lt;&lt; <span class="built_in">stack</span>.GetTop() &lt;&lt; <span class="string">&quot; 大小：&quot;</span> &lt;&lt; <span class="built_in">stack</span>.Size() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">        <span class="built_in">stack</span>.Pop();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="链栈"><a href="#链栈" class="headerlink" title="链栈"></a>链栈</h3><p>栈的链式储存结构称为链栈，其实现原理类似于单链表，结点结构和单链表相同。由于插入和删除操作都在表头进行，因此链栈在实现时直接采用栈顶指针指向栈顶元素，无需像单链表一样增加表头结点。</p>
+<p>下面给出链栈实现。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*************************************************************************</span></span><br><span class="line"><span class="comment">    &gt; File Name: LinkStack.cpp</span></span><br><span class="line"><span class="comment">    &gt; Author: Netcan</span></span><br><span class="line"><span class="comment">    &gt; Mail: 1469709759@qq.com</span></span><br><span class="line"><span class="comment">    &gt; Created Time: Thu 23 Apr 2015 22:51:37 CST</span></span><br><span class="line"><span class="comment"> ************************************************************************/</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">struct</span> <span class="title">Node</span> &#123;</span></span><br><span class="line">    T data;</span><br><span class="line">    Node * next;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">LinkStack</span> &#123;</span></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        LinkStack() &#123;top = <span class="literal">NULL</span>;&#125;</span><br><span class="line">        ~LinkStack();</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">Push</span><span class="params">(T x)</span></span>;</span><br><span class="line">        <span class="function">T <span class="title">Pop</span><span class="params">()</span></span>;</span><br><span class="line">        <span class="function">T <span class="title">GetTop</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line">        <span class="function"><span class="keyword">int</span> <span class="title">Size</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line">        <span class="function"><span class="keyword">bool</span> <span class="title">Empty</span><span class="params">()</span> <span class="keyword">const</span></span>&#123; <span class="keyword">return</span> (<span class="literal">NULL</span> == top)?<span class="literal">true</span>:<span class="literal">false</span>;&#125;</span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">Node</span>&lt;T&gt; * <span class="title">top</span>;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">LinkStack</span>&lt;T&gt;:</span>:Push(T x) &#123;</span><br><span class="line">    Node&lt;T&gt; * s = <span class="keyword">new</span> Node&lt;T&gt;;</span><br><span class="line">    s-&gt;data = x;</span><br><span class="line">    s-&gt;next = top;</span><br><span class="line">    top = s;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">T</span> <span class="title">LinkStack</span>&lt;T&gt;:</span>:Pop() &#123;</span><br><span class="line">    <span class="keyword">if</span>(Empty()) <span class="keyword">throw</span> <span class="string">&quot;下溢！&quot;</span>;</span><br><span class="line">    T x = top-&gt;data;</span><br><span class="line">    Node&lt;T&gt; *p = top;</span><br><span class="line">    top = top-&gt;next;</span><br><span class="line">    <span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">LinkStack</span>&lt;T&gt;:</span>:~LinkStack() &#123;</span><br><span class="line">    Node&lt;T&gt; *p = top;</span><br><span class="line">    <span class="keyword">while</span>(top) &#123;</span><br><span class="line">        p = top-&gt;next;</span><br><span class="line">        <span class="keyword">delete</span> top;</span><br><span class="line">        top = p;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">T</span> <span class="title">LinkStack</span>&lt;T&gt;:</span>:GetTop() <span class="keyword">const</span> &#123;</span><br><span class="line">    <span class="keyword">if</span>(Empty()) <span class="keyword">throw</span> <span class="string">&quot;下溢！&quot;</span>;</span><br><span class="line">    <span class="keyword">return</span> top-&gt;data;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">int</span> <span class="title">LinkStack</span>&lt;T&gt;:</span>:Size() <span class="keyword">const</span> &#123;</span><br><span class="line">    Node&lt;T&gt; * p = top;</span><br><span class="line">    <span class="keyword">int</span> count=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>(p) &#123;</span><br><span class="line">        ++count;</span><br><span class="line">        p = p-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> count;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    LinkStack&lt;<span class="keyword">int</span>&gt; <span class="built_in">stack</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=<span class="number">10</span>; ++i)</span><br><span class="line">        <span class="built_in">stack</span>.Push(i);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=<span class="number">10</span>; ++i) &#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;stack顶元素：&quot;</span> &lt;&lt; <span class="built_in">stack</span>.GetTop() &lt;&lt; <span class="string">&quot; 大小：&quot;</span> &lt;&lt; <span class="built_in">stack</span>.Size() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">        <span class="built_in">stack</span>.Pop();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果如下：</p>
+<pre><code>stack顶元素：10 大小：10
+stack顶元素：9 大小：9
+stack顶元素：8 大小：8
+stack顶元素：7 大小：7
+stack顶元素：6 大小：6
+stack顶元素：5 大小：5
+stack顶元素：4 大小：4
+stack顶元素：3 大小：3
+stack顶元素：2 大小：2
+stack顶元素：1 大小：1</code></pre>
+
+    
+  </div>
+
+</article>
+
+
+   
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2015/04/23/STL%E6%A8%A1%E6%9D%BF%E7%B1%BBvector%E4%B8%8Elist/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2015/04/27/%E5%BE%AA%E7%8E%AF%E9%98%9F%E5%88%97%E4%B8%8E%E9%93%BE%E9%98%9F%E5%88%97/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '893a4103795fc66cd8e7',
+  clientSecret: '35c92c3dca938831b67dc22e46d64bc9073ebacf',
+  repo: 'netcan.github.io',
+  owner: 'Netcan',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: md5(location.pathname),
+  admin: ['Netcan'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>

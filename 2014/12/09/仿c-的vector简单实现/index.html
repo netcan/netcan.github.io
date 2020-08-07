@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>仿c++的vector简单实现 | Netcan on Programming</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="C/C++,数据结构," />
+  
+
+  <meta name="description" content="学到数据结构了，所以想写点什么，以后回来看看，因为刚开始学，所以就写了个仿vector的程序吧。。没有c++的强大，这个vector是特定的类型，针对int的&#x3D; &#x3D;改改就好了。。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="仿c++的vector简单实现">
+<meta property="og:url" content="https://netcan.github.io/2014/12/09/%E4%BB%BFc-%E7%9A%84vector%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B0/index.html">
+<meta property="og:site_name" content="Netcan on Programming">
+<meta property="og:description" content="学到数据结构了，所以想写点什么，以后回来看看，因为刚开始学，所以就写了个仿vector的程序吧。。没有c++的强大，这个vector是特定的类型，针对int的&#x3D; &#x3D;改改就好了。。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2014-12-09T08:20:44.000Z">
+<meta property="article:modified_time" content="2014-12-09T08:20:44.000Z">
+<meta property="article:author" content="Netcan">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="数据结构">
+<meta name="twitter:card" content="summary">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/personal-style.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-174901164-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d2c292719a76d8c0fa7f9874379cfd25";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 5.0.0"></head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">ROOT</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-仿c-的vector简单实现" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">仿c++的vector简单实现</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2014.12.09</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Netcan</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p>学到数据结构了，所以想写点什么，以后回来看看，因为刚开始学，所以就写了个仿vector的程序吧。。没有c++的强大，这个vector是<br>特定的类型，针对int的= =改改就好了。。</p>
+<a id="more"></a> 
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*************************************************************************</span></span><br><span class="line"><span class="comment">    &gt; File Name: vector.c</span></span><br><span class="line"><span class="comment">    &gt; Author: Netcan</span></span><br><span class="line"><span class="comment">    &gt; Mail: 1469709759@qq.com</span></span><br><span class="line"><span class="comment">    &gt; Created Time: 2014/12/8 15:52:07</span></span><br><span class="line"><span class="comment"> ************************************************************************/</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;malloc.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;time.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">vector</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> * pBase;  <span class="comment">//数组元素首地址</span></span><br><span class="line">    <span class="keyword">int</span> growfact; <span class="comment">//增长因子</span></span><br><span class="line">    <span class="keyword">int</span> cnt; <span class="comment">//当前有效元素个数</span></span><br><span class="line">    <span class="keyword">int</span> len; <span class="comment">// 数组最大长度</span></span><br><span class="line">&#125; <span class="built_in">vector</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">initV</span><span class="params">(<span class="built_in">vector</span> * v)</span></span>; <span class="comment">// 初始化vector</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">freeV</span><span class="params">(<span class="built_in">vector</span> *v)</span></span>; <span class="comment">// 释放vector</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">showV</span><span class="params">(<span class="built_in">vector</span> * v)</span></span>; <span class="comment">// 输出vector</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">showCntV</span><span class="params">(<span class="built_in">vector</span> *v)</span></span>; <span class="comment">// 显示有效元素个数</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">insertV</span><span class="params">(<span class="built_in">vector</span> *v,<span class="keyword">int</span> pos,<span class="keyword">int</span> val)</span></span>; <span class="comment">// 插入val到vector[pos-1]中</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">appendV</span><span class="params">(<span class="built_in">vector</span> *v,<span class="keyword">int</span> val)</span></span>; <span class="comment">// 往vector后追加元素</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">is_fullV</span><span class="params">(<span class="built_in">vector</span> *v)</span></span>; <span class="comment">// 检测vector是否满了</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">is_emptyV</span><span class="params">(<span class="built_in">vector</span> *v)</span></span>;<span class="comment">// 检测vector是否为空</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">inversionV</span><span class="params">(<span class="built_in">vector</span> *v)</span></span>; <span class="comment">// 倒置vector</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sortV</span><span class="params">(<span class="built_in">vector</span> *v)</span></span>; <span class="comment">// 冒泡排序vector</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">getVEle</span><span class="params">(<span class="built_in">vector</span> *v,<span class="keyword">int</span> pos)</span></span>; <span class="comment">// 获取vector[pos-1]</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">getVSize</span><span class="params">(<span class="built_in">vector</span> *s)</span></span>; <span class="comment">// 获取vector大小</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    srand(<span class="keyword">int</span>(time(<span class="number">0</span>)));</span><br><span class="line">    <span class="built_in">vector</span> v;</span><br><span class="line">    initV(&amp;v);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">50</span>;i++)</span><br><span class="line">        appendV(&amp;v,rand()%<span class="number">100</span>); <span class="comment">// 测试追加和自动增长内存</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;vector size: %d\n&quot;</span>, getVSize(&amp;v));</span><br><span class="line">    showV(&amp;v); <span class="comment">// 测试输出</span></span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;inversion vector&quot;</span>);</span><br><span class="line">    inversionV(&amp;v); <span class="comment">// 测试倒置</span></span><br><span class="line">    showV(&amp;v);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;sort vector&quot;</span>);</span><br><span class="line">    sortV(&amp;v); <span class="comment">// 测试排序</span></span><br><span class="line">    showV(&amp;v);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;find vector element&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;vector[2]=%d\n&quot;</span>,getVEle(&amp;v,<span class="number">3</span>)); <span class="comment">// 测试获取元素</span></span><br><span class="line">    freeV(&amp;v); <span class="comment">// 释放vector</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">initV</span><span class="params">(<span class="built_in">vector</span> *v)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    v-&gt;growfact = <span class="number">5</span>; <span class="comment">// 默认增长因子为5</span></span><br><span class="line">    v-&gt;cnt = <span class="number">0</span>;</span><br><span class="line">    v-&gt;len = v-&gt;growfact;</span><br><span class="line">    <span class="keyword">if</span>( <span class="literal">NULL</span> == (v-&gt;pBase = (<span class="keyword">int</span> *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">int</span>) * v-&gt;len))) &#123;</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">&quot;malloc error&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">freeV</span><span class="params">(<span class="built_in">vector</span> *v)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">free</span>(v-&gt;pBase);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">is_emptyV</span><span class="params">(<span class="built_in">vector</span> *v)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>( v-&gt;cnt == <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">is_fullV</span><span class="params">(<span class="built_in">vector</span> *v)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(v-&gt;cnt == v-&gt;len )</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">showV</span><span class="params">(<span class="built_in">vector</span> * v)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(is_emptyV(v) ) &#123;</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">&quot;vector empty&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;v-&gt;cnt;++i)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>,v-&gt;pBase[i]);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">appendV</span><span class="params">(<span class="built_in">vector</span> *v, <span class="keyword">int</span> val)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(is_fullV(v)) &#123;</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">&quot;vector full,automatic grow space.&quot;</span>);</span><br><span class="line">        <span class="keyword">int</span> * pNew = (<span class="keyword">int</span> *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">int</span>) * (v-&gt;len + v-&gt;growfact)); <span class="comment">// 扩展内存</span></span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">memcpy</span>(pNew, v-&gt;pBase, <span class="keyword">sizeof</span>(<span class="keyword">int</span>) * v-&gt;len) == <span class="literal">NULL</span> )&#123; <span class="comment">//复制内存</span></span><br><span class="line">            <span class="built_in">puts</span>(<span class="string">&quot;vector grow space falut&quot;</span>);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            v-&gt;len += v-&gt;growfact;</span><br><span class="line">            <span class="built_in">free</span>(v-&gt;pBase); <span class="comment">// 删除原内存</span></span><br><span class="line">            v-&gt;pBase = pNew; <span class="comment">// 指向新内存</span></span><br><span class="line">            <span class="built_in">puts</span>(<span class="string">&quot;vector grow space success&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    v-&gt;pBase[v-&gt;cnt++] = val;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">insertV</span><span class="params">(<span class="built_in">vector</span> *v,<span class="keyword">int</span> pos,<span class="keyword">int</span> val)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(is_fullV(v)) &#123;</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">&quot;vector full&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>( pos &lt; <span class="number">1</span> || pos &gt; v-&gt;cnt) &#123;</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">&quot;insert error&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=v-&gt;cnt<span class="number">-1</span>;i&gt;=pos<span class="number">-1</span>;i--)</span><br><span class="line">        v-&gt;pBase[i+<span class="number">1</span>]=v-&gt;pBase[i];</span><br><span class="line">    v-&gt;pBase[pos<span class="number">-1</span>]=val;</span><br><span class="line">    v-&gt;cnt++;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">showCntV</span><span class="params">(<span class="built_in">vector</span> *v)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;vector cnt: %d\n&quot;</span>,v-&gt;cnt);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">inversionV</span><span class="params">( <span class="built_in">vector</span> * v)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(is_emptyV(v) ) &#123;</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">&quot;vector empty&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;v-&gt;cnt/<span class="number">2</span>;++i) &#123;</span><br><span class="line">        <span class="keyword">int</span> t=v-&gt;pBase[i];</span><br><span class="line">        v-&gt;pBase[i] = v-&gt;pBase [v-&gt;cnt - i <span class="number">-1</span>];</span><br><span class="line">        v-&gt;pBase[v-&gt;cnt - i <span class="number">-1</span>] = t;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sortV</span><span class="params">(<span class="built_in">vector</span> *v)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(is_emptyV(v) ) &#123;</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">&quot;vector empty&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;v-&gt;cnt;++i)</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=i+<span class="number">1</span>;j&lt;v-&gt;cnt;++j)</span><br><span class="line">            <span class="keyword">if</span>(v-&gt;pBase[i] &gt; v-&gt;pBase[j])</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">int</span> t=v-&gt;pBase[i];</span><br><span class="line">                v-&gt;pBase[i]=v-&gt;pBase[j];</span><br><span class="line">                v-&gt;pBase[j]=t;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">getVEle</span><span class="params">(<span class="built_in">vector</span> *v,<span class="keyword">int</span> pos)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>( pos &lt; <span class="number">1</span> || pos &gt; v-&gt;cnt ) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Outside the range finding\n&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> v-&gt;pBase[pos<span class="number">-1</span>];</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">getVSize</span><span class="params">( <span class="built_in">vector</span> *v)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> v-&gt;len;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+    
+  </div>
+
+</article>
+
+
+   
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="hide pull-left" href="/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2014/12/19/%E9%93%BE%E8%A1%A8%E7%9A%84%E5%AE%9A%E4%B9%89%E4%B8%8E%E7%AE%80%E5%8D%95%E6%93%8D%E4%BD%9C/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '893a4103795fc66cd8e7',
+  clientSecret: '35c92c3dca938831b67dc22e46d64bc9073ebacf',
+  repo: 'netcan.github.io',
+  owner: 'Netcan',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: md5(location.pathname),
+  admin: ['Netcan'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>

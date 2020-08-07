@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>2017华为软件精英挑战赛参赛心得 | Netcan on Programming</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="算法,图论,搜索," />
+  
+
+  <meta name="description" content="体验2017-04-25 20:18比赛终于要结束了，最终复赛没能进前四，止于中游。自从上周三把数据规模调大后，名次一直哗哗掉，无法挽救，试过好几种方案，没能搞定换挡问题，也就是说给你最优位置，你都找不到最优解，真是可怕。 复赛题目加了个档次条件，相当于2个NP问题了，一个是选址问题，一个就是换挡问题了。 目前复赛代码已开源：https:&#x2F;&#x2F;github.com&#x2F;netcan&#x2F;2017-HUAWE">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2017华为软件精英挑战赛参赛心得">
+<meta property="og:url" content="https://netcan.github.io/2017/03/23/2017%E5%8D%8E%E4%B8%BA%E8%BD%AF%E4%BB%B6%E7%B2%BE%E8%8B%B1%E6%8C%91%E6%88%98%E8%B5%9B%E5%8F%82%E8%B5%9B%E5%BF%83%E5%BE%97/index.html">
+<meta property="og:site_name" content="Netcan on Programming">
+<meta property="og:description" content="体验2017-04-25 20:18比赛终于要结束了，最终复赛没能进前四，止于中游。自从上周三把数据规模调大后，名次一直哗哗掉，无法挽救，试过好几种方案，没能搞定换挡问题，也就是说给你最优位置，你都找不到最优解，真是可怕。 复赛题目加了个档次条件，相当于2个NP问题了，一个是选址问题，一个就是换挡问题了。 目前复赛代码已开源：https:&#x2F;&#x2F;github.com&#x2F;netcan&#x2F;2017-HUAWE">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://netcan.github.io/2017/03/23/2017%E5%8D%8E%E4%B8%BA%E8%BD%AF%E4%BB%B6%E7%B2%BE%E8%8B%B1%E6%8C%91%E6%88%98%E8%B5%9B%E5%8F%82%E8%B5%9B%E5%BF%83%E5%BE%97/dfs.png">
+<meta property="article:published_time" content="2017-03-23T01:26:09.000Z">
+<meta property="article:modified_time" content="2017-05-12T06:20:49.000Z">
+<meta property="article:author" content="Netcan">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="图论">
+<meta property="article:tag" content="搜索">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://netcan.github.io/2017/03/23/2017%E5%8D%8E%E4%B8%BA%E8%BD%AF%E4%BB%B6%E7%B2%BE%E8%8B%B1%E6%8C%91%E6%88%98%E8%B5%9B%E5%8F%82%E8%B5%9B%E5%BF%83%E5%BE%97/dfs.png">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/personal-style.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-174901164-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d2c292719a76d8c0fa7f9874379cfd25";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 5.0.0"></head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">ROOT</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%93%E9%AA%8C"><span class="toc-text">体验</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2017-04-25-20-18"><span class="toc-text">2017-04-25 20:18</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2017-04-09-22-40"><span class="toc-text">2017-04-09 22:40</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2017-04-04-10-27"><span class="toc-text">2017-04-04 10:27</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2017-04-03-12-19"><span class="toc-text">2017-04-03 12:19</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2017-04-02-20-02"><span class="toc-text">2017-04-02 20:02</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2017-04-01-21-13"><span class="toc-text">2017-04-01 21:13</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2017-03-30-23-21"><span class="toc-text">2017-03-30 23:21</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2017-03-29-21-34"><span class="toc-text">2017-03-29 21:34</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2017-03-29-20-49"><span class="toc-text">2017-03-29 20:49</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2017-03-28-16-23"><span class="toc-text">2017-03-28 16:23</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2017-03-25-15-20"><span class="toc-text">2017-03-25 15:20</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2017-03-25-10-58"><span class="toc-text">2017-03-25 10:58</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2017-03-25-09-55"><span class="toc-text">2017-03-25 09:55</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2017-03-25-00-24"><span class="toc-text">2017-03-25 00:24</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2017-03-24-22-00"><span class="toc-text">2017-03-24 22:00</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2017-03-22"><span class="toc-text">2017-03-22</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E8%BE%93%E5%87%BA"><span class="toc-text">程序输出</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#caseDemo-txt"><span class="toc-text">caseDemo.txt</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#case0-txt"><span class="toc-text">case0.txt</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#case1-txt"><span class="toc-text">case1.txt</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#case2-txt"><span class="toc-text">case2.txt</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#case3-txt"><span class="toc-text">case3.txt</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#case4-txt"><span class="toc-text">case4.txt</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF"><span class="toc-text">思路</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2017-04-25-20-25"><span class="toc-text">2017-04-25 20:25</span></a></li></ol></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-2017华为软件精英挑战赛参赛心得" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">2017华为软件精英挑战赛参赛心得</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2017.03.23</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Netcan</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h2 id="体验"><a href="#体验" class="headerlink" title="体验"></a>体验</h2><h3 id="2017-04-25-20-18"><a href="#2017-04-25-20-18" class="headerlink" title="2017-04-25 20:18"></a>2017-04-25 20:18</h3><p>比赛终于要结束了，最终复赛没能进前四，止于中游。自从上周三把数据规模调大后，名次一直哗哗掉，无法挽救，试过好几种方案，没能搞定换挡问题，也就是说给你最优位置，你都找不到最优解，真是可怕。</p>
+<p>复赛题目加了个档次条件，相当于2个NP问题了，一个是选址问题，一个就是换挡问题了。</p>
+<p>目前复赛代码已开源：<a target="_blank" rel="noopener" href="https://github.com/netcan/2017-HUAWEI-Codecraft/releases/tag/2.0">https://github.com/netcan/2017-HUAWEI-Codecraft/releases/tag/2.0</a></p>
+<p>初赛的思路已经更新，可以翻到<a href="#%E6%80%9D%E8%B7%AF">最后</a>。</p>
+<h3 id="2017-04-09-22-40"><a href="#2017-04-09-22-40" class="headerlink" title="2017-04-09 22:40"></a>2017-04-09 22:40</h3><p>今天复赛题目放出来了，增加的条件如下：</p>
+<ul>
+<li>cdn有好几个档次了，每个档次都有输出流量限制</li>
+<li>每个网络节点增加部署费用</li>
+<li>节点数量上万</li>
+</ul>
+<p>考虑复赛后一周有6门左右的考试，所以要早点写了，不然爆零那多尴尬。。。</p>
+<h3 id="2017-04-04-10-27"><a href="#2017-04-04-10-27" class="headerlink" title="2017-04-04 10:27"></a>2017-04-04 10:27</h3><p>之前因为交的程序可能概率性段错误，所以必须修复bug重新提交，防止最后重跑的话出事就gg了。然而修复了bug，却很难最优，这两天提交无数次，中级才出现过2次最优，弃坑了。复赛再搞起。</p>
+<p>说一下关于定时器的问题吧，我用的是<code>alarm</code>定时器，非常精确，用它定时，时间一到会给进程发送<code>SIGALRM</code>信号，只需要捕捉这个信号，然后进行退出处理就行了。</p>
+<h3 id="2017-04-03-12-19"><a href="#2017-04-03-12-19" class="headerlink" title="2017-04-03 12:19"></a>2017-04-03 12:19</h3><p>现在来说一下如何统计输出文件的cdn数量吧，懒得在代码中添加统计最终可行解的cdn数量了。</p>
+<p>根据官方输出格式可知，第一行表示链路数量，第二行空行，那么从第三行开始就是起始链路了。链路的第一个数就是cdn的节点编号，从而可以统计出最终cdn数量。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ time ./bin/cdn case_example/The\ second\ batch\ of\ <span class="built_in">test</span>\ cases/2\ Advanced/case0.txt o</span><br><span class="line">$ awk  <span class="string">&#x27;NR &gt; 2 &#123;printf $1; printf(&quot;\n&quot;) ;&#125;&#x27;</span> o | sort -g | uniq | wc -l</span><br><span class="line"> 109</span><br></pre></td></tr></table></figure>
+
+<p>首先用<code>awk</code>从第三行开始，提取第一列，也就是cdn编号，由于有重复编号，需要排序去重，最后统计出行数就是cdn数了。</p>
+<p>如果要输出cdn的编号，可以这么做：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ awk &#39;NR &gt; 2 &#123;printf $1; printf(&quot;\n&quot;) ;&#125;&#39; o | sort -g | uniq | tr &#39;\n&#39; &#39; &#39; &amp;&amp; echo</span><br></pre></td></tr></table></figure>
+
+<h3 id="2017-04-02-20-02"><a href="#2017-04-02-20-02" class="headerlink" title="2017-04-02 20:02"></a>2017-04-02 20:02</h3><p>今天遇到一个非常致命的bug，我在本地测试的时候，有时候会出现<strong>段错误</strong>，而且几率非常小，那是多么的恐怖，连复现定位都异常困难。</p>
+<p>不过这个问题难不倒我，既然是有几率复现的，那么我只要记下程序开始运行的时间戳（因为我的随机种子是设置为时间戳），然后复现的时候，设置这个时间戳，重新跑，就能定位出错误了。</p>
+<p>不断重复跑了将近一小时，才出现<strong>段错误</strong>，最后定位到的问题是对象没有初始化。。。</p>
+<h3 id="2017-04-01-21-13"><a href="#2017-04-01-21-13" class="headerlink" title="2017-04-01 21:13"></a>2017-04-01 21:13</h3><p>今天愚人节。。昨晚看到ftp下载失败，得了0分，吓的一大早起来交，却不能交，感觉前十大换血一样= =莫名慌张。</p>
+<p>不过看到校友<code>silverfly</code>在20多名，心里还是稳了，因为我们交流过，都是启发式。</p>
+<p>现在贴一下战绩吧，三个样例没跑好，等排名掉了在重新交一下吧。（PS: 大规模样例曾跑出<code>199055</code>的满分成绩，三组数据成绩都需要看脸）。</p>
+<p>![Screenshot from 2017-04-01 21-11-37.png](Screenshot from 2017-04-01 21-11-37.png)</p>
+<p>![Screenshot from 2017-04-01 21-11-55.png](Screenshot from 2017-04-01 21-11-55.png)</p>
+<p>这里我补充我最近遇到一个特别脑残（也很有意思吧）的bug，肯定是没睡醒导致的。</p>
+<p>我昨天跑启发式算法的时候，发现88秒能迭代5000多次呢（能达到跳出条件），瞬间觉得不可思议，我把迭代系数调大，目的让它能慢一些，结果还是能在88秒内达到跳出条件，不过这个时候，迭代58万次= =，费用流能跑这么多次？？也正是这个bug，导致我一天白调参了。</p>
+<p>为了更具体的说明，我举个例子，<strong>仅供参考</strong>。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> iterationCnt = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">while</span>(T &gt; <span class="number">0.1</span>) &#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; runing &amp;&amp; i &lt; N; ++i) &#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">    T *= delta;</span><br><span class="line">    ++iterationCnt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里的<code>runing</code>标记位，等到达足够的时间，会变为<code>false</code>，考虑到内循环花的时间比外循环长，我很天真的把<code>runing</code>标记位放到内循环中，以便<code>runing</code>变为<code>false</code>的时候能够及早跳出，不会超时。也正是这个原因，我为我88秒内能跑5000多次费用流（迭代次数）而自豪。</p>
+<p>前面我说了，把迭代系数调大，能跑58万次呢。我隐隐约约觉得这是个<code>bug</code>，但是又感觉不到哪里有问题。</p>
+<p>然后我打算给外循环也加上<code>runing</code>位，即</p>
+<pre><code>while(runing &amp;&amp; T &gt; 0.1)</code></pre>
+<p>跑了一下，发现88秒居然只迭代了200多次！我只是在外循环加个<code>runing</code>位而已，性能损失20倍？！</p>
+<p>不管了，和队友打红色警戒三了。</p>
+<p>现在切入正题，为何我把<code>runing</code>加在外循环会导致性能“损失”。其实放到外循环才是真实的迭代次数，因为只放到内循环，那么当<code>runing</code>变为<code>false</code>的时候，导致内循环不干活，外循环拼命跑，直到达到跳出条件….</p>
+<h3 id="2017-03-30-23-21"><a href="#2017-03-30-23-21" class="headerlink" title="2017-03-30 23:21"></a>2017-03-30 23:21</h3><p>经过一天的优化、调参，基本稳定了。坚持到最后吧。</p>
+<p>![Screenshot from 2017-03-30 23-09-56.png](Screenshot from 2017-03-30 23-09-56.png)</p>
+<h3 id="2017-03-29-21-34"><a href="#2017-03-29-21-34" class="headerlink" title="2017-03-29 21:34"></a>2017-03-29 21:34</h3><p>做了点微小的贡献，希望能攒点人品。</p>
+<p>![Screenshot from 2017-03-30 07-38-12.png](Screenshot from 2017-03-30 07-38-12.png)</p>
+<h3 id="2017-03-29-20-49"><a href="#2017-03-29-20-49" class="headerlink" title="2017-03-29 20:49"></a>2017-03-29 20:49</h3><p>最近很多同学问我，怎么输出路径，老是超流。前面说过了不能保存增广路径，却没说怎么找路径，那我在这里细说一下吧。</p>
+<p>跑费用流的时候，算法基本上都是找增广路径，比如某条边上流过的流量为3/5（斜杠后面的表示满流为5），那么它的反向边变为-3/0（同理，因为流量为负，满流为0），这个表示我以后可能会流过-1, -2, -3的流量，亦即<strong>回流</strong>（细说一下，比如流过-1，表示我从3变为2，实际上流过的流量为2），所以光保存增广路径是不行的，因为算法后面有可能<strong>回流</strong>，一回流，那么实际流量可能会减少，而你之前保存了，那么当然会<strong>超流</strong>。</p>
+<p>现在来说说跑完费用流后怎么保存实际路径。跑完费用流后，边上流过的流量是知道的。所以可以从源点出发，进行深度优先搜索（同时记录这条路径上的最小流量），直到找到汇点，那么保存这条路径。而从汇点回溯的时候，就扣除这部分的流量，如果这个点的流量<strong>还有</strong>，那么就访问这个点的下一个点，直到找到汇点，然后保存路径，再回溯，以此类推。</p>
+<p>这里我举一个例子吧，<del>正在作图，稍后继续。</del><br><img src="dfs.png" alt="dfs.png"></p>
+<p>加入源点是0，汇点是5，跑完费用流后，得到如上所示的流量分布。</p>
+<ol>
+<li>从源点0开始出发，进行深度优先搜索，比如走到1，记录此时的最小流量3，然后从1开始出发，走到3，记录此时的最小流量1，接着从3出发，走到汇点5，那么保存这条路径（0-&gt;1-&gt;3-&gt;5，流量为1）。</li>
+<li>从汇点5回溯，回溯到3，减去该点流量：1-1=0，没有流量了，继续回溯，回溯到点1，减去该点流量：3-1=2，还剩有流量，那么不回溯了，接着从1走到它的下一点4，记录最小流量2，从4走到汇点5，保存这条路径（0-&gt;1-&gt;4-&gt;5，流量为2）</li>
+<li>从汇点5回溯，回溯到4，减去该点流量：2-2=0，没有流量了，继续回溯，回溯到点1，减去该点流量：2-2=0，没有流量了，继续回溯，回溯到源点0，这时候源点流量为3这条边流量用完了，那么选择下一个邻接点2，记录最小流量2，从2走到下一个汇点5，记录这条路径（0-&gt;2-&gt;5，流量为2）</li>
+</ol>
+<p>经过以上几个步骤，所有路径都找出来了。</p>
+<h3 id="2017-03-28-16-23"><a href="#2017-03-28-16-23" class="headerlink" title="2017-03-28 16:23"></a>2017-03-28 16:23</h3><p>现在掉到20来名了，经过这两天的尝试/优化，终于把小规模数据的时间/效率提上去了，费用能跑到<strong>21920</strong>，可是中规模和大规模跑的不是很好分数比较低，达到瓶颈了，比大佬差那么个几千吧。</p>
+<p>![Screenshot from 2017-03-28 16-50-27.png](Screenshot from 2017-03-28 16-50-27.png)</p>
+<h3 id="2017-03-25-15-20"><a href="#2017-03-25-15-20" class="headerlink" title="2017-03-25 15:20"></a>2017-03-25 15:20</h3><p>刚刚群里有位同学和我一样，只保存了增广路径作为结果，最后我们都是因为这个导致流量超了。</p>
+<p>昨晚我能想到的原因是有可能输出的路径带有负流量，比如要求5，你输出了3条路径3、3、-1，虽然符合要求，但是<code>3+3=6</code>就有可能超。</p>
+<p>然后跑了一晚上样例，没发现有负流量，觉得可能官方数据有可能会触发负流量，然后通过时间来判断是不是因为官方数据触发了负流量，结果也没有。</p>
+<p>真是个坑。。</p>
+<h3 id="2017-03-25-10-58"><a href="#2017-03-25-10-58" class="headerlink" title="2017-03-25 10:58"></a>2017-03-25 10:58</h3><p>寻路部分已解决，目前提交几次都有分了。大概是这样的：<br>![Screenshot from 2017-03-25 06-54-56.png](Screenshot from 2017-03-25 06-54-56.png)</p>
+<h3 id="2017-03-25-09-55"><a href="#2017-03-25-09-55" class="headerlink" title="2017-03-25 09:55"></a>2017-03-25 09:55</h3><p>官方判题服务器没有问题，我的费用流保存的是增广路径，所以流量超了，已经重写了寻路那部分。</p>
+<h3 id="2017-03-25-00-24"><a href="#2017-03-25-00-24" class="headerlink" title="2017-03-25 00:24"></a>2017-03-25 00:24</h3><p>可能官方判题器出现bug了，现在又在修复，应该是判断链路流量是否超过总带宽的那部分错了，有人把容量调为一半，就有分了。</p>
+<p>睡觉睡觉，等待修复，希望明天一大早就给我惊喜吧。</p>
+<h3 id="2017-03-24-22-00"><a href="#2017-03-24-22-00" class="headerlink" title="2017-03-24 22:00"></a>2017-03-24 22:00</h3><p>昨天官方数据有重边bug，后2组没分，没什么意义，就不管代码了。</p>
+<p>今天官方修复了bug，一大早就起来提交，结果比较奇葩了，前2组没分，第3组倒有。有时候就只有第2组没分，反正就是第2组没分。</p>
+<p>判题大哥说我<strong>流量超了</strong>，仔细检查了好久，直到刚刚（21点），才感觉到哪里不对劲了，改了改，应该有分了，<del>功夫不负有心人。这个漏洞比较有意思，非常难发现，本地测试的时候还没触发过，等赛后再更新吧。</del></p>
+<p>由于官方评测系统的数据和练习用的数据规模差不多，<del>这里直接上结果好了。</del>比直连大法好就行了，毕竟我前几天还是用直连大法呢。</p>
+<h3 id="2017-03-22"><a href="#2017-03-22" class="headerlink" title="2017-03-22"></a>2017-03-22</h3><p>华为挑战赛去年就了解到了，一直没参加，记得去年是道经过指定结点的最短路，今年一看题，想了好久没头绪（YY一个方案，写的时候发现不可行，浅尝辄止），居然有点后悔去年没参赛。</p>
+<p>一开始就先写了一个将cdn全部放消费结点的方案，那时候名次还很好，20左右。直到昨天跌出40，形势刻不容缓。</p>
+<p>3月21开始查看相关资料（建议看算法导论最大流那章，理解了残余网络，增广路径就好办了），写了最小费用流，3月22一早上加一下午写了输出费用流路径，然后开始考虑选址问题，开始用随机算法，每次随机选几个服务器，跑来跑去的解都比全放消费结点的成本高。</p>
+<p>接着写了一晚上的启发式搜索，因为初始参数的原因，导致自己一直怀疑算法有问题，却又坚定不移，期间也由于STL使用不当(erase/insert)导致非常难调的bug。</p>
+<p>之所以一直没放弃，是因为我跑样例的时候，偶而出现那么几次可行解，虽然只比全部放消费结点便宜了那么几块钱，但仍让我觉得可行。</p>
+<p>就在12点熄灯的那一刻，我几乎快要绝望了，就在最后，我调下参数，观察了一下输出，想看看最后的结果，结果让我大吃一惊，居然是最优解（群里有人发过）！然后我忍不住又试了两组数据，也是最优解，最后样例一次性全部跑出！！瞬间心态爆炸。。</p>
+<p>PS: <code>minCost(2042/2340)</code>表示跑出来的可行解为2042，2340表示cdn全部放消费节点直连的服务器上所需要的费用。<br>![Screenshot from 2017-03-23 00-27-55.png](Screenshot from 2017-03-23 00-27-55.png)</p>
+<p>然后就想试试大规模数据，从群里下了个1500结点的数据跑了下，得了如下可行解，可能不是最优解，但总比全部放消费结点好吧。<br>![Screenshot from 2017-03-23 00-34-19.png](Screenshot from 2017-03-23 00-34-19.png)</p>
+<p>心情已经非常激动了，这个比赛让我非常有成就感，比我大学做过的事情有意义多了，从来没有这么开心过，非常感谢华为。</p>
+<p>正好赶上官方更新初中高级数据，还没来得及跑分就关闭系统更新了。。太耐人寻味了。</p>
+<h2 id="程序输出"><a href="#程序输出" class="headerlink" title="程序输出"></a>程序输出</h2><p>这是针对官方练习样例跑出来的结果：</p>
+<h3 id="caseDemo-txt"><a href="#caseDemo-txt" class="headerlink" title="caseDemo.txt"></a>caseDemo.txt</h3><p>这组样例是官方<strong>题目介绍</strong>的图：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">$ time ./bin/cdn case_example/caseDemo.txt o</span><br><span class="line">line num is :62</span><br><span class="line">Deploy CDN(3):</span><br><span class="line">3 22 0</span><br><span class="line">=====Solution======</span><br><span class="line">3-&gt;3 flow: 45</span><br><span class="line">22-&gt;2 flow: 28</span><br><span class="line">22-&gt;24-&gt;11 flow: 11</span><br><span class="line">3-&gt;19-&gt;5 flow: 24</span><br><span class="line">3-&gt;24-&gt;11 flow: 12</span><br><span class="line">0-&gt;16-&gt;6 flow: 8</span><br><span class="line">0-&gt;8-&gt;0 flow: 36</span><br><span class="line">0-&gt;7-&gt;10 flow: 10</span><br><span class="line">3-&gt;1-&gt;19-&gt;5 flow: 2</span><br><span class="line">3-&gt;1-&gt;16-&gt;6 flow: 7</span><br><span class="line">3-&gt;2-&gt;25-&gt;9 flow: 7</span><br><span class="line">0-&gt;9-&gt;11-&gt;1 flow: 13</span><br><span class="line">0-&gt;6-&gt;5-&gt;8 flow: 13</span><br><span class="line">0-&gt;2-&gt;25-&gt;9 flow: 8</span><br><span class="line">3-&gt;1-&gt;18-&gt;17-&gt;4 flow: 2</span><br><span class="line">0-&gt;1-&gt;18-&gt;17-&gt;4 flow: 9</span><br><span class="line">0-&gt;1-&gt;15-&gt;13-&gt;7 flow: 11</span><br><span class="line">0-&gt;2-&gt;4-&gt;5-&gt;8 flow: 5</span><br><span class="line">0-&gt;2-&gt;1-&gt;15-&gt;13-&gt;7 flow: 2</span><br><span class="line">22-&gt;21-&gt;8-&gt;0 flow: 4</span><br><span class="line">Flow :257/257 Cost: 783/1200</span><br></pre></td></tr></table></figure>
+
+<h3 id="case0-txt"><a href="#case0-txt" class="headerlink" title="case0.txt"></a>case0.txt</h3><p><del>为了说明路径/CDN位置的随机性，这里随意给出了2组最优费用，但是路径/CDN位置不一样：</del>（其实是一样的，真尴尬）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">$ time ./bin/cdn case_example/case0.txt o</span><br><span class="line">line num is :110</span><br><span class="line">Deploy CDN(7):</span><br><span class="line">7 37 15 13 22 43 38</span><br><span class="line">=====Solution======</span><br><span class="line">7-&gt;3 flow: 22</span><br><span class="line">37-&gt;4 flow: 46</span><br><span class="line">15-&gt;6 flow: 49</span><br><span class="line">13-&gt;5 flow: 40</span><br><span class="line">22-&gt;2 flow: 36</span><br><span class="line">43-&gt;0 flow: 24</span><br><span class="line">38-&gt;7 flow: 63</span><br><span class="line">13-&gt;3-&gt;32-&gt;34-&gt;8 flow: 8</span><br><span class="line">43-&gt;44-&gt;1 flow: 15</span><br><span class="line">Flow :303/303 Cost: 2042/2340</span><br><span class="line">./bin/cdn case_example/case0.txt o  22.40s user 17.75s system 99% cpu 40.167 total</span><br></pre></td></tr></table></figure>
+
+<h3 id="case1-txt"><a href="#case1-txt" class="headerlink" title="case1.txt"></a>case1.txt</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">$ time ./bin/cdn case_example/case1.txt o</span><br><span class="line">line num is :111</span><br><span class="line">Deploy CDN(7):</span><br><span class="line">17 6 7 41 48 13 35</span><br><span class="line">=====Solution======</span><br><span class="line">35-&gt;0 flow: 57</span><br><span class="line">13-&gt;5 flow: 99</span><br><span class="line">48-&gt;6 flow: 82</span><br><span class="line">17-&gt;7 flow: 27</span><br><span class="line">6-&gt;2 flow: 32</span><br><span class="line">7-&gt;3 flow: 28</span><br><span class="line">41-&gt;4 flow: 25</span><br><span class="line">6-&gt;5-&gt;1 flow: 10</span><br><span class="line">7-&gt;9-&gt;0-&gt;22-&gt;23-&gt;8 flow: 21</span><br><span class="line">Flow :381/381 Cost: 2136/2520</span><br><span class="line">./bin/cdn case_example/case1.txt o  23.02s user 17.42s system 99% cpu 40.441 total</span><br></pre></td></tr></table></figure>
+
+<h3 id="case2-txt"><a href="#case2-txt" class="headerlink" title="case2.txt"></a>case2.txt</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">$ time ./bin/cdn case_example/case2.txt o</span><br><span class="line">line num is :127</span><br><span class="line">Deploy CDN(6):</span><br><span class="line">48 18 29 38 12 23</span><br><span class="line">=====Solution======</span><br><span class="line">23-&gt;2 flow: 47</span><br><span class="line">12-&gt;6 flow: 41</span><br><span class="line">38-&gt;0 flow: 58</span><br><span class="line">31-&gt;7 flow: 34</span><br><span class="line">48-&gt;8 flow: 47</span><br><span class="line">18-&gt;3 flow: 80</span><br><span class="line">29-&gt;4 flow: 70</span><br><span class="line">23-&gt;21-&gt;5 flow: 13</span><br><span class="line">18-&gt;22-&gt;21-&gt;5 flow: 37</span><br><span class="line">12-&gt;10-&gt;13-&gt;0-&gt;6-&gt;5-&gt;1 flow: 4</span><br><span class="line">Flow :431/431 Cost: 1692/1890</span><br><span class="line">./bin/cdn case_example/case2.txt o  19.03s user 14.30s system 99% cpu 33.344 total</span><br></pre></td></tr></table></figure>
+
+<h3 id="case3-txt"><a href="#case3-txt" class="headerlink" title="case3.txt"></a>case3.txt</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">$ time ./bin/cdn case_example/case3.txt o</span><br><span class="line">line num is :111</span><br><span class="line">Deploy CDN(5):</span><br><span class="line">10 35 26 29 22</span><br><span class="line">=====Solution======</span><br><span class="line">26-&gt;5 flow: 55</span><br><span class="line">35-&gt;8 flow: 50</span><br><span class="line">10-&gt;7 flow: 32</span><br><span class="line">29-&gt;4 flow: 22</span><br><span class="line">22-&gt;2 flow: 64</span><br><span class="line">22-&gt;21-&gt;3 flow: 22</span><br><span class="line">35-&gt;33-&gt;6 flow: 6</span><br><span class="line">10-&gt;0-&gt;4-&gt;47-&gt;0 flow: 5</span><br><span class="line">22-&gt;20-&gt;21-&gt;3 flow: 7</span><br><span class="line">22-&gt;24-&gt;21-&gt;3 flow: 18</span><br><span class="line">10-&gt;0-&gt;2-&gt;3-&gt;31-&gt;1 flow: 1</span><br><span class="line">29-&gt;27-&gt;3-&gt;31-&gt;1 flow: 13</span><br><span class="line">35-&gt;32-&gt;4-&gt;47-&gt;0 flow: 23</span><br><span class="line">35-&gt;32-&gt;33-&gt;6 flow: 10</span><br><span class="line">35-&gt;34-&gt;33-&gt;6 flow: 12</span><br><span class="line">Flow :340/340 Cost: 2111/2700</span><br><span class="line">./bin/cdn case_example/case3.txt o  16.56s user 12.22s system 99% cpu 28.788 total</span><br></pre></td></tr></table></figure>
+
+<h3 id="case4-txt"><a href="#case4-txt" class="headerlink" title="case4.txt"></a>case4.txt</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">$ time ./bin/cdn case_example/case4.txt o</span><br><span class="line">line num is :113</span><br><span class="line">Deploy CDN(7):</span><br><span class="line">20 12 22 37 15 48 26</span><br><span class="line">=====Solution======</span><br><span class="line">20-&gt;0 flow: 22</span><br><span class="line">12-&gt;6 flow: 52</span><br><span class="line">22-&gt;3 flow: 31</span><br><span class="line">26-&gt;1 flow: 16</span><br><span class="line">48-&gt;4 flow: 20</span><br><span class="line">15-&gt;5 flow: 70</span><br><span class="line">37-&gt;8 flow: 31</span><br><span class="line">37-&gt;38-&gt;2 flow: 13</span><br><span class="line">37-&gt;3-&gt;28-&gt;7 flow: 17</span><br><span class="line">12-&gt;2-&gt;4-&gt;3-&gt;28-&gt;7 flow: 3</span><br><span class="line">37-&gt;36-&gt;38-&gt;2 flow: 1</span><br><span class="line">37-&gt;40-&gt;38-&gt;2 flow: 5</span><br><span class="line">12-&gt;16-&gt;41-&gt;38-&gt;2 flow: 3</span><br><span class="line">Flow :284/284 Cost: 1967/2160</span><br></pre></td></tr></table></figure>
+
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>我用多源多汇最小费用最大流+启发式算法来解决这个NP hard问题。</p>
+<h3 id="2017-04-25-20-25"><a href="#2017-04-25-20-25" class="headerlink" title="2017-04-25 20:25"></a>2017-04-25 20:25</h3><p>现在来更新思路可能有点晚了，由于复赛成绩不理想，我就说说我初赛是怎么做的吧。</p>
+<p>初赛代码：<a target="_blank" rel="noopener" href="https://github.com/netcan/2017-HUAWEI-Codecraft/releases/tag/1.0">https://github.com/netcan/2017-HUAWEI-Codecraft/releases/tag/1.0</a></p>
+<p>启发式我试过模拟退火、遗传算法、粒子群算法、禁忌搜索，最终选择了<strong>遗传模拟退火</strong>算法相结合来实现。</p>
+<p>先说说初始状态，最后我们选择对<strong>直连</strong>状态进行<strong>删点</strong>作为初始状态，删点按照消费节点流量需求从小到大删，如果删了费用变小就删，否则不删，直到处理完所有消费节点，得到初始状态。</p>
+<p>接下来的是<code>遗传模拟退火</code>算法，可以参考《现代优化计算方法（第二版）》第4.5节。</p>
+<p>遗传用<code>bitset</code>进行<code>01</code>编码，长度为网络节点数量，0表示不放，1表示放。 </p>
+<ol>
+<li>首先初始化种群数$MAXPOP$、温度$t_0$，迭代次数$k = 0$，我只有一条个体是初始状态，其他都是随机。</li>
+<li>进行模拟退火阶段，遍历种群中的个体$s_i$，计算费用$f(i)$，生成新的状态$s_j$（寻找邻域内的状态），计算新状态的费用$f(j)$，接受概率为<br>$$<br>Accept(s_j) = \min (1, exp(-\dfrac{f(j) - f(i)}{t_k}))<br>$$<br>若接受则作为新种群个体$s_j$，否则丢弃，用回$s_i$，同时更新最小费用$f_{min} = \min(f_i, f_j, f_{min})$。这个阶段遍历完后，新种群数应为$MAXPOP$。</li>
+<li>在新种群中，遍历各个个体，计算其适应度：
+$$
+fitness_i(t_k) = exp(-\dfrac{f(i)-f_{min}}{t_k})
+$$
+</li>
+<li>然后按照轮盘赌进行选择、交叉、变异操作，最终得到一个种群，将这个种群作为步骤2的种群，更新温度$t_{k+1} = t_k \cdot delta$，更新$f_{min} = \infty$，执行步骤二。</li>
+</ol>
+<p>当温度达到最低温度，或者时间到了，输出整个过程中的最优可行解。</p>
+<p>关于退火中选择的邻域状态，我是从当前状态，随机选一个点$u$，然后在随机选这个点的邻接点$v$，将当前状态的$u$点改成$v$点，作为新的状态。形象点来说就是选一个点移动到它下一个点。</p>
+
+    
+  </div>
+
+</article>
+
+
+   
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2017/03/17/Linux%E5%A4%9A%E6%98%BE%E7%A4%BA%E5%99%A8%E9%85%8D%E5%90%88i3wm%E7%AA%97%E5%8F%A3%E7%AE%A1%E7%90%86%E5%99%A8/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2017/05/12/%E3%80%8AEffective-Modern-C-%E3%80%8B%E7%AC%AC%E4%B8%80%E7%AB%A0Deducing-Types/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '893a4103795fc66cd8e7',
+  clientSecret: '35c92c3dca938831b67dc22e46d64bc9073ebacf',
+  repo: 'netcan.github.io',
+  owner: 'Netcan',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: md5(location.pathname),
+  admin: ['Netcan'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>

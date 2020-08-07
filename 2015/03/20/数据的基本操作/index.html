@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>数据的基本操作 | Netcan on Programming</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="MySQL,数据库," />
+  
+
+  <meta name="description" content="插入数据：插入一条数据INSERT INTO table_name(column_list) VALUES(value_list); 先创建一张数据表： mysql&gt; create table person     -&gt; (     -&gt; id int unsigned not null auto_increment,     -&gt; name char(40) not nu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据的基本操作">
+<meta property="og:url" content="https://netcan.github.io/2015/03/20/%E6%95%B0%E6%8D%AE%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/index.html">
+<meta property="og:site_name" content="Netcan on Programming">
+<meta property="og:description" content="插入数据：插入一条数据INSERT INTO table_name(column_list) VALUES(value_list); 先创建一张数据表： mysql&gt; create table person     -&gt; (     -&gt; id int unsigned not null auto_increment,     -&gt; name char(40) not nu">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2015-03-20T06:45:24.000Z">
+<meta property="article:modified_time" content="2015-03-20T06:45:24.000Z">
+<meta property="article:author" content="Netcan">
+<meta property="article:tag" content="MySQL">
+<meta property="article:tag" content="数据库">
+<meta name="twitter:card" content="summary">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/personal-style.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-174901164-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d2c292719a76d8c0fa7f9874379cfd25";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 5.0.0"></head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">ROOT</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E6%95%B0%E6%8D%AE%EF%BC%9A"><span class="toc-text">插入数据：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E4%B8%80%E6%9D%A1%E6%95%B0%E6%8D%AE"><span class="toc-text">插入一条数据</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E5%A4%9A%E6%9D%A1%E6%95%B0%E6%8D%AE%EF%BC%9A"><span class="toc-text">插入多条数据：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0%E6%95%B0%E6%8D%AE"><span class="toc-text">更新数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E6%95%B0%E6%8D%AE"><span class="toc-text">删除数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2"><span class="toc-text">查询</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E6%95%B0%E6%8D%AE"><span class="toc-text">查询数据</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%A6IN%E5%85%B3%E9%94%AE%E5%AD%97%E6%9F%A5%E8%AF%A2"><span class="toc-text">带IN关键字查询</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%A6BETWEEN-AND%E7%9A%84%E8%8C%83%E5%9B%B4%E6%9F%A5%E8%AF%A2"><span class="toc-text">带BETWEEN AND的范围查询</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%A6LIKE%E7%9A%84%E5%AD%97%E7%AC%A6%E5%8C%B9%E9%85%8D%E6%9F%A5%E8%AF%A2"><span class="toc-text">带LIKE的字符匹配查询</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E7%A9%BA%E5%80%BC"><span class="toc-text">查询空值</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%A6AND%E7%9A%84%E5%A4%9A%E6%9D%A1%E4%BB%B6%E6%9F%A5%E8%AF%A2"><span class="toc-text">带AND的多条件查询</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%A6OR%E7%9A%84%E5%A4%9A%E6%9D%A1%E4%BB%B6%E6%9F%A5%E8%AF%A2"><span class="toc-text">带OR的多条件查询</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E7%BB%93%E6%9E%9C%E4%B8%8D%E9%87%8D%E5%A4%8D"><span class="toc-text">查询结果不重复</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AF%B9%E6%9F%A5%E8%AF%A2%E7%BB%93%E6%9E%9C%E6%8E%92%E5%BA%8F"><span class="toc-text">对查询结果排序</span></a></li></ol></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-数据的基本操作" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">数据的基本操作</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2015.03.20</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Netcan</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h3 id="插入数据："><a href="#插入数据：" class="headerlink" title="插入数据："></a>插入数据：</h3><h4 id="插入一条数据"><a href="#插入一条数据" class="headerlink" title="插入一条数据"></a>插入一条数据</h4><pre><code>INSERT INTO table_name(column_list) VALUES(value_list);</code></pre>
+<p>先创建一张数据表：</p>
+<pre><code>mysql&gt; create table person
+    -&gt; (
+    -&gt; id int unsigned not null auto_increment,
+    -&gt; name char(40) not null default &#39;x&#39;,
+    -&gt; age int not null default 0,
+    -&gt; info char(50) null,
+    -&gt; primary key(id)
+    -&gt; );
+Query OK, 0 rows affected (0.13 sec)</code></pre>
+<p>然后插入数据：</p>
+<a id="more"></a>
+
+<pre><code>mysql&gt; insert into person(id,name,age,info)
+    -&gt; values(1,&#39;Green&#39;,21,&#39;Lawyer&#39;);
+Query OK, 1 row affected (0.08 sec)
+
+mysql&gt; insert into person(age,name,id,info)
+    -&gt; values(22,&#39;Suse&#39;,2,&#39;dancer&#39;);
+Query OK, 1 row affected (0.06 sec)
+
+mysql&gt; insert into person
+    -&gt; values(3,&#39;Mary&#39;,24,&#39;Musicican&#39;);
+Query OK, 1 row affected (0.06 sec)
+
+mysql&gt; insert into person(name,age,info)
+    -&gt; values(&#39;Willam&#39;,20,&#39;sports man&#39;);
+Query OK, 1 row affected (0.06 sec)
+
+mysql&gt; insert into person(name,age)
+    -&gt; values(&#39;Laura&#39;,25);
+Query OK, 1 row affected (0.10 sec)</code></pre>
+<p>最后查看已插入的数据：</p>
+<pre><code>mysql&gt; select * from person;
++----+--------+-----+------------+
+| id | name   | age | info       |
++----+--------+-----+------------+
+|  1 | Green  |  21 | Lawyer     |
+|  2 | Suse   |  22 | dancer     |
+|  3 | Mary   |  24 | Musicican  |
+|  4 | Willam |  20 | sports man |
+|  5 | Laura  |  25 | NULL       |
++----+--------+-----+------------+
+5 rows in set (0.00 sec)</code></pre>
+<h4 id="插入多条数据："><a href="#插入多条数据：" class="headerlink" title="插入多条数据："></a>插入多条数据：</h4><pre><code>INSERT INTO table_name(column_list) VALUES(value_list1),(value_list2),...,(value_listn);</code></pre>
+<p>插入如下多条数据：</p>
+<pre><code>mysql&gt; insert into person(name,age,info)
+    -&gt; values(&#39;Evans&#39;,27,&#39;secretary&#39;),
+    -&gt; (&#39;Dale&#39;,22,&#39;cook&#39;),
+    -&gt; (&#39;Edison&#39;,28,&#39;singer&#39;);
+Query OK, 3 rows affected (0.06 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql&gt; insert into person
+    -&gt; values(9,&#39;Harry&#39;,21,&#39;magician&#39;),
+    -&gt; (NULL,&#39;Harriet&#39;,19,&#39;pianist&#39;);
+Query OK, 2 rows affected (0.06 sec)
+Records: 2  Duplicates: 0  Warnings: 0</code></pre>
+<p>最后查看已插入数据：</p>
+<pre><code>mysql&gt; select * from person;
++----+---------+-----+------------+
+| id | name    | age | info       |
++----+---------+-----+------------+
+|  1 | Green   |  21 | Lawyer     |
+|  2 | Suse    |  22 | dancer     |
+|  3 | Mary    |  24 | Musicican  |
+|  4 | Willam  |  20 | sports man |
+|  5 | Laura   |  25 | NULL       |
+|  6 | Evans   |  27 | secretary  |
+|  7 | Dale    |  22 | cook       |
+|  8 | Edison  |  28 | singer     |
+|  9 | Harry   |  21 | magician   |
+| 10 | Harriet |  19 | pianist    |
++----+---------+-----+------------+
+10 rows in set (0.00 sec)</code></pre>
+<h3 id="更新数据"><a href="#更新数据" class="headerlink" title="更新数据"></a>更新数据</h3><pre><code>UPDATE table_name SET column_name1=value1,column_name2=value2,...,column_namen=valuen WHERE(condition);</code></pre>
+<p>比如id=10的数据，</p>
+<pre><code>mysql&gt; select * from person where id=10;
++----+---------+-----+---------+
+| id | name    | age | info    |
++----+---------+-----+---------+
+| 10 | Harriet |  19 | pianist |
++----+---------+-----+---------+
+1 row in set (0.09 sec)</code></pre>
+<p>更新该数据，</p>
+<pre><code>mysql&gt; update person set age=15,name=&#39;LiMing&#39; where id=10;
+Query OK, 1 row affected (0.06 sec)
+Rows matched: 1  Changed: 1  Warnings: 0</code></pre>
+<p>检查更新后，</p>
+<pre><code>mysql&gt; select * from person where id=10;
++----+--------+-----+---------+
+| id | name   | age | info    |
++----+--------+-----+---------+
+| 10 | LiMing |  15 | pianist |
++----+--------+-----+---------+
+1 row in set (0.00 sec)</code></pre>
+<p>比如将age值为19到22的数据将info字段值改为student，</p>
+<pre><code>mysql&gt; update person set info=&#39;student&#39; where age between 19 and 22;
+Query OK, 5 rows affected (0.03 sec)
+Rows matched: 5  Changed: 5  Warnings: 0</code></pre>
+<p>最后检查，</p>
+<pre><code>mysql&gt; select * from person where age between 19 and 22;
++----+--------+-----+---------+
+| id | name   | age | info    |
++----+--------+-----+---------+
+|  1 | Green  |  21 | student |
+|  2 | Suse   |  22 | student |
+|  4 | Willam |  20 | student |
+|  7 | Dale   |  22 | student |
+|  9 | Harry  |  21 | student |
++----+--------+-----+---------+
+5 rows in set (0.00 sec)</code></pre>
+<h3 id="删除数据"><a href="#删除数据" class="headerlink" title="删除数据"></a>删除数据</h3><pre><code>DELETE FROM table_name [WHERE &lt;condition&gt;];</code></pre>
+<p>删除id=10的记录。</p>
+<pre><code>mysql&gt; delete from person where id=10;
+Query OK, 1 row affected (0.08 sec)</code></pre>
+<p>删除age在19到22之间的数据。</p>
+<pre><code>mysql&gt; delete from person where age between 19 and 22;
+Query OK, 5 rows affected (0.09 sec)</code></pre>
+<p>看看剩余数据：</p>
+<pre><code>mysql&gt; select * from person;
++----+--------+-----+-----------+
+| id | name   | age | info      |
++----+--------+-----+-----------+
+|  3 | Mary   |  24 | Musicican |
+|  5 | Laura  |  25 | NULL      |
+|  6 | Evans  |  27 | secretary |
+|  8 | Edison |  28 | singer    |
++----+--------+-----+-----------+
+4 rows in set (0.00 sec)</code></pre>
+<p>删除全部数据，</p>
+<pre><code>mysql&gt; delete from person;
+Query OK, 4 rows affected (0.06 sec)</code></pre>
+<p>最后数据为空。</p>
+<pre><code>mysql&gt; select * from person;
+Empty set (0.00 sec)</code></pre>
+<h3 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h3><h4 id="查询数据"><a href="#查询数据" class="headerlink" title="查询数据"></a>查询数据</h4><pre><code>SELECT &#123;*|字段列表&#125;
+[
+        FROM &lt;表1&gt;,&lt;表2&gt;,...
+        [WHERE &lt;表达式&gt;]
+        [GROUP BY &lt;group by definition&gt;]
+        [HAVING &lt;expression&gt;[&#123;&lt;operator&gt;&lt;expression&gt;&#125;...]]
+        [ORDER BY &lt;order by definition&gt;]    （ASC升序（可省），DESC降序）
+        [LIMIT [&lt;offest&gt;,]&lt;row count&gt;]
+];</code></pre>
+<p>重新创建个数据表，</p>
+<pre><code>mysql&gt; create table fruits
+    -&gt; (
+    -&gt; f_id char(10) not null,
+    -&gt; s_id int not null,
+    -&gt; f_name char(255) not null,
+    -&gt; f_price decimal(8,2) not null,
+    -&gt; primary key(f_id)
+    -&gt; );
+Query OK, 0 rows affected (0.13 sec)</code></pre>
+<p>插入一些数据，</p>
+<pre><code>mysql&gt; insert into fruits(f_id,s_id,f_name,f_price)
+    -&gt; values(&#39;a1&#39;,101,&#39;apple&#39;,5.2),
+    -&gt; (&#39;b1&#39;,101,&#39;blackberry&#39;,10.2),
+    -&gt; (&#39;bs1&#39;,102,&#39;orange&#39;,11.2),
+    -&gt; (&#39;bs2&#39;,105,&#39;melon&#39;,8.2),
+    -&gt; (&#39;t1&#39;,102,&#39;banana&#39;,10.3),
+    -&gt; (&#39;t2&#39;,102,&#39;grape&#39;,5.3),
+    -&gt; (&#39;o2&#39;,103,&#39;coconut&#39;,9.2),
+    -&gt; (&#39;c0&#39;,101,&#39;cherry&#39;,3.2),
+    -&gt; (&#39;a2&#39;,103,&#39;apricot&#39;,2.2),
+    -&gt; (&#39;l2&#39;,104,&#39;lemon&#39;,6.4),
+    -&gt; (&#39;b2&#39;,104,&#39;berry&#39;,7.6),
+    -&gt; (&#39;m1&#39;,106,&#39;mango&#39;,15.6),
+    -&gt; (&#39;m2&#39;,105,&#39;xbabay&#39;,2.6),
+    -&gt; (&#39;t4&#39;,107,&#39;xbababa&#39;,3.6),
+    -&gt; (&#39;m3&#39;,105,&#39;xxtt&#39;,11.6),
+    -&gt; (&#39;b5&#39;,107,&#39;xxxx&#39;,3.6);
+Query OK, 16 rows affected (0.06 sec)
+Records: 16  Duplicates: 0  Warnings: 0</code></pre>
+<p>查询f_id和f_name字段的数据，</p>
+<pre><code>mysql&gt; select f_id,f_name from fruits;
++------+------------+
+| f_id | f_name     |
++------+------------+
+| a1   | apple      |
+| a2   | apricot    |
+| b1   | blackberry |
+| b2   | berry      |
+| b5   | xxxx       |
+| bs1  | orange     |
+| bs2  | melon      |
+| c0   | cherry     |
+| l2   | lemon      |
+| m1   | mango      |
+| m2   | xbabay     |
+| m3   | xxtt       |
+| o2   | coconut    |
+| t1   | banana     |
+| t2   | grape      |
+| t4   | xbababa    |
++------+------------+
+16 rows in set (0.00 sec)</code></pre>
+<p>查询价格小于10元的水果的名称和价格，</p>
+<pre><code>mysql&gt; select f_name,f_price from fruits where f_price &lt; 10;
++---------+---------+
+| f_name  | f_price |
++---------+---------+
+| apple   |    5.20 |
+| apricot |    2.20 |
+| berry   |    7.60 |
+| xxxx    |    3.60 |
+| melon   |    8.20 |
+| cherry  |    3.20 |
+| lemon   |    6.40 |
+| xbabay  |    2.60 |
+| coconut |    9.20 |
+| grape   |    5.30 |
+| xbababa |    3.60 |
++---------+---------+
+11 rows in set (0.00 sec)</code></pre>
+<h4 id="带IN关键字查询"><a href="#带IN关键字查询" class="headerlink" title="带IN关键字查询"></a>带IN关键字查询</h4><p>在where子句中，IN关键字用来查询满足指定条件范围内的记录。</p>
+<p>查询s_id为101和103的记录，</p>
+<pre><code>mysql&gt; select s_id,f_name,f_price from fruits where s_id in(101,103);
++------+------------+---------+
+| s_id | f_name     | f_price |
++------+------------+---------+
+|  101 | apple      |    5.20 |
+|  103 | apricot    |    2.20 |
+|  101 | blackberry |   10.20 |
+|  101 | cherry     |    3.20 |
+|  103 | coconut    |    9.20 |
++------+------------+---------+
+5 rows in set (0.00 sec)</code></pre>
+<p>可以用NOT来检索不在范围内的记录。</p>
+<p>查询所有s_id不等于101和105的记录。</p>
+<pre><code>mysql&gt; select s_id,f_name,f_price from fruits where s_id not in(101,105);
++------+---------+---------+
+| s_id | f_name  | f_price |
++------+---------+---------+
+|  103 | apricot |    2.20 |
+|  104 | berry   |    7.60 |
+|  107 | xxxx    |    3.60 |
+|  102 | orange  |   11.20 |
+|  104 | lemon   |    6.40 |
+|  106 | mango   |   15.60 |
+|  103 | coconut |    9.20 |
+|  102 | banana  |   10.30 |
+|  102 | grape   |    5.30 |
+|  107 | xbababa |    3.60 |
++------+---------+---------+
+10 rows in set (0.00 sec)</code></pre>
+<h4 id="带BETWEEN-AND的范围查询"><a href="#带BETWEEN-AND的范围查询" class="headerlink" title="带BETWEEN AND的范围查询"></a>带BETWEEN AND的范围查询</h4><p>在where子句中，BETWEEN AND可以查询某个区间的值，需要两个端点值。</p>
+<p>查询价格在2.00元到10.5元之间的水果名称和价格，</p>
+<pre><code>mysql&gt; select f_name,f_price from fruits where f_price between 2.00 and 10.5;
++------------+---------+
+| f_name     | f_price |
++------------+---------+
+| apple      |    5.20 |
+| apricot    |    2.20 |
+| blackberry |   10.20 |
+| berry      |    7.60 |
+| xxxx       |    3.60 |
+| melon      |    8.20 |
+| cherry     |    3.20 |
+| lemon      |    6.40 |
+| xbabay     |    2.60 |
+| coconut    |    9.20 |
+| banana     |   10.30 |
+| grape      |    5.30 |
+| xbababa    |    3.60 |
++------------+---------+
+13 rows in set (0.00 sec)</code></pre>
+<h4 id="带LIKE的字符匹配查询"><a href="#带LIKE的字符匹配查询" class="headerlink" title="带LIKE的字符匹配查询"></a>带LIKE的字符匹配查询</h4><p>在where子句中，LIKE的字符匹配查询，%通配符，匹配任意长度字符，_匹配单个任意字符</p>
+<p>查找所有以b开头，以y结尾的水果名称。</p>
+<pre><code>mysql&gt; select f_name from fruits where f_name like &#39;b%y&#39;;
++------------+
+| f_name     |
++------------+
+| blackberry |
+| berry      |
++------------+
+2 rows in set (0.00 sec)</code></pre>
+<h4 id="查询空值"><a href="#查询空值" class="headerlink" title="查询空值"></a>查询空值</h4><p>在where子句中，IS NULL语句可以查询空值，IS NOT NULL 查询非空值。</p>
+<p>例如查询水果名称不为空的值。</p>
+<pre><code>mysql&gt; select f_name from fruits where f_name is not null;
++------------+
+| f_name     |
++------------+
+| apple      |
+| apricot    |
+| blackberry |
+| berry      |
+| xxxx       |
+| orange     |
+| melon      |
+| cherry     |
+| lemon      |
+| mango      |
+| xbabay     |
+| xxtt       |
+| coconut    |
+| banana     |
+| grape      |
+| xbababa    |
++------------+
+16 rows in set (0.00 sec)</code></pre>
+<h4 id="带AND的多条件查询"><a href="#带AND的多条件查询" class="headerlink" title="带AND的多条件查询"></a>带AND的多条件查询</h4><p>在where子句中，可以用AND连接多个条件，当全部满足条件的值才输出。</p>
+<p>查询s_id=101并且水果价格大于5的记录价格和名称，</p>
+<pre><code>mysql&gt; select f_name,f_price from fruits where s_id=101 and f_price&gt;5;
++------------+---------+
+| f_name     | f_price |
++------------+---------+
+| apple      |    5.20 |
+| blackberry |   10.20 |
++------------+---------+
+2 rows in set (0.00 sec)</code></pre>
+<h4 id="带OR的多条件查询"><a href="#带OR的多条件查询" class="headerlink" title="带OR的多条件查询"></a>带OR的多条件查询</h4><p>在where子句中，可以用OR连接多个条件，当满足其中某个条件的值都输出。</p>
+<p>查询s_id=101或者s_id=103的水果名称和价格，</p>
+<pre><code>mysql&gt; select s_id,f_name,f_price from fruits where s_id=101 or s_id=103;
++------+------------+---------+
+| s_id | f_name     | f_price |
++------+------------+---------+
+|  101 | apple      |    5.20 |
+|  103 | apricot    |    2.20 |
+|  101 | blackberry |   10.20 |
+|  101 | cherry     |    3.20 |
+|  103 | coconut    |    9.20 |
++------+------------+---------+
+5 rows in set (0.00 sec)</code></pre>
+<h4 id="查询结果不重复"><a href="#查询结果不重复" class="headerlink" title="查询结果不重复"></a>查询结果不重复</h4><p>在SELECT语句中使用SELECT DISTINCT可以达到效果。</p>
+<p>在fruits中查询s_id的值，</p>
+<pre><code>mysql&gt; select s_id from fruits;
++------+
+| s_id |
++------+
+|  101 |
+|  103 |
+|  101 |
+|  104 |
+|  107 |
+|  102 |
+|  105 |
+|  101 |
+|  104 |
+|  106 |
+|  105 |
+|  105 |
+|  103 |
+|  102 |
+|  102 |
+|  107 |
++------+
+16 rows in set (0.00 sec)</code></pre>
+<p>不重复，</p>
+<pre><code>mysql&gt; select distinct s_id from fruits;
++------+
+| s_id |
++------+
+|  101 |
+|  103 |
+|  104 |
+|  107 |
+|  102 |
+|  105 |
+|  106 |
++------+
+7 rows in set (0.00 sec)</code></pre>
+<h4 id="对查询结果排序"><a href="#对查询结果排序" class="headerlink" title="对查询结果排序"></a>对查询结果排序</h4><p>查询fruits中的s_id和f_name和f_price字段，s_id升序，f_price降序。</p>
+<pre><code>mysql&gt; select s_id,f_name,f_price from fruits order by s_id,f_price desc;
++------+------------+---------+
+| s_id | f_name     | f_price |
++------+------------+---------+
+|  101 | blackberry |   10.20 |
+|  101 | apple      |    5.20 |
+|  101 | cherry     |    3.20 |
+|  102 | orange     |   11.20 |
+|  102 | banana     |   10.30 |
+|  102 | grape      |    5.30 |
+|  103 | coconut    |    9.20 |
+|  103 | apricot    |    2.20 |
+|  104 | berry      |    7.60 |
+|  104 | lemon      |    6.40 |
+|  105 | xxtt       |   11.60 |
+|  105 | melon      |    8.20 |
+|  105 | xbabay     |    2.60 |
+|  106 | mango      |   15.60 |
+|  107 | xxxx       |    3.60 |
+|  107 | xbababa    |    3.60 |
++------+------------+---------+
+16 rows in set (0.00 sec)</code></pre>
+
+    
+  </div>
+
+</article>
+
+
+   
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2015/03/17/%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2015/03/21/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%A4%87%E4%BB%BD%E5%92%8C%E8%BF%98%E5%8E%9F/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '893a4103795fc66cd8e7',
+  clientSecret: '35c92c3dca938831b67dc22e46d64bc9073ebacf',
+  repo: 'netcan.github.io',
+  owner: 'Netcan',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: md5(location.pathname),
+  admin: ['Netcan'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>

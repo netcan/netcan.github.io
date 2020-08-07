@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>整数除以2的幂与右移的关系 | Netcan on Programming</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="C/C++,操作系统," />
+  
+
+  <meta name="description" content="整数除法与右移运算在C&#x2F;C++中进行除以2的幂的运算，学过计组的同学，可能会知道更高效的是进行右移运算，右移几位，相当于除以2的几次幂。 C&#x2F;C++中整数除法，去除小数部分，整数部分作为返回结果。 例如$6&#x2F;4&#x3D;1, -6&#x2F;4&#x3D;-1$ 这里$4&#x3D;2^2$，那么只要对一个数，右移2位，就相当于除以4了么？ 容易用如下代码验证： 12345#include &lt;stdio.h&gt;int mai">
+<meta property="og:type" content="article">
+<meta property="og:title" content="整数除以2的幂与右移的关系">
+<meta property="og:url" content="https://netcan.github.io/2017/01/18/%E6%95%B4%E6%95%B0%E9%99%A4%E4%BB%A52%E7%9A%84%E5%B9%82%E4%B8%8E%E5%8F%B3%E7%A7%BB%E7%9A%84%E5%85%B3%E7%B3%BB/index.html">
+<meta property="og:site_name" content="Netcan on Programming">
+<meta property="og:description" content="整数除法与右移运算在C&#x2F;C++中进行除以2的幂的运算，学过计组的同学，可能会知道更高效的是进行右移运算，右移几位，相当于除以2的几次幂。 C&#x2F;C++中整数除法，去除小数部分，整数部分作为返回结果。 例如$6&#x2F;4&#x3D;1, -6&#x2F;4&#x3D;-1$ 这里$4&#x3D;2^2$，那么只要对一个数，右移2位，就相当于除以4了么？ 容易用如下代码验证： 12345#include &lt;stdio.h&gt;int mai">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-01-18T10:14:10.000Z">
+<meta property="article:modified_time" content="2017-01-31T08:24:30.000Z">
+<meta property="article:author" content="Netcan">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="操作系统">
+<meta name="twitter:card" content="summary">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/personal-style.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-174901164-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d2c292719a76d8c0fa7f9874379cfd25";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 5.0.0"></head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">ROOT</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B4%E6%95%B0%E9%99%A4%E6%B3%95%E4%B8%8E%E5%8F%B3%E7%A7%BB%E8%BF%90%E7%AE%97"><span class="toc-text">整数除法与右移运算</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%B3%E7%A7%BB%E6%80%A7%E8%B4%A8%E8%AF%81%E6%98%8E%E4%B8%8E%E4%BC%98%E5%8C%96"><span class="toc-text">右移性质证明与优化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%81%E6%98%8E"><span class="toc-text">证明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%98%E5%8C%96"><span class="toc-text">优化</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E5%99%A8%E8%A1%8C%E4%B8%BA"><span class="toc-text">编译器行为</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-整数除以2的幂与右移的关系" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">整数除以2的幂与右移的关系</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2017.01.18</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Netcan</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h2 id="整数除法与右移运算"><a href="#整数除法与右移运算" class="headerlink" title="整数除法与右移运算"></a>整数除法与右移运算</h2><p>在C/C++中进行除以2的幂的运算，学过计组的同学，可能会知道更高效的是进行右移运算，右移几位，相当于除以2的几次幂。</p>
+<p>C/C++中整数除法，去除小数部分，整数部分作为返回结果。</p>
+<p>例如$6/4=1, -6/4=-1$</p>
+<p>这里$4=2^2$，那么只要对一个数，右移2位，就相当于除以4了么？</p>
+<p>容易用如下代码验证：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n%d\n&quot;</span>, <span class="number">6</span>&gt;&gt;<span class="number">2</span>, <span class="number">-6</span>&gt;&gt;<span class="number">2</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+<p>输出为</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1</span><br><span class="line">-2</span><br></pre></td></tr></table></figure>
+
+<p>显然当一个数为正数的时候，结果是正确的；但是当为负数的时候，貌似就不对了，这里可以多测试几组值：</p>
+<table>
+<thead>
+<tr>
+<th align="center">k</th>
+<th align="center">&gt;&gt; k (Binary)</th>
+<th align="center">Decimal</th>
+<th align="center">12340/$2^k$</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">0</td>
+<td align="center">0011000000110100</td>
+<td align="center">12340</td>
+<td align="center">12340.0</td>
+</tr>
+<tr>
+<td align="center">1</td>
+<td align="center">0001100000011010</td>
+<td align="center">6170</td>
+<td align="center">6170.0</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center">0000001100000011</td>
+<td align="center">771</td>
+<td align="center">771.25</td>
+</tr>
+<tr>
+<td align="center">8</td>
+<td align="center">0000000000110000</td>
+<td align="center">48</td>
+<td align="center">48.203125</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="center">k</th>
+<th align="center">&gt;&gt; k (Binary)</th>
+<th align="center">Decimal</th>
+<th align="center">-12340/$2^k$</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">0</td>
+<td align="center">1100111111001100</td>
+<td align="center">−12340</td>
+<td align="center">−12340.0</td>
+</tr>
+<tr>
+<td align="center">1</td>
+<td align="center">1110011111100110</td>
+<td align="center">−6170</td>
+<td align="center">−6170.0</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center">1111110011111100</td>
+<td align="center">−772</td>
+<td align="center">−771.25</td>
+</tr>
+<tr>
+<td align="center">8</td>
+<td align="center">1111111111001111</td>
+<td align="center">−49</td>
+<td align="center">−48.203125</td>
+</tr>
+</tbody></table>
+<p>那么如何优化，使右移对正负数都有效呢？</p>
+<h2 id="右移性质证明与优化"><a href="#右移性质证明与优化" class="headerlink" title="右移性质证明与优化"></a>右移性质证明与优化</h2><p>从上面2组数据中，我们可以看出右移结果为<strong>向下</strong>取整，即$x>>k = \lfloor \dfrac{x}{2^k} \rfloor$，如$12340>>4 = \lfloor \dfrac{12340}{2^4} \rfloor = \lfloor 771.25 \rfloor = 771$，$-12340>>4 = \lfloor \dfrac{-12340}{2^4} \rfloor = \lfloor -771.25 \rfloor = -772 \neq -771 = \lceil -771.25 \rceil$</p>
+<p>那么，若要代替除法，<strong>当为正数的时候，应该向下取整；当为负数的时候，应该向上取整。</strong></p>
+<h3 id="证明"><a href="#证明" class="headerlink" title="证明"></a>证明</h3><p>现在给出证明：<strong>证右移运算为向下取整。</strong></p>
+<p>假设x为$w$位整数，它的二进制表示如下：</p>
+
+$$x = [x_{w-1}, x_{w-2}, \cdots, x_0]$$
+
+
+<p>那么$x=\sum_{i=0}^{w-1}x_{i} \times 2^i$</p>
+<p>设</p>
+
+$$
+\begin{align}
+x' &= [x_{w-1}, x_{w-2}, \cdots, x_{w-k}] \\
+x'' &= [x_{k-1}, x_{k-2}, \cdots, x_{0}]
+\end{align}
+$$
+
+
+<p>根据公式可得</p>
+
+$$
+x'' = \sum_{i=0}^{k-1}x_{i} \times 2^i \in [0, 2^k)
+$$
+
+
+<p>已知一个数乘以$2^n$，相当于<strong>左移</strong>$n$位，那么有<br>$$ x=2^k x’ + x’’$$</p>
+<p>两边同时除以$2^k$可得：</p>
+
+$$
+\begin{align}
+\dfrac{x}{2^k} &= x' + \dfrac{x''}{2^k} \\
+\because x'' &\in [0, 2^k) \\
+\therefore \dfrac{x''}{2^k} &= 0\\
+\therefore \lfloor \dfrac{x}{2^k} \rfloor &= \lfloor x' + \dfrac{x''}{2^k}\rfloor = \lfloor x' \rfloor
+\end{align}
+$$
+
+
+<h3 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h3><p>已经证明了右移的性质，那么代替除法运算的时候，</p>
+<p><strong>当为正数的时候，应该向下取整；当为负数的时候，应该向上取整。</strong></p>
+<p>现在给出公式，<strong>向上</strong>取整转换为<strong>向下</strong>取整：<br>$$<br>\lceil \dfrac{x}{y} \rceil = \lfloor \dfrac{x+y-1}{y}\rfloor (y&gt;0)<br>$$</p>
+<p>举个例子：</p>
+
+$$
+\begin{align}
+\lceil \dfrac{6}{4} \rceil &= \lfloor \dfrac{9}{4}\rfloor = 2\\
+\lceil \dfrac{-6}{4} \rceil &= \lfloor \dfrac{-3}{4}\rfloor = -1
+\end{align}
+$$
+
+
+<p>证明：</p>
+<p>设$x=ky + r, 0\leq r&lt; y$，那么</p>
+
+$$
+左边 = \lceil \dfrac{x}{y} \rceil = \lceil \dfrac{ky+r}{y} \rceil = k+\lceil \dfrac{r}{y} \rceil = \left\{
+	\begin{align}
+	k, & r = 0 \\
+	k+1, & r \neq 0
+	\end{align}
+	\right.
+$$
+
+$$
+右边 = \lfloor \dfrac{x+y-1}{y}\rfloor = \lfloor \dfrac{ky+r+y-1}{y}\rfloor = k+\lfloor \dfrac{r+y-1}{y}\rfloor = \left\{
+	\begin{align}
+	k, & r = 0\\
+	k+1, & r \neq 0
+	\end{align}
+	\right.
+$$
+
+
+<p>也就是说，负数除以$2^k$，首先加上$2^k-1$，然后右移$k$位；而正数，直接右移$k$位。</p>
+<p>综上所述：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">result = (x&lt;<span class="number">0</span> ? x+(<span class="number">1</span>&lt;&lt;k)<span class="number">-1</span> : x) &gt;&gt; k</span><br></pre></td></tr></table></figure>
+
+<h2 id="编译器行为"><a href="#编译器行为" class="headerlink" title="编译器行为"></a>编译器行为</h2><p>有此可知，对一个数除以2的幂，是不能随随便便右移的，还需要判断正负的，那么编译器会不会帮我们优化呢？</p>
+<p>有如下代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">div</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> x/<span class="number">8</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对其进行汇编（<code>-O0</code>无优化）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ gcc -S -m32 -O0 div.c</span><br></pre></td></tr></table></figure>
+
+<p>截取如下汇编代码并注释：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">movl    8(%ebp), %eax    # 将x存入%eax</span><br><span class="line">leal    7(%eax), %edx    # 将x+7存入%edx</span><br><span class="line">testl    %eax, %eax        # 判断x的正负</span><br><span class="line">cmovs    %edx, %eax        # 若x&lt;0，将x+7存入%eax</span><br><span class="line">sarl    $3, %eax        # 算数右移3位</span><br></pre></td></tr></table></figure>
+
+<p>简而言之，上面代码首先将x存入eax寄存器，若x&lt;0，就将$x+2^3-1=x+7$存入eax寄存器，然后对eax进行算数右移3位，最后返回eax。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">result = (x&lt;<span class="number">0</span> ? x+(<span class="number">1</span>&lt;&lt;k)<span class="number">-1</span> : x) &gt;&gt; k</span><br></pre></td></tr></table></figure>
+
+<p>所以，编译器已经帮我们做好优化了，貌似没必要自己写右移来代替除法，这是个坑。</p>
+
+    
+  </div>
+
+</article>
+
+
+   
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2016/12/25/%E8%B0%88%E8%B0%88localhost/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2017/01/19/%E6%B1%82%E4%B8%8B%E4%B8%80%E4%B8%AA%E6%8E%92%E5%88%97%E6%95%B0/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '893a4103795fc66cd8e7',
+  clientSecret: '35c92c3dca938831b67dc22e46d64bc9073ebacf',
+  repo: 'netcan.github.io',
+  owner: 'Netcan',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: md5(location.pathname),
+  admin: ['Netcan'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>

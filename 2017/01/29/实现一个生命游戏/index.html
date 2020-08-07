@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>实现一个生命游戏 | Netcan on Programming</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="数学,Javascript," />
+  
+
+  <meta name="description" content="前几天在LeetCode上面遇到这么一个题目：Game of Life，给定一个初始pattern，求其下一个状态。 然后今天闲的蛋疼又用Javascript和canvas实现了一下，项目地址：https:&#x2F;&#x2F;github.com&#x2F;netcan&#x2F;gameOfLife，最后搞到博客上了，具体可看左栏。 操作方法：  鼠标右键暂停 鼠标中键清除所有细胞 鼠标左键添加细胞，最好在暂停状态下添加。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="实现一个生命游戏">
+<meta property="og:url" content="https://netcan.github.io/2017/01/29/%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%94%9F%E5%91%BD%E6%B8%B8%E6%88%8F/index.html">
+<meta property="og:site_name" content="Netcan on Programming">
+<meta property="og:description" content="前几天在LeetCode上面遇到这么一个题目：Game of Life，给定一个初始pattern，求其下一个状态。 然后今天闲的蛋疼又用Javascript和canvas实现了一下，项目地址：https:&#x2F;&#x2F;github.com&#x2F;netcan&#x2F;gameOfLife，最后搞到博客上了，具体可看左栏。 操作方法：  鼠标右键暂停 鼠标中键清除所有细胞 鼠标左键添加细胞，最好在暂停状态下添加。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-01-29T11:55:41.000Z">
+<meta property="article:modified_time" content="2017-02-06T06:36:55.000Z">
+<meta property="article:author" content="Netcan">
+<meta property="article:tag" content="数学">
+<meta property="article:tag" content="Javascript">
+<meta name="twitter:card" content="summary">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/personal-style.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-174901164-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d2c292719a76d8c0fa7f9874379cfd25";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 5.0.0"></head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">ROOT</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-实现一个生命游戏" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">实现一个生命游戏</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2017.01.29</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Netcan</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p>前几天在<code>LeetCode</code>上面遇到这么一个题目：<a target="_blank" rel="noopener" href="https://leetcode.com/problems/game-of-life/">Game of Life</a>，给定一个初始<code>pattern</code>，求其下一个状态。</p>
+<p>然后今天闲的蛋疼又用<code>Javascript</code>和<code>canvas</code>实现了一下，项目地址：<a target="_blank" rel="noopener" href="https://github.com/netcan/gameOfLife">https://github.com/netcan/gameOfLife</a>，最后搞到博客上了，具体可看左栏。</p>
+<p>操作方法：</p>
+<ul>
+<li>鼠标右键<strong>暂停</strong></li>
+<li>鼠标中键<strong>清除</strong>所有细胞</li>
+<li>鼠标左键<strong>添加</strong>细胞，最好在暂停状态下添加。</li>
+</ul>
+<a id="more"></a>
+<p>生命游戏规则很简单，在一个棋盘上面格子有细胞，细胞只有2种状态：生(1)或死(0)。每个细胞周围最多有8个空位，有以下4条规则：</p>
+<ul>
+<li>“人口过少”：任何活细胞如果活邻居少于2个，则死掉。</li>
+<li>“正常”：任何活细胞如果活邻居为2个或3个，则继续活。</li>
+<li>“人口过多”：任何活细胞如果活邻居大于3个，则死掉。</li>
+<li>“繁殖”：任何<strong>死细胞</strong>如果活邻居正好是3个，则活过来。</li>
+</ul>
+<p>这里我随机生成一个初始棋盘，然后运行一遍生命游戏，将其绘制出来，以此循环。考虑到节省空间，我把下一个状态存到棋盘的第二比特位上面，然后右移得到下一个状态。</p>
+<p>最终代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">var</span> ctx = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;canvas&#x27;</span>).getContext(<span class="string">&quot;2d&quot;</span>);</span><br><span class="line"><span class="keyword">var</span> bw = <span class="number">800</span>, bh = <span class="number">600</span>; <span class="comment">// 画布宽、高</span></span><br><span class="line"><span class="keyword">var</span> d = <span class="number">15</span>; <span class="comment">// 格子大小</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">randomColor</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;#&quot;</span>+(<span class="built_in">Math</span>.round((<span class="number">1</span>&lt;&lt;<span class="number">24</span>)*<span class="built_in">Math</span>.random())).toString(<span class="number">16</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">initBoard</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 初始化格子</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> x = <span class="number">0</span>; x&lt;=bw; x+=d) &#123;</span><br><span class="line">        ctx.moveTo(x, <span class="number">0</span>);</span><br><span class="line">        ctx.lineTo(x, bh);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> y = <span class="number">0</span>; y&lt;=bh; y+=d) &#123;</span><br><span class="line">        ctx.moveTo(<span class="number">0</span>, y);</span><br><span class="line">        ctx.lineTo(bw, y);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">drawBoard</span>(<span class="params">board, m, n</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 绘制格子</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>; i &lt; m; ++i) &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">var</span> j = <span class="number">0</span>; j &lt; n; ++j) &#123;</span><br><span class="line">            ctx.fillStyle = randomColor();</span><br><span class="line">            <span class="keyword">if</span>(board[i][j] &amp; <span class="number">0x1</span>)</span><br><span class="line">                ctx.fillRect(i*d, j*d, d, d);</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                ctx.clearRect(i*d, j*d, d, d);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ctx.stroke();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getNeighbors</span>(<span class="params">board, x, y, m, n</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> cnt = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> i=x<span class="number">-1</span>; i&lt;=x+<span class="number">1</span>; ++i)</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">var</span> j=y<span class="number">-1</span>; j&lt;=y+<span class="number">1</span>; ++j)</span><br><span class="line">            <span class="keyword">if</span>(i&gt;=<span class="number">0</span> &amp;&amp; j&gt;=<span class="number">0</span> &amp;&amp; i&lt;m &amp;&amp; j&lt;n) &#123;</span><br><span class="line">                <span class="keyword">if</span>((i != x || j != y)) cnt += board[i][j] &amp; <span class="number">0x1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">    <span class="keyword">return</span> cnt;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">gameOfLife</span>(<span class="params">board, m, n</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; m; ++i)</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> j = <span class="number">0</span>; j &lt; n; ++j) &#123;</span><br><span class="line">            <span class="keyword">var</span> nebs = getNeighbors(board, i, j, m, n);</span><br><span class="line">            <span class="comment">// console.log(&quot;(&quot;+i+&quot;, &quot;+j + &quot;): &quot; + nebs);</span></span><br><span class="line">            <span class="keyword">if</span>(nebs == <span class="number">2</span>) board[i][j] |= (board[i][j] &amp; <span class="number">0x1</span>) &lt;&lt; <span class="number">1</span>; <span class="comment">// 保持不变</span></span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(nebs == <span class="number">3</span>) board[i][j] |= <span class="number">0x2</span>; <span class="comment">// 增生</span></span><br><span class="line">            <span class="keyword">else</span> board[i][j] &amp;= <span class="number">0x1</span>; <span class="comment">// 死亡</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; m; ++i)</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> j = <span class="number">0</span>; j &lt; n; ++j)</span><br><span class="line">            board[i][j] &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">run</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 初始化数组</span></span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">typeof</span> <span class="built_in">this</span>.init == <span class="string">&#x27;undefined&#x27;</span>) &#123;</span><br><span class="line">        board = [];</span><br><span class="line">        m = <span class="built_in">parseInt</span>(bw/d);</span><br><span class="line">        n = <span class="built_in">parseInt</span>(bh/d);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; m; ++i) &#123;</span><br><span class="line">            board[i] = [];</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">var</span> j = <span class="number">0</span>; j &lt; n; ++j)</span><br><span class="line">                board[i][j] = <span class="built_in">Math</span>.round(<span class="built_in">Math</span>.random());</span><br><span class="line">                <span class="comment">// board[i][j] = 0;</span></span><br><span class="line">        &#125;</span><br><span class="line">        initBoard();</span><br><span class="line">        <span class="built_in">this</span>.init = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    gameOfLife(board, m, n);</span><br><span class="line">    drawBoard(board, m, n);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">setInterval</span>(<span class="string">&quot;run()&quot;</span>, <span class="number">400</span>);</span><br></pre></td></tr></table></figure>
+
+
+    
+  </div>
+
+</article>
+
+
+   
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2017/01/19/%E6%B1%82%E4%B8%8B%E4%B8%80%E4%B8%AA%E6%8E%92%E5%88%97%E6%95%B0/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2017/01/31/CSAPP%E7%AC%AC%E4%B8%89%E7%AB%A0%E6%80%BB%E7%BB%93%EF%BC%9AMachine-Level-Representation-of-Programs/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '893a4103795fc66cd8e7',
+  clientSecret: '35c92c3dca938831b67dc22e46d64bc9073ebacf',
+  repo: 'netcan.github.io',
+  owner: 'Netcan',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: md5(location.pathname),
+  admin: ['Netcan'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>

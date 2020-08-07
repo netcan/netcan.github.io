@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>求下一个排列数 | Netcan on Programming</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="数学," />
+  
+
+  <meta name="description" content="在LeetCode上遇到这么一个题：Next Permutation 意思就是给定一个序列，求下一个排列数。下一个排列数是指重排序列，使得下一个序列的字典序比当前序列要大，如果找不到，就返回最小字典序的那个序列。 要求是一步到位，不能分配多余的内存。 这个题貌似是要求实现C++的next_permutation函数，然后去瞄了一眼其实现：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="求下一个排列数">
+<meta property="og:url" content="https://netcan.github.io/2017/01/19/%E6%B1%82%E4%B8%8B%E4%B8%80%E4%B8%AA%E6%8E%92%E5%88%97%E6%95%B0/index.html">
+<meta property="og:site_name" content="Netcan on Programming">
+<meta property="og:description" content="在LeetCode上遇到这么一个题：Next Permutation 意思就是给定一个序列，求下一个排列数。下一个排列数是指重排序列，使得下一个序列的字典序比当前序列要大，如果找不到，就返回最小字典序的那个序列。 要求是一步到位，不能分配多余的内存。 这个题貌似是要求实现C++的next_permutation函数，然后去瞄了一眼其实现：">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-01-19T02:00:35.000Z">
+<meta property="article:modified_time" content="2017-01-19T02:25:55.000Z">
+<meta property="article:author" content="Netcan">
+<meta property="article:tag" content="数学">
+<meta name="twitter:card" content="summary">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/personal-style.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-174901164-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d2c292719a76d8c0fa7f9874379cfd25";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 5.0.0"></head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">ROOT</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-求下一个排列数" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">求下一个排列数</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2017.01.19</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Netcan</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p>在<code>LeetCode</code>上遇到这么一个题：<a target="_blank" rel="noopener" href="https://leetcode.com/problems/next-permutation/">Next Permutation</a></p>
+<p>意思就是给定一个序列，求下一个排列数。下一个排列数是指重排序列，使得下一个序列的字典序比当前序列要大，如果找不到，就返回最小字典序的那个序列。</p>
+<p>要求是一步到位，不能分配多余的内存。</p>
+<p>这个题貌似是要求实现C++的<code>next_permutation</code>函数，然后去瞄了一眼其实现：</p>
+<a id="more"></a>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">BidirIt</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">bool</span> <span class="title">next_permutation</span>(<span class="title">BidirIt</span> <span class="title">first</span>, <span class="title">BidirIt</span> <span class="title">last</span>)</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">if</span> (first == last) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    BidirIt i = last;</span><br><span class="line">    <span class="keyword">if</span> (first == --i) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">        BidirIt i1, i2;</span><br><span class="line"></span><br><span class="line">        i1 = i;</span><br><span class="line">        <span class="keyword">if</span> (*--i &lt; *i1) &#123;</span><br><span class="line">            i2 = last;</span><br><span class="line">            <span class="keyword">while</span> (!(*i &lt; *--i2))</span><br><span class="line">                ;</span><br><span class="line">            <span class="built_in">std</span>::iter_swap(i, i2);</span><br><span class="line">            <span class="built_in">std</span>::reverse(i1, last);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (i == first) &#123;</span><br><span class="line">            <span class="built_in">std</span>::reverse(first, last);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>看了代码貌似很简单，都能口算下一个排列数了= =</p>
+<p>思路很简单，就是</p>
+<ol>
+<li>从后往前找，如果找到一个数<code>x[i]</code>，使得<code>x[i] &lt; x[i+1]</code>，记下这个下标<code>i</code></li>
+<li>如果<code>i==0</code>，并且<code>x[0] &gt;= x[1]</code>，那么说明没有下一个排列数，即<strong>降序</strong>，那么就将其逆序得到升序序列，使得字典序最小。否则进入3</li>
+<li>然后又从后往前找，使得<code>x[i] &lt; x[j]</code>，记下这个下标<code>j</code>，交换<code>x[i]</code>与<code>x[j]</code>，并将<code>i</code>后面的数逆序。</li>
+</ol>
+<p>简要说明下，第一步是找出第一个可交换的位置<code>i</code>，第二步判断有没有下一个排列数。</p>
+<p>那么说明<code>i</code>后面的数都是<strong>降序</strong>的， 然后又从后往前找，找到一个数<code>x[j]</code>使得<code>x[i] &lt; x[j]</code>，这个<code>x[j]</code>即是<code>i</code>后面最小的一个大于<code>x[i]</code>的数。</p>
+<p>交换<code>x[i]</code>与<code>x[j]</code>，那么字典序会变大，因为<code>i</code>后面的数都是<strong>降序</strong>的，那么将其逆序得到升序，那么使得字典序最小，总而言之，就是求出一个最小的变大字典序序列。</p>
+<p>最后给出<code>AC</code>代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">nextPermutation</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">int</span> N = nums.size();</span><br><span class="line">            <span class="keyword">if</span>(!N || N == <span class="number">1</span>) <span class="keyword">return</span>;</span><br><span class="line">            <span class="keyword">int</span> i = N - <span class="number">2</span>, j = N<span class="number">-1</span>;</span><br><span class="line">            <span class="keyword">while</span>(i&gt;<span class="number">0</span> &amp;&amp; !(nums[i] &lt; nums[i+<span class="number">1</span>])) --i; <span class="comment">// 步骤1</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span>(i == <span class="number">0</span> &amp;&amp; !(nums[i] &lt; nums[i+<span class="number">1</span>])) reverse(nums.begin(), nums.end()); <span class="comment">// 步骤2</span></span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">while</span>(j &gt; i &amp;&amp; !(nums[i] &lt; nums[j])) --j; <span class="comment">// 步骤3</span></span><br><span class="line">                swap(nums[i], nums[j]);</span><br><span class="line">                reverse(nums.begin()+i+<span class="number">1</span>, nums.end());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+    
+  </div>
+
+</article>
+
+
+   
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2017/01/18/%E6%95%B4%E6%95%B0%E9%99%A4%E4%BB%A52%E7%9A%84%E5%B9%82%E4%B8%8E%E5%8F%B3%E7%A7%BB%E7%9A%84%E5%85%B3%E7%B3%BB/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2017/01/29/%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%94%9F%E5%91%BD%E6%B8%B8%E6%88%8F/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '893a4103795fc66cd8e7',
+  clientSecret: '35c92c3dca938831b67dc22e46d64bc9073ebacf',
+  repo: 'netcan.github.io',
+  owner: 'Netcan',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: md5(location.pathname),
+  admin: ['Netcan'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>
