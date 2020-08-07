@@ -103,4 +103,6 @@ theme: fexo
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
-  type: ''
+  type: git
+  repo: https://github.com/netcan/netcan.github.io.git
+  branch: gh-pages
