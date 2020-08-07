@@ -12,7 +12,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="计算机网络,点滴,经验," />
+    <meta name="keywords" content="点滴,经验,计算机网络," />
   
 
   <meta name="description" content="今天难得认真听了下课（因为今天才选上了课）：计算机网络。老师讲的还是比较有趣的，比如数据传输在海洋电缆中被鲨鱼咬断丢失，或者在空中被雷劈丢失，用水杯盖子打电话为啥打不出去因为没有底层支持，给我感觉讲得很慢，毕竟学校要求掌握的知识点比较少，可以啰嗦些。 但是我看了好几本教材，还有老师讲课顺序，无非是先介绍那几层结构（OSI结构）作用，然后就按照物理层-&gt;数据链路层-&gt;网络层（IP层）-&amp;">
@@ -25,9 +25,9 @@
 <meta property="article:published_time" content="2016-03-09T13:23:33.000Z">
 <meta property="article:modified_time" content="2016-09-24T14:18:45.000Z">
 <meta property="article:author" content="Netcan">
-<meta property="article:tag" content="计算机网络">
 <meta property="article:tag" content="点滴">
 <meta property="article:tag" content="经验">
+<meta property="article:tag" content="计算机网络">
 <meta name="twitter:card" content="summary">
 
   
@@ -450,5 +450,20 @@ gitalk.render('gitalk-container')
   }
 </script>
 
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>

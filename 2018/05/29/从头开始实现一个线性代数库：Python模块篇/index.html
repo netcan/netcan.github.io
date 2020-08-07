@@ -12,7 +12,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="C/C++,Python,数学,线性代数," />
+    <meta name="keywords" content="C/C++,数学,线性代数,Python," />
   
 
   <meta name="description" content="这两天用C&#x2F;C++实现了一下线性代数库的Python模块，大部分操作已经封装完成，剩下的慢慢补坑吧&#x3D; &#x3D; 关于线性代数库的一些算法实现，可以参考我的前一篇文章从头开始实现一个线性代数库：算法实现篇。现在主要总结一下如何用C&#x2F;C++编写Python模块，代码地址https:&#x2F;&#x2F;github.com&#x2F;netcan&#x2F;LinAlg&#x2F;tree&#x2F;master&#x2F;linalg.module。 先来看看效果： 12">
@@ -26,9 +26,9 @@
 <meta property="article:modified_time" content="2018-05-29T14:30:03.467Z">
 <meta property="article:author" content="Netcan">
 <meta property="article:tag" content="C&#x2F;C++">
-<meta property="article:tag" content="Python">
 <meta property="article:tag" content="数学">
 <meta property="article:tag" content="线性代数">
+<meta property="article:tag" content="Python">
 <meta name="twitter:card" content="summary">
 
   
@@ -514,5 +514,20 @@ gitalk.render('gitalk-container')
   }
 </script>
 
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>

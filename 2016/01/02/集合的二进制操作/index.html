@@ -12,7 +12,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="算法,数学," />
+    <meta name="keywords" content="数学,算法," />
   
 
   <meta name="description" content="集合与二进制前面的代码里（【开关问题】POJ 3276 3279 3185 1222）可以看到一些为了枚举所有状态用到了集合的整数表现与位操作。 虽然位操作枚举比较简单但是这种方法只能在元素比较少的情况下（20个左右）使用。 假设集合有$N$个元素，依次给它们编号$0, 1, \cdots, N-1$，由于每个元素在集合中只有两种状态：存在或者不存在。那么可以令相应二进制位来表示，存在则为1，否则">
@@ -25,8 +25,8 @@
 <meta property="article:published_time" content="2016-01-02T09:35:52.000Z">
 <meta property="article:modified_time" content="2017-02-07T06:21:22.000Z">
 <meta property="article:author" content="Netcan">
-<meta property="article:tag" content="算法">
 <meta property="article:tag" content="数学">
+<meta property="article:tag" content="算法">
 <meta name="twitter:card" content="summary">
 
   
@@ -549,5 +549,20 @@ gitalk.render('gitalk-container')
   }
 </script>
 
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>
