@@ -1,0 +1,2222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Netcan on Programming</title>
+  <icon>https://netcan.github.io/icon.png</icon>
+  <subtitle>Coding Life</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="https://netcan.github.io/"/>
+  <updated>2020-08-07T13:40:46.022Z</updated>
+  <id>https://netcan.github.io/</id>
+  
+  <author>
+    <name>Netcan</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>如何为Clang编译器写插件实现自动化重构</title>
+    <link href="https://netcan.github.io/2020/08/07/%E5%A6%82%E4%BD%95%E4%B8%BAClang%E7%BC%96%E8%AF%91%E5%99%A8%E5%86%99%E6%8F%92%E4%BB%B6%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E5%8C%96%E9%87%8D%E6%9E%84/"/>
+    <id>https://netcan.github.io/2020/08/07/%E5%A6%82%E4%BD%95%E4%B8%BAClang%E7%BC%96%E8%AF%91%E5%99%A8%E5%86%99%E6%8F%92%E4%BB%B6%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E5%8C%96%E9%87%8D%E6%9E%84/</id>
+    <published>2020-08-07T11:38:37.000Z</published>
+    <updated>2020-08-07T13:40:46.022Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;动机&quot;&gt;&lt;a href=&quot;#动机&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>如何优雅的实现C++编译期静态反射</title>
+    <link href="https://netcan.github.io/2020/08/01/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E7%9A%84%E5%AE%9E%E7%8E%B0C-%E7%BC%96%E8%AF%91%E6%9C%9F%E9%9D%99%E6%80%81%E5%8F%8D%E5%B0%84/"/>
+    <id>https://netcan.github.io/2020/08/01/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E7%9A%84%E5%AE%9E%E7%8E%B0C-%E7%BC%96%E8%AF%91%E6%9C%9F%E9%9D%99%E6%80%81%E5%8F%8D%E5%B0%84/</id>
+    <published>2020-08-01T10:49:31.000Z</published>
+    <updated>2020-08-01T12:23:06.831Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;部门请来了软件专家袁英杰咨询师指导我们软件开发，从中我也学到了很多姿势，在此记录下来宝贵的经验。苹果的mbp品控真是差劲，写这个东西把&lt;code&gt;LShift键&lt;/code&gt;按坏了，真是难受。&lt;/p&gt;
+&lt;h2 id=&quot;反射能做什么&quot;&gt;&lt;a href=&quot;#反射能做什么&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>用Rust写一个斗兽棋游戏</title>
+    <link href="https://netcan.github.io/2020/06/07/%E7%94%A8Rust%E5%86%99%E4%B8%80%E4%B8%AA%E6%96%97%E5%85%BD%E6%A3%8B%E6%B8%B8%E6%88%8F/"/>
+    <id>https://netcan.github.io/2020/06/07/%E7%94%A8Rust%E5%86%99%E4%B8%80%E4%B8%AA%E6%96%97%E5%85%BD%E6%A3%8B%E6%B8%B8%E6%88%8F/</id>
+    <published>2020-06-07T02:56:49.000Z</published>
+    <updated>2020-06-07T06:14:25.300Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;项目地址：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Github: &lt;a href=&quot;https://github.com/netcan/AnimalChess&quot;&gt;https://github.com/netcan/AnimalChess&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Crate.io:
+        
+      
+    
+    </summary>
+    
+    
+      <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="Rust" scheme="https://netcan.github.io/tags/Rust/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>从头开始写一个操作系统</title>
+    <link href="https://netcan.github.io/2018/07/11/%E4%BB%8E%E5%A4%B4%E5%BC%80%E5%A7%8B%E5%86%99%E4%B8%80%E4%B8%AA%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
+    <id>https://netcan.github.io/2018/07/11/%E4%BB%8E%E5%A4%B4%E5%BC%80%E5%A7%8B%E5%86%99%E4%B8%80%E4%B8%AA%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/</id>
+    <published>2018-07-11T03:57:49.000Z</published>
+    <updated>2018-07-11T05:23:20.221Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;在前几天生日之际，趁着心血来潮，打算实现一个操作系统，算是实现大学毕业的最后一个目标了，在入职的前的火车上，记录下来这几天的工作。&lt;/p&gt;
+&lt;p&gt;目前实现的部分有：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;从BIOS启动Bootloader&lt;/li&gt;
+&lt;li&gt;在Bootloader中利用
+        
+      
+    
+    </summary>
+    
+    
+      <category term="学习笔记" scheme="https://netcan.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>从头开始实现一个线性代数库：Python模块篇</title>
+    <link href="https://netcan.github.io/2018/05/29/%E4%BB%8E%E5%A4%B4%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E5%BA%93%EF%BC%9APython%E6%A8%A1%E5%9D%97%E7%AF%87/"/>
+    <id>https://netcan.github.io/2018/05/29/%E4%BB%8E%E5%A4%B4%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E5%BA%93%EF%BC%9APython%E6%A8%A1%E5%9D%97%E7%AF%87/</id>
+    <published>2018-05-29T09:56:03.000Z</published>
+    <updated>2018-05-29T14:30:03.467Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;这两天用C/C++实现了一下线性代数库的Python模块，大部分操作已经封装完成，剩下的慢慢补坑吧= =&lt;/p&gt;
+&lt;p&gt;关于线性代数库的一些算法实现，可以参考我的前一篇文章&lt;a
+        
+      
+    
+    </summary>
+    
+    
+      <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
+    
+      <category term="数学" scheme="https://netcan.github.io/tags/%E6%95%B0%E5%AD%A6/"/>
+    
+      <category term="线性代数" scheme="https://netcan.github.io/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/"/>
+    
+      <category term="Python" scheme="https://netcan.github.io/tags/Python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>从头开始实现一个线性代数库：算法实现篇</title>
+    <link href="https://netcan.github.io/2018/05/27/%E4%BB%8E%E5%A4%B4%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E5%BA%93%EF%BC%9A%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0%E7%AF%87/"/>
+    <id>https://netcan.github.io/2018/05/27/%E4%BB%8E%E5%A4%B4%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E5%BA%93%EF%BC%9A%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0%E7%AF%87/</id>
+    <published>2018-05-27T01:51:59.000Z</published>
+    <updated>2018-05-30T02:58:45.575Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;最近重新学习了一下线性代数，读完了《程序猿的数学3
+        
+      
+    
+    </summary>
+    
+    
+      <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
+    
+      <category term="数学" scheme="https://netcan.github.io/tags/%E6%95%B0%E5%AD%A6/"/>
+    
+      <category term="线性代数" scheme="https://netcan.github.io/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>python之数据挖掘</title>
+    <link href="https://netcan.github.io/2017/12/25/Python%E4%B9%8B%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98/"/>
+    <id>https://netcan.github.io/2017/12/25/Python%E4%B9%8B%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98/</id>
+    <published>2017-12-25T02:21:21.000Z</published>
+    <updated>2018-02-02T08:20:29.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;自用笔记，目前在看《Learning Data Mining with python 2nd
+        
+      
+    
+    </summary>
+    
+    
+      <category term="学习笔记" scheme="https://netcan.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="python" scheme="https://netcan.github.io/tags/python/"/>
+    
+      <category term="数据挖掘" scheme="https://netcan.github.io/tags/%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Python之爬虫学习</title>
+    <link href="https://netcan.github.io/2017/10/26/Python%E4%B9%8B%E7%88%AC%E8%99%AB%E5%AD%A6%E4%B9%A0/"/>
+    <id>https://netcan.github.io/2017/10/26/Python%E4%B9%8B%E7%88%AC%E8%99%AB%E5%AD%A6%E4%B9%A0/</id>
+    <published>2017-10-26T11:31:41.000Z</published>
+    <updated>2017-10-26T13:59:06.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;最近想做一个关于爬虫的项目，就学了一下Python爬虫方面的，把《Python Web Scraping
+        
+      
+    
+    </summary>
+    
+    
+      <category term="学习笔记" scheme="https://netcan.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="Python" scheme="https://netcan.github.io/tags/Python/"/>
+    
+      <category term="爬虫" scheme="https://netcan.github.io/tags/%E7%88%AC%E8%99%AB/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>近期状况</title>
+    <link href="https://netcan.github.io/2017/10/24/%E8%BF%91%E6%9C%9F%E7%8A%B6%E5%86%B5/"/>
+    <id>https://netcan.github.io/2017/10/24/%E8%BF%91%E6%9C%9F%E7%8A%B6%E5%86%B5/</id>
+    <published>2017-10-24T02:35:48.000Z</published>
+    <updated>2017-10-26T11:32:42.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;好久没有写博客了，趁着程序猿节写一下这段时间在忙什么吧。&lt;/p&gt;
+&lt;p&gt;昨天（10月23日）顺利签约上海华为研究所，岗位云计算，这也意味着找工作圆满结束了。&lt;/p&gt;
+&lt;p&gt;因为是通过参加华为软件精英挑战赛取得不错的名次，早在复赛即将开始的时候，就有工程师联系我们，关于比赛的
+        
+      
+    
+    </summary>
+    
+    
+      <category term="随笔" scheme="https://netcan.github.io/categories/%E9%9A%8F%E7%AC%94/"/>
+    
+    
+      <category term="点滴" scheme="https://netcan.github.io/tags/%E7%82%B9%E6%BB%B4/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>《Effective Modern C++》第三章笔记：Moving to Modern C++</title>
+    <link href="https://netcan.github.io/2017/07/22/%E3%80%8AEffective-Modern-C-%E3%80%8B%E7%AC%AC%E4%B8%89%E7%AB%A0Moving-to-Modern-C/"/>
+    <id>https://netcan.github.io/2017/07/22/%E3%80%8AEffective-Modern-C-%E3%80%8B%E7%AC%AC%E4%B8%89%E7%AB%A0Moving-to-Modern-C/</id>
+    <published>2017-07-22T07:49:17.000Z</published>
+    <updated>2017-07-23T08:07:28.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;这一章介绍了C++11/14的最新的基本特性。&lt;/p&gt;
+&lt;h2 id=&quot;Item-7-使用-和-创建对象的区别&quot;&gt;&lt;a href=&quot;#Item-7-使用-和-创建对象的区别&quot; class=&quot;headerlink&quot; title=&quot;Item 7:
+        
+      
+    
+    </summary>
+    
+    
+      <category term="学习笔记" scheme="https://netcan.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>微机原理与接口技术笔记</title>
+    <link href="https://netcan.github.io/2017/07/02/%E5%BE%AE%E6%9C%BA%E5%8E%9F%E7%90%86%E4%B8%8E%E6%8E%A5%E5%8F%A3%E6%8A%80%E6%9C%AF%E7%AC%94%E8%AE%B0/"/>
+    <id>https://netcan.github.io/2017/07/02/%E5%BE%AE%E6%9C%BA%E5%8E%9F%E7%90%86%E4%B8%8E%E6%8E%A5%E5%8F%A3%E6%8A%80%E6%9C%AF%E7%AC%94%E8%AE%B0/</id>
+    <published>2017-07-02T07:44:30.000Z</published>
+    <updated>2017-07-04T13:24:00.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;Q: 微处理器、微型计算机、微型计算机系统之间的区别于联系。&lt;/p&gt;
+&lt;p&gt;A:
+        
+      
+    
+    </summary>
+    
+    
+      <category term="学习笔记" scheme="https://netcan.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="微机原理" scheme="https://netcan.github.io/tags/%E5%BE%AE%E6%9C%BA%E5%8E%9F%E7%90%86/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>《Effective Modern C++》第二章笔记：auto</title>
+    <link href="https://netcan.github.io/2017/05/14/%E3%80%8AEffective-Modern-C-%E3%80%8B%E7%AC%AC%E4%BA%8C%E7%AB%A0auto/"/>
+    <id>https://netcan.github.io/2017/05/14/%E3%80%8AEffective-Modern-C-%E3%80%8B%E7%AC%AC%E4%BA%8C%E7%AB%A0auto/</id>
+    <published>2017-05-14T07:19:26.000Z</published>
+    <updated>2017-05-14T09:35:59.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;这章更加详细地介绍auto关键字。&lt;/p&gt;
+&lt;h2 id=&quot;Item-5-优先考虑使用auto来代替显式类型声明&quot;&gt;&lt;a href=&quot;#Item-5-优先考虑使用auto来代替显式类型声明&quot; class=&quot;headerlink&quot; title=&quot;Item 5:
+        
+      
+    
+    </summary>
+    
+    
+      <category term="学习笔记" scheme="https://netcan.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>《Effective Modern C++》第一章笔记：Deducing Types</title>
+    <link href="https://netcan.github.io/2017/05/12/%E3%80%8AEffective-Modern-C-%E3%80%8B%E7%AC%AC%E4%B8%80%E7%AB%A0Deducing-Types/"/>
+    <id>https://netcan.github.io/2017/05/12/%E3%80%8AEffective-Modern-C-%E3%80%8B%E7%AC%AC%E4%B8%80%E7%AB%A0Deducing-Types/</id>
+    <published>2017-05-12T01:25:59.000Z</published>
+    <updated>2017-05-14T09:36:00.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;这几天人工智能成绩出来了，还是开卷考试，竟然挂掉了，真是意不意外。。。请导员查了一下平时分：卷面46/100，平时53/100，按经验来说，只要卷面过40，靠平时分还是能拉到及格的，以前平时分一般会给到90左右，这次真是吃了平时分的亏了。&lt;/p&gt;
+&lt;p&gt;回忆了一下，人工智能
+        
+      
+    
+    </summary>
+    
+    
+      <category term="学习笔记" scheme="https://netcan.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>2017华为软件精英挑战赛参赛心得</title>
+    <link href="https://netcan.github.io/2017/03/23/2017%E5%8D%8E%E4%B8%BA%E8%BD%AF%E4%BB%B6%E7%B2%BE%E8%8B%B1%E6%8C%91%E6%88%98%E8%B5%9B%E5%8F%82%E8%B5%9B%E5%BF%83%E5%BE%97/"/>
+    <id>https://netcan.github.io/2017/03/23/2017%E5%8D%8E%E4%B8%BA%E8%BD%AF%E4%BB%B6%E7%B2%BE%E8%8B%B1%E6%8C%91%E6%88%98%E8%B5%9B%E5%8F%82%E8%B5%9B%E5%BF%83%E5%BE%97/</id>
+    <published>2017-03-23T01:26:09.000Z</published>
+    <updated>2017-05-12T06:20:49.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;体验&quot;&gt;&lt;a href=&quot;#体验&quot; class=&quot;headerlink&quot; title=&quot;体验&quot;&gt;&lt;/a&gt;体验&lt;/h2&gt;&lt;h3 id=&quot;2017-04-25-20-18&quot;&gt;&lt;a href=&quot;#2017-04-25-20-18&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="随笔" scheme="https://netcan.github.io/categories/%E9%9A%8F%E7%AC%94/"/>
+    
+    
+      <category term="搜索" scheme="https://netcan.github.io/tags/%E6%90%9C%E7%B4%A2/"/>
+    
+      <category term="图论" scheme="https://netcan.github.io/tags/%E5%9B%BE%E8%AE%BA/"/>
+    
+      <category term="算法" scheme="https://netcan.github.io/tags/%E7%AE%97%E6%B3%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux多显示器配合i3wm窗口管理器</title>
+    <link href="https://netcan.github.io/2017/03/17/Linux%E5%A4%9A%E6%98%BE%E7%A4%BA%E5%99%A8%E9%85%8D%E5%90%88i3wm%E7%AA%97%E5%8F%A3%E7%AE%A1%E7%90%86%E5%99%A8/"/>
+    <id>https://netcan.github.io/2017/03/17/Linux%E5%A4%9A%E6%98%BE%E7%A4%BA%E5%99%A8%E9%85%8D%E5%90%88i3wm%E7%AA%97%E5%8F%A3%E7%AE%A1%E7%90%86%E5%99%A8/</id>
+    <published>2017-03-17T02:23:00.000Z</published>
+    <updated>2017-03-23T02:49:26.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;很久没写博客了，来更新下关于Linux方面的问题。&lt;/p&gt;
+&lt;h3 id=&quot;已知问题&quot;&gt;&lt;a href=&quot;#已知问题&quot; class=&quot;headerlink&quot; title=&quot;已知问题&quot;&gt;&lt;/a&gt;已知问题&lt;/h3&gt;&lt;p&gt;在Linux桌面环境下，使用多显示器会遇到很多bug，例如窗口菜单栏无法下拉，Chrome浏览器表单下拉框无法显示等等，头疼死了。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="随笔" scheme="https://netcan.github.io/categories/%E9%9A%8F%E7%AC%94/"/>
+    
+    
+      <category term="Linux" scheme="https://netcan.github.io/tags/Linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>CSAPP第四章总结：Processor Architecture</title>
+    <link href="https://netcan.github.io/2017/02/06/CSAPP%E7%AC%AC%E5%9B%9B%E7%AB%A0%E6%80%BB%E7%BB%93%EF%BC%9AProcessor-Architecture/"/>
+    <id>https://netcan.github.io/2017/02/06/CSAPP%E7%AC%AC%E5%9B%9B%E7%AB%A0%E6%80%BB%E7%BB%93%EF%BC%9AProcessor-Architecture/</id>
+    <published>2017-02-06T06:36:24.000Z</published>
+    <updated>2017-05-14T09:33:11.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;这章主要讲如何设计一个处理器，可以更好的理解计算机的运作过程。&lt;/p&gt;
+&lt;p&gt;设计处理器的指令集为&lt;em&gt;Y86&lt;/em&gt;，比较简单，适合学习，与&lt;em&gt;x86&lt;/em&gt;类似。然后用&lt;em&gt;HCL(Hardware Control
+        
+      
+    
+    </summary>
+    
+    
+      <category term="学习笔记" scheme="https://netcan.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="操作系统" scheme="https://netcan.github.io/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>CSAPP第三章总结：Machine-Level Representation of Programs</title>
+    <link href="https://netcan.github.io/2017/01/31/CSAPP%E7%AC%AC%E4%B8%89%E7%AB%A0%E6%80%BB%E7%BB%93%EF%BC%9AMachine-Level-Representation-of-Programs/"/>
+    <id>https://netcan.github.io/2017/01/31/CSAPP%E7%AC%AC%E4%B8%89%E7%AB%A0%E6%80%BB%E7%BB%93%EF%BC%9AMachine-Level-Representation-of-Programs/</id>
+    <published>2017-01-31T06:33:08.000Z</published>
+    <updated>2017-02-16T06:34:30.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;以下为自用笔记，具体可看&lt;a href=&quot;https://doc.lagout.org/programmation/Computer%20Systems%20-%20A%20Programmers%20Perspective.pdf&quot;&gt;Computer Systems A Programmer’s Perspective&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;这章主要讲高级语言的汇编形式，如何通过汇编/反汇编来分析一个程序。要想深入理解操作系统，必须从底层开始，那就是汇编了。&lt;/p&gt;
+&lt;p&gt;因为我的机器是64位的，可以通过参数&lt;code&gt;-m32&lt;/code&gt;来编译32位的程序，这样结果可和书中的尽可能吻合。建议用&lt;code&gt;-O1&lt;/code&gt;或者&lt;code&gt;-O0&lt;/code&gt;参数来汇编，这样使得汇编代码与源代码差别不是很大。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="学习笔记" scheme="https://netcan.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="操作系统" scheme="https://netcan.github.io/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>实现一个生命游戏</title>
+    <link href="https://netcan.github.io/2017/01/29/%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%94%9F%E5%91%BD%E6%B8%B8%E6%88%8F/"/>
+    <id>https://netcan.github.io/2017/01/29/%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%94%9F%E5%91%BD%E6%B8%B8%E6%88%8F/</id>
+    <published>2017-01-29T11:55:41.000Z</published>
+    <updated>2017-02-06T06:36:55.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;前几天在&lt;code&gt;LeetCode&lt;/code&gt;上面遇到这么一个题目：&lt;a href=&quot;https://leetcode.com/problems/game-of-life/&quot;&gt;Game of Life&lt;/a&gt;，给定一个初始&lt;code&gt;pattern&lt;/code&gt;，求其下一个状态。&lt;/p&gt;
+&lt;p&gt;然后今天闲的蛋疼又用&lt;code&gt;Javascript&lt;/code&gt;和&lt;code&gt;canvas&lt;/code&gt;实现了一下，项目地址：&lt;a href=&quot;https://github.com/netcan/gameOfLife&quot;&gt;https://github.com/netcan/gameOfLife&lt;/a&gt;，最后搞到博客上了，具体可看左栏。&lt;/p&gt;
+&lt;p&gt;操作方法：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;鼠标右键&lt;strong&gt;暂停&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;鼠标中键&lt;strong&gt;清除&lt;/strong&gt;所有细胞&lt;/li&gt;
+&lt;li&gt;鼠标左键&lt;strong&gt;添加&lt;/strong&gt;细胞，最好在暂停状态下添加。&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+    
+      <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="数学" scheme="https://netcan.github.io/tags/%E6%95%B0%E5%AD%A6/"/>
+    
+      <category term="Javascript" scheme="https://netcan.github.io/tags/Javascript/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>求下一个排列数</title>
+    <link href="https://netcan.github.io/2017/01/19/%E6%B1%82%E4%B8%8B%E4%B8%80%E4%B8%AA%E6%8E%92%E5%88%97%E6%95%B0/"/>
+    <id>https://netcan.github.io/2017/01/19/%E6%B1%82%E4%B8%8B%E4%B8%80%E4%B8%AA%E6%8E%92%E5%88%97%E6%95%B0/</id>
+    <published>2017-01-19T02:00:35.000Z</published>
+    <updated>2017-01-19T02:25:55.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在&lt;code&gt;LeetCode&lt;/code&gt;上遇到这么一个题：&lt;a href=&quot;https://leetcode.com/problems/next-permutation/&quot;&gt;Next Permutation&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;意思就是给定一个序列，求下一个排列数。下一个排列数是指重排序列，使得下一个序列的字典序比当前序列要大，如果找不到，就返回最小字典序的那个序列。&lt;/p&gt;
+&lt;p&gt;要求是一步到位，不能分配多余的内存。&lt;/p&gt;
+&lt;p&gt;这个题貌似是要求实现C++的&lt;code&gt;next_permutation&lt;/code&gt;函数，然后去瞄了一眼其实现：&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="数学" scheme="https://netcan.github.io/tags/%E6%95%B0%E5%AD%A6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>整数除以2的幂与右移的关系</title>
+    <link href="https://netcan.github.io/2017/01/18/%E6%95%B4%E6%95%B0%E9%99%A4%E4%BB%A52%E7%9A%84%E5%B9%82%E4%B8%8E%E5%8F%B3%E7%A7%BB%E7%9A%84%E5%85%B3%E7%B3%BB/"/>
+    <id>https://netcan.github.io/2017/01/18/%E6%95%B4%E6%95%B0%E9%99%A4%E4%BB%A52%E7%9A%84%E5%B9%82%E4%B8%8E%E5%8F%B3%E7%A7%BB%E7%9A%84%E5%85%B3%E7%B3%BB/</id>
+    <published>2017-01-18T10:14:10.000Z</published>
+    <updated>2017-01-31T08:24:30.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;整数除法与右移运算&quot;&gt;&lt;a href=&quot;#整数除法与右移运算&quot; class=&quot;headerlink&quot; title=&quot;整数除法与右移运算&quot;&gt;&lt;/a&gt;整数除法与右移运算&lt;/h2&gt;&lt;p&gt;在C/C++中进行除以2的幂的运算，学过计组的同学，可能会知道更高效的是进行右移运算，右移几位，相当于除以2的几次幂。&lt;/p&gt;
+&lt;p&gt;C/C++中整数除法，去除小数部分，整数部分作为返回结果。&lt;/p&gt;
+&lt;p&gt;例如$6/4=1, -6/4=-1$&lt;/p&gt;
+&lt;p&gt;这里$4=2^2$，那么只要对一个数，右移2位，就相当于除以4了么？&lt;/p&gt;
+&lt;p&gt;容易用如下代码验证：&lt;/p&gt;
+&lt;figure class=&quot;highlight cpp&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;#&lt;span class=&quot;meta-keyword&quot;&gt;include&lt;/span&gt; &lt;span class=&quot;meta-string&quot;&gt;&amp;lt;stdio.h&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt;)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;built_in&quot;&gt;printf&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&amp;quot;%d\n%d\n&amp;quot;&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;6&lt;/span&gt;&amp;gt;&amp;gt;&lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;-6&lt;/span&gt;&amp;gt;&amp;gt;&lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+    
+      <category term="学习笔记" scheme="https://netcan.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
+    
+      <category term="操作系统" scheme="https://netcan.github.io/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>谈谈localhost</title>
+    <link href="https://netcan.github.io/2016/12/25/%E8%B0%88%E8%B0%88localhost/"/>
+    <id>https://netcan.github.io/2016/12/25/%E8%B0%88%E8%B0%88localhost/</id>
+    <published>2016-12-25T13:58:07.000Z</published>
+    <updated>2017-01-18T11:52:00.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;刚刚发现一个有趣的现象，测试&lt;code&gt;django&lt;/code&gt;项目的时候，这样启动服务器：&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ python3 ./manage.py runserver&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;...&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Starting development server at http://127.0.0.1:8000/&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;...&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;p&gt;然后想起&lt;code&gt;laravel&lt;/code&gt;项目也是&lt;code&gt;8000&lt;/code&gt;端口，就同时启动&lt;code&gt;laravel&lt;/code&gt;项目：&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ php artisan serve&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Laravel development server started on http://localhost:8000/&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;p&gt;问题来了，2个端口一样，按理说应该会冲突啊，可是没有，打开浏览器，输入&lt;code&gt;127.0.0.1:8000&lt;/code&gt;，看到的是&lt;code&gt;django&lt;/code&gt;的项目。那么&lt;code&gt;laravel&lt;/code&gt;项目哪去了，难道没启动成功，可是又没报错？&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="随笔" scheme="https://netcan.github.io/categories/%E9%9A%8F%E7%AC%94/"/>
+    
+    
+      <category term="计算机网络" scheme="https://netcan.github.io/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>浅谈Java实现一个聊天软件</title>
+    <link href="https://netcan.github.io/2016/12/15/%E6%B5%85%E8%B0%88Java%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E8%81%8A%E5%A4%A9%E8%BD%AF%E4%BB%B6/"/>
+    <id>https://netcan.github.io/2016/12/15/%E6%B5%85%E8%B0%88Java%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E8%81%8A%E5%A4%A9%E8%BD%AF%E4%BB%B6/</id>
+    <published>2016-12-15T14:10:02.000Z</published>
+    <updated>2016-12-25T13:58:52.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;这是一个Java聊天系统（项目地址：&lt;a href=&quot;https://github.com/netcan/Talk&quot;&gt;https://github.com/netcan/Talk&lt;/a&gt;），作为Java实验课的内容，目前已基本完成，支持如下功能：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;群聊&lt;/li&gt;
+&lt;li&gt;私聊&lt;/li&gt;
+&lt;li&gt;消息提醒&lt;/li&gt;
+&lt;li&gt;用户状态标记&lt;/li&gt;
+&lt;li&gt;聊天记录保存&lt;/li&gt;
+&lt;li&gt;表情支持&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+    
+      <category term="随笔" scheme="https://netcan.github.io/categories/%E9%9A%8F%E7%AC%94/"/>
+    
+    
+      <category term="计算机网络" scheme="https://netcan.github.io/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"/>
+    
+      <category term="Java" scheme="https://netcan.github.io/tags/Java/"/>
+    
+      <category term="Socket编程" scheme="https://netcan.github.io/tags/Socket%E7%BC%96%E7%A8%8B/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>编译原理实验之LR(1)分析器设计</title>
+    <link href="https://netcan.github.io/2016/10/21/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E5%AE%9E%E9%AA%8C%E4%B9%8BLR-1-%E5%88%86%E6%9E%90%E5%99%A8%E8%AE%BE%E8%AE%A1/"/>
+    <id>https://netcan.github.io/2016/10/21/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E5%AE%9E%E9%AA%8C%E4%B9%8BLR-1-%E5%88%86%E6%9E%90%E5%99%A8%E8%AE%BE%E8%AE%A1/</id>
+    <published>2016-10-21T13:15:07.000Z</published>
+    <updated>2016-11-05T08:22:30.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;终于做完第三个实验了，代码地址：&lt;a href=&quot;https://github.com/netcan/compilingTheory&quot;&gt;https://github.com/netcan/compilingTheory&lt;/a&gt;，项目地址：&lt;a href=&quot;http://115.159.147.250:666/LR/&quot;&gt;http://115.159.147.250:666/LR/&lt;/a&gt;，&lt;strong&gt;第一次进入需要加载库，比较耗时，请耐心等待&lt;/strong&gt;，效果图：&lt;br&gt;&lt;img src=&quot;https://raw.githubusercontent.com/netcan/compilingTheory/master/LR.gif&quot; alt=&quot;https://raw.githubusercontent.com/netcan/compilingTheory/master/LR.gif&quot;&gt;&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="学习笔记" scheme="https://netcan.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
+    
+      <category term="编译原理" scheme="https://netcan.github.io/tags/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>编译原理实验之LL(1)语法分析器设计</title>
+    <link href="https://netcan.github.io/2016/10/09/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B9%8BLL-1-%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/"/>
+    <id>https://netcan.github.io/2016/10/09/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B9%8BLL-1-%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/</id>
+    <published>2016-10-09T08:08:50.000Z</published>
+    <updated>2016-11-05T08:22:20.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;编译原理第二个实验是LL(1)语法分析，这里我来写一下关于LL(1)的内容，虽然书上都有，但是总结一遍，应该印象更加深刻的，也有助于写代码。目前LL(1)实验已全部完成，项目地址：&lt;a href=&quot;http://115.159.147.250:666/LL1/&quot;&gt;http://115.159.147.250:666/LL1/&lt;/a&gt;，代码地址：&lt;a href=&quot;https://github.com/netcan/compilingTheory&quot;&gt;https://github.com/netcan/compilingTheory&lt;/a&gt;，效果图：&lt;br&gt;&lt;img src=&quot;https://raw.githubusercontent.com/netcan/compilingTheory/master/ll1.gif&quot; alt=&quot;https://raw.githubusercontent.com/netcan/compilingTheory/master/ll1.gif&quot;&gt;&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="学习笔记" scheme="https://netcan.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
+    
+      <category term="编译原理" scheme="https://netcan.github.io/tags/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>编译原理之词法分析器设计</title>
+    <link href="https://netcan.github.io/2016/10/07/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B9%8B%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90%E5%99%A8%E8%AE%BE%E8%AE%A1/"/>
+    <id>https://netcan.github.io/2016/10/07/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B9%8B%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90%E5%99%A8%E8%AE%BE%E8%AE%A1/</id>
+    <published>2016-10-07T14:12:56.000Z</published>
+    <updated>2016-11-05T08:23:08.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;这两天把编译原理词法分析实验提前给做了，作品地址：&lt;a href=&quot;http://115.159.147.250:666/Lexical/&quot;&gt;http://115.159.147.250:666/Lexical/&lt;/a&gt;，源码：&lt;a href=&quot;https://github.com/netcan/compilingTheory&quot;&gt;https://github.com/netcan/compilingTheory&lt;/a&gt;，效果图：&lt;br&gt;&lt;img src=&quot;https://raw.githubusercontent.com/netcan/compilingTheory/master/lexical.gif&quot; alt=&quot;https://raw.githubusercontent.com/netcan/compilingTheory/master/lexical.gif&quot;&gt;&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
+    
+      <category term="PHP" scheme="https://netcan.github.io/tags/PHP/"/>
+    
+      <category term="编译原理" scheme="https://netcan.github.io/tags/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/"/>
+    
+      <category term="字典树" scheme="https://netcan.github.io/tags/%E5%AD%97%E5%85%B8%E6%A0%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ssh隧道反向代理实现内网到公网端口转发</title>
+    <link href="https://netcan.github.io/2016/09/28/ssh%E9%9A%A7%E9%81%93%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E5%AE%9E%E7%8E%B0%E5%86%85%E7%BD%91%E5%88%B0%E5%85%AC%E7%BD%91%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91/"/>
+    <id>https://netcan.github.io/2016/09/28/ssh%E9%9A%A7%E9%81%93%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E5%AE%9E%E7%8E%B0%E5%86%85%E7%BD%91%E5%88%B0%E5%85%AC%E7%BD%91%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91/</id>
+    <published>2016-09-28T10:04:39.000Z</published>
+    <updated>2016-10-14T03:44:28.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;缘由&quot;&gt;&lt;a href=&quot;#缘由&quot; class=&quot;headerlink&quot; title=&quot;缘由&quot;&gt;&lt;/a&gt;缘由&lt;/h3&gt;&lt;p&gt;我写这篇文章，可以解决如下问题：在内网主机运行网站，无公网ip所以只能内网访问。但是主机内网可以访问外网，外网无法访问内网，现在我要做的就是通过反向代理，访问公网ip就能访问到内网主机网站，只需要一台&lt;code&gt;vps&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;以下我都会用&lt;code&gt;8080&lt;/code&gt;端口来转发，因为我的&lt;code&gt;80&lt;/code&gt;端口被占用了。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="随笔" scheme="https://netcan.github.io/categories/%E9%9A%8F%E7%AC%94/"/>
+    
+    
+      <category term="Linux" scheme="https://netcan.github.io/tags/Linux/"/>
+    
+      <category term="计算机网络" scheme="https://netcan.github.io/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux POSIX信号量解决经典进程同步问题</title>
+    <link href="https://netcan.github.io/2016/09/24/Linux-POSIX%E4%BF%A1%E5%8F%B7%E9%87%8F%E8%A7%A3%E5%86%B3%E7%BB%8F%E5%85%B8%E8%BF%9B%E7%A8%8B%E5%90%8C%E6%AD%A5%E9%97%AE%E9%A2%98/"/>
+    <id>https://netcan.github.io/2016/09/24/Linux-POSIX%E4%BF%A1%E5%8F%B7%E9%87%8F%E8%A7%A3%E5%86%B3%E7%BB%8F%E5%85%B8%E8%BF%9B%E7%A8%8B%E5%90%8C%E6%AD%A5%E9%97%AE%E9%A2%98/</id>
+    <published>2016-09-24T11:28:01.000Z</published>
+    <updated>2016-10-07T14:13:19.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;之前我写了一篇博文：&lt;a href=&quot;/2016/09/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E8%BF%9B%E7%A8%8B%E5%90%8C%E6%AD%A5/&quot;&gt;操作系统之进程同步&lt;/a&gt;，关于多进程（线程）同步的问题，这里我来继续扩展下主题，如何使用信号量来解决进程之间的同步问题，不过我接下来实现还是使用&lt;strong&gt;线程&lt;/strong&gt;，理由很简单我之前说过了。&lt;/p&gt;
+&lt;p&gt;在Unix/Linux上，信号量有2种标准：&lt;code&gt;System V&lt;/code&gt;和&lt;code&gt;Posix&lt;/code&gt;。我选择了&lt;code&gt;Posix&lt;/code&gt;，因为它的接口很简单，功能又和&lt;code&gt;System V&lt;/code&gt;相近。&lt;/p&gt;
+&lt;p&gt;不过有些情况可以用&lt;strong&gt;互斥体&lt;/strong&gt;来实现，信号量有时候称为并发式编程的&lt;code&gt;goto&lt;/code&gt;，因为它能在一个进程中唤醒另一个进程，很容易产生出糟糕的同步设计。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="学习笔记" scheme="https://netcan.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="操作系统" scheme="https://netcan.github.io/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
+    
+      <category term="Linux" scheme="https://netcan.github.io/tags/Linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MySQL、SQL Server、Oracle Database的Schema比较</title>
+    <link href="https://netcan.github.io/2016/09/18/MySQL%E3%80%81SQL-Server%E3%80%81Oracle-Database%E7%9A%84Schema%E6%AF%94%E8%BE%83/"/>
+    <id>https://netcan.github.io/2016/09/18/MySQL%E3%80%81SQL-Server%E3%80%81Oracle-Database%E7%9A%84Schema%E6%AF%94%E8%BE%83/</id>
+    <published>2016-09-18T09:43:55.000Z</published>
+    <updated>2016-09-24T14:22:07.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;数据库系统课上老师介绍了2种数据库：Oracle Database和SQL Server，也说了他们之间模式（&lt;code&gt;Schema&lt;/code&gt;，也称为架构）的区别，这里我也补充下与我常用的MySQL的模式区别，备忘。&lt;/p&gt;
+&lt;p&gt;模式相当于数据库系统中的名称空间，一个模式中可以有多种对象，例如基本表、视图、索引。访问某个模式中的对象，需要指定&lt;strong&gt;模式名.对象名&lt;/strong&gt;。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="学习笔记" scheme="https://netcan.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="MySQL" scheme="https://netcan.github.io/tags/MySQL/"/>
+    
+      <category term="数据库" scheme="https://netcan.github.io/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>操作系统之进程同步</title>
+    <link href="https://netcan.github.io/2016/09/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E8%BF%9B%E7%A8%8B%E5%90%8C%E6%AD%A5/"/>
+    <id>https://netcan.github.io/2016/09/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E8%BF%9B%E7%A8%8B%E5%90%8C%E6%AD%A5/</id>
+    <published>2016-09-13T11:02:31.000Z</published>
+    <updated>2016-09-24T14:18:45.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;转专业至今课表还没出来，先去上了节田老师的操作系统课，好评，最喜欢这种课上都是代码的课了。&lt;/p&gt;
+&lt;p&gt;转专业来之不易，今后更加好好珍惜机会，努力学习。&lt;/p&gt;
+&lt;p&gt;今天下午这节课讲的是进程同步，也算是并发程序启蒙课吧，听起来这有趣，打算将老师ppt上写的几个并发程序伪代码实现下，体会下并发程序的开发。&lt;/p&gt;
+&lt;p&gt;因为老师给出的例子是关于进程间共享资源产生的问题，以及如何去解决，我打算用线程（&lt;code&gt;pthread&lt;/code&gt;库）来实现，因为线程的资源可以共享（共享全局区域、堆），容易写，和并发的进程大同小异，且思想是一样的。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="学习笔记" scheme="https://netcan.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="操作系统" scheme="https://netcan.github.io/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>转专业成功了</title>
+    <link href="https://netcan.github.io/2016/09/09/%E8%BD%AC%E4%B8%93%E4%B8%9A%E6%88%90%E5%8A%9F%E4%BA%86/"/>
+    <id>https://netcan.github.io/2016/09/09/%E8%BD%AC%E4%B8%93%E4%B8%9A%E6%88%90%E5%8A%9F%E4%BA%86/</id>
+    <published>2016-09-09T14:20:40.000Z</published>
+    <updated>2016-09-24T14:18:45.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;回忆起这两年的申请转专业历程，最终成功，整个人都没缓过来= =虽然要补的课多，但是都是自己喜欢的课程，也会轻松很多。&lt;/p&gt;
+&lt;p&gt;因为校区比较新，那时候大一，还没出转专业政策。我依然记得，在大一的第一堂课，导员在上面介绍本专业后，问在座的全系有什么问题么，我举手起来，“请问可以转系么？”，只记得全场轰动，接着得到的答案是不能。而那节课，坐在我后排的是也想转专业的小马哥，后来我们也到了同一个社团创新部。之后认识了同专业林学弟，我们仨是宣城校区第一个特长转专业的例子。&lt;/p&gt;
+&lt;p&gt;大一上的时候就按捺不住要转专业了，于2014/12/09给朱校长发了封转系申请的邮件，得到的回复是&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;同学，你好！&lt;br&gt;校区转专业类办法很快出台，如果你符合条件，可以申请转。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;我看到了希望，宣城校区转专业政策会出台，但是不知道什么时候出台。而学生手册上说是第十四周去教务申请特长转专业（估计是照抄本部的手册），我那时候去了，教务老师不知道有这回事= = &lt;/p&gt;
+&lt;p&gt;大一下的时候，印象中有次开班会，和班主任当堂闹翻了，主要是说我应该先学好课内的，心有余力在学其他的，如果你那方面没有足够能力养活自己应该先学好专业课，那时候我觉得自己能力被怀疑了，当堂就火了，说了一堆大言不惭的话= =后来做实验的时候我还在看“课外书”，老师都生气了= =之后就是在省程序设计大赛拿到省一。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="随笔" scheme="https://netcan.github.io/categories/%E9%9A%8F%E7%AC%94/"/>
+    
+    
+      <category term="点滴" scheme="https://netcan.github.io/tags/%E7%82%B9%E6%BB%B4/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Laravel入门教程: 实现简单的AJAX的CRUD页面</title>
+    <link href="https://netcan.github.io/2016/08/17/Laravel%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B-%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Ajax%E7%9A%84CRUD%E9%A1%B5%E9%9D%A2/"/>
+    <id>https://netcan.github.io/2016/08/17/Laravel%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B-%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Ajax%E7%9A%84CRUD%E9%A1%B5%E9%9D%A2/</id>
+    <published>2016-08-17T02:41:00.000Z</published>
+    <updated>2016-09-24T14:18:44.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;介绍&quot;&gt;&lt;a href=&quot;#介绍&quot; class=&quot;headerlink&quot; title=&quot;介绍&quot;&gt;&lt;/a&gt;介绍&lt;/h3&gt;&lt;p&gt;这段时间在写一个考试系统&lt;a href=&quot;https://github.com/netcan/HFUT_ChemLab&quot;&gt;ChemLab&lt;/a&gt;，期间用到了&lt;code&gt;AJAX&lt;/code&gt;实现增删查改（&lt;code&gt;CRUD&lt;/code&gt;）页面，现在写一个&lt;code&gt;Laravel&lt;/code&gt;入门教程吧，一步步实现最基本的&lt;code&gt;CRUD&lt;/code&gt;页面。&lt;/p&gt;
+&lt;p&gt;项目地址，求&lt;code&gt;Star&lt;/code&gt;：&lt;a href=&quot;https://github.com/netcan/Laravel_AJAX_CRUD&quot;&gt;Laravel_AJAX_CRUD&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;演示地址：&lt;a href=&quot;http://115.159.147.250/task&quot;&gt;http://115.159.147.250/task&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;先来看看效果图：&lt;br&gt;&lt;img src=&quot;http://7xibui.com1.z0.glb.clouddn.com/crud.gif&quot; alt=&quot;http://7xibui.com1.z0.glb.clouddn.com/crud.gif&quot;&gt;&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="PHP" scheme="https://netcan.github.io/tags/PHP/"/>
+    
+      <category term="Laravel" scheme="https://netcan.github.io/tags/Laravel/"/>
+    
+      <category term="AJAX" scheme="https://netcan.github.io/tags/AJAX/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux权限管理</title>
+    <link href="https://netcan.github.io/2016/07/29/Linux%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/"/>
+    <id>https://netcan.github.io/2016/07/29/Linux%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/</id>
+    <published>2016-07-29T03:07:59.000Z</published>
+    <updated>2016-09-24T14:18:45.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Linux权限管理非常灵活，不像windows那一坨那么混乱。&lt;/p&gt;
+&lt;p&gt;现在来谈谈Linux下的权限管理吧。&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;vagrant@lucid32:/tmp$ ls -l /tmp/vagrant-shell&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;-(1)rwx(2)r-x(3)r-x(4) 1 vagrant(5) vagrant(6) 95 2016-07-29 04:49 /tmp/vagrant-shell&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;h3 id=&quot;文件类型&quot;&gt;&lt;a href=&quot;#文件类型&quot; class=&quot;headerlink&quot; title=&quot;文件类型&quot;&gt;&lt;/a&gt;文件类型&lt;/h3&gt;&lt;p&gt;首先来看第一部分，第一部分&lt;code&gt;-&lt;/code&gt;表示文件类型，有以下几种文件类型：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&quot;center&quot;&gt;符号&lt;/th&gt;
+&lt;th align=&quot;center&quot;&gt;类型&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;&lt;tr&gt;
+&lt;td align=&quot;center&quot;&gt;-&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;普通文件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&quot;center&quot;&gt;d&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;文件夹&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&quot;center&quot;&gt;l&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;符号链接&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&quot;center&quot;&gt;b&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;块设备文件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&quot;center&quot;&gt;c&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;字符设备文件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&quot;center&quot;&gt;s&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;套接文件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&quot;center&quot;&gt;p&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;管道文件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+    
+    </summary>
+    
+    
+      <category term="学习笔记" scheme="https://netcan.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="Linux" scheme="https://netcan.github.io/tags/Linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>计算机操作系统是如何启动的</title>
+    <link href="https://netcan.github.io/2016/07/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%98%AF%E5%A6%82%E4%BD%95%E5%90%AF%E5%8A%A8%E7%9A%84/"/>
+    <id>https://netcan.github.io/2016/07/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%98%AF%E5%A6%82%E4%BD%95%E5%90%AF%E5%8A%A8%E7%9A%84/</id>
+    <published>2016-07-16T04:25:37.000Z</published>
+    <updated>2020-08-07T18:11:42.853Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;暑假就带回了两本书，《操作系统》+《剑桥英语语法》，当然是计划在暑假学一下操作系统，然后了解操作系统是怎么制作的。&lt;/p&gt;
+&lt;p&gt;目前在学习这个项目：&lt;a href=&quot;https://www.gitbook.com/book/samypesse/how-to-create-an-operating-system/details&quot;&gt;How to make an Operating System&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&quot;BIOS&quot;&gt;&lt;a href=&quot;#BIOS&quot; class=&quot;headerlink&quot; title=&quot;BIOS&quot;&gt;&lt;/a&gt;BIOS&lt;/h3&gt;&lt;p&gt;来说说计算机操作系统是怎么启动的吧。首先计算机启动的时候，会执行&lt;code&gt;ROM&lt;/code&gt;区的机器代码，即基本输入输出系统&lt;code&gt;BIOS&lt;/code&gt;，&lt;code&gt;BIOS&lt;/code&gt;的作用是硬件检测，然后进入启动顺序（&lt;code&gt;Boot Sequence&lt;/code&gt;），这个可以在&lt;code&gt;BIOS&lt;/code&gt;中设置的。&lt;/p&gt;
+&lt;h3 id=&quot;MBR&quot;&gt;&lt;a href=&quot;#MBR&quot; class=&quot;headerlink&quot; title=&quot;MBR&quot;&gt;&lt;/a&gt;MBR&lt;/h3&gt;&lt;p&gt;在启动顺序阶段，&lt;code&gt;BIOS&lt;/code&gt;会检查设备是否可启动，如果第511和512个直接是&lt;code&gt;0x55&lt;/code&gt;和&lt;code&gt;0xAA&lt;/code&gt;，则表示该设备可以启动，否则就按照启动顺序启动下个设备。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;BIOS&lt;/code&gt;加载前512字节（MBR，主引导记录）到内存&lt;code&gt;0x7C00&lt;/code&gt;的位置，如果检查设备可启动，那么跳转执行&lt;code&gt;0x7C00&lt;/code&gt;位置的指令。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="学习笔记" scheme="https://netcan.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="操作系统" scheme="https://netcan.github.io/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>给Win32程序加上图标</title>
+    <link href="https://netcan.github.io/2016/04/24/%E7%BB%99Win32%E7%A8%8B%E5%BA%8F%E5%8A%A0%E4%B8%8A%E5%9B%BE%E6%A0%87/"/>
+    <id>https://netcan.github.io/2016/04/24/%E7%BB%99Win32%E7%A8%8B%E5%BA%8F%E5%8A%A0%E4%B8%8A%E5%9B%BE%E6%A0%87/</id>
+    <published>2016-04-24T06:28:55.000Z</published>
+    <updated>2017-02-07T06:26:39.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;之前写了个&lt;a href=&quot;https://raw.githubusercontent.com/netcan/SlidePuzzle/master/dist/slidepuzzle_windows_release_1.1.zip&quot;&gt;滑动拼图&lt;/a&gt;游戏，编译出来的&lt;code&gt;Win32&lt;/code&gt;可执行文件是没有图标的：&lt;img src=&quot;http://7xibui.com1.z0.glb.clouddn.com//2016/04/24/QQ%E6%88%AA%E5%9B%BE20160424120224.png&quot; alt=&quot;http://7xibui.com1.z0.glb.clouddn.com//2016/04/24/QQ%E6%88%AA%E5%9B%BE20160424120224.png&quot;&gt;&lt;/p&gt;
+&lt;p&gt;查了下资料，增加了图标：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://7xibui.com1.z0.glb.clouddn.com//2016/04/24/QQ%E6%88%AA%E5%9B%BE20160424123454.png&quot; alt=&quot;http://7xibui.com1.z0.glb.clouddn.com//2016/04/24/QQ%E6%88%AA%E5%9B%BE20160424123454.png&quot;&gt;&lt;/p&gt;
+&lt;p&gt;下面说下具体步骤：&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="经验" scheme="https://netcan.github.io/tags/%E7%BB%8F%E9%AA%8C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>解决八数码问题之Astar算法</title>
+    <link href="https://netcan.github.io/2016/04/08/%E8%A7%A3%E5%86%B3%E5%85%AB%E6%95%B0%E7%A0%81%E9%97%AE%E9%A2%98%E4%B9%8BA-%E7%AE%97%E6%B3%95/"/>
+    <id>https://netcan.github.io/2016/04/08/%E8%A7%A3%E5%86%B3%E5%85%AB%E6%95%B0%E7%A0%81%E9%97%AE%E9%A2%98%E4%B9%8BA-%E7%AE%97%E6%B3%95/</id>
+    <published>2016-04-08T00:09:24.000Z</published>
+    <updated>2018-01-10T02:33:20.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;扯淡&quot;&gt;&lt;a href=&quot;#扯淡&quot; class=&quot;headerlink&quot; title=&quot;扯淡&quot;&gt;&lt;/a&gt;扯淡&lt;/h2&gt;&lt;p&gt;之前用过宽度搜索写过&lt;a href=&quot;/2015/05/28/%E5%85%AB%E6%95%B0%E7%A0%81%E9%97%AE%E9%A2%98/&quot;&gt;八数码问题&lt;/a&gt;，这里用A*算法实现之。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;Astar&lt;/code&gt;算法居然可以作为毕业论文题材，要是我在计科毕业岂不是轻轻松松的事么。。&lt;/p&gt;
+&lt;h2 id=&quot;游戏下载-2016-04-12&quot;&gt;&lt;a href=&quot;#游戏下载-2016-04-12&quot; class=&quot;headerlink&quot; title=&quot;游戏下载(2016/04/12)&quot;&gt;&lt;/a&gt;游戏下载(2016/04/12)&lt;/h2&gt;&lt;p&gt;这几天顺便将这个游戏加了个GUI，利用SDL编写的，项目地址：&lt;a href=&quot;https://github.com/netcan/SlidePuzzle&quot;&gt;https://github.com/netcan/SlidePuzzle&lt;/a&gt;&lt;br&gt;&lt;img src=&quot;https://github.com/netcan/SlidePuzzle/raw/master/Slidepuzzle.png&quot; alt=&quot;https://raw.githubusercontent.com/netcan/SlidePuzzle/master/Slidepuzzle.png&quot;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Windows版本: &lt;a href=&quot;https://raw.githubusercontent.com/netcan/SlidePuzzle/master/dist/slidepuzzle_windows_release_1.1.zip&quot;&gt;slidepuzzle_windows_release_1.1.zip&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Linux版本： &lt;a href=&quot;https://raw.githubusercontent.com/netcan/SlidePuzzle/master/dist/slidepuzzle_linux&quot;&gt;slidepuzzle_linux&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;何为Astar算法&quot;&gt;&lt;a href=&quot;#何为Astar算法&quot; class=&quot;headerlink&quot; title=&quot;何为Astar算法&quot;&gt;&lt;/a&gt;何为Astar算法&lt;/h2&gt;&lt;p&gt;&lt;code&gt;Astar&lt;/code&gt;为启发式搜索算法，相对宽度搜索算法，他仅仅多了个评估值$H$，使状态空间搜索不那么盲目。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="优先队列" scheme="https://netcan.github.io/tags/%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/"/>
+    
+      <category term="搜索" scheme="https://netcan.github.io/tags/%E6%90%9C%E7%B4%A2/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>数据链路层差错编码之奇偶校验码和CRC校验</title>
+    <link href="https://netcan.github.io/2016/03/11/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%E5%B7%AE%E9%94%99%E7%BC%96%E7%A0%81%E4%B9%8B%E5%A5%87%E5%81%B6%E6%A0%A1%E9%AA%8C%E7%A0%81%E5%92%8CCRC%E6%A0%A1%E9%AA%8C/"/>
+    <id>https://netcan.github.io/2016/03/11/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%E5%B7%AE%E9%94%99%E7%BC%96%E7%A0%81%E4%B9%8B%E5%A5%87%E5%81%B6%E6%A0%A1%E9%AA%8C%E7%A0%81%E5%92%8CCRC%E6%A0%A1%E9%AA%8C/</id>
+    <published>2016-03-11T11:59:32.000Z</published>
+    <updated>2016-09-24T14:18:45.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;刚刚到操场完成了大学第一个5公里慢跑，现在神清气爽。&lt;/p&gt;
+&lt;p&gt;今天学到了数据链路层，看到了各种差错编码，例如奇偶校验码，循环冗余校验码（&lt;code&gt;CRC&lt;/code&gt;）等等，都是在数据后面加个冗余信息用于判断。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;D =&amp;gt; DR(R为差错检验或者纠正比特)&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;奇偶校验码&quot;&gt;&lt;a href=&quot;#奇偶校验码&quot; class=&quot;headerlink&quot; title=&quot;奇偶校验码&quot;&gt;&lt;/a&gt;奇偶校验码&lt;/h2&gt;&lt;p&gt;奇偶校验码比较简单了，就是在一串数据后面加一位，用来凑够奇数个（奇校验）或偶数个（偶校验）&lt;code&gt;1&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;举个栗子：&lt;/p&gt;
+&lt;h3 id=&quot;奇校验&quot;&gt;&lt;a href=&quot;#奇校验&quot; class=&quot;headerlink&quot; title=&quot;奇校验:&quot;&gt;&lt;/a&gt;奇校验:&lt;/h3&gt;&lt;pre&gt;&lt;code&gt;01100110 =&amp;gt; 01100110(1)&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;偶校验&quot;&gt;&lt;a href=&quot;#偶校验&quot; class=&quot;headerlink&quot; title=&quot;偶校验&quot;&gt;&lt;/a&gt;偶校验&lt;/h3&gt;&lt;pre&gt;&lt;code&gt;01100110 =&amp;gt; 01100110(0)&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;二维奇偶校验&quot;&gt;&lt;a href=&quot;#二维奇偶校验&quot; class=&quot;headerlink&quot; title=&quot;二维奇偶校验&quot;&gt;&lt;/a&gt;二维奇偶校验&lt;/h3&gt;&lt;p&gt;二维奇偶校验就是同时检验每行，每列的奇偶校验，可以纠错。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="学习笔记" scheme="https://netcan.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="计算机网络" scheme="https://netcan.github.io/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>《计算机网络》学习心得</title>
+    <link href="https://netcan.github.io/2016/03/09/%E3%80%8A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E3%80%8B%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/"/>
+    <id>https://netcan.github.io/2016/03/09/%E3%80%8A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E3%80%8B%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/</id>
+    <published>2016-03-09T13:23:33.000Z</published>
+    <updated>2016-09-24T14:18:45.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;今天难得认真听了下课（因为今天才选上了课）：计算机网络。老师讲的还是比较有趣的，比如数据传输在海洋电缆中被鲨鱼咬断丢失，或者在空中被雷劈丢失，用水杯盖子打电话为啥打不出去因为没有底层支持，给我感觉讲得很慢，毕竟学校要求掌握的知识点比较少，可以啰嗦些。&lt;/p&gt;
+&lt;p&gt;但是我看
+        
+      
+    
+    </summary>
+    
+    
+      <category term="随笔" scheme="https://netcan.github.io/categories/%E9%9A%8F%E7%AC%94/"/>
+    
+    
+      <category term="点滴" scheme="https://netcan.github.io/tags/%E7%82%B9%E6%BB%B4/"/>
+    
+      <category term="经验" scheme="https://netcan.github.io/tags/%E7%BB%8F%E9%AA%8C/"/>
+    
+      <category term="计算机网络" scheme="https://netcan.github.io/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>利用telnet在命令行发送/接收邮件</title>
+    <link href="https://netcan.github.io/2016/02/20/%E5%88%A9%E7%94%A8telnet%E5%9C%A8%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%8F%91%E9%80%81-%E6%8E%A5%E6%94%B6%E9%82%AE%E4%BB%B6/"/>
+    <id>https://netcan.github.io/2016/02/20/%E5%88%A9%E7%94%A8telnet%E5%9C%A8%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%8F%91%E9%80%81-%E6%8E%A5%E6%94%B6%E9%82%AE%E4%BB%B6/</id>
+    <published>2016-02-20T02:09:42.000Z</published>
+    <updated>2020-08-07T18:01:23.532Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;明天就要去学校了。。有点不舍，本来今天就要去的，因为玉林到合肥有票了，就改签到明天，因为学生票还省下了100。。。&lt;/p&gt;
+&lt;p&gt;废话不多说，这几天在学《计算机网络》，发现&lt;code&gt;telnet&lt;/code&gt;其实是个很万能的东西，我曾对它的印象仅仅停留在远程控制，那时候在机房叫老师打开机房的网络，老师在&lt;code&gt;cmd&lt;/code&gt;就用&lt;code&gt;telnet&lt;/code&gt;远程控制来打开网络。&lt;/p&gt;
+&lt;p&gt;比如用&lt;code&gt;telnet&lt;/code&gt;发送邮件，就可以深刻理解协议的含义：&lt;strong&gt;语义&lt;/strong&gt;、&lt;strong&gt;语法&lt;/strong&gt;和&lt;strong&gt;时序&lt;/strong&gt;，以后&lt;code&gt;socket&lt;/code&gt;编程的时候就知道怎么设计协议了，其实和设计指令差不多。&lt;/p&gt;
+&lt;p&gt;因为&lt;em&gt;QQ邮箱&lt;/em&gt;加密传输了，不好测试，这里用&lt;em&gt;139移动邮箱&lt;/em&gt;发送到&lt;em&gt;QQ邮箱&lt;/em&gt;来测试。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="随笔" scheme="https://netcan.github.io/categories/%E9%9A%8F%E7%AC%94/"/>
+    
+    
+      <category term="计算机网络" scheme="https://netcan.github.io/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>数字电路学习笔记</title>
+    <link href="https://netcan.github.io/2016/02/04/%E6%95%B0%E5%AD%97%E7%94%B5%E8%B7%AF%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    <id>https://netcan.github.io/2016/02/04/%E6%95%B0%E5%AD%97%E7%94%B5%E8%B7%AF%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</id>
+    <published>2016-02-04T04:57:37.000Z</published>
+    <updated>2016-09-24T14:18:45.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;下学期辅修汇编、计组，需要补一下数电知识。。有输入就要有输出，谨以此文纪念我数电学习道路。&lt;/p&gt;
+&lt;h2 id=&quot;布尔代数和逻辑函数的化简&quot;&gt;&lt;a href=&quot;#布尔代数和逻辑函数的化简&quot; class=&quot;headerlink&quot; title=&quot;布尔代数和逻辑函数的化简&quot;&gt;&lt;/a&gt;布尔代数和逻辑函数的化简&lt;/h2&gt;&lt;h3 id=&quot;概念&quot;&gt;&lt;a href=&quot;#概念&quot; class=&quot;headerlink&quot; title=&quot;概念&quot;&gt;&lt;/a&gt;概念&lt;/h3&gt;&lt;p&gt;怎么说呢，就是取值只有&lt;code&gt;0&lt;/code&gt;和&lt;code&gt;1&lt;/code&gt;两个值的逻辑变量组成表达式、函数。其运算就是布尔代数。&lt;/p&gt;
+&lt;h3 id=&quot;运算&quot;&gt;&lt;a href=&quot;#运算&quot; class=&quot;headerlink&quot; title=&quot;运算&quot;&gt;&lt;/a&gt;运算&lt;/h3&gt;&lt;h4 id=&quot;最基本逻辑运算：&quot;&gt;&lt;a href=&quot;#最基本逻辑运算：&quot; class=&quot;headerlink&quot; title=&quot;最基本逻辑运算：&quot;&gt;&lt;/a&gt;最基本逻辑运算：&lt;/h4&gt;&lt;ol&gt;
+&lt;li&gt;与逻辑，当且&lt;strong&gt;两个&lt;/strong&gt;都为&lt;code&gt;1&lt;/code&gt;时结果为&lt;code&gt;1&lt;/code&gt;，记做$P=A\cdot B$&lt;/li&gt;
+&lt;li&gt;或逻辑，&lt;strong&gt;两个&lt;/strong&gt;变量有一个为&lt;code&gt;1&lt;/code&gt;即为&lt;code&gt;1&lt;/code&gt;，记做$P=A+B$&lt;/li&gt;
+&lt;li&gt;非逻辑，当&lt;strong&gt;一个&lt;/strong&gt;变量为&lt;code&gt;1&lt;/code&gt;时结果为&lt;code&gt;0&lt;/code&gt;，为&lt;code&gt;0&lt;/code&gt;时结果为&lt;code&gt;1&lt;/code&gt;，记做$P=\overline{A}$&lt;/li&gt;
+&lt;/ol&gt;
+    
+    </summary>
+    
+    
+      <category term="学习笔记" scheme="https://netcan.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="数字电路" scheme="https://netcan.github.io/tags/%E6%95%B0%E5%AD%97%E7%94%B5%E8%B7%AF/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>手机编程游戏Hacked通关攻略</title>
+    <link href="https://netcan.github.io/2016/01/26/%E6%89%8B%E6%9C%BA%E7%BC%96%E7%A8%8B%E6%B8%B8%E6%88%8FHacked%E9%80%9A%E5%85%B3%E6%94%BB%E7%95%A5/"/>
+    <id>https://netcan.github.io/2016/01/26/%E6%89%8B%E6%9C%BA%E7%BC%96%E7%A8%8B%E6%B8%B8%E6%88%8FHacked%E9%80%9A%E5%85%B3%E6%94%BB%E7%95%A5/</id>
+    <published>2016-01-26T06:25:49.000Z</published>
+    <updated>2016-09-24T14:18:45.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;style type=&quot;text/css&quot;&gt;
+.article img {
+	width: 45%;
+}
+&lt;/style&gt;
+
+&lt;h2 id=&quot;介绍&quot;&gt;&lt;a href=&quot;#介绍&quot; class=&quot;headerlink&quot; title=&quot;介绍&quot;&gt;&lt;/a&gt;介绍&lt;/h2&gt;&lt;p&gt;最近玩通了手游&lt;a href=&quot;http://www.hackedapp.com/&quot;&gt;Hacked&lt;/a&gt;，现在安利给大家。&lt;/p&gt;
+&lt;p&gt;该游戏&lt;a href=&quot;http://www.hackedapp.com/&quot;&gt;Hacked&lt;/a&gt;，利用内置的H语言观察每关的输入输出样例推测算法并编写程序通过任务。游戏涉及素数回文串判定，进制转换，手排，栈，树，递归等算法。还能自定义编写游戏，绘图。。内置robot机器人可互动，例如走迷宫最短路问题。。游戏还能联网下载其他人的游戏，或者发布自己的游戏，可惜需要&lt;code&gt;Twitter&lt;/code&gt;，正在注册，卡在手机验证一步。&lt;/p&gt;
+&lt;p&gt;下面是截图（来自官方）：&lt;br&gt;&lt;img src=&quot;http://7xibui.com1.z0.glb.clouddn.com/%40%2F2016%2F01%2F2968096_orig.png&quot; alt=&quot;Hacked&quot;&gt; &lt;img src=&quot;http://7xibui.com1.z0.glb.clouddn.com/%40%2F2016%2F01%2F6702899_orig.png&quot; alt=&quot;自定义游戏&quot;&gt;&lt;/p&gt;
+&lt;p&gt;下面是吐槽：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;自定义函数不支持外部全局变量&lt;/li&gt;
+&lt;li&gt;逻辑操作符&lt;code&gt;&amp;amp;&amp;amp;&lt;/code&gt;当第一个表达式为假的时候还会计算第二个表达式。。作者&lt;code&gt;C&lt;/code&gt;语言不过关啊。。&lt;/li&gt;
+&lt;li&gt;支持&lt;code&gt;Lambda&lt;/code&gt;函数。。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;攻略&quot;&gt;&lt;a href=&quot;#攻略&quot; class=&quot;headerlink&quot; title=&quot;攻略&quot;&gt;&lt;/a&gt;攻略&lt;/h2&gt;
+    
+    </summary>
+    
+    
+      <category term="随笔" scheme="https://netcan.github.io/categories/%E9%9A%8F%E7%AC%94/"/>
+    
+    
+      <category term="经验" scheme="https://netcan.github.io/tags/%E7%BB%8F%E9%AA%8C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>集合的二进制操作</title>
+    <link href="https://netcan.github.io/2016/01/02/%E9%9B%86%E5%90%88%E7%9A%84%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%93%8D%E4%BD%9C/"/>
+    <id>https://netcan.github.io/2016/01/02/%E9%9B%86%E5%90%88%E7%9A%84%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%93%8D%E4%BD%9C/</id>
+    <published>2016-01-02T09:35:52.000Z</published>
+    <updated>2017-02-07T06:21:22.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;集合与二进制&quot;&gt;&lt;a href=&quot;#集合与二进制&quot; class=&quot;headerlink&quot; title=&quot;集合与二进制&quot;&gt;&lt;/a&gt;集合与二进制&lt;/h2&gt;&lt;p&gt;前面的代码里（&lt;a href=&quot;/2016/01/01/%E3%80%90%E5%BC%80%E5%85%B3%E9%97%AE%E9%A2%98%E3%80%91POJ-3276&quot;&gt;【开关问题】POJ 3276 3279 3185 1222&lt;/a&gt;）可以看到一些为了枚举所有状态用到了集合的整数表现与位操作。&lt;/p&gt;
+&lt;p&gt;虽然位操作枚举比较简单但是这种方法只能在元素比较少的情况下（20个左右）使用。&lt;/p&gt;
+&lt;p&gt;假设集合有$N$个元素，依次给它们编号$0, 1, \cdots, N-1$，由于每个元素在集合中只有两种状态：&lt;strong&gt;存在&lt;/strong&gt;或者&lt;strong&gt;不存在&lt;/strong&gt;。那么可以令相应二进制位来表示，存在则为1，否则为0。&lt;/p&gt;
+&lt;p&gt;举个例子，8个元素编号依次为$0, 1, \cdots, 7$，那么编号为$\lbrace 0, 2, 4\rbrace $的集合可以用$S = (00010101)_2 = (21)_{10} % 注意下标$来表示。那么空集$\varnothing$可用$S = (00000000)_2 = (0)_{10}$来表示（即都不存在），同理全集可用$S=(11111111)_2 = (255)_{10} = 2^8 - 1$表示。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="学习笔记" scheme="https://netcan.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="数学" scheme="https://netcan.github.io/tags/%E6%95%B0%E5%AD%A6/"/>
+    
+      <category term="算法" scheme="https://netcan.github.io/tags/%E7%AE%97%E6%B3%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>VIMscript学习笔记</title>
+    <link href="https://netcan.github.io/2015/12/26/VIMscript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    <id>https://netcan.github.io/2015/12/26/VIMscript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</id>
+    <published>2015-12-26T01:06:53.000Z</published>
+    <updated>2017-02-07T06:22:05.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;之前的vim一直在用这个项目：&lt;a href=&quot;https://github.com/wklken/k-vim&quot;&gt;kvim&lt;/a&gt;，但是用习惯了也想有一份自己的vim配置，为了提高效率，于是就学起了vimscript（主要是为了&lt;code&gt;~/.vimrc&lt;/code&gt;）。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;vi 之大道如我心之禅，
+vi 之漫路即为禅修，
+vi 之命令禅印于心，
+未得此道者视之怪诞，
+与之为伴者洞其真谛，
+长修此道者巨变人生。
+作：reddy@lion.austin.com
+译：yangyangwithgnu@yeah.net&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;学习笔记&quot;&gt;&lt;a href=&quot;#学习笔记&quot; class=&quot;headerlink&quot; title=&quot;学习笔记&quot;&gt;&lt;/a&gt;学习笔记&lt;/h2&gt;&lt;h3 id=&quot;打印信息&quot;&gt;&lt;a href=&quot;#打印信息&quot; class=&quot;headerlink&quot; title=&quot;打印信息&quot;&gt;&lt;/a&gt;打印信息&lt;/h3&gt;&lt;p&gt;打印信息有&lt;code&gt;echo&lt;/code&gt;和&lt;code&gt;echom&lt;/code&gt;两个，但是使用&lt;code&gt;echom&lt;/code&gt;会把打印的消息存到历史记录，用&lt;code&gt;message&lt;/code&gt;可查看。&lt;/p&gt;
+&lt;h3 id=&quot;注释&quot;&gt;&lt;a href=&quot;#注释&quot; class=&quot;headerlink&quot; title=&quot;注释&quot;&gt;&lt;/a&gt;注释&lt;/h3&gt;&lt;p&gt;在编写vimscript脚本(&lt;code&gt;~/.vimrc&lt;/code&gt;)的时候，可用&lt;code&gt;&amp;quot;&lt;/code&gt;来注释，但是不一定有效，例如&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;echo &amp;quot;Hello World!&amp;quot; &amp;quot;hellowrld&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;设置选项&quot;&gt;&lt;a href=&quot;#设置选项&quot; class=&quot;headerlink&quot; title=&quot;设置选项&quot;&gt;&lt;/a&gt;设置选项&lt;/h3&gt;
+    
+    </summary>
+    
+    
+      <category term="学习笔记" scheme="https://netcan.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="Linux" scheme="https://netcan.github.io/tags/Linux/"/>
+    
+      <category term="vim" scheme="https://netcan.github.io/tags/vim/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>快速幂运算</title>
+    <link href="https://netcan.github.io/2015/12/21/%E5%BF%AB%E9%80%9F%E5%B9%82%E8%BF%90%E7%AE%97/"/>
+    <id>https://netcan.github.io/2015/12/21/%E5%BF%AB%E9%80%9F%E5%B9%82%E8%BF%90%E7%AE%97/</id>
+    <published>2015-12-21T01:36:10.000Z</published>
+    <updated>2017-02-07T06:19:39.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;快速幂运算&quot;&gt;&lt;a href=&quot;#快速幂运算&quot; class=&quot;headerlink&quot; title=&quot;快速幂运算&quot;&gt;&lt;/a&gt;快速幂运算&lt;/h2&gt;&lt;p&gt;形如$x^n$快速幂运算，一般用二进制优化加速。复杂度$O(log_2 n)$&lt;/p&gt;
+&lt;p&gt;这里举个例子来说明是如何加速的，例如$x^n=2^{11}$。&lt;/p&gt;
+&lt;p&gt;将$n=11$化成二进制，即$n=(1011)_2，2^3+2^1+2^0 = 11$，从右往左开始，首先将$ret$初始化为1，令$x_0=x$&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;第一位为1奇数位，做$ret = ret\times  x$运算，即$ret = \color{red}{1}\times \color{blue}{x_0}=2$，然后$x$自身平方一次，此时$x=x^2=4=\color{blue}{x_0^2}$&lt;/li&gt;
+&lt;li&gt;第二位也为1奇数位，$ret = ret \times  x$，此时$ret = \color{red}{ret} \times x = \color{red}{x_0} \times \color{blue}{x_0^2} = \color{red}{2}\times \color{blue}{x_0^2} = \color{red}{2}\times \color{blue}{4} = 8$，即$ret=\color{red}{x_0^3}$，然后$x$自身平方一次，$x=x^2=16=\color{blue}{x_0^4}$&lt;/li&gt;
+&lt;li&gt;第三位为0偶数位，不做$ret = ret\times x$运算，但$x$还是要自身平方一次，此时$x=x^2=256=\color{blue}{x_0^8}$&lt;/li&gt;
+&lt;li&gt;第四位为1奇数位，做$ret = ret\times x$运算，即$ret = \color{red}{ret} \times  x = \color{red}{x_0^3} \times  \color{blue}{x_0^8} = \color{red}{8}\times \color{blue}{256} = 2048$，即$ret=\color{red}{x_0^{11}}$，运算结束，返回$ret$&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&quot;实现代码（取模mod）&quot;&gt;&lt;a href=&quot;#实现代码（取模mod）&quot; class=&quot;headerlink&quot; title=&quot;实现代码（取模mod）&quot;&gt;&lt;/a&gt;实现代码（取模mod）&lt;/h2&gt;
+    
+    </summary>
+    
+    
+      <category term="学习笔记" scheme="https://netcan.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="数学" scheme="https://netcan.github.io/tags/%E6%95%B0%E5%AD%A6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>VIM快捷键</title>
+    <link href="https://netcan.github.io/2015/12/20/VIM%E5%BF%AB%E6%8D%B7%E9%94%AE/"/>
+    <id>https://netcan.github.io/2015/12/20/VIM%E5%BF%AB%E6%8D%B7%E9%94%AE/</id>
+    <published>2015-12-20T02:35:16.000Z</published>
+    <updated>2016-09-24T14:18:45.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;看来我已经全部掌握这些快捷键了。。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://7xibui.com1.z0.glb.clouddn.com/@/2015/12/vi-vim-cheat-sheet-sch.gif&quot; alt=&quot;http://7xibui.com1.z0.glb.clouddn.com/@/2015/12/vi-vim-cheat-sheet-sch.gif&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;光标移动&quot;&gt;&lt;a href=&quot;#光标移动&quot; class=&quot;headerlink&quot; title=&quot;光标移动&quot;&gt;&lt;/a&gt;光标移动&lt;/h2&gt;
+    
+    </summary>
+    
+    
+      <category term="学习笔记" scheme="https://netcan.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="Linux" scheme="https://netcan.github.io/tags/Linux/"/>
+    
+      <category term="vim" scheme="https://netcan.github.io/tags/vim/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>蒙特卡罗法之随机素数判定算法Miller_Rabin与Pollard_Rho质因数分解算法</title>
+    <link href="https://netcan.github.io/2015/12/06/%E8%92%99%E7%89%B9%E5%8D%A1%E7%BD%97%E6%B3%95%E4%B9%8B%E9%9A%8F%E6%9C%BA%E7%B4%A0%E6%95%B0%E6%B5%8B%E8%AF%95%E7%AE%97%E6%B3%95Miller-Rabin%E4%B8%8EPollard-Rho%E5%9B%A0%E6%95%B0%E5%88%86%E8%A7%A3%E7%AE%97%E6%B3%95/"/>
+    <id>https://netcan.github.io/2015/12/06/%E8%92%99%E7%89%B9%E5%8D%A1%E7%BD%97%E6%B3%95%E4%B9%8B%E9%9A%8F%E6%9C%BA%E7%B4%A0%E6%95%B0%E6%B5%8B%E8%AF%95%E7%AE%97%E6%B3%95Miller-Rabin%E4%B8%8EPollard-Rho%E5%9B%A0%E6%95%B0%E5%88%86%E8%A7%A3%E7%AE%97%E6%B3%95/</id>
+    <published>2015-12-06T06:50:53.000Z</published>
+    <updated>2017-02-07T06:19:46.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;昨天刷到&lt;a href=&quot;http://poj.org/problem?id=2429&quot;&gt;POJ 2429&lt;/a&gt;，没刷出来= =，难度太大，翻&lt;em&gt;Discuss&lt;/em&gt;翻到了一题&lt;a href=&quot;http://poj.org/problem?id=1811&quot;&gt;POJ 1811&lt;/a&gt;，了解了两个算法：&lt;code&gt;Miller_Rabin&lt;/code&gt;$O(log n)$素数判定与&lt;code&gt;Pollard_Rho&lt;/code&gt;$O(\sqrt[4] n)$分解质因数算法。&lt;/p&gt;
+&lt;!--~~看室友打垃圾游戏`LOL`毫不考虑他人的份上，若能争取换宿舍，迟早会一个人住的，远离室友保平安，废物一个。~~--&gt;
+
+&lt;h2 id=&quot;Miller-Rabin算法&quot;&gt;&lt;a href=&quot;#Miller-Rabin算法&quot; class=&quot;headerlink&quot; title=&quot;Miller_Rabin算法&quot;&gt;&lt;/a&gt;Miller_Rabin算法&lt;/h2&gt;&lt;p&gt;这是我从&lt;strong&gt;《算法导论》&lt;/strong&gt;和Google搜刮的资料上面整理出来的笔记，若有错误，请指出，谢谢。&lt;/p&gt;
+&lt;h3 id=&quot;素数定理：&quot;&gt;&lt;a href=&quot;#素数定理：&quot; class=&quot;headerlink&quot; title=&quot;素数定理：&quot;&gt;&lt;/a&gt;素数定理：&lt;/h3&gt;&lt;p&gt;素数分布函数$\pi(n)$描述了小于等于n的素数数量。&lt;/p&gt;
+
+$$\lim_{n\to \infty} \dfrac{\pi (n)}{n/ln n} = 1$$
+
+
+&lt;p&gt;在$n$非常小的情况下有$\pi(n)\sim n/ln n$，例如$n=10^9$次方时，$\pi(n)=508 475 34$，而$n/ln n \approx 48254942$，误差不超过$6%$。&lt;/p&gt;
+&lt;p&gt;随机选取一个数字$n$，通过素数定理，该数字$n$为素数的概率为$1/ln n$，期望值近似为$ln n$，因此为了找出一个长度与$n$相同的素数，需要在n附近随机取$ln n$个整数。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="学习笔记" scheme="https://netcan.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="数学" scheme="https://netcan.github.io/tags/%E6%95%B0%E5%AD%A6/"/>
+    
+      <category term="数论" scheme="https://netcan.github.io/tags/%E6%95%B0%E8%AE%BA/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>解决Hexo置顶问题</title>
+    <link href="https://netcan.github.io/2015/11/22/%E8%A7%A3%E5%86%B3Hexo%E7%BD%AE%E9%A1%B6%E9%97%AE%E9%A2%98/"/>
+    <id>https://netcan.github.io/2015/11/22/%E8%A7%A3%E5%86%B3Hexo%E7%BD%AE%E9%A1%B6%E9%97%AE%E9%A2%98/</id>
+    <published>2015-11-22T07:54:30.000Z</published>
+    <updated>2017-10-25T07:48:28.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;2017-10-25 15:44更新，为了防止每次更新、安装都要修改代码，现在可以直接从仓库里安装了：&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span
+        
+      
+    
+    </summary>
+    
+    
+      <category term="随笔" scheme="https://netcan.github.io/categories/%E9%9A%8F%E7%AC%94/"/>
+    
+    
+      <category term="Hexo" scheme="https://netcan.github.io/tags/Hexo/"/>
+    
+      <category term="Nodejs" scheme="https://netcan.github.io/tags/Nodejs/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>线性代数复习笔记-矩阵</title>
+    <link href="https://netcan.github.io/2015/09/27/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-%E7%9F%A9%E9%98%B5/"/>
+    <id>https://netcan.github.io/2015/09/27/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-%E7%9F%A9%E9%98%B5/</id>
+    <published>2015-09-27T09:24:22.000Z</published>
+    <updated>2015-09-27T09:24:22.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;矩阵的定义&quot;&gt;&lt;a href=&quot;#矩阵的定义&quot; class=&quot;headerlink&quot; title=&quot;矩阵的定义&quot;&gt;&lt;/a&gt;矩阵的定义&lt;/h1&gt;&lt;h2 id=&quot;定义2-1&quot;&gt;&lt;a href=&quot;#定义2-1&quot; class=&quot;headerlink&quot; title=&quot;定义2.1&quot;&gt;&lt;/a&gt;定义2.1&lt;/h2&gt;&lt;p&gt;由$m*n$个数$a_{ij}$组成的$m$行$n$列的数表，称为$m$行$n$列的矩阵。记作&lt;/p&gt;
+$$
+\mathbf{A}=\left(
+\begin{array}{cccc}
+a_{11} &amp; a_{12} &amp; \cdots &amp; a_{1n} \\
+a_{21} &amp; a_{22} &amp; \cdots &amp; a_{2n} \\
+\vdots &amp; \vdots &amp; &amp; \vdots \\
+a_{m1} &amp; a_{m2} &amp; \cdots &amp; a_{mn} \\
+\end{array}\right)$$
+
+
+&lt;p&gt;元素为实数的矩阵称为实矩阵，元素为复数的称为复矩阵。&lt;/p&gt;
+&lt;h2 id=&quot;定义2-2&quot;&gt;&lt;a href=&quot;#定义2-2&quot; class=&quot;headerlink&quot; title=&quot;定义2.2&quot;&gt;&lt;/a&gt;定义2.2&lt;/h2&gt;&lt;p&gt;矩阵$\mathbf{A}=(a_{ij})_{m*n}$与矩阵$\mathbf{B}=(b_{ij})_{m*n}$称为同型矩阵，若有$a_{ij}=b_{ij}$则称矩阵$\mathbf{A}=\mathbf{B}$，记作相等。&lt;/p&gt;
+&lt;h2 id=&quot;一些特殊的矩阵&quot;&gt;&lt;a href=&quot;#一些特殊的矩阵&quot; class=&quot;headerlink&quot; title=&quot;一些特殊的矩阵&quot;&gt;&lt;/a&gt;一些特殊的矩阵&lt;/h2&gt;&lt;h3 id=&quot;行向量&quot;&gt;&lt;a href=&quot;#行向量&quot; class=&quot;headerlink&quot; title=&quot;行向量&quot;&gt;&lt;/a&gt;行向量&lt;/h3&gt;&lt;p&gt;只有一行的矩阵$A=(a_1 \  a_2 \  \cdots a_n)$称为行矩阵，又称行向量。为避免混淆也可记作&lt;/p&gt;
+$$A=(a_1, a_2, \cdots, a_n)$$
+    
+    </summary>
+    
+    
+      <category term="学习笔记" scheme="https://netcan.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="数学" scheme="https://netcan.github.io/tags/%E6%95%B0%E5%AD%A6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>线性代数复习笔记-行列式</title>
+    <link href="https://netcan.github.io/2015/09/24/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%A1%8C%E5%88%97%E5%BC%8F/"/>
+    <id>https://netcan.github.io/2015/09/24/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%A1%8C%E5%88%97%E5%BC%8F/</id>
+    <published>2015-09-24T11:55:49.000Z</published>
+    <updated>2015-09-24T11:55:49.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;行列式&quot;&gt;&lt;a href=&quot;#行列式&quot; class=&quot;headerlink&quot; title=&quot;行列式&quot;&gt;&lt;/a&gt;行列式&lt;/h1&gt;&lt;h2 id=&quot;定义&quot;&gt;&lt;a href=&quot;#定义&quot; class=&quot;headerlink&quot; title=&quot;定义&quot;&gt;&lt;/a&gt;定义&lt;/h2&gt;&lt;h3 id=&quot;定义1-1&quot;&gt;&lt;a href=&quot;#定义1-1&quot; class=&quot;headerlink&quot; title=&quot;定义1.1&quot;&gt;&lt;/a&gt;定义1.1&lt;/h3&gt;&lt;p&gt;将n个不同元素排成一列，称为这n个元素的一个全排列，简称排列&lt;/p&gt;
+&lt;h3 id=&quot;定义1-2&quot;&gt;&lt;a href=&quot;#定义1-2&quot; class=&quot;headerlink&quot; title=&quot;定义1.2&quot;&gt;&lt;/a&gt;定义1.2&lt;/h3&gt;&lt;p&gt;对于n个不同的元素，先规定各元素之间有一个标准次序（例如n个 不同的自然数，可规定从小到大为标准次序），于是在这n个元素的任一排列中，当某两个元素的先后次序与标准次序不同时，就说有1个逆序。一个排列中所有逆序总数叫做这个排列的逆序数。逆序数个数记做$\tau(a_1, a_2, \cdots, a_n)$&lt;/p&gt;
+&lt;p&gt;逆序数为奇数的称为奇排列，偶数的成为偶排列。&lt;/p&gt;
+&lt;h3 id=&quot;定理1-1&quot;&gt;&lt;a href=&quot;#定理1-1&quot; class=&quot;headerlink&quot; title=&quot;定理1.1&quot;&gt;&lt;/a&gt;定理1.1&lt;/h3&gt;&lt;p&gt;一个排列中任意两个元素对换，排列改变奇偶性。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="学习笔记" scheme="https://netcan.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="数学" scheme="https://netcan.github.io/tags/%E6%95%B0%E5%AD%A6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>cout与printf混用的问题</title>
+    <link href="https://netcan.github.io/2015/05/08/cout%E4%B8%8Eprintf%E6%B7%B7%E7%94%A8%E7%9A%84%E9%97%AE%E9%A2%98/"/>
+    <id>https://netcan.github.io/2015/05/08/cout%E4%B8%8Eprintf%E6%B7%B7%E7%94%A8%E7%9A%84%E9%97%AE%E9%A2%98/</id>
+    <published>2015-05-08T05:17:52.000Z</published>
+    <updated>2015-05-08T05:17:52.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;前几天做一道题目的时候因为混用了iostream和stdio导致一直WA而查不出来。。&lt;/p&gt;
+&lt;p&gt;今天看了一下课件发现cout与printf混用会导致输出顺序问题。。&lt;/p&gt;
+&lt;p&gt;下面做个实验。。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;int main()
+&amp;#123;
+    cout &amp;lt;&amp;lt; &amp;quot;Net&amp;quot;;
+    printf(&amp;quot;Can\n&amp;quot;);
+    return 0;
+&amp;#125;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;输出&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;NetCan&lt;/code&gt;&lt;/pre&gt;
+    
+    </summary>
+    
+    
+      <category term="随笔" scheme="https://netcan.github.io/categories/%E9%9A%8F%E7%AC%94/"/>
+    
+    
+      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>循环队列与链队列</title>
+    <link href="https://netcan.github.io/2015/04/27/%E5%BE%AA%E7%8E%AF%E9%98%9F%E5%88%97%E4%B8%8E%E9%93%BE%E9%98%9F%E5%88%97/"/>
+    <id>https://netcan.github.io/2015/04/27/%E5%BE%AA%E7%8E%AF%E9%98%9F%E5%88%97%E4%B8%8E%E9%93%BE%E9%98%9F%E5%88%97/</id>
+    <published>2015-04-27T04:38:15.000Z</published>
+    <updated>2015-04-27T04:38:15.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;队列-Queue&quot;&gt;&lt;a href=&quot;#队列-Queue&quot; class=&quot;headerlink&quot; title=&quot;队列(Queue)&quot;&gt;&lt;/a&gt;队列(Queue)&lt;/h2&gt;&lt;p&gt;是一种操作受限的线性表。它只允许在线性表的一端进行插入操作，在另一端进行删除操作。允许插入的一端称作队尾(rear)，允许删除的一端称作队头(front)，在队尾进行插入的操作称为入队，在对头进行删除的操作称作出队。不包含任何数据的队列称为空队。&lt;/p&gt;
+&lt;p&gt;队列基本运算如下（循环队列）：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;const int QueueSize = 1000; // 循环队列最大长度
+template&amp;lt;class T&amp;gt;
+class CircleQueue &amp;#123;
+    public:
+        CircleQueue() &amp;#123; front = rear = 0;&amp;#125; // 构造函数
+        void EnQueue(T x); // 入队
+        T DeQueue(); // 出队
+        T GetFront(); // 获取队头数据
+        T GetRear(); // 获取队尾数据
+        int GetLength(); // 队列长度
+        bool Empty() &amp;#123; return front == rear; &amp;#125; // 判断是否为空队列
+    private:
+        int front,rear;
+        T data[QueueSize];
+&amp;#125;;&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;循环队列&quot;&gt;&lt;a href=&quot;#循环队列&quot; class=&quot;headerlink&quot; title=&quot;循环队列&quot;&gt;&lt;/a&gt;循环队列&lt;/h3&gt;&lt;p&gt;类似于顺序表，队列也可以采用顺序储存结构进行储存。即使用数组储存元素。由于队列操作是在队列两段进行的，因此一般需要设置队头和队尾两个指针。对于空队列，队头和队尾均为-1。随着元素的入队，队尾不断后移，出队时，队头指针也后移。为了方便操作，队列需要腾出一个元素不使用，这里队列的第一个元素为front指针所指的下一个。在这里我们规定队头指针所指的位置永远不储存队列元素。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
+    
+      <category term="算法" scheme="https://netcan.github.io/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="数据结构" scheme="https://netcan.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>栈的顺序储存与链式储存</title>
+    <link href="https://netcan.github.io/2015/04/24/%E6%A0%88%E7%9A%84%E9%A1%BA%E5%BA%8F%E5%82%A8%E5%AD%98%E4%B8%8E%E9%93%BE%E5%BC%8F%E5%82%A8%E5%AD%98/"/>
+    <id>https://netcan.github.io/2015/04/24/%E6%A0%88%E7%9A%84%E9%A1%BA%E5%BA%8F%E5%82%A8%E5%AD%98%E4%B8%8E%E9%93%BE%E5%BC%8F%E5%82%A8%E5%AD%98/</id>
+    <published>2015-04-24T00:53:03.000Z</published>
+    <updated>2015-04-24T00:53:03.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;栈-stack&quot;&gt;&lt;a href=&quot;#栈-stack&quot; class=&quot;headerlink&quot; title=&quot;栈(stack)&quot;&gt;&lt;/a&gt;栈(stack)&lt;/h2&gt;&lt;p&gt;是限定仅在表尾进行插入与删除的线性表，栈中允许插入和删除的一端叫做栈顶(top)，另一端叫做栈底(bottom)。不含任何数据元素的栈称为空栈。栈中元素的个数称为栈的高度或长度。&lt;/p&gt;
+&lt;p&gt;将元素插入到栈的操作称为入栈（或进栈）操作，元素入栈后就变成新的栈顶。将元素从栈中删除的操作称为出栈（或退栈）操作，出栈时被删除的总是原来的栈顶元素。因此每次出栈的元素总是当前栈中“最新”的元素，即最后入栈的元素，而最先插入的元素被放到了栈底，待其他元素都已经出栈，栈底元素才能被删除。&lt;/p&gt;
+&lt;p&gt;栈的操作是按照先进先出（LIFO,Last In First Out)原则进行的。&lt;/p&gt;
+&lt;h2 id=&quot;定义&quot;&gt;&lt;a href=&quot;#定义&quot; class=&quot;headerlink&quot; title=&quot;定义&quot;&gt;&lt;/a&gt;定义&lt;/h2&gt;
+    
+    </summary>
+    
+    
+      <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
+    
+      <category term="算法" scheme="https://netcan.github.io/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="数据结构" scheme="https://netcan.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>STL模板类vector与list</title>
+    <link href="https://netcan.github.io/2015/04/23/STL%E6%A8%A1%E6%9D%BF%E7%B1%BBvector%E4%B8%8Elist/"/>
+    <id>https://netcan.github.io/2015/04/23/STL%E6%A8%A1%E6%9D%BF%E7%B1%BBvector%E4%B8%8Elist/</id>
+    <published>2015-04-23T10:36:44.000Z</published>
+    <updated>2015-04-23T10:36:44.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在学校借了本＜数据结构＞感觉蛮好的，想买一本可是看了差不多了，那还是做好笔记吧．&lt;/p&gt;
+&lt;p&gt;C++的STL有很多与线性表相关的容器，如向量vector，列表list等顺序容器．&lt;/p&gt;
+&lt;h3 id=&quot;向量&quot;&gt;&lt;a href=&quot;#向量&quot; class=&quot;headerlink&quot; title=&quot;向量&quot;&gt;&lt;/a&gt;向量&lt;/h3&gt;&lt;p&gt;向量是最常用的容器，STL中向量是使用数组来实现的，因此向量具有顺序表的所有特点，可以快速随机访问存取任意元素．向量是同一种数据类型的对象的集合，每个对象根据其位置有一个整数索引与其对应，类似数组．&lt;/p&gt;
+&lt;p&gt;在使用向量前，必须包含对应的头文件：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;#include &amp;lt;vector&amp;gt;
+using std::vector;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;需要注意的是vector是一个类模板，而非数据类型，在定义时必须要说明vector保存的数据对象类型．&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
+    
+      <category term="算法" scheme="https://netcan.github.io/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="数据结构" scheme="https://netcan.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>线性表的顺序储存与链式储存</title>
+    <link href="https://netcan.github.io/2015/04/12/%E7%BA%BF%E6%80%A7%E8%A1%A8%E7%9A%84%E9%A1%BA%E5%BA%8F%E5%82%A8%E5%AD%98%E4%B8%8E%E9%93%BE%E5%BC%8F%E5%82%A8%E5%AD%98/"/>
+    <id>https://netcan.github.io/2015/04/12/%E7%BA%BF%E6%80%A7%E8%A1%A8%E7%9A%84%E9%A1%BA%E5%BA%8F%E5%82%A8%E5%AD%98%E4%B8%8E%E9%93%BE%E5%BC%8F%E5%82%A8%E5%AD%98/</id>
+    <published>2015-04-12T09:56:29.000Z</published>
+    <updated>2015-04-12T09:56:29.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;线性表&quot;&gt;&lt;a href=&quot;#线性表&quot; class=&quot;headerlink&quot; title=&quot;线性表&quot;&gt;&lt;/a&gt;线性表&lt;/h2&gt;&lt;p&gt;简称表，是由零个或多个具有相同类型的数据元素构成的有限序列。元素的个数称为线性表的长度。长度为零的称作空表，对于非空表，通常记为&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;L=(a1,a2,...,an)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;其中n为线性表长度，ai为线性表结点（数据元素），i为该元素在线性表中的位置或序号。a1是线性表的第一个元素或开始结点，an为最后一个元素或者终端结点。对于ai(1&amp;lt;i&amp;lt;n)，称a(i-1)为ai的直接前驱，a(i+1)为ai的直接后继。&lt;/p&gt;
+&lt;p&gt;线性表的运算如下，（下面是顺序结构储存的线性表）&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
+    
+      <category term="数据结构" scheme="https://netcan.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>试着用yacc和lex编写一个计算器</title>
+    <link href="https://netcan.github.io/2015/04/09/%E8%AF%95%E7%9D%80%E7%94%A8yacc%E5%92%8Clex%E7%BC%96%E5%86%99%E4%B8%80%E4%B8%AA%E8%AE%A1%E7%AE%97%E5%99%A8/"/>
+    <id>https://netcan.github.io/2015/04/09/%E8%AF%95%E7%9D%80%E7%94%A8yacc%E5%92%8Clex%E7%BC%96%E5%86%99%E4%B8%80%E4%B8%AA%E8%AE%A1%E7%AE%97%E5%99%A8/</id>
+    <published>2015-04-09T09:11:49.000Z</published>
+    <updated>2015-04-09T09:11:49.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;最近在看一本[日]前桥和弥写的《自制编程语言》，很感兴趣，里面第二章的案例就是试做一个计算器。&lt;/p&gt;
+&lt;p&gt;编程语言分为编译型语言和解释型语言两种。&lt;/p&gt;
+&lt;p&gt;编译语言比较有代表性的是C/C++，最终输出机器码可执行文件。&lt;/p&gt;
+&lt;p&gt;想要输出机器码的话，必须要掌握机器码才行，即使学习了机器码并写出了编译器，也无法输出其他型号cpu运行的文件。&lt;/p&gt;
+&lt;p&gt;机器码的编程语言优点是运行速度非常快，但是学习起来非常有难度= =所以这本书选择了开发解释性语言= =可以用编程语言扩展应用程序。。。&lt;/p&gt;
+&lt;p&gt;解释性语言的解释一词来自英语的interpreter，是“能进行翻译的意思”，程序员编写的代码通过解释器一边解析一边运行，但除了DOS的批处理脚本或Unix的SHELL脚本这么接近该定义，大多数解释型语言都会将源代码临时转换为某种中间形态。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
+    
+      <category term="Yacc/Lex" scheme="https://netcan.github.io/tags/Yacc-Lex/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>CSS美化表格和表单样式</title>
+    <link href="https://netcan.github.io/2015/04/09/CSS%E7%BE%8E%E5%8C%96%E8%A1%A8%E6%A0%BC%E5%92%8C%E8%A1%A8%E5%8D%95%E6%A0%B7%E5%BC%8F/"/>
+    <id>https://netcan.github.io/2015/04/09/CSS%E7%BE%8E%E5%8C%96%E8%A1%A8%E6%A0%BC%E5%92%8C%E8%A1%A8%E5%8D%95%E6%A0%B7%E5%BC%8F/</id>
+    <published>2015-04-09T06:44:12.000Z</published>
+    <updated>2015-04-09T06:44:12.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h3 id=&quot;表格样式&quot;&gt;&lt;a href=&quot;#表格样式&quot; class=&quot;headerlink&quot; title=&quot;表格样式&quot;&gt;&lt;/a&gt;表格样式&lt;/h3&gt;&lt;h4 id=&quot;表格边框样式-border-collapse&quot;&gt;&lt;a
+        
+      
+    
+    </summary>
+    
+    
+      <category term="学习笔记" scheme="https://netcan.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="CSS" scheme="https://netcan.github.io/tags/CSS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>CSS美化超级链接和鼠标</title>
+    <link href="https://netcan.github.io/2015/04/08/CSS%E7%BE%8E%E5%8C%96%E8%B6%85%E7%BA%A7%E9%93%BE%E6%8E%A5%E5%92%8C%E9%BC%A0%E6%A0%87/"/>
+    <id>https://netcan.github.io/2015/04/08/CSS%E7%BE%8E%E5%8C%96%E8%B6%85%E7%BA%A7%E9%93%BE%E6%8E%A5%E5%92%8C%E9%BC%A0%E6%A0%87/</id>
+    <published>2015-04-07T16:00:47.000Z</published>
+    <updated>2015-04-07T16:00:47.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;超级链接特效&quot;&gt;&lt;a href=&quot;#超级链接特效&quot; class=&quot;headerlink&quot; title=&quot;超级链接特效&quot;&gt;&lt;/a&gt;超级链接特效&lt;/h3&gt;&lt;h4 id=&quot;改变超级链接的基本样式&quot;&gt;&lt;a href=&quot;#改变超级链接的基本样式&quot; class=&quot;headerlink&quot; title=&quot;改变超级链接的基本样式&quot;&gt;&lt;/a&gt;改变超级链接的基本样式&lt;/h4&gt;&lt;p&gt;对于超级链接的修饰，可以采用css伪类。&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;伪类&lt;/th&gt;
+&lt;th&gt;用途&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;&lt;tr&gt;
+&lt;td&gt;a:link&lt;/td&gt;
+&lt;td&gt;定义a对象在未被访问前的样式&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;a:hover&lt;/td&gt;
+&lt;td&gt;定义a对象在鼠标悬停时的样式&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;a:active&lt;/td&gt;
+&lt;td&gt;定义a对象在被激活时的样式（在鼠标单击与释放之间发生的事件）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;a:visited&lt;/td&gt;
+&lt;td&gt;定义a对象在其链接被访问过时的样式&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+&lt;p&gt;例如&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;a:hover &amp;#123; color: #545454; &amp;#125;&lt;/code&gt;&lt;/pre&gt;
+    
+    </summary>
+    
+    
+      <category term="学习笔记" scheme="https://netcan.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="CSS" scheme="https://netcan.github.io/tags/CSS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>CSS设置背景与边框</title>
+    <link href="https://netcan.github.io/2015/04/06/CSS%E8%AE%BE%E7%BD%AE%E8%83%8C%E6%99%AF%E4%B8%8E%E8%BE%B9%E6%A1%86/"/>
+    <id>https://netcan.github.io/2015/04/06/CSS%E8%AE%BE%E7%BD%AE%E8%83%8C%E6%99%AF%E4%B8%8E%E8%BE%B9%E6%A1%86/</id>
+    <published>2015-04-06T07:35:16.000Z</published>
+    <updated>2015-04-06T07:35:16.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;清明节都呆在宿舍了，博客也没怎么写，书都看完了= =&lt;/p&gt;
+&lt;p&gt;赶紧更新和室友打红警。。。&lt;/p&gt;
+&lt;h3 id=&quot;设置背景：&quot;&gt;&lt;a href=&quot;#设置背景：&quot; class=&quot;headerlink&quot; title=&quot;设置背景：&quot;&gt;&lt;/a&gt;设置背景：&lt;/h3&gt;&lt;h4 id=&quot;背景颜色-background-color&quot;&gt;&lt;a href=&quot;#背景颜色-background-color&quot; class=&quot;headerlink&quot; title=&quot;背景颜色(background-color)&quot;&gt;&lt;/a&gt;背景颜色(&lt;a href=&quot;http://www.w3school.com.cn/cssref/pr_background.asp&quot;&gt;background-color&lt;/a&gt;)&lt;/h4&gt;&lt;p&gt;默认背景色为透明(transparent)&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;#123; background-color： transparent|color; &amp;#125;&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&quot;背景图片-background-image&quot;&gt;&lt;a href=&quot;#背景图片-background-image&quot; class=&quot;headerlink&quot; title=&quot;背景图片(background-image)&quot;&gt;&lt;/a&gt;背景图片(&lt;a href=&quot;http://www.w3school.com.cn/cssref/pr_background-image.asp&quot;&gt;background-image&lt;/a&gt;)&lt;/h4&gt;&lt;p&gt;用于设定标记的背景图片。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;#123; background-image: none|url(url); &amp;#125;&lt;/code&gt;&lt;/pre&gt;
+&lt;h5 id=&quot;背景图片重复-background-repeat&quot;&gt;&lt;a href=&quot;#背景图片重复-background-repeat&quot; class=&quot;headerlink&quot; title=&quot;背景图片重复(background-repeat)&quot;&gt;&lt;/a&gt;背景图片重复(&lt;a href=&quot;http://www.w3school.com.cn/cssref/pr_background-repeat.asp&quot;&gt;background-repeat&lt;/a&gt;)&lt;/h5&gt;&lt;p&gt;可设置图片的重复方式，包括水平重复，垂直重复和不重复等。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="学习笔记" scheme="https://netcan.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="CSS" scheme="https://netcan.github.io/tags/CSS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>CSS美化图片</title>
+    <link href="https://netcan.github.io/2015/04/05/CSS%E7%BE%8E%E5%8C%96%E5%9B%BE%E7%89%87/"/>
+    <id>https://netcan.github.io/2015/04/05/CSS%E7%BE%8E%E5%8C%96%E5%9B%BE%E7%89%87/</id>
+    <published>2015-04-05T08:49:07.000Z</published>
+    <updated>2015-04-05T08:49:07.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;好久没写博客了，最近在忙着编写百科知识竞赛平台，第一个php项目实现了。。有点不爽的是，希望这个百科竞赛是校级的，不然废了那么多精力最后只是系级的比赛很不值，但也算作是经验吧。。只是写的很凌乱。。&lt;/p&gt;
+&lt;p&gt;把HTML+CSS的书看完了，来继续整理下css的知识。&lt;/p&gt;
+&lt;h3 id=&quot;修饰图片&quot;&gt;&lt;a href=&quot;#修饰图片&quot; class=&quot;headerlink&quot; title=&quot;修饰图片&quot;&gt;&lt;/a&gt;修饰图片&lt;/h3&gt;&lt;h4 id=&quot;图片边框-border-style&quot;&gt;&lt;a href=&quot;#图片边框-border-style&quot; class=&quot;headerlink&quot; title=&quot;图片边框(border-style)&quot;&gt;&lt;/a&gt;图片边框(&lt;a href=&quot;http://www.w3school.com.cn/cssref/pr_border-style.asp&quot;&gt;border-style&lt;/a&gt;)&lt;/h4&gt;&lt;p&gt;可定义边框样式，即边框风格。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;#123; border-style: dotted|dashed|solid|double; &amp;#125;
+&amp;#123; border-top-style|border-right-style|border-bottom-style|border-left-style: dotted|dashed|solid|double; &amp;#125;&lt;/code&gt;&lt;/pre&gt;
+    
+    </summary>
+    
+    
+      <category term="学习笔记" scheme="https://netcan.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="CSS" scheme="https://netcan.github.io/tags/CSS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>CSS字体与段落属性</title>
+    <link href="https://netcan.github.io/2015/03/27/CSS%E5%AD%97%E4%BD%93%E4%B8%8E%E6%AE%B5%E8%90%BD%E5%B1%9E%E6%80%A7/"/>
+    <id>https://netcan.github.io/2015/03/27/CSS%E5%AD%97%E4%BD%93%E4%B8%8E%E6%AE%B5%E8%90%BD%E5%B1%9E%E6%80%A7/</id>
+    <published>2015-03-27T14:43:41.000Z</published>
+    <updated>2015-03-27T14:43:41.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;点击属性可跳转到对应的w3school手册。&lt;/p&gt;
+&lt;h3 id=&quot;css文字样式&quot;&gt;&lt;a href=&quot;#css文字样式&quot; class=&quot;headerlink&quot; title=&quot;css文字样式&quot;&gt;&lt;/a&gt;css文字样式&lt;/h3&gt;&lt;h4 id=&quot;字体-font-family&quot;&gt;&lt;a href=&quot;#字体-font-family&quot; class=&quot;headerlink&quot; title=&quot;字体(font-family)&quot;&gt;&lt;/a&gt;字体(&lt;a href=&quot;http://www.w3school.com.cn/cssref/pr_font_font-family.asp&quot;&gt;font-family&lt;/a&gt;)&lt;/h4&gt;&lt;p&gt;font-family属性用于指定字体的类型，如宋体、黑体、Times New Roman等，既在网页中展示字体的不同形状，语法如下。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;#123;font-family: name;&amp;#125;
+&amp;#123;font-family: cursive|fantasy|monospace|serif|sans-serif;&amp;#125;&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&quot;字号-font-size&quot;&gt;&lt;a href=&quot;#字号-font-size&quot; class=&quot;headerlink&quot; title=&quot;字号(font-size)&quot;&gt;&lt;/a&gt;字号(&lt;a href=&quot;http://www.w3school.com.cn/cssref/pr_font_font-size.asp&quot;&gt;font-size&lt;/a&gt;)&lt;/h4&gt;&lt;p&gt;通常使用font-size设置文字大小。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;#123;font-size: 数值|inherit|xx-small|x-small|small|medium|large|x-large|xx-large|larger|smaller|length;&amp;#125;&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&quot;字体风格-font-style&quot;&gt;&lt;a href=&quot;#字体风格-font-style&quot; class=&quot;headerlink&quot; title=&quot;字体风格(font-style)&quot;&gt;&lt;/a&gt;字体风格(&lt;a href=&quot;http://www.w3school.com.cn/cssref/pr_font_font-style.asp&quot;&gt;font-style&lt;/a&gt;)&lt;/h4&gt;&lt;p&gt;定义字体的风格，即字体的显示样式。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="学习笔记" scheme="https://netcan.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="CSS" scheme="https://netcan.github.io/tags/CSS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>CSS的插入与基础语法</title>
+    <link href="https://netcan.github.io/2015/03/24/CSS%E7%9A%84%E6%8F%92%E5%85%A5%E4%B8%8E%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/"/>
+    <id>https://netcan.github.io/2015/03/24/CSS%E7%9A%84%E6%8F%92%E5%85%A5%E4%B8%8E%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/</id>
+    <published>2015-03-24T07:15:22.000Z</published>
+    <updated>2015-03-24T07:15:22.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;css样式表&quot;&gt;&lt;a href=&quot;#css样式表&quot; class=&quot;headerlink&quot; title=&quot;css样式表&quot;&gt;&lt;/a&gt;css样式表&lt;/h3&gt;&lt;p&gt;使用方式包括行内样式、内嵌样式、链接样式、导入样式。&lt;/p&gt;
+&lt;h4 id=&quot;行内样式&quot;&gt;&lt;a href=&quot;#行内样式&quot; class=&quot;headerlink&quot; title=&quot;行内样式&quot;&gt;&lt;/a&gt;行内样式&lt;/h4&gt;&lt;p&gt;直接在html标记中使用style属性，属性的内容就是css的属性和值。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;p style=&amp;quot;color:red&amp;quot;&amp;gt;段落样式&amp;lt;/p&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&quot;内嵌样式&quot;&gt;&lt;a href=&quot;#内嵌样式&quot; class=&quot;headerlink&quot; title=&quot;内嵌样式&quot;&gt;&lt;/a&gt;内嵌样式&lt;/h4&gt;&lt;p&gt;添加css样式代码到&lt;head&gt;&lt;/head&gt;之间，用&lt;style&gt;&lt;/style&gt;标记声明。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="学习笔记" scheme="https://netcan.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="CSS" scheme="https://netcan.github.io/tags/CSS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>PHP操作MySQL数据库</title>
+    <link href="https://netcan.github.io/2015/03/21/PHP%E6%93%8D%E4%BD%9CMySQL%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    <id>https://netcan.github.io/2015/03/21/PHP%E6%93%8D%E4%BD%9CMySQL%E6%95%B0%E6%8D%AE%E5%BA%93/</id>
+    <published>2015-03-21T14:34:23.000Z</published>
+    <updated>2015-03-21T14:34:23.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;使用mysqli-connect-函数连接到MySQL数据库&quot;&gt;&lt;a href=&quot;#使用mysqli-connect-函数连接到MySQL数据库&quot; class=&quot;headerlink&quot; title=&quot;使用mysqli_connect()函数连接到MySQL数据库&quot;&gt;&lt;/a&gt;使用&lt;code&gt;mysqli_connect()&lt;/code&gt;函数连接到MySQL数据库&lt;/h3&gt;&lt;pre&gt;&lt;code&gt;mysqli_connect(&amp;#39;MySQL服务器地址&amp;#39;,&amp;#39;用户名&amp;#39;,&amp;#39;密码&amp;#39;,&amp;#39;要连接的数据库&amp;#39;);&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Example:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$db=mysqli_connect(&amp;#39;localhost&amp;#39;,&amp;#39;root&amp;#39;,&amp;#39;password&amp;#39;,&amp;#39;test&amp;#39;);&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;使用mysqli-select-db-函数选择数据库文件&quot;&gt;&lt;a href=&quot;#使用mysqli-select-db-函数选择数据库文件&quot; class=&quot;headerlink&quot; title=&quot;使用mysqli_select_db()函数选择数据库文件&quot;&gt;&lt;/a&gt;使用&lt;code&gt;mysqli_select_db()&lt;/code&gt;函数选择数据库文件&lt;/h3&gt;&lt;pre&gt;&lt;code&gt;mysqli_select_db(数据库服务器连接对象,目标数据库名);&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Example:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$db=mysqli_connect(&amp;#39;localhost&amp;#39;,&amp;#39;root&amp;#39;,&amp;#39;password&amp;#39;);
+mysqli_select_db($db,&amp;#39;test&amp;#39;);&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;使用mysqli-query-函数执行SQL语句&quot;&gt;&lt;a href=&quot;#使用mysqli-query-函数执行SQL语句&quot; class=&quot;headerlink&quot; title=&quot;使用mysqli_query()函数执行SQL语句&quot;&gt;&lt;/a&gt;使用&lt;code&gt;mysqli_query()&lt;/code&gt;函数执行SQL语句&lt;/h3&gt;
+    
+    </summary>
+    
+    
+      <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="PHP" scheme="https://netcan.github.io/tags/PHP/"/>
+    
+      <category term="MySQL" scheme="https://netcan.github.io/tags/MySQL/"/>
+    
+      <category term="数据库" scheme="https://netcan.github.io/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>数据库的备份和还原</title>
+    <link href="https://netcan.github.io/2015/03/21/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%A4%87%E4%BB%BD%E5%92%8C%E8%BF%98%E5%8E%9F/"/>
+    <id>https://netcan.github.io/2015/03/21/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%A4%87%E4%BB%BD%E5%92%8C%E8%BF%98%E5%8E%9F/</id>
+    <published>2015-03-21T07:00:08.000Z</published>
+    <updated>2015-03-21T07:00:08.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;数据的备份-mysqldump&quot;&gt;&lt;a href=&quot;#数据的备份-mysqldump&quot; class=&quot;headerlink&quot; title=&quot;数据的备份(mysqldump)&quot;&gt;&lt;/a&gt;数据的备份(&lt;code&gt;mysqldump&lt;/code&gt;)&lt;/h3&gt;&lt;h4 id=&quot;使用mysqldump命令备份&quot;&gt;&lt;a href=&quot;#使用mysqldump命令备份&quot; class=&quot;headerlink&quot; title=&quot;使用mysqldump命令备份&quot;&gt;&lt;/a&gt;使用mysqldump命令备份&lt;/h4&gt;&lt;pre&gt;&lt;code&gt;mysqldump -h host -u user -p[password] dbname [tbname [tbname...]] &amp;gt; filename.sql&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;先来看看test数据库下有哪些表，&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;mysql&amp;gt; use test;
+Database changed
+mysql&amp;gt; show tables;
++----------------+
+| Tables_in_test |
++----------------+
+| books          |
+| fruits         |
++----------------+
+2 rows in set (0.00 sec)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;表中记录，&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="学习笔记" scheme="https://netcan.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="MySQL" scheme="https://netcan.github.io/tags/MySQL/"/>
+    
+      <category term="数据库" scheme="https://netcan.github.io/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>数据的基本操作</title>
+    <link href="https://netcan.github.io/2015/03/20/%E6%95%B0%E6%8D%AE%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/"/>
+    <id>https://netcan.github.io/2015/03/20/%E6%95%B0%E6%8D%AE%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/</id>
+    <published>2015-03-20T06:45:24.000Z</published>
+    <updated>2015-03-20T06:45:24.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;插入数据：&quot;&gt;&lt;a href=&quot;#插入数据：&quot; class=&quot;headerlink&quot; title=&quot;插入数据：&quot;&gt;&lt;/a&gt;插入数据：&lt;/h3&gt;&lt;h4 id=&quot;插入一条数据&quot;&gt;&lt;a href=&quot;#插入一条数据&quot; class=&quot;headerlink&quot; title=&quot;插入一条数据&quot;&gt;&lt;/a&gt;插入一条数据&lt;/h4&gt;&lt;pre&gt;&lt;code&gt;INSERT INTO table_name(column_list) VALUES(value_list);&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;先创建一张数据表：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;mysql&amp;gt; create table person
+    -&amp;gt; (
+    -&amp;gt; id int unsigned not null auto_increment,
+    -&amp;gt; name char(40) not null default &amp;#39;x&amp;#39;,
+    -&amp;gt; age int not null default 0,
+    -&amp;gt; info char(50) null,
+    -&amp;gt; primary key(id)
+    -&amp;gt; );
+Query OK, 0 rows affected (0.13 sec)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;然后插入数据：&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="学习笔记" scheme="https://netcan.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="MySQL" scheme="https://netcan.github.io/tags/MySQL/"/>
+    
+      <category term="数据库" scheme="https://netcan.github.io/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>数据表的基本操作</title>
+    <link href="https://netcan.github.io/2015/03/17/%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/"/>
+    <id>https://netcan.github.io/2015/03/17/%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/</id>
+    <published>2015-03-17T08:40:45.000Z</published>
+    <updated>2015-03-17T08:40:45.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;在创建数据表时，需要USE-lt-database-name-gt-来选中数据库，&quot;&gt;&lt;a href=&quot;#在创建数据表时，需要USE-lt-database-name-gt-来选中数据库，&quot; class=&quot;headerlink&quot; title=&quot;在创建数据表时，需要USE &amp;lt;database_name&amp;gt;;来选中数据库，&quot;&gt;&lt;/a&gt;在创建数据表时，需要&lt;code&gt;USE &amp;lt;database_name&amp;gt;;&lt;/code&gt;来选中数据库，&lt;/h4&gt;&lt;pre&gt;&lt;code&gt;mysql&amp;gt; create database test_db;
+Query OK, 1 row affected (0.02 sec)
+
+mysql&amp;gt; use test_db;
+Database changed&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&quot;创建数据表语法规则：&quot;&gt;&lt;a href=&quot;#创建数据表语法规则：&quot; class=&quot;headerlink&quot; title=&quot;创建数据表语法规则：&quot;&gt;&lt;/a&gt;创建数据表语法规则：&lt;/h4&gt;&lt;pre&gt;&lt;code&gt;CREATE TABLE &amp;lt;表名&amp;gt;
+(
+字段名1 数据类型 [列级别的约束条件][默认值],
+字段名2 数据类型 [列级别的约束条件][默认值],
+......
+[表级别的约束规则]
+);&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Example:&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="学习笔记" scheme="https://netcan.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="MySQL" scheme="https://netcan.github.io/tags/MySQL/"/>
+    
+      <category term="数据库" scheme="https://netcan.github.io/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>数据库的基本操作</title>
+    <link href="https://netcan.github.io/2015/03/17/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/"/>
+    <id>https://netcan.github.io/2015/03/17/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/</id>
+    <published>2015-03-17T03:43:40.000Z</published>
+    <updated>2015-03-17T03:43:40.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;登陆数据库：-mysql-h-localhost-u-root-p&quot;&gt;&lt;a href=&quot;#登陆数据库：-mysql-h-localhost-u-root-p&quot; class=&quot;headerlink&quot; title=&quot;登陆数据库： mysql -h localhost -u root -p&quot;&gt;&lt;/a&gt;登陆数据库： &lt;code&gt;mysql -h localhost -u root -p&lt;/code&gt;&lt;/h4&gt;&lt;pre&gt;&lt;code&gt;C:\Windows\system32&amp;gt;mysql -h localhost -u root -p
+Enter password: ********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 43
+Server version: 5.5.40 MySQL Community Server (GPL)
+
+Copyright (c) 2000, 2014, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type &amp;#39;help;&amp;#39; or &amp;#39;\h&amp;#39; for help. Type &amp;#39;\c&amp;#39; to clear the current input statement.
+
+mysql&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+    
+    </summary>
+    
+    
+      <category term="学习笔记" scheme="https://netcan.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="MySQL" scheme="https://netcan.github.io/tags/MySQL/"/>
+    
+      <category term="数据库" scheme="https://netcan.github.io/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>PHP与Web页面交互</title>
+    <link href="https://netcan.github.io/2015/03/15/PHP%E4%B8%8EWeb%E9%A1%B5%E9%9D%A2%E4%BA%A4%E4%BA%92/"/>
+    <id>https://netcan.github.io/2015/03/15/PHP%E4%B8%8EWeb%E9%A1%B5%E9%9D%A2%E4%BA%A4%E4%BA%92/</id>
+    <published>2015-03-15T15:32:57.000Z</published>
+    <updated>2015-03-15T15:32:57.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;PHP基本上搞定了，还差最后一章PHP图形处理。&lt;/p&gt;
+&lt;p&gt;这节也通过一堆代码来写吧，很好理解的。&lt;/p&gt;
+&lt;p&gt;首先是web页面，file.html页面用来测试收集数据和上传文件。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="PHP" scheme="https://netcan.github.io/tags/PHP/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>PHP类与异常</title>
+    <link href="https://netcan.github.io/2015/03/15/PHP%E7%B1%BB%E4%B8%8E%E5%BC%82%E5%B8%B8/"/>
+    <id>https://netcan.github.io/2015/03/15/PHP%E7%B1%BB%E4%B8%8E%E5%BC%82%E5%B8%B8/</id>
+    <published>2015-03-14T16:40:08.000Z</published>
+    <updated>2015-03-14T16:40:08.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;今晚总算把类和对象总结了出来，通过一个例子很好理解，我写了注释。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="PHP" scheme="https://netcan.github.io/tags/PHP/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>PHP日期和时间</title>
+    <link href="https://netcan.github.io/2015/03/11/PHP%E6%97%A5%E6%9C%9F%E5%92%8C%E6%97%B6%E9%97%B4/"/>
+    <id>https://netcan.github.io/2015/03/11/PHP%E6%97%A5%E6%9C%9F%E5%92%8C%E6%97%B6%E9%97%B4/</id>
+    <published>2015-03-11T14:59:13.000Z</published>
+    <updated>2015-03-11T14:59:13.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;系统时区设置&quot;&gt;&lt;a href=&quot;#系统时区设置&quot; class=&quot;headerlink&quot; title=&quot;系统时区设置&quot;&gt;&lt;/a&gt;系统时区设置&lt;/h3&gt;&lt;p&gt;&lt;code&gt;date_default_timezone_set()&lt;/code&gt;设置时区，例如&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+date_default_timezone_set(&amp;quot;Asiz/Hong_Kong&amp;quot;); // 香港时区
+date_default_timezone_set(&amp;quot;RPC&amp;quot;); // 北京时区
+?&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;日期和时间函数&quot;&gt;&lt;a href=&quot;#日期和时间函数&quot; class=&quot;headerlink&quot; title=&quot;日期和时间函数&quot;&gt;&lt;/a&gt;日期和时间函数&lt;/h3&gt;&lt;h4 id=&quot;time-函数返回当前时间戳&quot;&gt;&lt;a href=&quot;#time-函数返回当前时间戳&quot; class=&quot;headerlink&quot; title=&quot;time()函数返回当前时间戳&quot;&gt;&lt;/a&gt;&lt;code&gt;time()&lt;/code&gt;函数返回当前时间戳&lt;/h4&gt;&lt;pre&gt;&lt;code&gt;echo time(); // 输出当前时间戳&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;输出：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;1426083407&lt;/code&gt;&lt;/pre&gt;
+    
+    </summary>
+    
+    
+      <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="PHP" scheme="https://netcan.github.io/tags/PHP/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>PHP数组</title>
+    <link href="https://netcan.github.io/2015/03/11/PHP%E6%95%B0%E7%BB%84/"/>
+    <id>https://netcan.github.io/2015/03/11/PHP%E6%95%B0%E7%BB%84/</id>
+    <published>2015-03-11T07:31:19.000Z</published>
+    <updated>2015-03-11T07:31:19.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;PHP-数组有两种：-数字索引数组和联合索引数组&quot;&gt;&lt;a href=&quot;#PHP-数组有两种：-数字索引数组和联合索引数组&quot; class=&quot;headerlink&quot; title=&quot;PHP 数组有两种： 数字索引数组和联合索引数组&quot;&gt;&lt;/a&gt;PHP 数组有两种： 数字索引数组和联合索引数组&lt;/h3&gt;&lt;h4 id=&quot;数字索引数组定义：&quot;&gt;&lt;a href=&quot;#数字索引数组定义：&quot; class=&quot;headerlink&quot; title=&quot;数字索引数组定义：&quot;&gt;&lt;/a&gt;数字索引数组定义：&lt;/h4&gt;&lt;pre&gt;&lt;code&gt;$a = array(&amp;#39;语文&amp;#39;, &amp;#39;数学&amp;#39;, &amp;#39;英语&amp;#39;, &amp;#39;物理&amp;#39;, &amp;#39;化学&amp;#39;, &amp;#39;生物&amp;#39;);
+print_r($a);&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;输出:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Array([0] =&amp;gt; 语文 [1] =&amp;gt; 数学 [2] =&amp;gt; 英语 [3] =&amp;gt; 物理 [4] =&amp;gt; 化学 [5] =&amp;gt; 生物)&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&quot;联合索引数组定义：&quot;&gt;&lt;a href=&quot;#联合索引数组定义：&quot; class=&quot;headerlink&quot; title=&quot;联合索引数组定义：&quot;&gt;&lt;/a&gt;联合索引数组定义：&lt;/h4&gt;&lt;pre&gt;&lt;code&gt;$b = array(&amp;#39;语文&amp;#39;=&amp;gt;150, &amp;#39;数学&amp;#39;=&amp;gt;150, &amp;#39;英语&amp;#39;=&amp;gt;150, &amp;#39;物理&amp;#39;=&amp;gt;120, &amp;#39;化学&amp;#39;=&amp;gt;108, &amp;#39;生物&amp;#39;=&amp;gt;72);
+print_r($b);&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;输出：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Array ( [语文] =&amp;gt; 150 [数学] =&amp;gt; 150 [英语] =&amp;gt; 150 [物理] =&amp;gt; 120 [化学] =&amp;gt; 108 [生物] =&amp;gt; 72 )&lt;/code&gt;&lt;/pre&gt;
+    
+    </summary>
+    
+    
+      <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="PHP" scheme="https://netcan.github.io/tags/PHP/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>PHP字符串处理</title>
+    <link href="https://netcan.github.io/2015/03/10/PHP%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%A4%84%E7%90%86/"/>
+    <id>https://netcan.github.io/2015/03/10/PHP%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%A4%84%E7%90%86/</id>
+    <published>2015-03-10T08:56:53.000Z</published>
+    <updated>2015-03-10T08:56:53.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;&lt;code&gt;.&lt;/code&gt;用于连接两字符串&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;strlen()&lt;/code&gt;计算字符串长度，例如&lt;code&gt;strlen($string)&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;str_world_count()&lt;/code&gt;计算字符串中的单词数
+        
+      
+    
+    </summary>
+    
+    
+      <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="PHP" scheme="https://netcan.github.io/tags/PHP/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>五大排序算法的实现</title>
+    <link href="https://netcan.github.io/2015/01/31/%E4%BA%94%E5%A4%A7%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E7%9A%84%E5%AE%9E%E7%8E%B0/"/>
+    <id>https://netcan.github.io/2015/01/31/%E4%BA%94%E5%A4%A7%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E7%9A%84%E5%AE%9E%E7%8E%B0/</id>
+    <published>2015-01-31T06:50:36.000Z</published>
+    <updated>2015-01-31T06:50:36.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;还是看代码吧：&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
+    
+      <category term="算法" scheme="https://netcan.github.io/tags/%E7%AE%97%E6%B3%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>c语言解决汉诺塔问题</title>
+    <link href="https://netcan.github.io/2015/01/23/c%E8%AF%AD%E8%A8%80%E8%A7%A3%E5%86%B3%E6%B1%89%E8%AF%BA%E5%A1%94%E9%97%AE%E9%A2%98/"/>
+    <id>https://netcan.github.io/2015/01/23/c%E8%AF%AD%E8%A8%80%E8%A7%A3%E5%86%B3%E6%B1%89%E8%AF%BA%E5%A1%94%E9%97%AE%E9%A2%98/</id>
+    <published>2015-01-23T09:05:28.000Z</published>
+    <updated>2015-01-23T09:05:28.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;游戏规则:&lt;br&gt;有三根相邻的柱子，标号为A,B,C，A柱子上从下到上按金字塔状叠放着n个不同大小的圆盘，编号从上往下1到n，现在把所有盘子一个一个移动到柱子C上，并且每次移动同一根柱子上都不能出现大盘子在小盘子上方。&lt;br&gt;代码：&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
+    
+      <category term="算法" scheme="https://netcan.github.io/tags/%E7%AE%97%E6%B3%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>环形队列的定义与操作</title>
+    <link href="https://netcan.github.io/2014/12/23/%E7%8E%AF%E5%BD%A2%E9%98%9F%E5%88%97%E7%9A%84%E5%AE%9A%E4%B9%89%E4%B8%8E%E6%93%8D%E4%BD%9C/"/>
+    <id>https://netcan.github.io/2014/12/23/%E7%8E%AF%E5%BD%A2%E9%98%9F%E5%88%97%E7%9A%84%E5%AE%9A%E4%B9%89%E4%B8%8E%E6%93%8D%E4%BD%9C/</id>
+    <published>2014-12-23T09:02:06.000Z</published>
+    <updated>2014-12-23T09:02:06.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;看图，看代码理解。。&lt;br&gt;&lt;img src=&quot;http://7xibui.com1.z0.glb.clouddn.com/2015/02/clipboard.png&quot; alt=&quot;环形队列&quot;&gt;&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
+    
+      <category term="数据结构" scheme="https://netcan.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>链式队列的定义与操作</title>
+    <link href="https://netcan.github.io/2014/12/21/%E9%93%BE%E5%BC%8F%E9%98%9F%E5%88%97%E7%9A%84%E5%AE%9A%E4%B9%89%E4%B8%8E%E6%93%8D%E4%BD%9C/"/>
+    <id>https://netcan.github.io/2014/12/21/%E9%93%BE%E5%BC%8F%E9%98%9F%E5%88%97%E7%9A%84%E5%AE%9A%E4%B9%89%E4%B8%8E%E6%93%8D%E4%BD%9C/</id>
+    <published>2014-12-21T13:48:34.000Z</published>
+    <updated>2014-12-21T13:48:34.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;不解释，看代码，注释&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
+    
+      <category term="数据结构" scheme="https://netcan.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>栈的定义与操作</title>
+    <link href="https://netcan.github.io/2014/12/21/%E6%A0%88%E7%9A%84%E5%AE%9A%E4%B9%89%E4%B8%8E%E6%93%8D%E4%BD%9C/"/>
+    <id>https://netcan.github.io/2014/12/21/%E6%A0%88%E7%9A%84%E5%AE%9A%E4%B9%89%E4%B8%8E%E6%93%8D%E4%BD%9C/</id>
+    <published>2014-12-21T02:25:56.000Z</published>
+    <updated>2014-12-21T02:25:56.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;看代码理解。。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
+    
+      <category term="数据结构" scheme="https://netcan.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>链表的定义与简单操作</title>
+    <link href="https://netcan.github.io/2014/12/19/%E9%93%BE%E8%A1%A8%E7%9A%84%E5%AE%9A%E4%B9%89%E4%B8%8E%E7%AE%80%E5%8D%95%E6%93%8D%E4%BD%9C/"/>
+    <id>https://netcan.github.io/2014/12/19/%E9%93%BE%E8%A1%A8%E7%9A%84%E5%AE%9A%E4%B9%89%E4%B8%8E%E7%AE%80%E5%8D%95%E6%93%8D%E4%BD%9C/</id>
+    <published>2014-12-19T13:21:24.000Z</published>
+    <updated>2014-12-19T13:21:24.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;看代码理解。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
+    
+      <category term="数据结构" scheme="https://netcan.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>仿c++的vector简单实现</title>
+    <link href="https://netcan.github.io/2014/12/09/%E4%BB%BFc-%E7%9A%84vector%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B0/"/>
+    <id>https://netcan.github.io/2014/12/09/%E4%BB%BFc-%E7%9A%84vector%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B0/</id>
+    <published>2014-12-09T08:20:44.000Z</published>
+    <updated>2014-12-09T08:20:44.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;学到数据结构了，所以想写点什么，以后回来看看，因为刚开始学，所以就写了个仿vector的程序吧。。没有c++的强大，这个vector是&lt;br&gt;特定的类型，针对int的= =改改就好了。。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
+    
+      <category term="数据结构" scheme="https://netcan.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
+    
+  </entry>
+  
+</feed>
