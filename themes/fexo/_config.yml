@@ -37,9 +37,9 @@ page_nav:
   - name: 标签
     url: /tag/
     target_blank: false
-  - name: 友链
-    url: /link/
-    target_blank: false
+  # - name: 友链
+    # url: /link/
+    # target_blank: false
   - name: 关于
     url: /about/
     target_blank: false
@@ -81,7 +81,7 @@ backtop:
   about: false
 
 donation:
-  show: false
+  show: true
   btn_text: 支持一下
   tip: 扫一扫，支持Netcan
   items:
