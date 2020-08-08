@@ -1,10 +1,12 @@
 ---
 title: pImpl技巧：接口与实现分离
+date: 2020-03-12 18:56:40
+original: true
+toc: true
 tags:
   - C/C++
 categories:
   - 编程
-date: 2020-03-12 18:56:40
 ---
 
 最近在实现某个模块加强了对`pImpl`设计模式的理解，这里记录下来备忘。

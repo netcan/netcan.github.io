@@ -1,6 +1,8 @@
 ---
 title: 解决C++插件化设计之单例多实例问题
 date: 2019-11-16 15:31:47
+original: true
+toc: true
 tags:
 - C/C++
 categories:

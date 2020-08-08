@@ -9,6 +9,10 @@
 <div class="content content-post<%= theme.post.header_align ? ' ' + theme.post.header_align : '' %>">
    <%- partial('_partial/article', {post: page, index: false}) %>
 
+   <% if(page.original) { %>
+       <%- partial('_partial/original.ejs') %>
+   <% } %>
+
    <%- partial('_partial/component/donation') %>
    <%- partial('_partial/component/prev-net') %>
 </div>

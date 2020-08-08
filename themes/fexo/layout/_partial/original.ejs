@@ -1,0 +1,11 @@
+<div class="original">
+    <ul>
+        <li>本文标题：<%= page.title %></li>
+        <li>本文字数：<%= wordcount(page.content) %></li>
+        <li>本文作者：<%= config.author %></li>
+        <li>发布时间：<%= page.date.format("YYYY年MM月DD日 - HH时mm分") %></li>
+        <li>最后更新：<%= page.updated.format("YYYY年MM月DD日 - HH时mm分") %></li>
+        <li>原始链接：<a href="<%= page.permalink %>"><%= decodeURI(page.permalink) %></a></li>
+        <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
+    </ul>
+</div>
