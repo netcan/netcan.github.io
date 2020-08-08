@@ -23,7 +23,7 @@
 <meta property="og:description" content="最近在实现某个模块加强了对pImpl设计模式的理解，这里记录下来备忘。 pImpl模式用来将接口与实现分离，更改实现的话只需要重新编译cpp实现，不影响依赖其抽象的模块，也就是著名的桥接模式。 然而在实践中发现有很多类嵌套类，这种也算是pImpl的体现，但是做的不够完美，因为这些嵌套类直接定义在头文件中，头文件需要暴露出去，其他模块自然也会看到这些内部嵌套类的定义，影响依赖关系。比如： &#x2F;&#x2F; Mo">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-03-12T10:56:40.000Z">
-<meta property="article:modified_time" content="2020-08-08T12:15:15.899Z">
+<meta property="article:modified_time" content="2020-08-08T16:42:06.439Z">
 <meta property="article:author" content="Netcan">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta name="twitter:card" content="summary">
@@ -36,6 +36,10 @@
 
   <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
 
+
+  
+    
+<link rel="stylesheet" href="/css/site.css">
 
   
 
@@ -141,17 +145,6 @@ ga('send', 'pageview');
             target="_self"
             >
             标签
-          </a>
-        </li>
-      
-        <li class="item-toolbox">
-          <a
-            class="CIRCLE"
-            href="/link/"
-            rel="noopener noreferrer"
-            target="_self"
-            >
-            友链
           </a>
         </li>
       
@@ -303,6 +296,47 @@ ga('send', 'pageview');
 
 
    
+       <div class="original">
+    <ul>
+        <li>本文标题：pImpl技巧：接口与实现分离</li>
+        <li>本文字数：489</li>
+        <li>本文作者：Netcan</li>
+        <li>发布时间：2020年03月12日 - 18时56分</li>
+        <li>最后更新：2020年08月09日 - 00时42分</li>
+        <li>原始链接：<a href="https://netcan.github.io/2020/03/12/pImpl%E6%8A%80%E5%B7%A7%EF%BC%9A%E6%8E%A5%E5%8F%A3%E4%B8%8E%E5%AE%9E%E7%8E%B0%E5%88%86%E7%A6%BB/">https://netcan.github.io/2020/03/12/pImpl技巧：接口与实现分离/</a></li>
+        <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
+    </ul>
+</div>
+
+   
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持Netcan</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
 
    
   <div class="box-prev-next clearfix">
@@ -367,17 +401,6 @@ ga('send', 'pageview');
               target="_self"
               >
               标签
-            </a>
-          </li>
-        
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/link/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              友链
             </a>
           </li>
         
@@ -498,20 +521,5 @@ gitalk.render('gitalk-container')
   }
 </script>
 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>

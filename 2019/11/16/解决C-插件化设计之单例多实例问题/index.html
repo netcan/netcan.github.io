@@ -23,7 +23,7 @@
 <meta property="og:description" content="背景在插件化设计中，一般会把各个具体产品实现到动态库中，然后通过加载动态库（dlopen&#x2F;dlsym），再通过简单工厂模式创建具体的产品。 实现产品的时候需要看到对应的工厂，才能把创建自己的方法注册到工厂里。 这里的工厂应该采用单例模式，那么加载动态库的时候会出现多份单例的情况。 实际情况测试例子如下结构。 . ├── CMakeLists.txt ├── main.cpp ├── plugin1">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2019-11-16T07:31:47.000Z">
-<meta property="article:modified_time" content="2020-08-08T12:07:50.862Z">
+<meta property="article:modified_time" content="2020-08-08T16:41:38.611Z">
 <meta property="article:author" content="Netcan">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta name="twitter:card" content="summary">
@@ -36,6 +36,10 @@
 
   <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
 
+
+  
+    
+<link rel="stylesheet" href="/css/site.css">
 
   
 
@@ -141,17 +145,6 @@ ga('send', 'pageview');
             target="_self"
             >
             标签
-          </a>
-        </li>
-      
-        <li class="item-toolbox">
-          <a
-            class="CIRCLE"
-            href="/link/"
-            rel="noopener noreferrer"
-            target="_self"
-            >
-            友链
           </a>
         </li>
       
@@ -453,6 +446,47 @@ g: 0x7f883ac1f059</code></pre>
 
 
    
+       <div class="original">
+    <ul>
+        <li>本文标题：解决C++插件化设计之单例多实例问题</li>
+        <li>本文字数：1.6k</li>
+        <li>本文作者：Netcan</li>
+        <li>发布时间：2019年11月16日 - 15时31分</li>
+        <li>最后更新：2020年08月09日 - 00时41分</li>
+        <li>原始链接：<a href="https://netcan.github.io/2019/11/16/%E8%A7%A3%E5%86%B3C-%E6%8F%92%E4%BB%B6%E5%8C%96%E8%AE%BE%E8%AE%A1%E4%B9%8B%E5%8D%95%E4%BE%8B%E5%A4%9A%E5%AE%9E%E4%BE%8B%E9%97%AE%E9%A2%98/">https://netcan.github.io/2019/11/16/解决C-插件化设计之单例多实例问题/</a></li>
+        <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
+    </ul>
+</div>
+
+   
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持Netcan</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
 
    
   <div class="box-prev-next clearfix">
@@ -517,17 +551,6 @@ g: 0x7f883ac1f059</code></pre>
               target="_self"
               >
               标签
-            </a>
-          </li>
-        
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/link/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              友链
             </a>
           </li>
         
@@ -648,20 +671,5 @@ gitalk.render('gitalk-container')
   }
 </script>
 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>
