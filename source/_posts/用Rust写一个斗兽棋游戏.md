@@ -46,7 +46,7 @@ src
 
 ## 类型别名
 和C的`typedef`，C++的`using`类似，Rust也支持别名：
-```rs
+```rust
 pub type POS = u8;
 pub type MOVE = u16;
 pub type ScoreType = i32;
@@ -78,7 +78,7 @@ fn main() -> Result<(), String> {
 
 ## 结构体定义
 然后把GUI部分从`main`提取出来，封装到`Game`类中：
-```rs
+```rust
 pub struct Game {
     pub chesses: [[ChessId; COL_NUM]; ROW_NUM],
     chesses_textures: Vec<Texture>,
@@ -98,7 +98,7 @@ pub struct Game {
 
 ## `if-let`表达式，结构化绑定
 其中棋子、棋盘的素材存到了`chesses_textures`, `board`成员中，并用`chesses`存放了棋盘内容。`selected_chess`存的是当前用户点击的棋子，`movable_pos`存放的是当前选中棋子可走的格子，当用户点击棋盘的时候，可能是选中棋子，也可能是移动棋子，如下实现：
-```rs
+```rust
 fn process_click(&mut self, pos: (i32, i32)) {
     if let Some(dst) = self.get_click_rect(pos) {
         if get_chess_role(self.chesses[dst.0][dst.1]) != self.role {
@@ -120,7 +120,7 @@ fn process_click(&mut self, pos: (i32, i32)) {
 这时候看到结构绑定的好处了，`get_click_rect`返回一个`Option<(usize, usize)>`值，将用户的鼠标位置转换成棋盘的行列位置。通过`if let`语句来获得`Some`里面的值并取出，接着进行判断。若用户没有选中棋子，这可能是移动棋子，这时候通过查找`movable_pos`来判断是否移动。
 
 再来看一个例子：
-```rs
+```rust
 for event in self.event_pump.poll_iter() {
     match event {
         // ...
@@ -156,7 +156,7 @@ pub fn check_in_den(&self, pos: POS) -> bool {
 其中`(RED, BLACK_DEN) | (BLACK, RED_DEN) => return true`语义很清晰，如果红色棋子进了黑色兽穴，或者黑色棋子进了红色兽穴，则为真；其他情况为假。如果换成`if-else`语句，写出来就很丑了。
 
 还有`check_movable`里的判断吃子代码也很简洁：
-```rs
+```rust
 match (src_chess_type, dst_chess_type) {
     (RAT, ELEPHANT) => ! Self::check_in_water(src),
     (ELEPHANT, RAT) => false,
@@ -171,7 +171,7 @@ match (src_chess_type, dst_chess_type) {
 再来看看一个例子，就是根据fen串来初始化棋盘。fen串是用字符串记录了棋子在棋盘中的位置，例如初始化的fen串是这样的：`l5t/1d3c1/r1p1w1e/7/7/7/E1W1P1R/1C3D1/T5L`，小写表示黑方，大写表示红方。一个字母表示一个棋子，如果没有棋子，则用数字表示出相邻连续的空位数。斗兽棋共有九行，每行都用一个字符串表示，行间使用正斜杠分割。
 
 解析`fen`串的代码是这样的，很清爽：
-```rs
+```rust
 fn load_fen(&mut self, fen: &str) {
     let fen_u8 = fen.as_bytes();
     let mut fen_idx = 0;
@@ -215,7 +215,7 @@ fn load_fen(&mut self, fen: &str) {
 `c @ b'e' | c @ b'E' => { chess_id = get_chess_id(get_role(c), ELEPHANT); }`这句表达了若为`e`或者`E`，则通过颜色来得到对应的棋子id。可惜Rust目前还不支持这种写法：`c @ (b'e' | b'E')`，目前or-patterns syntax is experimental，暂时这么写了。
 
 ## lambda表达式
-```rs
+```rust
 let get_role = |c: u8| -> Role {
 	if (c as char).is_lowercase() { BLACK }
 	else { RED }
@@ -227,7 +227,7 @@ let get_role = |c: u8| -> Role {
 Rust的迭代器也很爽，目前C++ 20的`std::views`也简化了这种操作，看看例子。
 
 来看看基本走法的生成，也就是只能走十字，每次只能走一格，老鼠可以进河。
-```rs
+```rust
 fn generate_basic_steps(&self, src: POS, to_water: bool) -> Vec<MOVE> {
     const DX: [i32; 4] = [1, 0, -1, 0];
     const DY: [i32; 4] = [0, 1, 0, -1];
@@ -248,14 +248,14 @@ fn generate_basic_steps(&self, src: POS, to_water: bool) -> Vec<MOVE> {
 `(0..4).into_iter()`生成`[0,4)`的range，然后基于range做计算。
 
 通过`idx`得到四个方向的坐标，生成(src, dst)移动向量。
-```rs
+```rust
 .map(|idx| {
     to_move(&(get_pos(src), ((x + DX[idx]) as usize, (y + DY[idx]) as usize)))
 })
 ```
 
 过滤四个方向，只有在范围内、可以吃掉对方、能过河的结果保留下来：
-```rs
+```rust
 .filter(|&mv| {
     let (_, dst) = get_move(mv);
     dst.0 < ROW_NUM && dst.1 < COL_NUM &&
@@ -266,7 +266,7 @@ fn generate_basic_steps(&self, src: POS, to_water: bool) -> Vec<MOVE> {
 
 
 接下来是狮子、老虎的走法生成：
-```rs
+```rust
 fn generate_tl_steps(&self, src: POS) -> Vec<MOVE> {
     let mut basic_steps = self.generate_basic_steps(src, false);
     let src_ = get_pos(src);
@@ -293,7 +293,7 @@ fn generate_tl_steps(&self, src: POS) -> Vec<MOVE> {
 ```
 
 首先得到基本走法，然后生成跳河走法。最后的`filter`过滤无效的移动，例如狮子老虎跳河的时候中间不能有老鼠，对岸的棋子比自己小时。
-```rs
+```rust
 basic_steps.into_iter().filter(|&mv| {
     let (src, dst) = (get_src_pos(mv), get_dst_pos(mv));
     self.check_movable(src, dst) && !self.check_rat(src, dst)
@@ -302,7 +302,7 @@ basic_steps.into_iter().filter(|&mv| {
 
 通过迭代器的`map`可以做类型转换，从而传参给指定类型的接口。例如`fn draw_frame(&mut self, tgt_pos: &Vec<POS>)`接口，需要的参数类型为`Vec<POS>`，可实际参数是`Vec<MOVE>`，通过如下转换：
 
-```rs
+```rust
 fn process_selected_chess(&mut self) -> Result<(), String> {
     if let Some(pos) = self.selected_chess {
         self.draw_frame(&vec![pos])?;
@@ -323,7 +323,7 @@ Rust通过借用检查来避免写出不安全的代码：
 - 第二，对于同一个资源（resource）的借用，即同一个作用域下，要么只有一个对资源 A 的可变引用（`&mut T`），要么有N个不可变引用（`&T`），但不能同时存在可变和不可变的引用
 
 所以如下代码：
-```rs
+```rust
 let mut undo = false;
 for event in self.event_pump.poll_iter() {
     match event {
@@ -343,7 +343,7 @@ if undo {
 }
 ```
 不能直接写成：
-```rs
+```rust
 for event in self.event_pump.poll_iter() {
     match event {
         // ...
@@ -409,7 +409,7 @@ void process(T& container) {
 ```
 
 Rust写不出来：
-```rs
+```rust
 fn process<T>(container: &T)
     where T: ??
 {
