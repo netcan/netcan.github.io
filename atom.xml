@@ -2152,6 +2152,57 @@ print_r($b);&lt;/code&gt;&lt;/pre&gt;
   </entry>
   
   <entry>
+    <title>简易JavaScript计算器</title>
+    <link href="https://netcan.github.io/2015/03/10/%E7%AE%80%E6%98%93JavaScript%E8%AE%A1%E7%AE%97%E5%99%A8/"/>
+    <id>https://netcan.github.io/2015/03/10/%E7%AE%80%E6%98%93JavaScript%E8%AE%A1%E7%AE%97%E5%99%A8/</id>
+    <published>2015-03-10T04:03:54.000Z</published>
+    <updated>2020-08-08T17:02:50.956Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;乘法运算&quot;&gt;&lt;a href=&quot;#乘法运算&quot; class=&quot;headerlink&quot; title=&quot;乘法运算&quot;&gt;&lt;/a&gt;乘法运算&lt;/h2&gt;&lt;script language=&quot;JavaScript&quot;&gt;function mult() {document.multi.r.value = document.multi.a.value*document.multi.b.value;}&lt;/script&gt;
+&lt;form name=&quot;multi&quot;&gt;&lt;input type=&quot;text&quot; name=&quot;a&quot; size=&quot;5&quot; maxLength=&quot;5&quot; value=&quot;1&quot;/&gt; * &lt;input type=&quot;text&quot; name=&quot;b&quot; size=&quot;5&quot; maxLength=&quot;5&quot; value=&quot;1&quot;/&gt;= &lt;input type=&quot;text&quot; name=&quot;r&quot; size=&quot;10&quot; value=&quot;1&quot; readonly/&gt; &lt;input type=&quot;button&quot; value=&quot;计算&quot; onClick=&quot;mult()&quot;/&gt; &lt;/form&gt;
+
+&lt;h2 id=&quot;加法运算&quot;&gt;&lt;a href=&quot;#加法运算&quot; class=&quot;headerlink&quot; title=&quot;加法运算&quot;&gt;&lt;/a&gt;加法运算&lt;/h2&gt;&lt;script language=&quot;JavaScript&quot;&gt;function ad() {document.add.r.value = parseFloat(document.add.a.value) + parseFloat(document.add.b.value);}&lt;/script&gt;
+&lt;form name=&quot;add&quot;&gt;&lt;input type=&quot;text&quot; name=&quot;a&quot; size=&quot;5&quot; maxLength=&quot;5&quot; value=&quot;1&quot;/&gt; + &lt;input type=&quot;text&quot; name=&quot;b&quot; size=&quot;5&quot; maxLength=&quot;5&quot; value=&quot;1&quot;/&gt;= &lt;input type=&quot;text&quot; name=&quot;r&quot; size=&quot;10&quot; value=&quot;1&quot; readonly/&gt; &lt;input type=&quot;button&quot; value=&quot;计算&quot; onClick=&quot;ad()&quot;/&gt; &lt;/form&gt;
+    
+    </summary>
+    
+    
+      <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="Javascript" scheme="https://netcan.github.io/tags/Javascript/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>凯撒密码</title>
+    <link href="https://netcan.github.io/2015/03/08/%E5%87%AF%E6%92%92%E5%AF%86%E7%A0%81/"/>
+    <id>https://netcan.github.io/2015/03/08/%E5%87%AF%E6%92%92%E5%AF%86%E7%A0%81/</id>
+    <published>2015-03-08T03:14:35.000Z</published>
+    <updated>2015-03-08T03:14:35.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;昨晚在知乎看到一个问题，（&lt;a href=&quot;http://www.zhihu.com/question/28324597&quot;&gt;可以帮忙破译一个密码吗？VRPHWLPHV L ZDQW WR FKDW ZLWK BRX&lt;/a&gt;）&lt;/p&gt;
+&lt;p&gt;看了一下各位答案，是凯撒密码，我百科了一下，发现蛮简单的，今天早上来实现了。&lt;/p&gt;
+&lt;p&gt;凯撒加密方法就是将字符串的每个字母按字母表顺序进行偏移。&lt;/p&gt;
+&lt;p&gt;知道原理后，就可以很容易写出来了。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
+    
+      <category term="算法" scheme="https://netcan.github.io/tags/%E7%AE%97%E6%B3%95/"/>
+    
+  </entry>
+  
+  <entry>
     <title>五大排序算法的实现</title>
     <link href="https://netcan.github.io/2015/01/31/%E4%BA%94%E5%A4%A7%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E7%9A%84%E5%AE%9E%E7%8E%B0/"/>
     <id>https://netcan.github.io/2015/01/31/%E4%BA%94%E5%A4%A7%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E7%9A%84%E5%AE%9E%E7%8E%B0/</id>
