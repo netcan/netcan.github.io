@@ -76,7 +76,7 @@
     <link href="https://netcan.github.io/2020/06/07/%E7%94%A8Rust%E5%86%99%E4%B8%80%E4%B8%AA%E6%96%97%E5%85%BD%E6%A3%8B%E6%B8%B8%E6%88%8F/"/>
     <id>https://netcan.github.io/2020/06/07/%E7%94%A8Rust%E5%86%99%E4%B8%80%E4%B8%AA%E6%96%97%E5%85%BD%E6%A3%8B%E6%B8%B8%E6%88%8F/</id>
     <published>2020-06-07T02:56:49.000Z</published>
-    <updated>2020-06-07T06:14:25.300Z</updated>
+    <updated>2020-08-08T11:59:16.251Z</updated>
     
     <summary type="html">
     
@@ -98,6 +98,90 @@
     
     
       <category term="Rust" scheme="https://netcan.github.io/tags/Rust/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>构造、析构期间被调虚函数发生的惨案</title>
+    <link href="https://netcan.github.io/2020/05/30/%E6%9E%84%E9%80%A0%E3%80%81%E6%9E%90%E6%9E%84%E6%9C%9F%E9%97%B4%E8%A2%AB%E8%B0%83%E8%99%9A%E5%87%BD%E6%95%B0%E5%8F%91%E7%94%9F%E7%9A%84%E6%83%A8%E6%A1%88/"/>
+    <id>https://netcan.github.io/2020/05/30/%E6%9E%84%E9%80%A0%E3%80%81%E6%9E%90%E6%9E%84%E6%9C%9F%E9%97%B4%E8%A2%AB%E8%B0%83%E8%99%9A%E5%87%BD%E6%95%B0%E5%8F%91%E7%94%9F%E7%9A%84%E6%83%A8%E6%A1%88/</id>
+    <published>2020-05-30T02:01:57.000Z</published>
+    <updated>2020-08-08T12:10:31.872Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;最近有个问题出现长达一个月，经过两次修改未能解决，大致场景如下：&lt;/p&gt;
+&lt;p&gt;一个多态对象&lt;code&gt;Children&lt;/code&gt;被注册回调（&lt;code&gt;m_observer&lt;/code&gt;对象位于基类&lt;code&gt;Base&lt;/code&gt;中），正好在析构函数里面回调，导致c
+        
+      
+    
+    </summary>
+    
+    
+      <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>pImpl技巧：接口与实现分离</title>
+    <link href="https://netcan.github.io/2020/03/12/pImpl%E6%8A%80%E5%B7%A7%EF%BC%9A%E6%8E%A5%E5%8F%A3%E4%B8%8E%E5%AE%9E%E7%8E%B0%E5%88%86%E7%A6%BB/"/>
+    <id>https://netcan.github.io/2020/03/12/pImpl%E6%8A%80%E5%B7%A7%EF%BC%9A%E6%8E%A5%E5%8F%A3%E4%B8%8E%E5%AE%9E%E7%8E%B0%E5%88%86%E7%A6%BB/</id>
+    <published>2020-03-12T10:56:40.000Z</published>
+    <updated>2020-08-08T12:15:15.899Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;最近在实现某个模块加强了对&lt;code&gt;pImpl&lt;/code&gt;设计模式的理解，这里记录下来备忘。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;pImpl&lt;/code&gt;模式用来将接口与实现分离，更改实现的话只需要重新编译cpp实现，不影响依赖其抽象的模块，也就是著名的桥接模式。&lt;/p&gt;
+&lt;p&gt;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>解决C++插件化设计之单例多实例问题</title>
+    <link href="https://netcan.github.io/2019/11/16/%E8%A7%A3%E5%86%B3C-%E6%8F%92%E4%BB%B6%E5%8C%96%E8%AE%BE%E8%AE%A1%E4%B9%8B%E5%8D%95%E4%BE%8B%E5%A4%9A%E5%AE%9E%E4%BE%8B%E9%97%AE%E9%A2%98/"/>
+    <id>https://netcan.github.io/2019/11/16/%E8%A7%A3%E5%86%B3C-%E6%8F%92%E4%BB%B6%E5%8C%96%E8%AE%BE%E8%AE%A1%E4%B9%8B%E5%8D%95%E4%BE%8B%E5%A4%9A%E5%AE%9E%E4%BE%8B%E9%97%AE%E9%A2%98/</id>
+    <published>2019-11-16T07:31:47.000Z</published>
+    <updated>2020-08-08T12:07:50.862Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h3 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
     
   </entry>
   

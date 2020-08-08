@@ -25,7 +25,7 @@
 <meta property="og:image" content="https://netcan.github.io/2020/06/07/%E7%94%A8Rust%E5%86%99%E4%B8%80%E4%B8%AA%E6%96%97%E5%85%BD%E6%A3%8B%E6%B8%B8%E6%88%8F/ChineseChess.png">
 <meta property="og:image" content="https://netcan.github.io/2020/06/07/%E7%94%A8Rust%E5%86%99%E4%B8%80%E4%B8%AA%E6%96%97%E5%85%BD%E6%A3%8B%E6%B8%B8%E6%88%8F/animal_chess.png">
 <meta property="article:published_time" content="2020-06-07T02:56:49.000Z">
-<meta property="article:modified_time" content="2020-06-07T06:14:25.300Z">
+<meta property="article:modified_time" content="2020-08-08T11:59:16.251Z">
 <meta property="article:author" content="Netcan">
 <meta property="article:tag" content="Rust">
 <meta name="twitter:card" content="summary">
@@ -272,9 +272,9 @@ ga('send', 'pageview');
 
 <p>首先需要GUI来交互，我考虑了<code>SDL</code>框架，因为上手简单，很快仿着<code>rust-sdl2</code>例子写了个gui出来：<a target="_blank" rel="noopener" href="https://docs.rs/sdl2/0.34.0/sdl2/#getting-started">https://docs.rs/sdl2/0.34.0/sdl2/#getting-started</a>。</p>
 <h2 id="类型别名"><a href="#类型别名" class="headerlink" title="类型别名"></a>类型别名</h2><p>和C的<code>typedef</code>，C++的<code>using</code>类似，Rust也支持别名：</p>
-<pre class="language-rs" data-language="rs"><code class="language-rs">pub type POS &#x3D; u8;
-pub type MOVE &#x3D; u16;
-pub type ScoreType &#x3D; i32;</code></pre>
+<pre class="language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">pub</span> <span class="token keyword">type</span> <span class="token constant">POS</span> <span class="token operator">=</span> <span class="token keyword">u8</span><span class="token punctuation">;</span>
+<span class="token keyword">pub</span> <span class="token keyword">type</span> <span class="token constant">MOVE</span> <span class="token operator">=</span> <span class="token keyword">u16</span><span class="token punctuation">;</span>
+<span class="token keyword">pub</span> <span class="token keyword">type</span> <span class="token class-name">ScoreType</span> <span class="token operator">=</span> <span class="token keyword">i32</span><span class="token punctuation">;</span></code></pre>
 
 <h2 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h2><p>来看看异常处理，Rust有个语法糖<code>?</code>可以很简单的处理异常：</p>
 <pre class="language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">fn</span> <span class="token function-definition function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">-></span> <span class="token class-name">Result</span><span class="token operator">&lt;</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token class-name">String</span><span class="token operator">></span> <span class="token punctuation">&#123;</span>
@@ -296,56 +296,56 @@ pub type ScoreType &#x3D; i32;</code></pre>
 
 <p>其中<code>sdl2::init()?</code>表达了<code>init</code>可能失败导致<code>panic</code>，我也不处理这个异常，直接通过<code>?</code>扔出去。</p>
 <h2 id="结构体定义"><a href="#结构体定义" class="headerlink" title="结构体定义"></a>结构体定义</h2><p>然后把GUI部分从<code>main</code>提取出来，封装到<code>Game</code>类中：</p>
-<pre class="language-rs" data-language="rs"><code class="language-rs">pub struct Game &#123;
-    pub chesses: [[ChessId; COL_NUM]; ROW_NUM],
-    chesses_textures: Vec&lt;Texture&gt;,
-    pub role: Role, &#x2F;&#x2F; 轮到谁下
-    board: Texture,
-    canvas: WindowCanvas,
-    event_pump: EventPump,
-    selected_chess: Option&lt;POS&gt;,
-    selected_frame: Texture,
-    movable_pos: Vec&lt;MOVE&gt;,
-    pub compture_turn: bool,
-    pub compture_mv: Option&lt;MOVE&gt;,
-    ctx: VecDeque&lt;Context&gt;,
-    pub history_table: HisTblType,
-&#125;</code></pre>
+<pre class="language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">pub</span> <span class="token keyword">struct</span> <span class="token type-definition class-name">Game</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">pub</span> chesses<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token class-name">ChessId</span><span class="token punctuation">;</span> <span class="token constant">COL_NUM</span><span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token constant">ROW_NUM</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    chesses_textures<span class="token punctuation">:</span> <span class="token class-name">Vec</span><span class="token operator">&lt;</span><span class="token class-name">Texture</span><span class="token operator">></span><span class="token punctuation">,</span>
+    <span class="token keyword">pub</span> role<span class="token punctuation">:</span> <span class="token class-name">Role</span><span class="token punctuation">,</span> <span class="token comment">// 轮到谁下</span>
+    board<span class="token punctuation">:</span> <span class="token class-name">Texture</span><span class="token punctuation">,</span>
+    canvas<span class="token punctuation">:</span> <span class="token class-name">WindowCanvas</span><span class="token punctuation">,</span>
+    event_pump<span class="token punctuation">:</span> <span class="token class-name">EventPump</span><span class="token punctuation">,</span>
+    selected_chess<span class="token punctuation">:</span> <span class="token class-name">Option</span><span class="token operator">&lt;</span><span class="token constant">POS</span><span class="token operator">></span><span class="token punctuation">,</span>
+    selected_frame<span class="token punctuation">:</span> <span class="token class-name">Texture</span><span class="token punctuation">,</span>
+    movable_pos<span class="token punctuation">:</span> <span class="token class-name">Vec</span><span class="token operator">&lt;</span><span class="token constant">MOVE</span><span class="token operator">></span><span class="token punctuation">,</span>
+    <span class="token keyword">pub</span> compture_turn<span class="token punctuation">:</span> <span class="token keyword">bool</span><span class="token punctuation">,</span>
+    <span class="token keyword">pub</span> compture_mv<span class="token punctuation">:</span> <span class="token class-name">Option</span><span class="token operator">&lt;</span><span class="token constant">MOVE</span><span class="token operator">></span><span class="token punctuation">,</span>
+    ctx<span class="token punctuation">:</span> <span class="token class-name">VecDeque</span><span class="token operator">&lt;</span><span class="token class-name">Context</span><span class="token operator">></span><span class="token punctuation">,</span>
+    <span class="token keyword">pub</span> history_table<span class="token punctuation">:</span> <span class="token class-name">HisTblType</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span></code></pre>
 
 <h2 id="if-let表达式，结构化绑定"><a href="#if-let表达式，结构化绑定" class="headerlink" title="if-let表达式，结构化绑定"></a><code>if-let</code>表达式，结构化绑定</h2><p>其中棋子、棋盘的素材存到了<code>chesses_textures</code>, <code>board</code>成员中，并用<code>chesses</code>存放了棋盘内容。<code>selected_chess</code>存的是当前用户点击的棋子，<code>movable_pos</code>存放的是当前选中棋子可走的格子，当用户点击棋盘的时候，可能是选中棋子，也可能是移动棋子，如下实现：</p>
-<pre class="language-rs" data-language="rs"><code class="language-rs">fn process_click(&amp;mut self, pos: (i32, i32)) &#123;
-    if let Some(dst) &#x3D; self.get_click_rect(pos) &#123;
-        if get_chess_role(self.chesses[dst.0][dst.1]) !&#x3D; self.role &#123;
-            &#x2F;&#x2F; may be move
-            if let Some(_) &#x3D; self.movable_pos.iter().find(|&amp;&amp;mv| &#123; return get_dst_pos(mv) &#x3D;&#x3D; to_pos(&amp;dst) &#125;) &#123;
-                let src &#x3D; self.selected_chess.unwrap();
-                self.move_chess(to_move(&amp;(get_pos(src), dst)));
-            &#125;
-            self.selected_chess &#x3D; None;
-        &#125; else &#123; &#x2F;&#x2F; must be selected, because role is same as chess
-            println!(&quot;selected_chess: &#123;:?&#125;&quot;, to_pos(&amp;dst));
-            self.selected_chess &#x3D; Some(to_pos(&amp;dst));
-        &#125;
+<pre class="language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">fn</span> <span class="token function-definition function">process_click</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token keyword">mut</span> <span class="token keyword">self</span><span class="token punctuation">,</span> pos<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token keyword">i32</span><span class="token punctuation">,</span> <span class="token keyword">i32</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token keyword">let</span> <span class="token class-name">Some</span><span class="token punctuation">(</span>dst<span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token keyword">self</span><span class="token punctuation">.</span><span class="token function">get_click_rect</span><span class="token punctuation">(</span>pos<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token function">get_chess_role</span><span class="token punctuation">(</span><span class="token keyword">self</span><span class="token punctuation">.</span>chesses<span class="token punctuation">[</span>dst<span class="token number">.0</span><span class="token punctuation">]</span><span class="token punctuation">[</span>dst<span class="token number">.1</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token keyword">self</span><span class="token punctuation">.</span>role <span class="token punctuation">&#123;</span>
+            <span class="token comment">// may be move</span>
+            <span class="token keyword">if</span> <span class="token keyword">let</span> <span class="token class-name">Some</span><span class="token punctuation">(</span>_<span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token keyword">self</span><span class="token punctuation">.</span>movable_pos<span class="token punctuation">.</span><span class="token function">iter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token closure-params"><span class="token closure-punctuation punctuation">|</span><span class="token operator">&amp;&amp;</span>mv<span class="token closure-punctuation punctuation">|</span></span> <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> <span class="token function">get_dst_pos</span><span class="token punctuation">(</span>mv<span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token function">to_pos</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>dst<span class="token punctuation">)</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token keyword">let</span> src <span class="token operator">=</span> <span class="token keyword">self</span><span class="token punctuation">.</span>selected_chess<span class="token punctuation">.</span><span class="token function">unwrap</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">self</span><span class="token punctuation">.</span><span class="token function">move_chess</span><span class="token punctuation">(</span><span class="token function">to_move</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token punctuation">(</span><span class="token function">get_pos</span><span class="token punctuation">(</span>src<span class="token punctuation">)</span><span class="token punctuation">,</span> dst<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+            <span class="token keyword">self</span><span class="token punctuation">.</span>selected_chess <span class="token operator">=</span> <span class="token class-name">None</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span> <span class="token comment">// must be selected, because role is same as chess</span>
+            <span class="token macro property">println!</span><span class="token punctuation">(</span><span class="token string">"selected_chess: &#123;:?&#125;"</span><span class="token punctuation">,</span> <span class="token function">to_pos</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>dst<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">self</span><span class="token punctuation">.</span>selected_chess <span class="token operator">=</span> <span class="token class-name">Some</span><span class="token punctuation">(</span><span class="token function">to_pos</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>dst<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
 
-        self.movable_pos.clear();
-    &#125;
-&#125;</code></pre>
+        <span class="token keyword">self</span><span class="token punctuation">.</span>movable_pos<span class="token punctuation">.</span><span class="token function">clear</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span></code></pre>
 <p>这时候看到结构绑定的好处了，<code>get_click_rect</code>返回一个<code>Option&lt;(usize, usize)&gt;</code>值，将用户的鼠标位置转换成棋盘的行列位置。通过<code>if let</code>语句来获得<code>Some</code>里面的值并取出，接着进行判断。若用户没有选中棋子，这可能是移动棋子，这时候通过查找<code>movable_pos</code>来判断是否移动。</p>
 <p>再来看一个例子：</p>
-<pre class="language-rs" data-language="rs"><code class="language-rs">for event in self.event_pump.poll_iter() &#123;
-    match event &#123;
-        &#x2F;&#x2F; ...
-        Event::KeyDown &#123; keycode: Some(keycode), .. &#125; &#x3D;&gt; &#123;
-            match keycode &#123;
-                Keycode::Escape &#x3D;&gt; &#123; break;       &#125;
-                Keycode::U      &#x3D;&gt; &#123; undo &#x3D; true; &#125;
-                _ &#x3D;&gt; &#123;&#125;
-            &#125;
-        &#125;
-        Event::MouseButtonDown &#123;x, y, ..&#125; &#x3D;&gt; &#123; click_pos &#x3D; (x, y); &#125;
-        _ &#x3D;&gt; &#123;&#125;
-    &#125;
-&#125;</code></pre>
+<pre class="language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">for</span> event <span class="token keyword">in</span> <span class="token keyword">self</span><span class="token punctuation">.</span>event_pump<span class="token punctuation">.</span><span class="token function">poll_iter</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">match</span> event <span class="token punctuation">&#123;</span>
+        <span class="token comment">// ...</span>
+        <span class="token class-name">Event</span><span class="token punctuation">::</span><span class="token class-name">KeyDown</span> <span class="token punctuation">&#123;</span> keycode<span class="token punctuation">:</span> <span class="token class-name">Some</span><span class="token punctuation">(</span>keycode<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">..</span> <span class="token punctuation">&#125;</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">match</span> keycode <span class="token punctuation">&#123;</span>
+                <span class="token class-name">Keycode</span><span class="token punctuation">::</span><span class="token class-name">Escape</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span> <span class="token keyword">break</span><span class="token punctuation">;</span>       <span class="token punctuation">&#125;</span>
+                <span class="token class-name">Keycode</span><span class="token punctuation">::</span><span class="token class-name">U</span>      <span class="token operator">=></span> <span class="token punctuation">&#123;</span> undo <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+                _ <span class="token operator">=></span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token class-name">Event</span><span class="token punctuation">::</span><span class="token class-name">MouseButtonDown</span> <span class="token punctuation">&#123;</span>x<span class="token punctuation">,</span> y<span class="token punctuation">,</span> <span class="token punctuation">..</span><span class="token punctuation">&#125;</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span> click_pos <span class="token operator">=</span> <span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+        _ <span class="token operator">=></span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span></code></pre>
 
 <p>结构化绑定，可以分别取出结构体<code>Event::KeyDown</code>, <code>Event::MouseButtonDown</code>对象里的成员变量：<code>keycode</code>, <code>x, y</code>。</p>
 <p>通过结构化绑定，写起来很爽。目前C++ 17也有了结构化绑定，但是没有Rust那么强大。对于<code>Option</code>这个表达可有的概念，C++17也有了<code>std::optional</code>。</p>
@@ -360,11 +360,11 @@ pub type ScoreType &#x3D; i32;</code></pre>
 
 <p>其中<code>(RED, BLACK_DEN) | (BLACK, RED_DEN) =&gt; return true</code>语义很清晰，如果红色棋子进了黑色兽穴，或者黑色棋子进了红色兽穴，则为真；其他情况为假。如果换成<code>if-else</code>语句，写出来就很丑了。</p>
 <p>还有<code>check_movable</code>里的判断吃子代码也很简洁：</p>
-<pre class="language-rs" data-language="rs"><code class="language-rs">match (src_chess_type, dst_chess_type) &#123;
-    (RAT, ELEPHANT) &#x3D;&gt; ! Self::check_in_water(src),
-    (ELEPHANT, RAT) &#x3D;&gt; false,
-    (s, d)          &#x3D;&gt; s &lt;&#x3D; d || self.check_in_traps(dst)
-&#125;</code></pre>
+<pre class="language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">match</span> <span class="token punctuation">(</span>src_chess_type<span class="token punctuation">,</span> dst_chess_type<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token punctuation">(</span><span class="token constant">RAT</span><span class="token punctuation">,</span> <span class="token constant">ELEPHANT</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token operator">!</span> <span class="token keyword">Self</span><span class="token punctuation">::</span><span class="token function">check_in_water</span><span class="token punctuation">(</span>src<span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token constant">ELEPHANT</span><span class="token punctuation">,</span> <span class="token constant">RAT</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span>s<span class="token punctuation">,</span> d<span class="token punctuation">)</span>          <span class="token operator">=></span> s <span class="token operator">&lt;=</span> d <span class="token operator">||</span> <span class="token keyword">self</span><span class="token punctuation">.</span><span class="token function">check_in_traps</span><span class="token punctuation">(</span>dst<span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span></code></pre>
 
 <ul>
 <li>老鼠若不在水里则能够吃大象：<code>(RAT, ELEPHANT) =&gt; ! Self::check_in_water(src)</code></li>
@@ -373,125 +373,125 @@ pub type ScoreType &#x3D; i32;</code></pre>
 </ul>
 <p>再来看看一个例子，就是根据fen串来初始化棋盘。fen串是用字符串记录了棋子在棋盘中的位置，例如初始化的fen串是这样的：<code>l5t/1d3c1/r1p1w1e/7/7/7/E1W1P1R/1C3D1/T5L</code>，小写表示黑方，大写表示红方。一个字母表示一个棋子，如果没有棋子，则用数字表示出相邻连续的空位数。斗兽棋共有九行，每行都用一个字符串表示，行间使用正斜杠分割。</p>
 <p>解析<code>fen</code>串的代码是这样的，很清爽：</p>
-<pre class="language-rs" data-language="rs"><code class="language-rs">fn load_fen(&amp;mut self, fen: &amp;str) &#123;
-    let fen_u8 &#x3D; fen.as_bytes();
-    let mut fen_idx &#x3D; 0;
+<pre class="language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">fn</span> <span class="token function-definition function">load_fen</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token keyword">mut</span> <span class="token keyword">self</span><span class="token punctuation">,</span> fen<span class="token punctuation">:</span> <span class="token operator">&amp;</span><span class="token keyword">str</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">let</span> fen_u8 <span class="token operator">=</span> fen<span class="token punctuation">.</span><span class="token function">as_bytes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">let</span> <span class="token keyword">mut</span> fen_idx <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
 
-    let get_role &#x3D; |c: u8| -&gt; Role &#123;
-        if (c as char).is_lowercase() &#123; BLACK &#125;
-        else &#123; RED &#125;
-    &#125;;
+    <span class="token keyword">let</span> get_role <span class="token operator">=</span> <span class="token closure-params"><span class="token closure-punctuation punctuation">|</span>c<span class="token punctuation">:</span> <span class="token keyword">u8</span><span class="token closure-punctuation punctuation">|</span></span> <span class="token punctuation">-></span> <span class="token class-name">Role</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>c <span class="token keyword">as</span> <span class="token keyword">char</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">is_lowercase</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token constant">BLACK</span> <span class="token punctuation">&#125;</span>
+        <span class="token keyword">else</span> <span class="token punctuation">&#123;</span> <span class="token constant">RED</span> <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
 
-    let mut pos &#x3D; 0usize;
-    while fen_idx &lt; fen_u8.len() &#123;
-        let mut chess_id &#x3D; EMPTY;
-        match fen_u8[fen_idx] &#123;
-            c @ b&#39;e&#39; | c @ b&#39;E&#39; &#x3D;&gt; &#123; chess_id &#x3D; get_chess_id(get_role(c), ELEPHANT); &#125;
-            c @ b&#39;l&#39; | c @ b&#39;L&#39; &#x3D;&gt; &#123; chess_id &#x3D; get_chess_id(get_role(c), LION);     &#125;
-            c @ b&#39;t&#39; | c @ b&#39;T&#39; &#x3D;&gt; &#123; chess_id &#x3D; get_chess_id(get_role(c), TIGER);    &#125;
-            c @ b&#39;p&#39; | c @ b&#39;P&#39; &#x3D;&gt; &#123; chess_id &#x3D; get_chess_id(get_role(c), PANTHER);  &#125;
-            c @ b&#39;w&#39; | c @ b&#39;W&#39; &#x3D;&gt; &#123; chess_id &#x3D; get_chess_id(get_role(c), WOLF);     &#125;
-            c @ b&#39;d&#39; | c @ b&#39;D&#39; &#x3D;&gt; &#123; chess_id &#x3D; get_chess_id(get_role(c), DOG);      &#125;
-            c @ b&#39;c&#39; | c @ b&#39;C&#39; &#x3D;&gt; &#123; chess_id &#x3D; get_chess_id(get_role(c), CAT);      &#125;
-            c @ b&#39;r&#39; | c @ b&#39;R&#39; &#x3D;&gt; &#123; chess_id &#x3D; get_chess_id(get_role(c), RAT);      &#125;
-            n @ b&#39;1&#39; ..&#x3D; b&#39;9&#39;   &#x3D;&gt; &#123; pos +&#x3D; (n - b&#39;0&#39;) as usize; &#125;
-            b&#39;&#x2F;&#39; &#x3D;&gt; &#123; &#125;
-            b&#39; &#39; &#x3D;&gt; &#123; break; &#125;
-            _    &#x3D;&gt; &#123; unreachable!() &#125;
-        &#125;
+    <span class="token keyword">let</span> <span class="token keyword">mut</span> pos <span class="token operator">=</span> <span class="token number">0usize</span><span class="token punctuation">;</span>
+    <span class="token keyword">while</span> fen_idx <span class="token operator">&lt;</span> fen_u8<span class="token punctuation">.</span><span class="token function">len</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">let</span> <span class="token keyword">mut</span> chess_id <span class="token operator">=</span> <span class="token constant">EMPTY</span><span class="token punctuation">;</span>
+        <span class="token keyword">match</span> fen_u8<span class="token punctuation">[</span>fen_idx<span class="token punctuation">]</span> <span class="token punctuation">&#123;</span>
+            c <span class="token operator">@</span> <span class="token char string">b'e'</span> <span class="token operator">|</span> c <span class="token operator">@</span> <span class="token char string">b'E'</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span> chess_id <span class="token operator">=</span> <span class="token function">get_chess_id</span><span class="token punctuation">(</span><span class="token function">get_role</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token constant">ELEPHANT</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+            c <span class="token operator">@</span> <span class="token char string">b'l'</span> <span class="token operator">|</span> c <span class="token operator">@</span> <span class="token char string">b'L'</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span> chess_id <span class="token operator">=</span> <span class="token function">get_chess_id</span><span class="token punctuation">(</span><span class="token function">get_role</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token constant">LION</span><span class="token punctuation">)</span><span class="token punctuation">;</span>     <span class="token punctuation">&#125;</span>
+            c <span class="token operator">@</span> <span class="token char string">b't'</span> <span class="token operator">|</span> c <span class="token operator">@</span> <span class="token char string">b'T'</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span> chess_id <span class="token operator">=</span> <span class="token function">get_chess_id</span><span class="token punctuation">(</span><span class="token function">get_role</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token constant">TIGER</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token punctuation">&#125;</span>
+            c <span class="token operator">@</span> <span class="token char string">b'p'</span> <span class="token operator">|</span> c <span class="token operator">@</span> <span class="token char string">b'P'</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span> chess_id <span class="token operator">=</span> <span class="token function">get_chess_id</span><span class="token punctuation">(</span><span class="token function">get_role</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token constant">PANTHER</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token punctuation">&#125;</span>
+            c <span class="token operator">@</span> <span class="token char string">b'w'</span> <span class="token operator">|</span> c <span class="token operator">@</span> <span class="token char string">b'W'</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span> chess_id <span class="token operator">=</span> <span class="token function">get_chess_id</span><span class="token punctuation">(</span><span class="token function">get_role</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token constant">WOLF</span><span class="token punctuation">)</span><span class="token punctuation">;</span>     <span class="token punctuation">&#125;</span>
+            c <span class="token operator">@</span> <span class="token char string">b'd'</span> <span class="token operator">|</span> c <span class="token operator">@</span> <span class="token char string">b'D'</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span> chess_id <span class="token operator">=</span> <span class="token function">get_chess_id</span><span class="token punctuation">(</span><span class="token function">get_role</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token constant">DOG</span><span class="token punctuation">)</span><span class="token punctuation">;</span>      <span class="token punctuation">&#125;</span>
+            c <span class="token operator">@</span> <span class="token char string">b'c'</span> <span class="token operator">|</span> c <span class="token operator">@</span> <span class="token char string">b'C'</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span> chess_id <span class="token operator">=</span> <span class="token function">get_chess_id</span><span class="token punctuation">(</span><span class="token function">get_role</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token constant">CAT</span><span class="token punctuation">)</span><span class="token punctuation">;</span>      <span class="token punctuation">&#125;</span>
+            c <span class="token operator">@</span> <span class="token char string">b'r'</span> <span class="token operator">|</span> c <span class="token operator">@</span> <span class="token char string">b'R'</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span> chess_id <span class="token operator">=</span> <span class="token function">get_chess_id</span><span class="token punctuation">(</span><span class="token function">get_role</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token constant">RAT</span><span class="token punctuation">)</span><span class="token punctuation">;</span>      <span class="token punctuation">&#125;</span>
+            n <span class="token operator">@</span> <span class="token char string">b'1'</span> <span class="token punctuation">..=</span> <span class="token char string">b'9'</span>   <span class="token operator">=></span> <span class="token punctuation">&#123;</span> pos <span class="token operator">+=</span> <span class="token punctuation">(</span>n <span class="token operator">-</span> <span class="token char string">b'0'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> <span class="token keyword">usize</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+            <span class="token char string">b'/'</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span> <span class="token punctuation">&#125;</span>
+            <span class="token char string">b' '</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span> <span class="token keyword">break</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+            _    <span class="token operator">=></span> <span class="token punctuation">&#123;</span> <span class="token macro property">unreachable!</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
 
-        if chess_id !&#x3D; EMPTY &#123;
-            self.chesses[pos &#x2F; COL_NUM][pos % COL_NUM] &#x3D; chess_id;
-            pos +&#x3D; 1;
-        &#125;
-        fen_idx +&#x3D; 1;
-    &#125;
-    fen_idx +&#x3D; 1; &#x2F;&#x2F; eat &#39; &#39;
-    self.role &#x3D; if fen_u8[fen_idx] &#x3D;&#x3D; b&#39;w&#39; &#123; RED &#125;
-                else &#123; BLACK &#125;;
+        <span class="token keyword">if</span> chess_id <span class="token operator">!=</span> <span class="token constant">EMPTY</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">self</span><span class="token punctuation">.</span>chesses<span class="token punctuation">[</span>pos <span class="token operator">/</span> <span class="token constant">COL_NUM</span><span class="token punctuation">]</span><span class="token punctuation">[</span>pos <span class="token operator">%</span> <span class="token constant">COL_NUM</span><span class="token punctuation">]</span> <span class="token operator">=</span> chess_id<span class="token punctuation">;</span>
+            pos <span class="token operator">+=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        fen_idx <span class="token operator">+=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    fen_idx <span class="token operator">+=</span> <span class="token number">1</span><span class="token punctuation">;</span> <span class="token comment">// eat ' '</span>
+    <span class="token keyword">self</span><span class="token punctuation">.</span>role <span class="token operator">=</span> <span class="token keyword">if</span> fen_u8<span class="token punctuation">[</span>fen_idx<span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token char string">b'w'</span> <span class="token punctuation">&#123;</span> <span class="token constant">RED</span> <span class="token punctuation">&#125;</span>
+                <span class="token keyword">else</span> <span class="token punctuation">&#123;</span> <span class="token constant">BLACK</span> <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
 
-&#125;</code></pre>
+<span class="token punctuation">&#125;</span></code></pre>
 
 <p><code>c @ b&#39;e&#39; | c @ b&#39;E&#39; =&gt; &#123; chess_id = get_chess_id(get_role(c), ELEPHANT); &#125;</code>这句表达了若为<code>e</code>或者<code>E</code>，则通过颜色来得到对应的棋子id。可惜Rust目前还不支持这种写法：<code>c @ (b&#39;e&#39; | b&#39;E&#39;)</code>，目前or-patterns syntax is experimental，暂时这么写了。</p>
-<h2 id="lambda表达式"><a href="#lambda表达式" class="headerlink" title="lambda表达式"></a>lambda表达式</h2><pre class="language-rs" data-language="rs"><code class="language-rs">let get_role &#x3D; |c: u8| -&gt; Role &#123;
-    if (c as char).is_lowercase() &#123; BLACK &#125;
-    else &#123; RED &#125;
-&#125;;</code></pre>
+<h2 id="lambda表达式"><a href="#lambda表达式" class="headerlink" title="lambda表达式"></a>lambda表达式</h2><pre class="language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">let</span> get_role <span class="token operator">=</span> <span class="token closure-params"><span class="token closure-punctuation punctuation">|</span>c<span class="token punctuation">:</span> <span class="token keyword">u8</span><span class="token closure-punctuation punctuation">|</span></span> <span class="token punctuation">-></span> <span class="token class-name">Role</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>c <span class="token keyword">as</span> <span class="token keyword">char</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">is_lowercase</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token constant">BLACK</span> <span class="token punctuation">&#125;</span>
+    <span class="token keyword">else</span> <span class="token punctuation">&#123;</span> <span class="token constant">RED</span> <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
 <p>用<code>lambda</code>表达式封装<code>get_role</code>来通过字符大小写判断红黑色，避免重复代码，因为这个函数只有内部使用，没必要封装成一个单独函数。</p>
 <h2 id="迭代器"><a href="#迭代器" class="headerlink" title="迭代器"></a>迭代器</h2><p>Rust的迭代器也很爽，目前C++ 20的<code>std::views</code>也简化了这种操作，看看例子。</p>
 <p>来看看基本走法的生成，也就是只能走十字，每次只能走一格，老鼠可以进河。</p>
-<pre class="language-rs" data-language="rs"><code class="language-rs">fn generate_basic_steps(&amp;self, src: POS, to_water: bool) -&gt; Vec&lt;MOVE&gt; &#123;
-    const DX: [i32; 4] &#x3D; [1, 0, -1, 0];
-    const DY: [i32; 4] &#x3D; [0, 1, 0, -1];
-    let src_ &#x3D; get_pos(src);
-    let (x, y) &#x3D; (src_.0 as i32, src_.1 as i32);
+<pre class="language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">fn</span> <span class="token function-definition function">generate_basic_steps</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token keyword">self</span><span class="token punctuation">,</span> src<span class="token punctuation">:</span> <span class="token constant">POS</span><span class="token punctuation">,</span> to_water<span class="token punctuation">:</span> <span class="token keyword">bool</span><span class="token punctuation">)</span> <span class="token punctuation">-></span> <span class="token class-name">Vec</span><span class="token operator">&lt;</span><span class="token constant">MOVE</span><span class="token operator">></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">const</span> <span class="token constant">DX</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token keyword">i32</span><span class="token punctuation">;</span> <span class="token number">4</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">const</span> <span class="token constant">DY</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token keyword">i32</span><span class="token punctuation">;</span> <span class="token number">4</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">let</span> src_ <span class="token operator">=</span> <span class="token function">get_pos</span><span class="token punctuation">(</span>src<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">let</span> <span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token punctuation">(</span>src_<span class="token number">.0</span> <span class="token keyword">as</span> <span class="token keyword">i32</span><span class="token punctuation">,</span> src_<span class="token number">.1</span> <span class="token keyword">as</span> <span class="token keyword">i32</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    (0..4).into_iter().map(|idx| &#123;
-        to_move(&amp;(get_pos(src), ((x + DX[idx]) as usize, (y + DY[idx]) as usize)))
-    &#125;).filter(|&amp;mv| &#123;
-        let (_, dst) &#x3D; get_move(mv);
-        dst.0 &lt; ROW_NUM &amp;&amp; dst.1 &lt; COL_NUM &amp;&amp;
-        self.check_movable(src, get_dst_pos(mv)) &amp;&amp;
-        (! Self::check_in_water(to_pos(&amp;dst)) || to_water)
-    &#125;).collect()
-&#125;</code></pre>
+    <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">..</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">into_iter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token closure-params"><span class="token closure-punctuation punctuation">|</span>idx<span class="token closure-punctuation punctuation">|</span></span> <span class="token punctuation">&#123;</span>
+        <span class="token function">to_move</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token punctuation">(</span><span class="token function">get_pos</span><span class="token punctuation">(</span>src<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>x <span class="token operator">+</span> <span class="token constant">DX</span><span class="token punctuation">[</span>idx<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token keyword">as</span> <span class="token keyword">usize</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>y <span class="token operator">+</span> <span class="token constant">DY</span><span class="token punctuation">[</span>idx<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token keyword">as</span> <span class="token keyword">usize</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span><span class="token closure-params"><span class="token closure-punctuation punctuation">|</span><span class="token operator">&amp;</span>mv<span class="token closure-punctuation punctuation">|</span></span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">let</span> <span class="token punctuation">(</span>_<span class="token punctuation">,</span> dst<span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token function">get_move</span><span class="token punctuation">(</span>mv<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        dst<span class="token number">.0</span> <span class="token operator">&lt;</span> <span class="token constant">ROW_NUM</span> <span class="token operator">&amp;&amp;</span> dst<span class="token number">.1</span> <span class="token operator">&lt;</span> <span class="token constant">COL_NUM</span> <span class="token operator">&amp;&amp;</span>
+        <span class="token keyword">self</span><span class="token punctuation">.</span><span class="token function">check_movable</span><span class="token punctuation">(</span>src<span class="token punctuation">,</span> <span class="token function">get_dst_pos</span><span class="token punctuation">(</span>mv<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span>
+        <span class="token punctuation">(</span><span class="token operator">!</span> <span class="token keyword">Self</span><span class="token punctuation">::</span><span class="token function">check_in_water</span><span class="token punctuation">(</span><span class="token function">to_pos</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>dst<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">||</span> to_water<span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">collect</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span></code></pre>
 
 <p><code>(0..4).into_iter()</code>生成<code>[0,4)</code>的range，然后基于range做计算。</p>
 <p>通过<code>idx</code>得到四个方向的坐标，生成(src, dst)移动向量。</p>
-<pre class="language-rs" data-language="rs"><code class="language-rs">.map(|idx| &#123;
-    to_move(&amp;(get_pos(src), ((x + DX[idx]) as usize, (y + DY[idx]) as usize)))
-&#125;)</code></pre>
+<pre class="language-rust" data-language="rust"><code class="language-rust"><span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token closure-params"><span class="token closure-punctuation punctuation">|</span>idx<span class="token closure-punctuation punctuation">|</span></span> <span class="token punctuation">&#123;</span>
+    <span class="token function">to_move</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token punctuation">(</span><span class="token function">get_pos</span><span class="token punctuation">(</span>src<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>x <span class="token operator">+</span> <span class="token constant">DX</span><span class="token punctuation">[</span>idx<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token keyword">as</span> <span class="token keyword">usize</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>y <span class="token operator">+</span> <span class="token constant">DY</span><span class="token punctuation">[</span>idx<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token keyword">as</span> <span class="token keyword">usize</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span></code></pre>
 
 <p>过滤四个方向，只有在范围内、可以吃掉对方、能过河的结果保留下来：</p>
-<pre class="language-rs" data-language="rs"><code class="language-rs">.filter(|&amp;mv| &#123;
-    let (_, dst) &#x3D; get_move(mv);
-    dst.0 &lt; ROW_NUM &amp;&amp; dst.1 &lt; COL_NUM &amp;&amp;
-    self.check_movable(src, get_dst_pos(mv)) &amp;&amp;
-    (! Self::check_in_water(to_pos(&amp;dst)) || to_water)
-&#125;)</code></pre>
+<pre class="language-rust" data-language="rust"><code class="language-rust"><span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span><span class="token closure-params"><span class="token closure-punctuation punctuation">|</span><span class="token operator">&amp;</span>mv<span class="token closure-punctuation punctuation">|</span></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">let</span> <span class="token punctuation">(</span>_<span class="token punctuation">,</span> dst<span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token function">get_move</span><span class="token punctuation">(</span>mv<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    dst<span class="token number">.0</span> <span class="token operator">&lt;</span> <span class="token constant">ROW_NUM</span> <span class="token operator">&amp;&amp;</span> dst<span class="token number">.1</span> <span class="token operator">&lt;</span> <span class="token constant">COL_NUM</span> <span class="token operator">&amp;&amp;</span>
+    <span class="token keyword">self</span><span class="token punctuation">.</span><span class="token function">check_movable</span><span class="token punctuation">(</span>src<span class="token punctuation">,</span> <span class="token function">get_dst_pos</span><span class="token punctuation">(</span>mv<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span>
+    <span class="token punctuation">(</span><span class="token operator">!</span> <span class="token keyword">Self</span><span class="token punctuation">::</span><span class="token function">check_in_water</span><span class="token punctuation">(</span><span class="token function">to_pos</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>dst<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">||</span> to_water<span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span></code></pre>
 
 
 <p>接下来是狮子、老虎的走法生成：</p>
-<pre class="language-rs" data-language="rs"><code class="language-rs">fn generate_tl_steps(&amp;self, src: POS) -&gt; Vec&lt;MOVE&gt; &#123;
-    let mut basic_steps &#x3D; self.generate_basic_steps(src, false);
-    let src_ &#x3D; get_pos(src);
-    if Self::check_at_bank(src) &#123;
-        &#x2F;&#x2F; [2, 6]
-        if (src_.0 + 2) % 4 &#x3D;&#x3D; 0 &#123;
-            basic_steps.push(to_move(&amp;(src_, ((src_.0 + 4) % 8, src_.1))));
-        &#125; else &#123;
-            if src_.1 % 6 &#x3D;&#x3D; 0 &#123;
-                basic_steps.push(to_move(&amp;(src_, (src_.0, 3))));
-            &#125; else &#123;
-                basic_steps.push(to_move(&amp;(src_, (src_.0, 0))));
-                basic_steps.push(to_move(&amp;(src_, (src_.0, 6))));
-            &#125;
-        &#125;
+<pre class="language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">fn</span> <span class="token function-definition function">generate_tl_steps</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token keyword">self</span><span class="token punctuation">,</span> src<span class="token punctuation">:</span> <span class="token constant">POS</span><span class="token punctuation">)</span> <span class="token punctuation">-></span> <span class="token class-name">Vec</span><span class="token operator">&lt;</span><span class="token constant">MOVE</span><span class="token operator">></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">let</span> <span class="token keyword">mut</span> basic_steps <span class="token operator">=</span> <span class="token keyword">self</span><span class="token punctuation">.</span><span class="token function">generate_basic_steps</span><span class="token punctuation">(</span>src<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">let</span> src_ <span class="token operator">=</span> <span class="token function">get_pos</span><span class="token punctuation">(</span>src<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token keyword">Self</span><span class="token punctuation">::</span><span class="token function">check_at_bank</span><span class="token punctuation">(</span>src<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">// [2, 6]</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>src_<span class="token number">.0</span> <span class="token operator">+</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token operator">%</span> <span class="token number">4</span> <span class="token operator">==</span> <span class="token number">0</span> <span class="token punctuation">&#123;</span>
+            basic_steps<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token function">to_move</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token punctuation">(</span>src_<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>src_<span class="token number">.0</span> <span class="token operator">+</span> <span class="token number">4</span><span class="token punctuation">)</span> <span class="token operator">%</span> <span class="token number">8</span><span class="token punctuation">,</span> src_<span class="token number">.1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">if</span> src_<span class="token number">.1</span> <span class="token operator">%</span> <span class="token number">6</span> <span class="token operator">==</span> <span class="token number">0</span> <span class="token punctuation">&#123;</span>
+                basic_steps<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token function">to_move</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token punctuation">(</span>src_<span class="token punctuation">,</span> <span class="token punctuation">(</span>src_<span class="token number">.0</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+                basic_steps<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token function">to_move</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token punctuation">(</span>src_<span class="token punctuation">,</span> <span class="token punctuation">(</span>src_<span class="token number">.0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                basic_steps<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token function">to_move</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token punctuation">(</span>src_<span class="token punctuation">,</span> <span class="token punctuation">(</span>src_<span class="token number">.0</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
 
-        basic_steps &#x3D; basic_steps.into_iter().filter(|&amp;mv| &#123;
-            let (src, dst) &#x3D; (get_src_pos(mv), get_dst_pos(mv));
-            self.check_movable(src, dst) &amp;&amp; !self.check_rat(src, dst)
-        &#125;).collect()
-    &#125;
+        basic_steps <span class="token operator">=</span> basic_steps<span class="token punctuation">.</span><span class="token function">into_iter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span><span class="token closure-params"><span class="token closure-punctuation punctuation">|</span><span class="token operator">&amp;</span>mv<span class="token closure-punctuation punctuation">|</span></span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">let</span> <span class="token punctuation">(</span>src<span class="token punctuation">,</span> dst<span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token function">get_src_pos</span><span class="token punctuation">(</span>mv<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">get_dst_pos</span><span class="token punctuation">(</span>mv<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">self</span><span class="token punctuation">.</span><span class="token function">check_movable</span><span class="token punctuation">(</span>src<span class="token punctuation">,</span> dst<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span><span class="token keyword">self</span><span class="token punctuation">.</span><span class="token function">check_rat</span><span class="token punctuation">(</span>src<span class="token punctuation">,</span> dst<span class="token punctuation">)</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">collect</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
     basic_steps
-&#125;</code></pre>
+<span class="token punctuation">&#125;</span></code></pre>
 
 <p>首先得到基本走法，然后生成跳河走法。最后的<code>filter</code>过滤无效的移动，例如狮子老虎跳河的时候中间不能有老鼠，对岸的棋子比自己小时。</p>
-<pre class="language-rs" data-language="rs"><code class="language-rs">basic_steps.into_iter().filter(|&amp;mv| &#123;
-    let (src, dst) &#x3D; (get_src_pos(mv), get_dst_pos(mv));
-    self.check_movable(src, dst) &amp;&amp; !self.check_rat(src, dst)
-&#125;).collect()</code></pre>
+<pre class="language-rust" data-language="rust"><code class="language-rust">basic_steps<span class="token punctuation">.</span><span class="token function">into_iter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span><span class="token closure-params"><span class="token closure-punctuation punctuation">|</span><span class="token operator">&amp;</span>mv<span class="token closure-punctuation punctuation">|</span></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">let</span> <span class="token punctuation">(</span>src<span class="token punctuation">,</span> dst<span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token function">get_src_pos</span><span class="token punctuation">(</span>mv<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">get_dst_pos</span><span class="token punctuation">(</span>mv<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">self</span><span class="token punctuation">.</span><span class="token function">check_movable</span><span class="token punctuation">(</span>src<span class="token punctuation">,</span> dst<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span><span class="token keyword">self</span><span class="token punctuation">.</span><span class="token function">check_rat</span><span class="token punctuation">(</span>src<span class="token punctuation">,</span> dst<span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">collect</span><span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
 
 <p>通过迭代器的<code>map</code>可以做类型转换，从而传参给指定类型的接口。例如<code>fn draw_frame(&amp;mut self, tgt_pos: &amp;Vec&lt;POS&gt;)</code>接口，需要的参数类型为<code>Vec&lt;POS&gt;</code>，可实际参数是<code>Vec&lt;MOVE&gt;</code>，通过如下转换：</p>
-<pre class="language-rs" data-language="rs"><code class="language-rs">fn process_selected_chess(&amp;mut self) -&gt; Result&lt;(), String&gt; &#123;
-    if let Some(pos) &#x3D; self.selected_chess &#123;
-        self.draw_frame(&amp;vec![pos])?;
+<pre class="language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">fn</span> <span class="token function-definition function">process_selected_chess</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token keyword">mut</span> <span class="token keyword">self</span><span class="token punctuation">)</span> <span class="token punctuation">-></span> <span class="token class-name">Result</span><span class="token operator">&lt;</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token class-name">String</span><span class="token operator">></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token keyword">let</span> <span class="token class-name">Some</span><span class="token punctuation">(</span>pos<span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token keyword">self</span><span class="token punctuation">.</span>selected_chess <span class="token punctuation">&#123;</span>
+        <span class="token keyword">self</span><span class="token punctuation">.</span><span class="token function">draw_frame</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token macro property">vec!</span><span class="token punctuation">[</span>pos<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">?</span><span class="token punctuation">;</span>
 
-        self.movable_pos &#x3D; self.generate_steps(pos);
-        self.draw_frame(&amp;self.movable_pos.iter().map(|&amp;mv| &#123; get_dst_pos(mv) &#125;).collect())?;
-    &#125;
-    Ok(())
-&#125;</code></pre>
+        <span class="token keyword">self</span><span class="token punctuation">.</span>movable_pos <span class="token operator">=</span> <span class="token keyword">self</span><span class="token punctuation">.</span><span class="token function">generate_steps</span><span class="token punctuation">(</span>pos<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">self</span><span class="token punctuation">.</span><span class="token function">draw_frame</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token keyword">self</span><span class="token punctuation">.</span>movable_pos<span class="token punctuation">.</span><span class="token function">iter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token closure-params"><span class="token closure-punctuation punctuation">|</span><span class="token operator">&amp;</span>mv<span class="token closure-punctuation punctuation">|</span></span> <span class="token punctuation">&#123;</span> <span class="token function">get_dst_pos</span><span class="token punctuation">(</span>mv<span class="token punctuation">)</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">collect</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">?</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token class-name">Ok</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span></code></pre>
 
 <p>这个接口绘制选中的棋子、以及可移动的格子的框框，<code>self.movable_pos.iter().map(|&amp;mv| &#123; get_dst_pos(mv) &#125;).collect()</code>进行类型转换，只保留<code>dst</code>的坐标。</p>
 <h2 id="Borrow-Checker"><a href="#Borrow-Checker" class="headerlink" title="Borrow Checker"></a>Borrow Checker</h2><p>Rust通过借用检查来避免写出不安全的代码：</p>
@@ -500,39 +500,39 @@ pub type ScoreType &#x3D; i32;</code></pre>
 <li>第二，对于同一个资源（resource）的借用，即同一个作用域下，要么只有一个对资源 A 的可变引用（<code>&amp;mut T</code>），要么有N个不可变引用（<code>&amp;T</code>），但不能同时存在可变和不可变的引用</li>
 </ul>
 <p>所以如下代码：</p>
-<pre class="language-rs" data-language="rs"><code class="language-rs">let mut undo &#x3D; false;
-for event in self.event_pump.poll_iter() &#123;
-    match event &#123;
-        &#x2F;&#x2F; ...
-        Event::KeyDown &#123; keycode: Some(keycode), .. &#125; &#x3D;&gt; &#123;
-            match keycode &#123;
-                Keycode::U      &#x3D;&gt; &#123; undo &#x3D; true; &#125;
-                _ &#x3D;&gt; &#123;&#125;
-            &#125;
-        &#125;
-        _ &#x3D;&gt; &#123;&#125;
-    &#125;
-&#125;
-if undo &#123;
-    self.undo_move();
-    if self.compture_turn &#123; self.undo_move(); &#125;
-&#125;</code></pre>
+<pre class="language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">let</span> <span class="token keyword">mut</span> undo <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+<span class="token keyword">for</span> event <span class="token keyword">in</span> <span class="token keyword">self</span><span class="token punctuation">.</span>event_pump<span class="token punctuation">.</span><span class="token function">poll_iter</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">match</span> event <span class="token punctuation">&#123;</span>
+        <span class="token comment">// ...</span>
+        <span class="token class-name">Event</span><span class="token punctuation">::</span><span class="token class-name">KeyDown</span> <span class="token punctuation">&#123;</span> keycode<span class="token punctuation">:</span> <span class="token class-name">Some</span><span class="token punctuation">(</span>keycode<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">..</span> <span class="token punctuation">&#125;</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">match</span> keycode <span class="token punctuation">&#123;</span>
+                <span class="token class-name">Keycode</span><span class="token punctuation">::</span><span class="token class-name">U</span>      <span class="token operator">=></span> <span class="token punctuation">&#123;</span> undo <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+                _ <span class="token operator">=></span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+        _ <span class="token operator">=></span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">if</span> undo <span class="token punctuation">&#123;</span>
+    <span class="token keyword">self</span><span class="token punctuation">.</span><span class="token function">undo_move</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token keyword">self</span><span class="token punctuation">.</span>compture_turn <span class="token punctuation">&#123;</span> <span class="token keyword">self</span><span class="token punctuation">.</span><span class="token function">undo_move</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span></code></pre>
 <p>不能直接写成：</p>
-<pre class="language-rs" data-language="rs"><code class="language-rs">for event in self.event_pump.poll_iter() &#123;
-    match event &#123;
-        &#x2F;&#x2F; ...
-        Event::KeyDown &#123; keycode: Some(keycode), .. &#125; &#x3D;&gt; &#123;
-            match keycode &#123;
-                Keycode::U      &#x3D;&gt; &#123;
-                    self.undo_move();
-                    if self.compture_turn &#123; self.undo_move(); &#125;
-                &#125;
-                _ &#x3D;&gt; &#123;&#125;
-            &#125;
-        &#125;
-        _ &#x3D;&gt; &#123;&#125;
-    &#125;
-&#125;</code></pre>
+<pre class="language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">for</span> event <span class="token keyword">in</span> <span class="token keyword">self</span><span class="token punctuation">.</span>event_pump<span class="token punctuation">.</span><span class="token function">poll_iter</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">match</span> event <span class="token punctuation">&#123;</span>
+        <span class="token comment">// ...</span>
+        <span class="token class-name">Event</span><span class="token punctuation">::</span><span class="token class-name">KeyDown</span> <span class="token punctuation">&#123;</span> keycode<span class="token punctuation">:</span> <span class="token class-name">Some</span><span class="token punctuation">(</span>keycode<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">..</span> <span class="token punctuation">&#125;</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">match</span> keycode <span class="token punctuation">&#123;</span>
+                <span class="token class-name">Keycode</span><span class="token punctuation">::</span><span class="token class-name">U</span>      <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
+                    <span class="token keyword">self</span><span class="token punctuation">.</span><span class="token function">undo_move</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token keyword">if</span> <span class="token keyword">self</span><span class="token punctuation">.</span>compture_turn <span class="token punctuation">&#123;</span> <span class="token keyword">self</span><span class="token punctuation">.</span><span class="token function">undo_move</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+                <span class="token punctuation">&#125;</span>
+                _ <span class="token operator">=></span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+        _ <span class="token operator">=></span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span></code></pre>
 
 <p>因为<code>self.event_pump.poll_iter()</code>拿到了<code>&amp;mut self</code>，而<code>self.undo_move()</code>也拿到了<code>&amp;mut self</code>，这在Rust是绝对不允许的。</p>
 <pre class="language-none"><code class="language-none">error[E0499]: cannot borrow &#96;*self&#96; as mutable more than once at a time
@@ -572,12 +572,12 @@ error[E0499]: cannot borrow &#96;*self&#96; as mutable more than once at a time
 <span class="token punctuation">&#125;</span></code></pre>
 
 <p>Rust写不出来：</p>
-<pre class="language-rs" data-language="rs"><code class="language-rs">fn process&lt;T&gt;(container: &amp;T)
-    where T: ??
-&#123;
-    for data in container &#123;
-    &#125;
-&#125;</code></pre>
+<pre class="language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">fn</span> <span class="token function-definition function">process</span><span class="token operator">&lt;</span><span class="token class-name">T</span><span class="token operator">></span><span class="token punctuation">(</span>container<span class="token punctuation">:</span> <span class="token operator">&amp;</span><span class="token class-name">T</span><span class="token punctuation">)</span>
+    <span class="token keyword">where</span> <span class="token class-name">T</span><span class="token punctuation">:</span> <span class="token operator">?</span><span class="token operator">?</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">for</span> data <span class="token keyword">in</span> container <span class="token punctuation">&#123;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span></code></pre>
 
 <p>关于内存安全性，例如开发过程中数组越界访问了，会导致<code>panic</code>然后挂掉，这应该是最好结果。如果是C语言的话，数组越界访问是不会直接挂掉，这就留下了隐患让别有用心的人利用了。</p>
 <h2 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h2><p>接下来要做的是继续优化AI，可以考虑将AI模块分离出来，抽象<code>Trait</code>接口，实现类似于C++的<code>pImpl</code>模式，也就是策略模式吧。也不知道好不好做，毕竟这两个模块存在相互依赖的关系。</p>
@@ -594,7 +594,7 @@ error[E0499]: cannot borrow &#96;*self&#96; as mutable more than once at a time
 
    
   <div class="box-prev-next clearfix">
-    <a class="show pull-left" href="/2018/07/11/%E4%BB%8E%E5%A4%B4%E5%BC%80%E5%A7%8B%E5%86%99%E4%B8%80%E4%B8%AA%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">
+    <a class="show pull-left" href="/2020/05/30/%E6%9E%84%E9%80%A0%E3%80%81%E6%9E%90%E6%9E%84%E6%9C%9F%E9%97%B4%E8%A2%AB%E8%B0%83%E8%99%9A%E5%87%BD%E6%95%B0%E5%8F%91%E7%94%9F%E7%9A%84%E6%83%A8%E6%A1%88/">
         <i class="icon icon-angle-left"></i>
     </a>
     <a class="show pull-right" href="/2020/08/01/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E7%9A%84%E5%AE%9E%E7%8E%B0C-%E7%BC%96%E8%AF%91%E6%9C%9F%E9%9D%99%E6%80%81%E5%8F%8D%E5%B0%84/">
