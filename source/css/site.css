@@ -1,0 +1,49 @@
+p code, li code, h1 code, h2 code, h3 code {
+    display: inline-block;
+    white-space: no-wrap;
+    background: #f6f6f6;
+    font-size: .9em;
+    line-height: 1.5em;
+    color: #464646;
+    border: 1px solid #eeeeee;
+    -webkit-border-radius: 0.4em;
+    -moz-border-radius: 0.4em;
+    -ms-border-radius: 0.4em;
+    -o-border-radius: 0.4em;
+    border-radius: 0.4em;
+    padding: 0 .3em;
+    margin: -1px 0;
+}
+
+.article-content a {
+    color: #21afd3;
+}
+
+.article-content a:hover {
+    color: #ff6557;
+    text-decoration: underline;
+}
+
+@font-face {
+    font-family: 'cascadia_coderegular';
+    src: url('/fonts/cascadiacode-webfont.woff2') format('woff2'),
+         url('/fonts/cascadiacode-webfont.woff') format('woff'),
+         url('/fonts/cascadiacode-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+code[class*="language-"],
+pre[class*="language-"] {
+	border-radius: .6em;
+    font-family: 'cascadia_coderegular' !important;
+    font-variant-ligatures: normal;
+}
+
+code {
+    font-family: 'cascadia_coderegular' !important;
+    font-variant-ligatures: normal;
+}
+
+
