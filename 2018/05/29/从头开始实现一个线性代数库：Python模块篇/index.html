@@ -12,23 +12,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="C/C++,数学,线性代数,Python," />
+    <meta name="keywords" content="Python,C/C++,数学,线性代数," />
   
 
-  <meta name="description" content="这两天用C&#x2F;C++实现了一下线性代数库的Python模块，大部分操作已经封装完成，剩下的慢慢补坑吧&#x3D; &#x3D; 关于线性代数库的一些算法实现，可以参考我的前一篇文章从头开始实现一个线性代数库：算法实现篇。现在主要总结一下如何用C&#x2F;C++编写Python模块，代码地址https:&#x2F;&#x2F;github.com&#x2F;netcan&#x2F;LinAlg&#x2F;tree&#x2F;master&#x2F;linalg.module。 先来看看效果： 12">
+  <meta name="description" content="这两天用C&#x2F;C++实现了一下线性代数库的Python模块，大部分操作已经封装完成，剩下的慢慢补坑吧&#x3D; &#x3D; 关于线性代数库的一些算法实现，可以参考我的前一篇文章从头开始实现一个线性代数库：算法实现篇。现在主要总结一下如何用C&#x2F;C++编写Python模块，代码地址https:&#x2F;&#x2F;github.com&#x2F;netcan&#x2F;LinAlg&#x2F;tree&#x2F;master&#x2F;linalg.module。 先来看看效果： In">
 <meta property="og:type" content="article">
 <meta property="og:title" content="从头开始实现一个线性代数库：Python模块篇">
 <meta property="og:url" content="https://netcan.github.io/2018/05/29/%E4%BB%8E%E5%A4%B4%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E5%BA%93%EF%BC%9APython%E6%A8%A1%E5%9D%97%E7%AF%87/index.html">
 <meta property="og:site_name" content="Netcan on Programming">
-<meta property="og:description" content="这两天用C&#x2F;C++实现了一下线性代数库的Python模块，大部分操作已经封装完成，剩下的慢慢补坑吧&#x3D; &#x3D; 关于线性代数库的一些算法实现，可以参考我的前一篇文章从头开始实现一个线性代数库：算法实现篇。现在主要总结一下如何用C&#x2F;C++编写Python模块，代码地址https:&#x2F;&#x2F;github.com&#x2F;netcan&#x2F;LinAlg&#x2F;tree&#x2F;master&#x2F;linalg.module。 先来看看效果： 12">
+<meta property="og:description" content="这两天用C&#x2F;C++实现了一下线性代数库的Python模块，大部分操作已经封装完成，剩下的慢慢补坑吧&#x3D; &#x3D; 关于线性代数库的一些算法实现，可以参考我的前一篇文章从头开始实现一个线性代数库：算法实现篇。现在主要总结一下如何用C&#x2F;C++编写Python模块，代码地址https:&#x2F;&#x2F;github.com&#x2F;netcan&#x2F;LinAlg&#x2F;tree&#x2F;master&#x2F;linalg.module。 先来看看效果： In">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2018-05-29T09:56:03.000Z">
 <meta property="article:modified_time" content="2018-05-29T14:30:03.467Z">
 <meta property="article:author" content="Netcan">
+<meta property="article:tag" content="Python">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="数学">
 <meta property="article:tag" content="线性代数">
-<meta property="article:tag" content="Python">
 <meta name="twitter:card" content="summary">
 
   
@@ -39,10 +39,6 @@
 
   <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
 
-
-  
-    
-<link rel="stylesheet" href="/css/personal-style.css">
 
   
 
@@ -106,7 +102,9 @@ ga('send', 'pageview');
     <span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
   
 
-  <div class="post-header CENTER">
+  <link rel="stylesheet" href="/css/prism.css">
+
+<div class="post-header CENTER">
    
   <div class="toolbox">
     <a class="toolbox-entry" href="/">
@@ -251,7 +249,23 @@ ga('send', 'pageview');
       <p>这两天用C/C++实现了一下线性代数库的Python模块，大部分操作已经封装完成，剩下的慢慢补坑吧= =</p>
 <p>关于线性代数库的一些算法实现，可以参考我的前一篇文章<a target="_blank" rel="noopener" href="http://www.netcan666.com/2018/05/27/%E4%BB%8E%E5%A4%B4%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E5%BA%93%EF%BC%9A%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0%E7%AF%87/">从头开始实现一个线性代数库：算法实现篇</a>。现在主要总结一下如何用C/C++编写Python模块，代码地址<a target="_blank" rel="noopener" href="https://github.com/netcan/LinAlg/tree/master/linalg.module">https://github.com/netcan/LinAlg/tree/master/linalg.module</a>。</p>
 <p>先来看看效果：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">1</span>]: ls</span><br><span class="line">linalg.cpython<span class="number">-36</span>m-darwin.so*</span><br><span class="line"></span><br><span class="line">In [<span class="number">2</span>]: <span class="keyword">import</span> linalg</span><br><span class="line"></span><br><span class="line">In [<span class="number">3</span>]: m = linalg.Matrix([</span><br><span class="line">   ...:     [<span class="number">43</span>, <span class="number">63</span>, <span class="number">57</span>, <span class="number">35</span>],</span><br><span class="line">   ...:     [<span class="number">63</span>, <span class="number">26</span>, <span class="number">32</span>, <span class="number">35</span>],</span><br><span class="line">   ...:     [<span class="number">57</span>, <span class="number">32</span>, <span class="number">78</span>, <span class="number">76</span>],</span><br><span class="line">   ...:     [<span class="number">35</span>, <span class="number">35</span>, <span class="number">76</span>, <span class="number">25</span>],</span><br><span class="line">   ...: ])</span><br><span class="line"></span><br><span class="line">In [<span class="number">4</span>]: m.Jacobi()</span><br><span class="line">Out[<span class="number">4</span>]: C(<span class="number">-19.248723</span> <span class="number">33.225382</span> <span class="number">197.775875</span> <span class="number">-39.752533</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">5</span>]: m.det()</span><br><span class="line">Out[<span class="number">5</span>]: <span class="number">5028170.999999999</span></span><br></pre></td></tr></table></figure>
+<pre class="language-python" data-language="python"><code class="language-python">In <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">:</span> ls
+linalg<span class="token punctuation">.</span>cpython<span class="token operator">-</span>36m<span class="token operator">-</span>darwin<span class="token punctuation">.</span>so<span class="token operator">*</span>
+
+In <span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">:</span> <span class="token keyword">import</span> linalg
+
+In <span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">:</span> m <span class="token operator">=</span> linalg<span class="token punctuation">.</span>Matrix<span class="token punctuation">(</span><span class="token punctuation">[</span>
+   <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">:</span>     <span class="token punctuation">[</span><span class="token number">43</span><span class="token punctuation">,</span> <span class="token number">63</span><span class="token punctuation">,</span> <span class="token number">57</span><span class="token punctuation">,</span> <span class="token number">35</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+   <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">:</span>     <span class="token punctuation">[</span><span class="token number">63</span><span class="token punctuation">,</span> <span class="token number">26</span><span class="token punctuation">,</span> <span class="token number">32</span><span class="token punctuation">,</span> <span class="token number">35</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+   <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">:</span>     <span class="token punctuation">[</span><span class="token number">57</span><span class="token punctuation">,</span> <span class="token number">32</span><span class="token punctuation">,</span> <span class="token number">78</span><span class="token punctuation">,</span> <span class="token number">76</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+   <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">:</span>     <span class="token punctuation">[</span><span class="token number">35</span><span class="token punctuation">,</span> <span class="token number">35</span><span class="token punctuation">,</span> <span class="token number">76</span><span class="token punctuation">,</span> <span class="token number">25</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+   <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">:</span> <span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+In <span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">:</span> m<span class="token punctuation">.</span>Jacobi<span class="token punctuation">(</span><span class="token punctuation">)</span>
+Out<span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">:</span> C<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">19.248723</span> <span class="token number">33.225382</span> <span class="token number">197.775875</span> <span class="token operator">-</span><span class="token number">39.752533</span><span class="token punctuation">)</span>
+
+In <span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">:</span> m<span class="token punctuation">.</span>det<span class="token punctuation">(</span><span class="token punctuation">)</span>
+Out<span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">:</span> <span class="token number">5028170.999999999</span></code></pre>
 
 <p>编写模块最麻烦的部分应该是引用计数了，如果能够妥善处理，将会事半功倍，我因为这个问题debug好久了。紧接着就是异常处理了。主要参考资料还是官方文档：</p>
 <ul>
@@ -261,39 +275,114 @@ ga('send', 'pageview');
 <li><a target="_blank" rel="noopener" href="https://docs.python.org/3/extending/building.html">Building C and C++ Extensions</a></li>
 </ul>
 <h2 id="定义模块"><a href="#定义模块" class="headerlink" title="定义模块"></a>定义模块</h2><p>首先定义一个名为<code>linalg</code>的模块，其下有两个类：<code>linalg.Vector</code>和<code>linalg.Matrix</code>。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> PyModuleDef linalgmodule = &#123;</span><br><span class="line">    PyModuleDef_HEAD_INIT,</span><br><span class="line">    <span class="string">&quot;linalg&quot;</span>,   <span class="comment">/* name of module */</span></span><br><span class="line">    <span class="literal">NULL</span>,        <span class="comment">/* module documentation, may be NULL */</span></span><br><span class="line">    <span class="number">-1</span>,            <span class="comment">/* size of per-interpreter state of the module,</span></span><br><span class="line"><span class="comment">                 or -1 if the module keeps state in global variables. */</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">static</span> PyModuleDef linalgmodule <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    PyModuleDef_HEAD_INIT<span class="token punctuation">,</span>
+    <span class="token string">"linalg"</span><span class="token punctuation">,</span>   <span class="token comment">/* name of module */</span>
+    <span class="token constant">NULL</span><span class="token punctuation">,</span>        <span class="token comment">/* module documentation, may be NULL */</span>
+    <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span>            <span class="token comment">/* size of per-interpreter state of the module,
+                 or -1 if the module keeps state in global variables. */</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
 
 <p>如果需要定义一些模块级方法，需要在定义<code>linalgmodule</code>的时候指定<code>m_methods</code>，这里不需要这类方法，就省略了。</p>
 <p>接下来初始化模块，定义名为<code>PyInit_linalg</code>的函数：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">PyMODINIT_FUNC</span><br><span class="line">PyInit_linalg(<span class="keyword">void</span>) &#123;</span><br><span class="line">    PyObject *m;</span><br><span class="line">    m = PyModule_Create(&amp;linalgmodule);</span><br><span class="line">    <span class="keyword">if</span> (m == <span class="literal">NULL</span>) <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">    <span class="comment">// 添加Vector/Matrix类</span></span><br><span class="line">    <span class="keyword">if</span> (PyType_Ready(&amp;PyVectorType) &lt; <span class="number">0</span>) <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">if</span> (PyType_Ready(&amp;PyMatrixType) &lt; <span class="number">0</span>) <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">    Py_INCREF(&amp;PyVectorType);</span><br><span class="line">    Py_INCREF(&amp;PyMatrixType);</span><br><span class="line">    PyModule_AddObject(m, <span class="string">&quot;Vector&quot;</span>, (PyObject*)&amp;PyVectorType);</span><br><span class="line">    PyModule_AddObject(m, <span class="string">&quot;Matrix&quot;</span>, (PyObject*)&amp;PyMatrixType);</span><br><span class="line">    <span class="keyword">return</span> m;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp">PyMODINIT_FUNC
+<span class="token function">PyInit_linalg</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    PyObject <span class="token operator">*</span>m<span class="token punctuation">;</span>
+    m <span class="token operator">=</span> <span class="token function">PyModule_Create</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>linalgmodule<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>m <span class="token operator">==</span> <span class="token constant">NULL</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token constant">NULL</span><span class="token punctuation">;</span>
+    <span class="token comment">// 添加Vector/Matrix类</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">PyType_Ready</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>PyVectorType<span class="token punctuation">)</span> <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token constant">NULL</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">PyType_Ready</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>PyMatrixType<span class="token punctuation">)</span> <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token constant">NULL</span><span class="token punctuation">;</span>
+    <span class="token function">Py_INCREF</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>PyVectorType<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">Py_INCREF</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>PyMatrixType<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">PyModule_AddObject</span><span class="token punctuation">(</span>m<span class="token punctuation">,</span> <span class="token string">"Vector"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>PyObject<span class="token operator">*</span><span class="token punctuation">)</span><span class="token operator">&amp;</span>PyVectorType<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">PyModule_AddObject</span><span class="token punctuation">(</span>m<span class="token punctuation">,</span> <span class="token string">"Matrix"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>PyObject<span class="token operator">*</span><span class="token punctuation">)</span><span class="token operator">&amp;</span>PyMatrixType<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> m<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre>
 
 <p>可以看到在初始化模块的时候，添加了<code>linalg.Vector</code>和<code>linalg.Matrix</code>两个类。接下来定义这两个类，以及类方法。</p>
 <h2 id="定义linalg-Vector类"><a href="#定义linalg-Vector类" class="headerlink" title="定义linalg.Vector类"></a>定义<code>linalg.Vector</code>类</h2><p>由于<code>linalg.Matrix</code>类和<code>linalg.Vector</code>类定义的方法基本相同，这里只总结一下<code>linalg.Vector</code>类的定义以及实现。</p>
 <p>首先定义<code>VectorObject</code>对象类：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">typedef struct &#123;</span><br><span class="line">    PyObject_HEAD;</span><br><span class="line">    Vector ob_vector; &#x2F;&#x2F; 需要封装的成员</span><br><span class="line">&#125; PyVectorObject;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">typedef struct &#123;
+    PyObject_HEAD;
+    Vector ob_vector; &#x2F;&#x2F; 需要封装的成员
+&#125; PyVectorObject;</code></pre>
 
 <p>接着是<code>VectorType</code>类的定义：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">static PyTypeObject PyVectorType &#x3D; &#123;</span><br><span class="line">    PyObject_HEAD_INIT(NULL)</span><br><span class="line">    .tp_name &#x3D; &quot;linalg.Vector&quot;, &#x2F;&#x2F; 模块类名</span><br><span class="line">    .tp_doc &#x3D; &quot;Vector objects&quot;, &#x2F;&#x2F; doc描述</span><br><span class="line">    .tp_basicsize &#x3D; sizeof(PyVectorObject), &#x2F;&#x2F; 对象大小</span><br><span class="line">    .tp_itemsize &#x3D; 0,</span><br><span class="line">    .tp_dealloc &#x3D; (destructor) PyLinAlg_dealloc, &#x2F;&#x2F; 析构函数</span><br><span class="line">    .tp_new &#x3D; PyType_GenericNew, &#x2F;&#x2F; 构造函数</span><br><span class="line">    .tp_init &#x3D; (initproc) PyVector_init, &#x2F;&#x2F; 初始化函数</span><br><span class="line">    .tp_members &#x3D; PyVector_members, &#x2F;&#x2F; 类成员</span><br><span class="line">    .tp_methods &#x3D; PyVector_methods, &#x2F;&#x2F; 类方法</span><br><span class="line">    .tp_flags &#x3D; Py_TPFLAGS_DEFAULT,</span><br><span class="line">    .tp_str &#x3D; (reprfunc)PyVector_str, &#x2F;&#x2F; str(obj), print用</span><br><span class="line">    .tp_repr &#x3D; (reprfunc)PyVector_str,</span><br><span class="line">    .tp_as_sequence &#x3D; &amp;PyVectorSeq_methods, &#x2F;&#x2F; 一些序列类方法，例如vec[i]</span><br><span class="line">    .tp_as_number &#x3D; &amp;PyVectorNum_methods, &#x2F;&#x2F; 基本运算方法，例如vecA + vecB</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">static PyTypeObject PyVectorType &#x3D; &#123;
+    PyObject_HEAD_INIT(NULL)
+    .tp_name &#x3D; &quot;linalg.Vector&quot;, &#x2F;&#x2F; 模块类名
+    .tp_doc &#x3D; &quot;Vector objects&quot;, &#x2F;&#x2F; doc描述
+    .tp_basicsize &#x3D; sizeof(PyVectorObject), &#x2F;&#x2F; 对象大小
+    .tp_itemsize &#x3D; 0,
+    .tp_dealloc &#x3D; (destructor) PyLinAlg_dealloc, &#x2F;&#x2F; 析构函数
+    .tp_new &#x3D; PyType_GenericNew, &#x2F;&#x2F; 构造函数
+    .tp_init &#x3D; (initproc) PyVector_init, &#x2F;&#x2F; 初始化函数
+    .tp_members &#x3D; PyVector_members, &#x2F;&#x2F; 类成员
+    .tp_methods &#x3D; PyVector_methods, &#x2F;&#x2F; 类方法
+    .tp_flags &#x3D; Py_TPFLAGS_DEFAULT,
+    .tp_str &#x3D; (reprfunc)PyVector_str, &#x2F;&#x2F; str(obj), print用
+    .tp_repr &#x3D; (reprfunc)PyVector_str,
+    .tp_as_sequence &#x3D; &amp;PyVectorSeq_methods, &#x2F;&#x2F; 一些序列类方法，例如vec[i]
+    .tp_as_number &#x3D; &amp;PyVectorNum_methods, &#x2F;&#x2F; 基本运算方法，例如vecA + vecB
+&#125;;</code></pre>
 
 <p>先来看看<code>linalg.Vector</code>的析构函数，若不是单例模式，所有类都需要这个函数在引用计数为0的时候来释放对象：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">void</span></span><br><span class="line">PyLinAlg_dealloc(PyObject *self) &#123;</span><br><span class="line">    Py_TYPE(self)-&gt;tp_free((PyObject *)self);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">static</span> <span class="token keyword">void</span>
+<span class="token function">PyLinAlg_dealloc</span><span class="token punctuation">(</span>PyObject <span class="token operator">*</span>self<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token function">Py_TYPE</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token operator">-></span><span class="token function">tp_free</span><span class="token punctuation">(</span><span class="token punctuation">(</span>PyObject <span class="token operator">*</span><span class="token punctuation">)</span>self<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre>
 
 <p>构造函数使用默认的<code>PyType_GenericNew</code>就好，初始化一个<code>Vector</code>类，在C++接口中是这样的：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Vector <span class="title">v</span><span class="params">(&#123;<span class="number">16</span>,<span class="number">22</span>,<span class="number">32</span>,<span class="number">44</span>&#125;)</span></span>;</span><br><span class="line">v.show();</span><br></pre></td></tr></table></figure>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp">Vector <span class="token function">v</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token number">16</span><span class="token punctuation">,</span><span class="token number">22</span><span class="token punctuation">,</span><span class="token number">32</span><span class="token punctuation">,</span><span class="token number">44</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+v<span class="token punctuation">.</span><span class="token function">show</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
 
 <p>现在用Python模块方式进行初始化，为了简单起见，这里只支持列表类型初始化，即：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">6</span>]: v = linalg.Vector([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>])</span><br><span class="line"></span><br><span class="line">In [<span class="number">7</span>]: v</span><br><span class="line">Out[<span class="number">7</span>]: C(<span class="number">1.000000</span> <span class="number">2.000000</span> <span class="number">3.000000</span> <span class="number">4.000000</span>)</span><br></pre></td></tr></table></figure>
+<pre class="language-python" data-language="python"><code class="language-python">In <span class="token punctuation">[</span><span class="token number">6</span><span class="token punctuation">]</span><span class="token punctuation">:</span> v <span class="token operator">=</span> linalg<span class="token punctuation">.</span>Vector<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+In <span class="token punctuation">[</span><span class="token number">7</span><span class="token punctuation">]</span><span class="token punctuation">:</span> v
+Out<span class="token punctuation">[</span><span class="token number">7</span><span class="token punctuation">]</span><span class="token punctuation">:</span> C<span class="token punctuation">(</span><span class="token number">1.000000</span> <span class="token number">2.000000</span> <span class="token number">3.000000</span> <span class="token number">4.000000</span><span class="token punctuation">)</span></code></pre>
 
 <p>初始化函数如下：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">int</span></span><br><span class="line">PyVector_init(PyVectorObject *self, PyObject *args, PyObject *kwds) &#123;</span><br><span class="line">    PyObject *pList, *pItem;</span><br><span class="line">    <span class="keyword">if</span> (!PyArg_ParseTuple(args, <span class="string">&quot;O!&quot;</span>, &amp;PyList_Type, &amp;pList)) &#123; <span class="comment">// 初始化参数必须为列表</span></span><br><span class="line">        PyErr_SetString(PyExc_TypeError, <span class="string">&quot;parameter must be a list.&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125; </span><br><span class="line">    Py_ssize_t n = PyList_Size(pList); <span class="comment">// 获取列表长度</span></span><br><span class="line">    <span class="keyword">if</span>(n &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">        PyErr_SetString(PyExc_TypeError, <span class="string">&quot;size of list must be greater than 0&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">double</span>&gt; data;</span><br><span class="line">    <span class="keyword">for</span>(Py_ssize_t i = <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">        pItem = PyList_GetItem(pList, i);</span><br><span class="line">        <span class="keyword">if</span>(! isNumber(pItem))  <span class="keyword">return</span> <span class="number">-1</span>; <span class="comment">// 列表内的元素必须为数字</span></span><br><span class="line">        <span class="keyword">else</span> data.push_back(getNumber(pItem));</span><br><span class="line">    &#125;</span><br><span class="line">    self-&gt;ob_vector = Vector(data); <span class="comment">// 存入封装Vector的VectorObject类型中</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">static</span> <span class="token keyword">int</span>
+<span class="token function">PyVector_init</span><span class="token punctuation">(</span>PyVectorObject <span class="token operator">*</span>self<span class="token punctuation">,</span> PyObject <span class="token operator">*</span>args<span class="token punctuation">,</span> PyObject <span class="token operator">*</span>kwds<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    PyObject <span class="token operator">*</span>pList<span class="token punctuation">,</span> <span class="token operator">*</span>pItem<span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">PyArg_ParseTuple</span><span class="token punctuation">(</span>args<span class="token punctuation">,</span> <span class="token string">"O!"</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>PyList_Type<span class="token punctuation">,</span> <span class="token operator">&amp;</span>pList<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 初始化参数必须为列表</span>
+        <span class="token function">PyErr_SetString</span><span class="token punctuation">(</span>PyExc_TypeError<span class="token punctuation">,</span> <span class="token string">"parameter must be a list."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span> 
+    Py_ssize_t n <span class="token operator">=</span> <span class="token function">PyList_Size</span><span class="token punctuation">(</span>pList<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 获取列表长度</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span>n <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token function">PyErr_SetString</span><span class="token punctuation">(</span>PyExc_TypeError<span class="token punctuation">,</span> <span class="token string">"size of list must be greater than 0"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    vector<span class="token operator">&lt;</span><span class="token keyword">double</span><span class="token operator">></span> data<span class="token punctuation">;</span>
+    <span class="token keyword">for</span><span class="token punctuation">(</span>Py_ssize_t i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        pItem <span class="token operator">=</span> <span class="token function">PyList_GetItem</span><span class="token punctuation">(</span>pList<span class="token punctuation">,</span> i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span> <span class="token function">isNumber</span><span class="token punctuation">(</span>pItem<span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span> <span class="token comment">// 列表内的元素必须为数字</span>
+        <span class="token keyword">else</span> data<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span><span class="token function">getNumber</span><span class="token punctuation">(</span>pItem<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    self<span class="token operator">-></span>ob_vector <span class="token operator">=</span> <span class="token function">Vector</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 存入封装Vector的VectorObject类型中</span>
+    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre>
 
 <p>而对于类支持的方法，需要定义一个数组<code>PyVector_methods</code>说明，比如<code>linalg.Vector</code>类支持<code>T()</code>, <code>copy()</code>方法，那么：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">static PyMethodDef PyVector_methods[] &#x3D; &#123;</span><br><span class="line">    &#123;&quot;T&quot;, (PyCFunction)PyVector_T, METH_NOARGS, &quot;change vector type&quot;&#125;,</span><br><span class="line">    &#123;&quot;copy&quot;, (PyCFunction)PyVector_Copy, METH_NOARGS, &quot;deep copy of vector&quot;&#125;,</span><br><span class="line">    &#123;NULL&#125;  &#x2F;* Sentinel *&#x2F;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">static PyMethodDef PyVector_methods[] &#x3D; &#123;
+    &#123;&quot;T&quot;, (PyCFunction)PyVector_T, METH_NOARGS, &quot;change vector type&quot;&#125;,
+    &#123;&quot;copy&quot;, (PyCFunction)PyVector_Copy, METH_NOARGS, &quot;deep copy of vector&quot;&#125;,
+    &#123;NULL&#125;  &#x2F;* Sentinel *&#x2F;
+&#125;;</code></pre>
 
 <p>然后实现<code>PyVector_T()</code>和<code>PyVector_Copy</code>即可。</p>
 <p>而对于一些magic方法，例如<code>__add__</code>, <code>__getitem__</code>等等，需要在<code>PyTypeObject</code>的<code>.tp_as_number</code>和<code>.tp_as_sequence</code>数组中指明。</p>
 <h3 id="引用计数导致的BUG"><a href="#引用计数导致的BUG" class="headerlink" title="引用计数导致的BUG"></a>引用计数导致的BUG</h3><p>之前因为返回对象的引用计数导致了非常麻烦的BUG，这里贴出来一下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">static PyObject *</span><br><span class="line">PyVector_imul(PyVectorObject *self, PyObject *arg) &#123;</span><br><span class="line">    if(!arg || ! isNumber(arg)) return NULL;</span><br><span class="line">    Py_XINCREF(self); &#x2F;&#x2F; 不加这个会崩溃...因为返回的对象没有被接收会被释放掉</span><br><span class="line">    self-&gt;ob_vector *&#x3D; getNumber(arg);</span><br><span class="line">    return (PyObject*)self;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">static PyObject *
+PyVector_imul(PyVectorObject *self, PyObject *arg) &#123;
+    if(!arg || ! isNumber(arg)) return NULL;
+    Py_XINCREF(self); &#x2F;&#x2F; 不加这个会崩溃...因为返回的对象没有被接收会被释放掉
+    self-&gt;ob_vector *&#x3D; getNumber(arg);
+    return (PyObject*)self;
+&#125;</code></pre>
 
 <p>这里定义了一下<code>*=</code>类方法，当执行<code>v *= 5</code>等语句，可能导致崩溃，需要增加引用计数来获得所有权，因为操作的对象是<em>borrowed references</em>的，那么返回的时候由于没有被其他对象引用，将被释放，而后来要是有对象申请空间也用到这块内存的话，就会出现异常。</p>
 <p>官方文档是这么说明的，对于<a target="_blank" rel="noopener" href="https://docs.python.org/3/c-api/number.html#PyNumber_InPlaceAdd">PyNumber_InPlaceAdd</a>这类方法应该返回的是新引用，而不是<em>borrowed references</em>。</p>
@@ -305,13 +394,28 @@ ga('send', 'pageview');
 <p>According to the documentation, the inplace add operation for an object returns a new reference.<br>By returning self directly without calling Py_INCREF on it, your object will be freed while it is still referenced. If some other object is allocated the same piece of memory, those references would now give you the new object.</p>
 </blockquote>
 <h2 id="编译、链接模块"><a href="#编译、链接模块" class="headerlink" title="编译、链接模块"></a>编译、链接模块</h2><p>掌握了如何定义模块、类，剩下的就简单了，最后是通过编写<code>setup.py</code>来生成模块，如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> distutils.core <span class="keyword">import</span> setup, Extension</span><br><span class="line"></span><br><span class="line">linalgmodule = Extension(<span class="string">&#x27;linalg&#x27;</span>,</span><br><span class="line">        extra_compile_args = [<span class="string">&#x27;-std=c++14&#x27;</span>],</span><br><span class="line">        sources = [<span class="string">&#x27;src/linalgmodule.cpp&#x27;</span>],</span><br><span class="line">        include_dirs = [<span class="string">&#x27;include&#x27;</span>],</span><br><span class="line">        libraries = [<span class="string">&#x27;linalg&#x27;</span>],</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">setup (name = <span class="string">&#x27;linalg&#x27;</span>,</span><br><span class="line">        version = <span class="string">&#x27;0.1&#x27;</span>,</span><br><span class="line">        author = <span class="string">&#x27;netcan&#x27;</span>,</span><br><span class="line">        author_email = <span class="string">&#x27;netcan1996@gmail.com&#x27;</span>,</span><br><span class="line">        description = <span class="string">&#x27;A Linear Algebra library for studying by netcan&#x27;</span>,</span><br><span class="line">        ext_modules = [linalgmodule],</span><br><span class="line">        )</span><br></pre></td></tr></table></figure>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> distutils<span class="token punctuation">.</span>core <span class="token keyword">import</span> setup<span class="token punctuation">,</span> Extension
+
+linalgmodule <span class="token operator">=</span> Extension<span class="token punctuation">(</span><span class="token string">'linalg'</span><span class="token punctuation">,</span>
+        extra_compile_args <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'-std=c++14'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+        sources <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'src/linalgmodule.cpp'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+        include_dirs <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'include'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+        libraries <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'linalg'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token punctuation">)</span>
+
+setup <span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">'linalg'</span><span class="token punctuation">,</span>
+        version <span class="token operator">=</span> <span class="token string">'0.1'</span><span class="token punctuation">,</span>
+        author <span class="token operator">=</span> <span class="token string">'netcan'</span><span class="token punctuation">,</span>
+        author_email <span class="token operator">=</span> <span class="token string">'netcan1996@gmail.com'</span><span class="token punctuation">,</span>
+        description <span class="token operator">=</span> <span class="token string">'A Linear Algebra library for studying by netcan'</span><span class="token punctuation">,</span>
+        ext_modules <span class="token operator">=</span> <span class="token punctuation">[</span>linalgmodule<span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token punctuation">)</span></code></pre>
 
 <p>编译的时候，通过如下编译，</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python setup.py build</span><br></pre></td></tr></table></figure>
+<pre class="language-bash" data-language="bash"><code class="language-bash">python setup.py build</code></pre>
 
 <p> 可能会报错，例如找不到<code>std::move</code>，这时候需要指定标准头文件的位置了：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CFLAGS=<span class="string">&#x27;-I/Library/Developer/CommandLineTools/usr/include/c++/v1/&#x27;</span> python setup.py build</span><br></pre></td></tr></table></figure>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token assign-left variable">CFLAGS</span><span class="token operator">=</span><span class="token string">'-I/Library/Developer/CommandLineTools/usr/include/c++/v1/'</span> python setup.py build</code></pre>
 
     
   </div>

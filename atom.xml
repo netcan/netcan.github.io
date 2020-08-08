@@ -156,13 +156,13 @@
       <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
+      <category term="Python" scheme="https://netcan.github.io/tags/Python/"/>
+    
       <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
     
       <category term="数学" scheme="https://netcan.github.io/tags/%E6%95%B0%E5%AD%A6/"/>
     
       <category term="线性代数" scheme="https://netcan.github.io/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/"/>
-    
-      <category term="Python" scheme="https://netcan.github.io/tags/Python/"/>
     
   </entry>
   
@@ -419,11 +419,11 @@
       <category term="随笔" scheme="https://netcan.github.io/categories/%E9%9A%8F%E7%AC%94/"/>
     
     
-      <category term="搜索" scheme="https://netcan.github.io/tags/%E6%90%9C%E7%B4%A2/"/>
+      <category term="算法" scheme="https://netcan.github.io/tags/%E7%AE%97%E6%B3%95/"/>
     
       <category term="图论" scheme="https://netcan.github.io/tags/%E5%9B%BE%E8%AE%BA/"/>
     
-      <category term="算法" scheme="https://netcan.github.io/tags/%E7%AE%97%E6%B3%95/"/>
+      <category term="搜索" scheme="https://netcan.github.io/tags/%E6%90%9C%E7%B4%A2/"/>
     
   </entry>
   
@@ -568,7 +568,11 @@
 &lt;p&gt;例如$6/4=1, -6/4=-1$&lt;/p&gt;
 &lt;p&gt;这里$4=2^2$，那么只要对一个数，右移2位，就相当于除以4了么？&lt;/p&gt;
 &lt;p&gt;容易用如下代码验证：&lt;/p&gt;
-&lt;figure class=&quot;highlight cpp&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;#&lt;span class=&quot;meta-keyword&quot;&gt;include&lt;/span&gt; &lt;span class=&quot;meta-string&quot;&gt;&amp;lt;stdio.h&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt;)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;built_in&quot;&gt;printf&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&amp;quot;%d\n%d\n&amp;quot;&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;6&lt;/span&gt;&amp;gt;&amp;gt;&lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;-6&lt;/span&gt;&amp;gt;&amp;gt;&lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;pre class=&quot;language-cpp&quot; data-language=&quot;cpp&quot;&gt;&lt;code class=&quot;language-cpp&quot;&gt;&lt;span class=&quot;token macro property&quot;&gt;&lt;span class=&quot;token directive-hash&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;token directive keyword&quot;&gt;include&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&amp;lt;stdio.h&gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;&amp;#123;&lt;/span&gt;
+    &lt;span class=&quot;token function&quot;&gt;printf&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;%d\n%d\n&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&gt;&gt;&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&gt;&gt;&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;&amp;#125;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
     
     </summary>
     
@@ -576,9 +580,9 @@
       <category term="学习笔记" scheme="https://netcan.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
     
-      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
-    
       <category term="操作系统" scheme="https://netcan.github.io/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
+    
+      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
     
   </entry>
   
@@ -592,10 +596,14 @@
     <summary type="html">
     
       &lt;p&gt;刚刚发现一个有趣的现象，测试&lt;code&gt;django&lt;/code&gt;项目的时候，这样启动服务器：&lt;/p&gt;
-&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ python3 ./manage.py runserver&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;...&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Starting development server at http://127.0.0.1:8000/&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;...&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;pre class=&quot;language-bash&quot; data-language=&quot;bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;$ python3 ./manage.py runserver
+&lt;span class=&quot;token punctuation&quot;&gt;..&lt;/span&gt;.
+Starting development server at http://127.0.0.1:8000/
+&lt;span class=&quot;token punctuation&quot;&gt;..&lt;/span&gt;.&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;然后想起&lt;code&gt;laravel&lt;/code&gt;项目也是&lt;code&gt;8000&lt;/code&gt;端口，就同时启动&lt;code&gt;laravel&lt;/code&gt;项目：&lt;/p&gt;
-&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ php artisan serve&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Laravel development server started on http://localhost:8000/&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;pre class=&quot;language-bash&quot; data-language=&quot;bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;$ php artisan serve
+Laravel development server started on http://localhost:8000/&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;问题来了，2个端口一样，按理说应该会冲突啊，可是没有，打开浏览器，输入&lt;code&gt;127.0.0.1:8000&lt;/code&gt;，看到的是&lt;code&gt;django&lt;/code&gt;的项目。那么&lt;code&gt;laravel&lt;/code&gt;项目哪去了，难道没启动成功，可是又没报错？&lt;/p&gt;
     
@@ -705,9 +713,9 @@
       <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
-    
       <category term="PHP" scheme="https://netcan.github.io/tags/PHP/"/>
+    
+      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
     
       <category term="编译原理" scheme="https://netcan.github.io/tags/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/"/>
     
@@ -758,9 +766,9 @@
       <category term="学习笔记" scheme="https://netcan.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
     
-      <category term="操作系统" scheme="https://netcan.github.io/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
-    
       <category term="Linux" scheme="https://netcan.github.io/tags/Linux/"/>
+    
+      <category term="操作系统" scheme="https://netcan.github.io/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
     
   </entry>
   
@@ -860,9 +868,9 @@
       <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="PHP" scheme="https://netcan.github.io/tags/PHP/"/>
-    
       <category term="Laravel" scheme="https://netcan.github.io/tags/Laravel/"/>
+    
+      <category term="PHP" scheme="https://netcan.github.io/tags/PHP/"/>
     
       <category term="AJAX" scheme="https://netcan.github.io/tags/AJAX/"/>
     
@@ -879,7 +887,8 @@
     
       &lt;p&gt;Linux权限管理非常灵活，不像windows那一坨那么混乱。&lt;/p&gt;
 &lt;p&gt;现在来谈谈Linux下的权限管理吧。&lt;/p&gt;
-&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;vagrant@lucid32:/tmp$ ls -l /tmp/vagrant-shell&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;-(1)rwx(2)r-x(3)r-x(4) 1 vagrant(5) vagrant(6) 95 2016-07-29 04:49 /tmp/vagrant-shell&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;pre class=&quot;language-bash&quot; data-language=&quot;bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;vagrant@lucid32:/tmp$ &lt;span class=&quot;token function&quot;&gt;ls&lt;/span&gt; -l /tmp/vagrant-shell
+-&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;rwx&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;r-x&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;r-x&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt; vagrant&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; vagrant&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;95&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;2016&lt;/span&gt;-07-29 04:49 /tmp/vagrant-shell&lt;/code&gt;&lt;/pre&gt;
 
 &lt;h3 id=&quot;文件类型&quot;&gt;&lt;a href=&quot;#文件类型&quot; class=&quot;headerlink&quot; title=&quot;文件类型&quot;&gt;&lt;/a&gt;文件类型&lt;/h3&gt;&lt;p&gt;首先来看第一部分，第一部分&lt;code&gt;-&lt;/code&gt;表示文件类型，有以下几种文件类型：&lt;/p&gt;
 &lt;table&gt;
@@ -1002,9 +1011,9 @@
       <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="优先队列" scheme="https://netcan.github.io/tags/%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/"/>
-    
       <category term="搜索" scheme="https://netcan.github.io/tags/%E6%90%9C%E7%B4%A2/"/>
+    
+      <category term="优先队列" scheme="https://netcan.github.io/tags/%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/"/>
     
   </entry>
   
@@ -1060,11 +1069,11 @@
       <category term="随笔" scheme="https://netcan.github.io/categories/%E9%9A%8F%E7%AC%94/"/>
     
     
+      <category term="计算机网络" scheme="https://netcan.github.io/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"/>
+    
       <category term="点滴" scheme="https://netcan.github.io/tags/%E7%82%B9%E6%BB%B4/"/>
     
       <category term="经验" scheme="https://netcan.github.io/tags/%E7%BB%8F%E9%AA%8C/"/>
-    
-      <category term="计算机网络" scheme="https://netcan.github.io/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"/>
     
   </entry>
   
@@ -1175,9 +1184,9 @@
       <category term="学习笔记" scheme="https://netcan.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
     
-      <category term="数学" scheme="https://netcan.github.io/tags/%E6%95%B0%E5%AD%A6/"/>
-    
       <category term="算法" scheme="https://netcan.github.io/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="数学" scheme="https://netcan.github.io/tags/%E6%95%B0%E5%AD%A6/"/>
     
   </entry>
   
@@ -1318,7 +1327,7 @@ $$\lim_{n\to \infty} \dfrac{\pi (n)}{n/ln n} = 1$$
         
         
           &lt;p&gt;2017-10-25 15:44更新，为了防止每次更新、安装都要修改代码，现在可以直接从仓库里安装了：&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span
+&lt;pre class=&quot;language-none&quot;&gt;&lt;code class=&quot;language-none&quot;&gt;$ npm uninstall
         
       
     

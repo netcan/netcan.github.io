@@ -43,10 +43,6 @@
 
 
   
-    
-<link rel="stylesheet" href="/css/personal-style.css">
-
-  
 
   
 <!-- Google Analytics -->
@@ -108,7 +104,9 @@ ga('send', 'pageview');
     <span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
   
 
-  <div class="post-header CENTER">
+  <link rel="stylesheet" href="/css/prism.css">
+
+<div class="post-header CENTER">
    
   <div class="toolbox">
     <a class="toolbox-entry" href="/">
@@ -292,7 +290,32 @@ ga('send', 'pageview');
 <li>换行符。输入换行符进行运算，所以这也是个记号。</li>
 </ol>
 <p>在lex中使用正则表达式定义记号。下面是mycalc.l文件。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">%&#123;</span><br><span class="line">    #include &lt;stdio.h&gt;</span><br><span class="line">    #include &quot;mycalc.h&quot;</span><br><span class="line">    int yywrap(void) &#123;</span><br><span class="line">        return 1;</span><br><span class="line">    &#125;</span><br><span class="line">%&#125;</span><br><span class="line">%%</span><br><span class="line">&quot;+&quot; return ADD;</span><br><span class="line">&quot;-&quot; return SUB;</span><br><span class="line">&quot;*&quot; return MUL;</span><br><span class="line">&quot;&#x2F;&quot; return DIV;</span><br><span class="line">&quot;\n&quot;    return CR;</span><br><span class="line">(([1-9][0-9]*)|0|([0-9]+\.+[0-9]+)) &#123;</span><br><span class="line">    double temp;</span><br><span class="line">    sscanf(yytext, &quot;%lf&quot;, &amp;temp);</span><br><span class="line">    yylval.double_value &#x3D; temp;</span><br><span class="line">    return DOUBLE_LITERAL;</span><br><span class="line">    &#125;</span><br><span class="line">[ \t] ;</span><br><span class="line">. &#123;</span><br><span class="line">    fprintf(stderr, &quot;Lexical error!\n&quot;);</span><br><span class="line">    exit(1);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">%%</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">%&#123;
+    #include &lt;stdio.h&gt;
+    #include &quot;mycalc.h&quot;
+    int yywrap(void) &#123;
+        return 1;
+    &#125;
+%&#125;
+%%
+&quot;+&quot; return ADD;
+&quot;-&quot; return SUB;
+&quot;*&quot; return MUL;
+&quot;&#x2F;&quot; return DIV;
+&quot;\n&quot;    return CR;
+(([1-9][0-9]*)|0|([0-9]+\.+[0-9]+)) &#123;
+    double temp;
+    sscanf(yytext, &quot;%lf&quot;, &amp;temp);
+    yylval.double_value &#x3D; temp;
+    return DOUBLE_LITERAL;
+    &#125;
+[ \t] ;
+. &#123;
+    fprintf(stderr, &quot;Lexical error!\n&quot;);
+    exit(1);
+    &#125;
+
+%%</code></pre>
 
 <p>代码第8行为%%，此行之前部分叫做定义区域。在定义区域内，可以定义初始状态或者为正则表达式命名。</p>
 <table>
@@ -336,7 +359,66 @@ ga('send', 'pageview');
 <p>动作解析的值会存放在名为yyval的全局变量中，这个全局变量本质是一个联合体(union)，可以存放各种记号的值（在这个计算器程序只有double的值）。联合体的定义部分写在yacc的定义文件mycalc.y中。</p>
 <p>到26行，出现一次%%。表示规则区域的结束，这之后的代码称为用户代码区域。用户代码区域可以随意编写任意C代码，与定义区域不同的是，用户区域无需使用％{％}包裹。</p>
 <p>yacc是自动生成语法分析器的工具，输入扩展名为.y的文件，就会输出语法分析器的C语言代码。mycalc.y代码如下。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">%&#123;</span><br><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;stdlib.h&gt;</span><br><span class="line">#define YYDEBUG 1</span><br><span class="line">%&#125;</span><br><span class="line">%union &#123;</span><br><span class="line">    int int_value;</span><br><span class="line">    double double_value;</span><br><span class="line">&#125;</span><br><span class="line">%token &lt;double_value&gt; DOUBLE_LITERAL</span><br><span class="line">%token ADD SUB MUL DIV CR</span><br><span class="line">%type &lt;double_value&gt; expression term primary_expression</span><br><span class="line">%%</span><br><span class="line">line_list</span><br><span class="line">    : line</span><br><span class="line">    | line_list line;</span><br><span class="line">line</span><br><span class="line">    : expression CR</span><br><span class="line">    &#123;</span><br><span class="line">        printf(&quot;\e[32m[Netcan-Soft]&gt;&gt;\e[0m \e[36m%lf\e[0m\n&quot;, $1);</span><br><span class="line">    &#125;;</span><br><span class="line">expression</span><br><span class="line">    : term</span><br><span class="line">    | expression ADD term</span><br><span class="line">    &#123;</span><br><span class="line">        $$ &#x3D; $1 + $3;</span><br><span class="line">    &#125;</span><br><span class="line">    | expression SUB term</span><br><span class="line">    &#123;</span><br><span class="line">        $$ &#x3D; $1 - $3;</span><br><span class="line">    &#125;;</span><br><span class="line">term</span><br><span class="line">    : primary_expression</span><br><span class="line">    | term MUL primary_expression</span><br><span class="line">    &#123;</span><br><span class="line">        $$ &#x3D; $1 * $3;</span><br><span class="line">    &#125;</span><br><span class="line">    | term DIV primary_expression</span><br><span class="line">    &#123;</span><br><span class="line">        $$ &#x3D; $1 &#x2F; $3;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">primary_expression</span><br><span class="line">    : DOUBLE_LITERAL;</span><br><span class="line">%%</span><br><span class="line">int yyerror(char const *str) &#123;</span><br><span class="line">    extern char *yytext;</span><br><span class="line">    fprintf(stderr, &quot;\e[31m解析错误: %s\e[0m\n&quot;, yytext);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main() &#123;</span><br><span class="line">    extern int yyparse(void);</span><br><span class="line">    extern FILE * yyin;</span><br><span class="line">    yyin &#x3D; stdin;</span><br><span class="line">    if(yyparse()) &#123;</span><br><span class="line">        fprintf(stderr, &quot;\e[31m错误！\e[0m\n&quot;);</span><br><span class="line">        exit(1);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">%&#123;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#define YYDEBUG 1
+%&#125;
+%union &#123;
+    int int_value;
+    double double_value;
+&#125;
+%token &lt;double_value&gt; DOUBLE_LITERAL
+%token ADD SUB MUL DIV CR
+%type &lt;double_value&gt; expression term primary_expression
+%%
+line_list
+    : line
+    | line_list line;
+line
+    : expression CR
+    &#123;
+        printf(&quot;\e[32m[Netcan-Soft]&gt;&gt;\e[0m \e[36m%lf\e[0m\n&quot;, $1);
+    &#125;;
+expression
+    : term
+    | expression ADD term
+    &#123;
+        $$ &#x3D; $1 + $3;
+    &#125;
+    | expression SUB term
+    &#123;
+        $$ &#x3D; $1 - $3;
+    &#125;;
+term
+    : primary_expression
+    | term MUL primary_expression
+    &#123;
+        $$ &#x3D; $1 * $3;
+    &#125;
+    | term DIV primary_expression
+    &#123;
+        $$ &#x3D; $1 &#x2F; $3;
+    &#125;;
+
+primary_expression
+    : DOUBLE_LITERAL;
+%%
+int yyerror(char const *str) &#123;
+    extern char *yytext;
+    fprintf(stderr, &quot;\e[31m解析错误: %s\e[0m\n&quot;, yytext);
+    return 0;
+&#125;
+
+int main() &#123;
+    extern int yyparse(void);
+    extern FILE * yyin;
+    yyin &#x3D; stdin;
+    if(yyparse()) &#123;
+        fprintf(stderr, &quot;\e[31m错误！\e[0m\n&quot;);
+        exit(1);
+    &#125;
+&#125;</code></pre>
 
 <p>第1-5行与lex相同，使用％{％}包裹一些C代码。</p>
 <p>第6-9行声明了记号以及非终结符的类型。前面提过记号不仅要包含类型，还需要包含值。记号可能有很多类型，这些类型都声明在集合（共用体）中。</p>

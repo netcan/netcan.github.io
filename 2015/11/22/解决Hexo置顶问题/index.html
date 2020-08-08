@@ -15,12 +15,12 @@
     <meta name="keywords" content="Hexo,Nodejs," />
   
 
-  <meta name="description" content="2017-10-25 15:44更新，为了防止每次更新、安装都要修改代码，现在可以直接从仓库里安装了： 12$ npm uninstall hexo-generator-index --save$ npm install hexo-generator-index-pin-top --save  然后在需要置顶的文章的Front-matter中加上top: true即可。 Github: https">
+  <meta name="description" content="2017-10-25 15:44更新，为了防止每次更新、安装都要修改代码，现在可以直接从仓库里安装了： $ npm uninstall hexo-generator-index --save $ npm install hexo-generator-index-pin-top --save  然后在需要置顶的文章的Front-matter中加上top: true即可。 Github: https:">
 <meta property="og:type" content="article">
 <meta property="og:title" content="解决Hexo置顶问题">
 <meta property="og:url" content="https://netcan.github.io/2015/11/22/%E8%A7%A3%E5%86%B3Hexo%E7%BD%AE%E9%A1%B6%E9%97%AE%E9%A2%98/index.html">
 <meta property="og:site_name" content="Netcan on Programming">
-<meta property="og:description" content="2017-10-25 15:44更新，为了防止每次更新、安装都要修改代码，现在可以直接从仓库里安装了： 12$ npm uninstall hexo-generator-index --save$ npm install hexo-generator-index-pin-top --save  然后在需要置顶的文章的Front-matter中加上top: true即可。 Github: https">
+<meta property="og:description" content="2017-10-25 15:44更新，为了防止每次更新、安装都要修改代码，现在可以直接从仓库里安装了： $ npm uninstall hexo-generator-index --save $ npm install hexo-generator-index-pin-top --save  然后在需要置顶的文章的Front-matter中加上top: true即可。 Github: https:">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2015-11-22T07:54:30.000Z">
 <meta property="article:modified_time" content="2017-10-25T07:48:28.000Z">
@@ -37,10 +37,6 @@
 
   <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
 
-
-  
-    
-<link rel="stylesheet" href="/css/personal-style.css">
 
   
 
@@ -104,7 +100,9 @@ ga('send', 'pageview');
     <span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
   
 
-  <div class="post-header CENTER">
+  <link rel="stylesheet" href="/css/prism.css">
+
+<div class="post-header CENTER">
    
   <div class="toolbox">
     <a class="toolbox-entry" href="/">
@@ -242,7 +240,8 @@ ga('send', 'pageview');
   <div class="article-content">
     
       <p>2017-10-25 15:44更新，为了防止每次更新、安装都要修改代码，现在可以直接从仓库里安装了：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ npm uninstall hexo-generator-index --save</span><br><span class="line">$ npm install hexo-generator-index-pin-top --save</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">$ npm uninstall hexo-generator-index --save
+$ npm install hexo-generator-index-pin-top --save</code></pre>
 
 <p>然后在需要置顶的文章的<code>Front-matter</code>中加上<code>top: true</code>即可。</p>
 <p>Github: <a target="_blank" rel="noopener" href="https://github.com/netcan/hexo-generator-index-pin-top">https://github.com/netcan/hexo-generator-index-pin-top</a></p>
@@ -254,14 +253,51 @@ ga('send', 'pageview');
 <p>想实现<code>next</code>主题那样的功能，参考了一篇博文<a target="_blank" rel="noopener" href="http://ziorix.com/2015/09/09/%E6%B7%BB%E5%8A%A0Hexo%E7%BD%AE%E9%A1%B6%E5%8A%9F%E8%83%BD%E7%9A%84%E6%93%8D%E8%9B%8B3%E5%B0%8F%E6%97%B6/">添加Hexo置顶功能的操蛋3小时</a>，在<code>hexo-generator-index</code>中增加比较函数比较<code>top</code>值，我试了一下<code>Bug</code>还是有的，置顶文章后文章日期有些会乱掉（比较函数条件比较少）。</p>
 <p>我自己写了一个比较函数，也有问题，后来查了一下<code>Javascript</code>的<code>sort</code>函数，其比较函数和<code>C++</code>的完全不同= =</p>
 <p><code>C++</code>的比较函数：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;<span class="title">bool</span> <span class="title">cmp</span>(<span class="title">T</span> <span class="title">a</span>, <span class="title">T</span> <span class="title">b</span>) &#123;</span></span><br><span class="line">    <span class="keyword">return</span>  a &lt; b; <span class="comment">// 升序，降序的话就 b &gt; a</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">class</span> <span class="token class-name">T</span><span class="token operator">></span><span class="token keyword">bool</span> <span class="token function">cmp</span><span class="token punctuation">(</span>T a<span class="token punctuation">,</span> T b<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span>  a <span class="token operator">&lt;</span> b<span class="token punctuation">;</span> <span class="token comment">// 升序，降序的话就 b > a</span>
+<span class="token punctuation">&#125;</span></code></pre>
 
 <p>而<code>Javascript</code>的比较函数：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cmp(<span class="keyword">var</span> a, <span class="keyword">var</span> b) &#123;</span><br><span class="line">    <span class="keyword">return</span>  a - b; <span class="comment">// 升序，降序的话就 b - a</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-javascript" data-language="javascript"><code class="language-javascript"><span class="token function">cmp</span><span class="token punctuation">(</span><span class="token parameter"><span class="token keyword">var</span> a<span class="token punctuation">,</span> <span class="token keyword">var</span> b</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span>  a <span class="token operator">-</span> b<span class="token punctuation">;</span> <span class="token comment">// 升序，降序的话就 b - a</span>
+<span class="token punctuation">&#125;</span></code></pre>
 
 <p>用了<code>C++</code>的比较函数，结果当然会出问题，期间都想重写<code>js</code>的排序函数了。。经过修改，已经能完美置顶了，只需要在<code>front-matter</code>中设置需要置顶文章的<code>top</code>值，将会根据<code>top</code>值大小来选择置顶顺序。（大的在前面）</p>
 <p>以下是最终的<code>node_modules/hexo-generator-index/lib/generator.js</code></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&#x27;use strict&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> pagination = <span class="built_in">require</span>(<span class="string">&#x27;hexo-pagination&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span>(<span class="params">locals</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> config = <span class="built_in">this</span>.config;</span><br><span class="line">  <span class="keyword">var</span> posts = locals.posts;</span><br><span class="line"></span><br><span class="line">    posts.data = posts.data.sort(<span class="function"><span class="keyword">function</span>(<span class="params">a, b</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(a.top &amp;&amp; b.top) &#123; <span class="comment">// 两篇文章top都有定义</span></span><br><span class="line">            <span class="keyword">if</span>(a.top == b.top) <span class="keyword">return</span> b.date - a.date; <span class="comment">// 若top值一样则按照文章日期降序排</span></span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">return</span> b.top - a.top; <span class="comment">// 否则按照top值降序排</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(a.top &amp;&amp; !b.top) &#123; <span class="comment">// 以下是只有一篇文章top有定义，那么将有top的排在前面（这里用异或操作居然不行233）</span></span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(!a.top &amp;&amp; b.top) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">return</span> b.date - a.date; <span class="comment">// 都没定义按照文章日期降序排</span></span><br><span class="line"></span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> paginationDir = config.pagination_dir || <span class="string">&#x27;page&#x27;</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> pagination(<span class="string">&#x27;&#x27;</span>, posts, &#123;</span><br><span class="line">    perPage: config.index_generator.per_page,</span><br><span class="line">    layout: [<span class="string">&#x27;index&#x27;</span>, <span class="string">&#x27;archive&#x27;</span>],</span><br><span class="line">    format: paginationDir + <span class="string">&#x27;/%d/&#x27;</span>,</span><br><span class="line">    data: &#123;</span><br><span class="line">      __index: <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<pre class="language-javascript" data-language="javascript"><code class="language-javascript"><span class="token string">'use strict'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">var</span> pagination <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'hexo-pagination'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+module<span class="token punctuation">.</span><span class="token function-variable function">exports</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">locals</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+  <span class="token keyword">var</span> config <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>config<span class="token punctuation">;</span>
+  <span class="token keyword">var</span> posts <span class="token operator">=</span> locals<span class="token punctuation">.</span>posts<span class="token punctuation">;</span>
+
+    posts<span class="token punctuation">.</span>data <span class="token operator">=</span> posts<span class="token punctuation">.</span>data<span class="token punctuation">.</span><span class="token function">sort</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">a<span class="token punctuation">,</span> b</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>a<span class="token punctuation">.</span>top <span class="token operator">&amp;&amp;</span> b<span class="token punctuation">.</span>top<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 两篇文章top都有定义</span>
+            <span class="token keyword">if</span><span class="token punctuation">(</span>a<span class="token punctuation">.</span>top <span class="token operator">==</span> b<span class="token punctuation">.</span>top<span class="token punctuation">)</span> <span class="token keyword">return</span> b<span class="token punctuation">.</span>date <span class="token operator">-</span> a<span class="token punctuation">.</span>date<span class="token punctuation">;</span> <span class="token comment">// 若top值一样则按照文章日期降序排</span>
+            <span class="token keyword">else</span> <span class="token keyword">return</span> b<span class="token punctuation">.</span>top <span class="token operator">-</span> a<span class="token punctuation">.</span>top<span class="token punctuation">;</span> <span class="token comment">// 否则按照top值降序排</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">else</span> <span class="token keyword">if</span><span class="token punctuation">(</span>a<span class="token punctuation">.</span>top <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span>b<span class="token punctuation">.</span>top<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 以下是只有一篇文章top有定义，那么将有top的排在前面（这里用异或操作居然不行233）</span>
+            <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">else</span> <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span>a<span class="token punctuation">.</span>top <span class="token operator">&amp;&amp;</span> b<span class="token punctuation">.</span>top<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">else</span> <span class="token keyword">return</span> b<span class="token punctuation">.</span>date <span class="token operator">-</span> a<span class="token punctuation">.</span>date<span class="token punctuation">;</span> <span class="token comment">// 都没定义按照文章日期降序排</span>
+
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">var</span> paginationDir <span class="token operator">=</span> config<span class="token punctuation">.</span>pagination_dir <span class="token operator">||</span> <span class="token string">'page'</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">return</span> <span class="token function">pagination</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">,</span> posts<span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+    perPage<span class="token operator">:</span> config<span class="token punctuation">.</span>index_generator<span class="token punctuation">.</span>per_page<span class="token punctuation">,</span>
+    layout<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'index'</span><span class="token punctuation">,</span> <span class="token string">'archive'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    format<span class="token operator">:</span> paginationDir <span class="token operator">+</span> <span class="token string">'/%d/'</span><span class="token punctuation">,</span>
+    data<span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      __index<span class="token operator">:</span> <span class="token boolean">true</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
 
     
   </div>

@@ -38,10 +38,6 @@
 
 
   
-    
-<link rel="stylesheet" href="/css/personal-style.css">
-
-  
 
   
 <!-- Google Analytics -->
@@ -103,7 +99,9 @@ ga('send', 'pageview');
     <span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
   
 
-  <div class="post-header CENTER">
+  <link rel="stylesheet" href="/css/prism.css">
+
+<div class="post-header CENTER">
    
   <div class="toolbox">
     <a class="toolbox-entry" href="/">
@@ -248,13 +246,23 @@ ga('send', 'pageview');
       <p>这章更加详细地介绍auto关键字。</p>
 <h2 id="Item-5-优先考虑使用auto来代替显式类型声明"><a href="#Item-5-优先考虑使用auto来代替显式类型声明" class="headerlink" title="Item 5: 优先考虑使用auto来代替显式类型声明"></a>Item 5: 优先考虑使用auto来代替显式类型声明</h2><p>习惯C的写法可能都会为变量指出一个类型，然而这有可能忘记初始化；有些场合若显式指出变量的类型，那么写起来非常长；将局部变量定义成闭包类型，因为闭包类型只有编译器知道，所以无法显式指出它的类型。</p>
 <p>因为C++11有了auto关键字，这些问题很好地解决了。首先用auto来定义一个变量的话，必须要初始化，这就避免了变量未初始化的错误；其次能节省输入时间；auto类型推导也可以指出只有编译器才知道的类型（比如说闭包）。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> derefUpless =</span><br><span class="line">    [](<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;Widget&gt; &amp;p1,</span><br><span class="line">       <span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;Widget&gt; &amp;p2)</span><br><span class="line">    &#123; <span class="keyword">return</span> *p1 &lt; *p2; &#125;;</span><br></pre></td></tr></table></figure>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">auto</span> derefUpless <span class="token operator">=</span>
+    <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token keyword">const</span> std<span class="token operator">::</span>unique_ptr<span class="token operator">&lt;</span>Widget<span class="token operator">></span> <span class="token operator">&amp;</span>p1<span class="token punctuation">,</span>
+       <span class="token keyword">const</span> std<span class="token operator">::</span>unique_ptr<span class="token operator">&lt;</span>Widget<span class="token operator">></span> <span class="token operator">&amp;</span>p2<span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> <span class="token operator">*</span>p1 <span class="token operator">&lt;</span> <span class="token operator">*</span>p2<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
 
 <p>在C++14中甚至能省略参数的类型：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> derefUpless =</span><br><span class="line">    [](<span class="keyword">const</span> <span class="keyword">auto</span> &amp;p1,</span><br><span class="line">       <span class="keyword">const</span> <span class="keyword">auto</span> &amp;p2)</span><br><span class="line">    &#123; <span class="keyword">return</span> *p1 &lt; *p2; &#125;;</span><br></pre></td></tr></table></figure>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">auto</span> derefUpless <span class="token operator">=</span>
+    <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token keyword">auto</span> <span class="token operator">&amp;</span>p1<span class="token punctuation">,</span>
+       <span class="token keyword">const</span> <span class="token keyword">auto</span> <span class="token operator">&amp;</span>p2<span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> <span class="token operator">*</span>p1 <span class="token operator">&lt;</span> <span class="token operator">*</span>p2<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
 
 <p>关于用局部变量来存储闭包，可能会优先考虑<code>std::function</code>函数对象，因为函数对象也能存储闭包。比如上面那个闭包，可以这样写：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::function&lt;<span class="keyword">bool</span>(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;Widget&gt; &amp;,</span><br><span class="line">                <span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;Widget&gt; &amp;)&gt;</span><br><span class="line">    derefUpless = [](<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;Widget&gt; &amp;p1,</span><br><span class="line">                <span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;Widget&gt; &amp;p2)</span><br><span class="line">                &#123; <span class="keyword">return</span> *p1 &lt; *p2; &#125;;</span><br></pre></td></tr></table></figure>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp">std<span class="token operator">::</span>function<span class="token operator">&lt;</span><span class="token keyword">bool</span><span class="token punctuation">(</span><span class="token keyword">const</span> std<span class="token operator">::</span>unique_ptr<span class="token operator">&lt;</span>Widget<span class="token operator">></span> <span class="token operator">&amp;</span><span class="token punctuation">,</span>
+                <span class="token keyword">const</span> std<span class="token operator">::</span>unique_ptr<span class="token operator">&lt;</span>Widget<span class="token operator">></span> <span class="token operator">&amp;</span><span class="token punctuation">)</span><span class="token operator">></span>
+    derefUpless <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token keyword">const</span> std<span class="token operator">::</span>unique_ptr<span class="token operator">&lt;</span>Widget<span class="token operator">></span> <span class="token operator">&amp;</span>p1<span class="token punctuation">,</span>
+                <span class="token keyword">const</span> std<span class="token operator">::</span>unique_ptr<span class="token operator">&lt;</span>Widget<span class="token operator">></span> <span class="token operator">&amp;</span>p2<span class="token punctuation">)</span>
+                <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> <span class="token operator">*</span>p1 <span class="token operator">&lt;</span> <span class="token operator">*</span>p2<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
 
 <p>首先可以看出，参数太冗长了，param都要写两遍。<code>std::function</code>和使用auto定义的闭包并不相同。auto定义的闭包的变量大小和闭包本身一样大，而<code>std::function</code>定义的对象来保存闭包都有固定的大小，当闭包过大的时候，它会分配堆空间来存储，有可能产生内存溢出错误，这导致在通常情况下<code>std::function</code>对象用的内存比auto定义的要多；也由于是间接调用闭包，这也会比auto定义的要慢。</p>
 <p>虽然有很多理由使用auto，同时也能避免显式声明的一些坑，但auto也有坑，有时候用auto推导出来的类型可能并不是自己想要的，这在Item 2到Item 6介绍过了。</p>
@@ -263,7 +271,13 @@ ga('send', 'pageview');
 <li>auto也有坑，在Item 2到6介绍过了。</li>
 </ul>
 <h2 id="Item-6-当auto推导出不想要的类型时，使用显式类型声明"><a href="#Item-6-当auto推导出不想要的类型时，使用显式类型声明" class="headerlink" title="Item 6: 当auto推导出不想要的类型时，使用显式类型声明"></a>Item 6: 当auto推导出不想要的类型时，使用显式类型声明</h2><p>这里介绍了一种情况，使用<code>std::vector&lt;bool&gt;::operator[]</code>来检索元素的时候。比如说：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">bool</span>&gt; <span class="title">features</span><span class="params">(<span class="keyword">const</span> Widget &amp;w)</span></span>; <span class="comment">// 返回widget对象的属性位向量</span></span><br><span class="line"></span><br><span class="line">Widget w;</span><br><span class="line"></span><br><span class="line"><span class="keyword">bool</span> highPriority = features(w)[<span class="number">5</span>];</span><br><span class="line"></span><br><span class="line">process(highPriority);</span><br></pre></td></tr></table></figure>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp">vector<span class="token operator">&lt;</span><span class="token keyword">bool</span><span class="token operator">></span> <span class="token function">features</span><span class="token punctuation">(</span><span class="token keyword">const</span> Widget <span class="token operator">&amp;</span>w<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 返回widget对象的属性位向量</span>
+
+Widget w<span class="token punctuation">;</span>
+
+<span class="token keyword">bool</span> highPriority <span class="token operator">=</span> <span class="token function">features</span><span class="token punctuation">(</span>w<span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+<span class="token function">process</span><span class="token punctuation">(</span>highPriority<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
 <p>如果把上面的<code>bool</code>换成auto来声明的话，那么就会出现未定义行为了。</p>
 <p>因为<code>vector&lt;bool&gt;::operator[]</code>返回的并不是<code>bool &amp;</code>，因为C++是按<strong>字节</strong>寻址的，不可能返回一个比特位的地址。为了达到和<code>bool &amp;</code>一样的效果，它返回的是一个<code>vector&lt;bool&gt;::reference</code>对象，可以隐式转换成<code>bool</code>类型。</p>
 <p>再来看看使用显式声明的<code>bool</code>定义为什么没有问题，因为<code>operator[]</code>返回一个<code>vector&lt;bool&gt;::reference</code>对象，然后转换成<code>bool</code>，赋值给<code>highPriority</code>，这相当于取第5位。</p>

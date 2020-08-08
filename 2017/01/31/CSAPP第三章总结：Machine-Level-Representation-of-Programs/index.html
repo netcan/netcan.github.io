@@ -38,10 +38,6 @@
 
 
   
-    
-<link rel="stylesheet" href="/css/personal-style.css">
-
-  
 
   
 <!-- Google Analytics -->
@@ -103,7 +99,9 @@ ga('send', 'pageview');
     <span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
   
 
-  <div class="post-header CENTER">
+  <link rel="stylesheet" href="/css/prism.css">
+
+<div class="post-header CENTER">
    
   <div class="toolbox">
     <a class="toolbox-entry" href="/">
@@ -251,11 +249,43 @@ ga('send', 'pageview');
 <a id="more"></a>
 <h2 id="Program-Encodings"><a href="#Program-Encodings" class="headerlink" title="Program Encodings"></a>Program Encodings</h2><p>这里的汇编格式为<code>ATT</code>，而不是学校教的<code>Intel</code>格式，最大区别就是指令目标操作数和源操作数相反，还有<code>ATT</code>汇编的同一条指令有<strong>好几条</strong>形式，对应于不同操作数数据类型的<strong>长度</strong>，后面会说。</p>
 <p>汇编<code>code.c</code>：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ gcc -O1 -S -m32 code.c</span><br><span class="line">    .file    <span class="string">&quot;code.c&quot;</span></span><br><span class="line">    .globl    accum</span><br><span class="line">    .bss</span><br><span class="line">    .align 4</span><br><span class="line">    .<span class="built_in">type</span>    accum, @object</span><br><span class="line">    .size    accum, 4</span><br><span class="line">accum:</span><br><span class="line">    .zero    4</span><br><span class="line">    .text</span><br><span class="line">    .globl    sum</span><br><span class="line">    .<span class="built_in">type</span>    sum, @<span class="keyword">function</span></span><br><span class="line">....</span><br></pre></td></tr></table></figure>
+<pre class="language-bash" data-language="bash"><code class="language-bash">$ gcc -O1 -S -m32 code.c
+    .file    <span class="token string">"code.c"</span>
+    .globl    accum
+    .bss
+    .align <span class="token number">4</span>
+    .type    accum, @object
+    .size    accum, <span class="token number">4</span>
+accum:
+    .zero    <span class="token number">4</span>
+    .text
+    .globl    <span class="token function">sum</span>
+    .type    sum, @function
+<span class="token punctuation">..</span><span class="token punctuation">..</span></code></pre>
 
 <p>以<code>.</code>开头的标签主要是给汇编器、链接器使用的。</p>
 <p>反汇编：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">$ gcc -O1 -c -m32 code.c</span><br><span class="line">$ objdump -d code.o</span><br><span class="line">code.o:     file format elf32-i386</span><br><span class="line">Disassembly of section .text:</span><br><span class="line">00000000 &lt;sum&gt;:</span><br><span class="line">   0:    55                       push   %ebp</span><br><span class="line">   1:    89 e5                    mov    %esp,%ebp</span><br><span class="line">   3:    83 ec 10                 sub    <span class="variable">$0x10</span>,%esp</span><br><span class="line">   6:    e8 <span class="built_in">fc</span> ff ff ff           call   7 &lt;sum+0x7&gt;</span><br><span class="line">   b:    05 01 00 00 00           add    <span class="variable">$0x1</span>,%eax</span><br><span class="line">  10:    8b 4d 08                 mov    0x8(%ebp),%ecx</span><br><span class="line">  13:    8b 55 0c                 mov    0xc(%ebp),%edx</span><br><span class="line">  16:    01 ca                    add    %ecx,%edx</span><br><span class="line">  18:    89 55 <span class="built_in">fc</span>                 mov    %edx,-0x4(%ebp)</span><br><span class="line">  1b:    8b 88 00 00 00 00        mov    0x0(%eax),%ecx</span><br><span class="line">  21:    8b 55 <span class="built_in">fc</span>                 mov    -0x4(%ebp),%edx</span><br><span class="line">  24:    01 ca                    add    %ecx,%edx</span><br><span class="line">  26:    89 90 00 00 00 00        mov    %edx,0x0(%eax)</span><br><span class="line">  2c:    8b 45 <span class="built_in">fc</span>                 mov    -0x4(%ebp),%eax</span><br><span class="line">  2f:    c9                       leave</span><br><span class="line">  30:    c3                       ret</span><br></pre></td></tr></table></figure>
+<pre class="language-bash" data-language="bash"><code class="language-bash">$ gcc -O1 -c -m32 code.c
+$ objdump -d code.o
+code.o:     <span class="token function">file</span> <span class="token function">format</span> elf32-i386
+Disassembly of section .text:
+00000000 <span class="token operator">&lt;</span>sum<span class="token operator">></span>:
+   <span class="token number">0</span>:    <span class="token number">55</span>                       push   %ebp
+   <span class="token number">1</span>:    <span class="token number">89</span> e5                    mov    %esp,%ebp
+   <span class="token number">3</span>:    <span class="token number">83</span> ec <span class="token number">10</span>                 sub    <span class="token variable">$0x10</span>,%esp
+   <span class="token number">6</span>:    e8 fc ff ff ff           call   <span class="token number">7</span> <span class="token operator">&lt;</span>sum+0x<span class="token operator"><span class="token file-descriptor important">7</span>></span>
+   b:    05 01 00 00 00           <span class="token function">add</span>    <span class="token variable">$0x1</span>,%eax
+  <span class="token number">10</span>:    8b 4d 08                 mov    0x8<span class="token punctuation">(</span>%ebp<span class="token punctuation">)</span>,%ecx
+  <span class="token number">13</span>:    8b <span class="token number">55</span> 0c                 mov    0xc<span class="token punctuation">(</span>%ebp<span class="token punctuation">)</span>,%edx
+  <span class="token number">16</span>:    01 ca                    <span class="token function">add</span>    %ecx,%edx
+  <span class="token number">18</span>:    <span class="token number">89</span> <span class="token number">55</span> fc                 mov    %edx,-0x4<span class="token punctuation">(</span>%ebp<span class="token punctuation">)</span>
+  1b:    8b <span class="token number">88</span> 00 00 00 00        mov    0x0<span class="token punctuation">(</span>%eax<span class="token punctuation">)</span>,%ecx
+  <span class="token number">21</span>:    8b <span class="token number">55</span> fc                 mov    -0x4<span class="token punctuation">(</span>%ebp<span class="token punctuation">)</span>,%edx
+  <span class="token number">24</span>:    01 ca                    <span class="token function">add</span>    %ecx,%edx
+  <span class="token number">26</span>:    <span class="token number">89</span> <span class="token number">90</span> 00 00 00 00        mov    %edx,0x0<span class="token punctuation">(</span>%eax<span class="token punctuation">)</span>
+  2c:    8b <span class="token number">45</span> fc                 mov    -0x4<span class="token punctuation">(</span>%ebp<span class="token punctuation">)</span>,%eax
+  2f:    c9                       leave
+  <span class="token number">30</span>:    c3                       ret</code></pre>
 
 <p>第一列为指令<strong>地址</strong>，第二列为指令的<strong>二进制编码</strong>形式，第三列为指令的<strong>汇编</strong>形式。</p>
 <p>需要注意的是，链接的时候链接器会移动指令地址，还有由于<code>Intel</code>系列的是<code>little-endian</code>，高地址存放数据高位，低地址存放数据低位。</p>
@@ -285,7 +315,8 @@ ga('send', 'pageview');
 <li>popl D指令，将栈顶元素弹出，存放到<code>D</code>中。需要注意的是，出栈亦即回收空间，栈指针向高地址移动。</li>
 </ul>
 <p>这里有个重点，就是指令的目标操作数和源操作数，<strong>最多</strong>只能有一个内存访问，例如<code>movl (%eax), (%edx)</code>是不允许的。这个我们操作系统田老师解释过了，如果2个操作数都是内存取值，那么效率大大减低，涉及多次内存访问，这是很费时的。如要实现上述效果，可以拆成2条：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">movl (%eax), %ecx</span><br><span class="line">movl %ecx, (%edx)</span><br></pre></td></tr></table></figure>
+<pre class="language-asm" data-language="asm"><code class="language-asm">movl (%eax), %ecx
+movl %ecx, (%edx)</code></pre>
 
 <h2 id="Arithmetic-and-Logical-Operations"><a href="#Arithmetic-and-Logical-Operations" class="headerlink" title="Arithmetic and Logical Operations"></a>Arithmetic and Logical Operations</h2><p>178页表3.7给出了一系列算逻操作。</p>
 <p><code>leal S,D</code>指令，这个比较重要，和<code>mov</code>指令类似，主要是用于指针运算。举个例子，<code>movl 9(%eax,%edx, 4), %eax</code>，这个是把内存<strong>地址</strong> M[%eax + 4*%edx +9] 的值存放到%eax寄存器；而<code>leal 9(%eax,%edx, 4), %eax</code>，这个则是把<code>%eax + 4*%edx +9</code>的结果存放到寄存器<code>%eax</code>。显然，前一个是引用内存的值，后一个是指针运算。</p>
@@ -315,61 +346,125 @@ OF = (a &lt; 0 == b &lt; 0) &amp;&amp; (t&lt;0 != a&lt;0)</code></pre>
 <p>例如<code>jmp *%eax</code>跳转到<code>%eax</code>所指的地址，而<code>jmp *(%eax)</code>根据<code>%eax</code>所指的<strong>内存</strong>地址的值作为跳转地址。</p>
 <p>其他<code>jmp</code>指令将根据条件进行跳转，例如<code>je D</code>，当结果等于零（即ZF=0）的时候，跳转到<code>D</code>所指的标签。</p>
 <p>虽然汇编跳转到的是<strong>标签</strong>，而链接之后，将会对标签进行<strong>编码</strong>。最常用的编码方式是PC relative的，即将目标指令的地址与当前指令的地址的差作为偏移量，这种编码通常用1、2、4字节，这样做的好处就是移到其他内存部分不需要修改相对地址。另一种常用的编码方式是绝对地址，用4字节存储目标的绝对地址。</p>
-<h3 id="Translating-Conditional-Branches"><a href="#Translating-Conditional-Branches" class="headerlink" title="Translating Conditional Branches"></a>Translating Conditional Branches</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (test-expr)</span><br><span class="line">    then-statement</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="keyword">else</span>-statement</span><br></pre></td></tr></table></figure>
+<h3 id="Translating-Conditional-Branches"><a href="#Translating-Conditional-Branches" class="headerlink" title="Translating Conditional Branches"></a>Translating Conditional Branches</h3><pre class="language-c" data-language="c"><code class="language-c"><span class="token keyword">if</span> <span class="token punctuation">(</span>test<span class="token operator">-</span>expr<span class="token punctuation">)</span>
+    then<span class="token operator">-</span>statement
+<span class="token keyword">else</span>
+    <span class="token keyword">else</span><span class="token operator">-</span>statement</code></pre>
 
 <p>一般翻译（<code>goto</code>相当于<code>jmp</code>）成：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">    t &#x3D; test-expr;</span><br><span class="line">    if (!t)</span><br><span class="line">        goto false;</span><br><span class="line">    then-statement</span><br><span class="line">    goto done;</span><br><span class="line">false:</span><br><span class="line">    else-statement</span><br><span class="line">done:</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">    t &#x3D; test-expr;
+    if (!t)
+        goto false;
+    then-statement
+    goto done;
+false:
+    else-statement
+done:</code></pre>
 
 <p>为什么翻译成这样呢？因为<code>if</code>语句可能没<code>else</code>而一定有<code>then</code>，上面这种形式是最简洁的。</p>
 <p>书上有例子，可以看看。</p>
 <h3 id="Loops"><a href="#Loops" class="headerlink" title="Loops"></a>Loops</h3><p>C语言循环有<code>do-while</code>, <code>while</code>, <code>for</code>三种，但是翻译的时候基本都是翻译成<code>do-while</code>形式。</p>
 <h4 id="Do-While-Loops"><a href="#Do-While-Loops" class="headerlink" title="Do-While Loops"></a>Do-While Loops</h4><p><code>do-while</code>循环至少执行循环体一次。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">do</span></span><br><span class="line">    body-statement</span><br><span class="line">    <span class="keyword">while</span> (test-expr);</span><br></pre></td></tr></table></figure>
+<pre class="language-c" data-language="c"><code class="language-c"><span class="token keyword">do</span>
+    body<span class="token operator">-</span>statement
+    <span class="token keyword">while</span> <span class="token punctuation">(</span>test<span class="token operator">-</span>expr<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
 
 <p>翻译如下：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">loop:</span><br><span class="line">    body-statement</span><br><span class="line">    t = test-expr;</span><br><span class="line">    <span class="keyword">if</span> (t)</span><br><span class="line">        <span class="keyword">goto</span> loop;</span><br></pre></td></tr></table></figure>
+<pre class="language-c" data-language="c"><code class="language-c">loop<span class="token operator">:</span>
+    body<span class="token operator">-</span>statement
+    t <span class="token operator">=</span> test<span class="token operator">-</span>expr<span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>t<span class="token punctuation">)</span>
+        <span class="token keyword">goto</span> loop<span class="token punctuation">;</span></code></pre>
 <h4 id="While-Loops"><a href="#While-Loops" class="headerlink" title="While Loops"></a>While Loops</h4><p><code>while</code>循环根据条件来判断是否循环。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (test-expr)</span><br><span class="line">    body-statement</span><br></pre></td></tr></table></figure>
+<pre class="language-c" data-language="c"><code class="language-c"><span class="token keyword">while</span> <span class="token punctuation">(</span>test<span class="token operator">-</span>expr<span class="token punctuation">)</span>
+    body<span class="token operator">-</span>statement</code></pre>
 
 <p>翻译的时候，转化成<code>do-while</code>形式：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">    <span class="keyword">if</span> (!test-expr)</span><br><span class="line">        <span class="keyword">goto</span> done;</span><br><span class="line">    <span class="keyword">do</span></span><br><span class="line">        body-statement</span><br><span class="line">    <span class="keyword">while</span> (test-expr);</span><br><span class="line">done:</span><br></pre></td></tr></table></figure>
+<pre class="language-c" data-language="c"><code class="language-c">    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>test<span class="token operator">-</span>expr<span class="token punctuation">)</span>
+        <span class="token keyword">goto</span> done<span class="token punctuation">;</span>
+    <span class="token keyword">do</span>
+        body<span class="token operator">-</span>statement
+    <span class="token keyword">while</span> <span class="token punctuation">(</span>test<span class="token operator">-</span>expr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+done<span class="token operator">:</span></code></pre>
 
 <p>最终形式：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">    t = test-expr;</span><br><span class="line">    <span class="keyword">if</span> (!t)</span><br><span class="line">        <span class="keyword">goto</span> done;</span><br><span class="line">loop:</span><br><span class="line">    body-statement</span><br><span class="line">    t = test-expr;</span><br><span class="line">    <span class="keyword">if</span> (t)</span><br><span class="line">        <span class="keyword">goto</span> loop;</span><br><span class="line">done:</span><br></pre></td></tr></table></figure>
+<pre class="language-c" data-language="c"><code class="language-c">    t <span class="token operator">=</span> test<span class="token operator">-</span>expr<span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>t<span class="token punctuation">)</span>
+        <span class="token keyword">goto</span> done<span class="token punctuation">;</span>
+loop<span class="token operator">:</span>
+    body<span class="token operator">-</span>statement
+    t <span class="token operator">=</span> test<span class="token operator">-</span>expr<span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>t<span class="token punctuation">)</span>
+        <span class="token keyword">goto</span> loop<span class="token punctuation">;</span>
+done<span class="token operator">:</span></code></pre>
 
 <h4 id="For-Loops"><a href="#For-Loops" class="headerlink" title="For Loops"></a>For Loops</h4><p><code>for</code>循环如下：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (init-expr; test-expr; update-expr)</span><br><span class="line">    body-statement</span><br></pre></td></tr></table></figure>
+<pre class="language-c" data-language="c"><code class="language-c"><span class="token keyword">for</span> <span class="token punctuation">(</span>init<span class="token operator">-</span>expr<span class="token punctuation">;</span> test<span class="token operator">-</span>expr<span class="token punctuation">;</span> update<span class="token operator">-</span>expr<span class="token punctuation">)</span>
+    body<span class="token operator">-</span>statement</code></pre>
 
 <p>也是翻译成<code>do-while</code>形式，首先转换成<code>while</code>形式，接着改成<code>do-while</code>形式就是了：</p>
 <p><code>while</code>形式：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">init-expr;</span><br><span class="line"><span class="keyword">while</span> (test-expr) &#123;</span><br><span class="line">    body-statement</span><br><span class="line">    update-expr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-c" data-language="c"><code class="language-c">init<span class="token operator">-</span>expr<span class="token punctuation">;</span>
+<span class="token keyword">while</span> <span class="token punctuation">(</span>test<span class="token operator">-</span>expr<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    body<span class="token operator">-</span>statement
+    update<span class="token operator">-</span>expr<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre>
 
 <p><code>do-while</code>形式：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">init-expr;</span><br><span class="line"><span class="keyword">if</span> (!test-expr)</span><br><span class="line">    <span class="keyword">goto</span> done;</span><br><span class="line"><span class="keyword">do</span> &#123;</span><br><span class="line">    body-statement</span><br><span class="line">    update-expr;</span><br><span class="line">&#125; <span class="keyword">while</span> (test-expr);</span><br><span class="line">done:</span><br></pre></td></tr></table></figure>
+<pre class="language-c" data-language="c"><code class="language-c">init<span class="token operator">-</span>expr<span class="token punctuation">;</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>test<span class="token operator">-</span>expr<span class="token punctuation">)</span>
+    <span class="token keyword">goto</span> done<span class="token punctuation">;</span>
+<span class="token keyword">do</span> <span class="token punctuation">&#123;</span>
+    body<span class="token operator">-</span>statement
+    update<span class="token operator">-</span>expr<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span> <span class="token keyword">while</span> <span class="token punctuation">(</span>test<span class="token operator">-</span>expr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+done<span class="token operator">:</span></code></pre>
 
 <p>最终形式：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">    init-expr;</span><br><span class="line">    t = test-expr;</span><br><span class="line">    <span class="keyword">if</span> (!t)</span><br><span class="line">        <span class="keyword">goto</span> done;</span><br><span class="line">loop:</span><br><span class="line">    body-statement</span><br><span class="line">    update-expr;</span><br><span class="line">    t = test-expr;</span><br><span class="line">    <span class="keyword">if</span> (t)</span><br><span class="line">        <span class="keyword">goto</span> loop;</span><br><span class="line">done:</span><br></pre></td></tr></table></figure>
+<pre class="language-c" data-language="c"><code class="language-c">    init<span class="token operator">-</span>expr<span class="token punctuation">;</span>
+    t <span class="token operator">=</span> test<span class="token operator">-</span>expr<span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>t<span class="token punctuation">)</span>
+        <span class="token keyword">goto</span> done<span class="token punctuation">;</span>
+loop<span class="token operator">:</span>
+    body<span class="token operator">-</span>statement
+    update<span class="token operator">-</span>expr<span class="token punctuation">;</span>
+    t <span class="token operator">=</span> test<span class="token operator">-</span>expr<span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>t<span class="token punctuation">)</span>
+        <span class="token keyword">goto</span> loop<span class="token punctuation">;</span>
+done<span class="token operator">:</span></code></pre>
 
 <h3 id="Conditional-Move-Instructions"><a href="#Conditional-Move-Instructions" class="headerlink" title="Conditional Move Instructions"></a>Conditional Move Instructions</h3><p>汇编有一种叫做<code>Conditional Move</code>指令，亦即<code>cmov</code>指令，用于高效实现三目表达式，对于现代处理器来说非常高效。</p>
 <p>书上210页表3.17给出了一系列<code>cmov</code>指令。</p>
 <p>早在95年的时候，就出现了<code>cmov</code>指令，根据条件来判断是否复制源操作数到目标操作数。但是这些年来这条指令几乎不使用，因为它不向后兼容，尽管97年的时候所有x86处理器都支持这条指令了。因为我的机器是64位，编译的时候默认还是会使用的，毕竟可以提高处理器流水线性能。而在32位机器，如果要使用这条指令的话，需要加上编译参数<code>-march=i686</code>才行。</p>
 <p>举个例子</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cmpl %edx, %ecx</span><br><span class="line">cmovl %ebx, %eax</span><br></pre></td></tr></table></figure>
+<pre class="language-asm" data-language="asm"><code class="language-asm">cmpl %edx, %ecx
+cmovl %ebx, %eax</code></pre>
 
 <p>上面这2条指令，主要就是判断<code>%ecx</code>的值是否小于<code>%edx</code>，小于的话，把<code>%ebx</code>寄存器的值拷贝到<code>%eax</code>中。同理<code>cmovl</code>的后缀并不代表操作数大小<code>long word</code>，而是<code>less than</code>的意思。</p>
 <p>之所以<code>cmov</code>效率比<code>conditional jump</code>(<code>if-else</code>跳转)效率高，是因为处理器需要预判是否需要<code>jmp</code>，而<code>cmov</code>不需要预判，大大提高了处理器性能。</p>
 <p>举个例子，如下代码</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">v = test-expr ? then-expr : <span class="keyword">else</span>-expr;</span><br></pre></td></tr></table></figure>
+<pre class="language-c" data-language="c"><code class="language-c">v <span class="token operator">=</span> test<span class="token operator">-</span>expr <span class="token operator">?</span> then<span class="token operator">-</span>expr <span class="token operator">:</span> <span class="token keyword">else</span><span class="token operator">-</span>expr<span class="token punctuation">;</span></code></pre>
 
 <p>翻译成<code>conditional jump</code>形式：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">    <span class="keyword">if</span> (!test-expr)</span><br><span class="line">        <span class="keyword">goto</span> <span class="literal">false</span>;</span><br><span class="line">        v = <span class="literal">true</span>-expr;</span><br><span class="line">        <span class="keyword">goto</span> done;</span><br><span class="line"><span class="literal">false</span>:</span><br><span class="line">    v = <span class="keyword">else</span>-expr;</span><br><span class="line">done:</span><br></pre></td></tr></table></figure>
+<pre class="language-c" data-language="c"><code class="language-c">    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>test<span class="token operator">-</span>expr<span class="token punctuation">)</span>
+        <span class="token keyword">goto</span> false<span class="token punctuation">;</span>
+        v <span class="token operator">=</span> true<span class="token operator">-</span>expr<span class="token punctuation">;</span>
+        <span class="token keyword">goto</span> done<span class="token punctuation">;</span>
+false<span class="token operator">:</span>
+    v <span class="token operator">=</span> <span class="token keyword">else</span><span class="token operator">-</span>expr<span class="token punctuation">;</span>
+done<span class="token operator">:</span></code></pre>
 
 <p>翻译成<code>cmov</code>形式：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vt = then-expr;</span><br><span class="line">v = <span class="keyword">else</span>-expr;</span><br><span class="line">t = test-expr;</span><br><span class="line"><span class="keyword">if</span> (t) v = vt;</span><br></pre></td></tr></table></figure>
+<pre class="language-c" data-language="c"><code class="language-c">vt <span class="token operator">=</span> then<span class="token operator">-</span>expr<span class="token punctuation">;</span>
+v <span class="token operator">=</span> <span class="token keyword">else</span><span class="token operator">-</span>expr<span class="token punctuation">;</span>
+t <span class="token operator">=</span> test<span class="token operator">-</span>expr<span class="token punctuation">;</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span>t<span class="token punctuation">)</span> v <span class="token operator">=</span> vt<span class="token punctuation">;</span></code></pre>
 
 <p>仔细对比可发现，<code>cmov</code>同时计算了<code>then-expr</code>和<code>else-expr</code>，然后判断取哪个值。而<code>conditional jump</code>需要预判计算<code>then-expr</code>还是<code>else-expr</code>。</p>
 <p>当然也不是所有的条件表达式都可以使用<code>cmov</code>，有条件的。举例如下：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">cread</span><span class="params">(<span class="keyword">int</span> *xp)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (xp ? *xp : <span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-c" data-language="c"><code class="language-c"><span class="token keyword">int</span> <span class="token function">cread</span><span class="token punctuation">(</span><span class="token keyword">int</span> <span class="token operator">*</span>xp<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> <span class="token punctuation">(</span>xp <span class="token operator">?</span> <span class="token operator">*</span>xp <span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre>
 
 <p>翻译成<code>cmov</code>的时候，因为同时计算了<code>*xp</code>和<code>0</code>，若<code>xp==NULL</code>的时候，<code>*xp</code>是没有意义的，会出现null pointer dereferencing error。</p>
 <h3 id="Switch-Statements"><a href="#Switch-Statements" class="headerlink" title="Switch Statements"></a>Switch Statements</h3><p><code>switch</code>翻译除了用<code>if-else-if</code>形式，更高效还有<code>jmup table</code>，<code>jump table</code>是一个数组，存放了一些跳转地址，根据计算条件值作为索引（下标），来进行跳转到相应部分。</p>
@@ -380,7 +475,8 @@ OF = (a &lt; 0 == b &lt; 0) &amp;&amp; (t&lt;0 != a&lt;0)</code></pre>
 <p><code>call</code>的操作数和<code>jmp</code>类似，接受一个标签（直接调用）或者地址（用*号表示，间接调用）作为调用目标。<code>call</code>一旦执行，会把下一条指令的<strong>地址</strong><code>pushl</code>到栈中，然后跳转到被调函数的开始地址，当被调函数返回的时候就能返回到这个地址。222页图3.22给出了这个过程。</p>
 <p>而<code>ret</code>指令，将会<code>popl</code><strong>返回地址</strong>，接着跳转到这个地址，亦即返回到调用它的地址继续执行下去。所以正确的用法是，使得栈指针指向<strong>返回地址</strong>（通过多次<code>popl</code>或者使用<code>leave</code>），然后调用<code>ret</code>返回。寄存器**<code>%eax</code>**通常作为返回值（指针、int）。</p>
 <p>而<code>leave</code>指令，将栈指针<code>%esp</code>指向帧指针<code>%ebp</code>，然后将<code>%ebp</code>还原。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">movl %ebp, %esp        Set stack pointer to beginning of frame</span><br><span class="line">popl %ebp            Restore saved %ebp and set stack ptr to end of caller’s frame</span><br></pre></td></tr></table></figure>
+<pre class="language-asm" data-language="asm"><code class="language-asm">movl %ebp, %esp        Set stack pointer to beginning of frame
+popl %ebp            Restore saved %ebp and set stack ptr to end of caller’s frame</code></pre>
 
 <h3 id="Register-Usage-Conventions"><a href="#Register-Usage-Conventions" class="headerlink" title="Register Usage Conventions"></a>Register Usage Conventions</h3><p>由于寄存器存储局部变量、中间变量等等，函数调用过程中，难免被调函数也需要使用寄存器，那么有可能会把主掉函数的寄存器抹掉，这时候就会出现冲突，所以需要一系列约定来约束寄存器的使用。</p>
 <p>前面提到了，<code>%eax</code>,<code>%edx</code>,<code>%ecx</code>作为<code>caller-save</code>寄存器，是可以随意使用的；而<code>%ebx</code>,<code>%esi</code>,<code>%edi</code>作为<code>callee-save</code>寄存器，被调函数需要保存（保存到栈上）这些值才能使用，返回的时候需要还原。</p>
@@ -391,11 +487,11 @@ OF = (a &lt; 0 == b &lt; 0) &amp;&amp; (t&lt;0 != a&lt;0)</code></pre>
 <h3 id="Recursive-Procedures"><a href="#Recursive-Procedures" class="headerlink" title="Recursive Procedures"></a>Recursive Procedures</h3><p>229页给出了递归调用的例子，和函数调用大同小异，可以看看。</p>
 <h2 id="Array-Allocation-and-Access"><a href="#Array-Allocation-and-Access" class="headerlink" title="Array Allocation and Access"></a>Array Allocation and Access</h2><p>C语言数组翻译为汇编代码比较直接，毕竟数组名也代表了数组的首地址，而数组又是连续分配的空间。</p>
 <p>声明定义一个数组，</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">T A[N];</span><br></pre></td></tr></table></figure>
+<pre class="language-c" data-language="c"><code class="language-c">T A<span class="token punctuation">[</span>N<span class="token punctuation">]</span><span class="token punctuation">;</span></code></pre>
 
 <p>将会在内存中连续分配<code>L*N</code>字节空间，这里的<code>L</code>代表<code>T</code>数据类型的长度。假设数组的起始地址为$x_A$，那么标记符<code>A</code>指向数组的首地址，数组下标范围在0到N-1，第$i$个元素的地址为$x_A + L\cdot i$或者<code>A+i</code>。</p>
 <h3 id="Pointer-Arithmetic"><a href="#Pointer-Arithmetic" class="headerlink" title="Pointer Arithmetic"></a>Pointer Arithmetic</h3><p>指针也可以做些简单的加减运算，而<code>&amp;</code>和<code>*</code>分别可以取一个变量的地址和解引用。例如访问数组<code>E[i]</code>的值(int)，也就是对指针$x_E(\%edx) + 4i(\%ecx)$ 解引用：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">movl (%edx,%ecx,4),%eax</span><br></pre></td></tr></table></figure>
+<pre class="language-asm" data-language="asm"><code class="language-asm">movl (%edx,%ecx,4),%eax</code></pre>
 
 <h3 id="Nested-Arrays"><a href="#Nested-Arrays" class="headerlink" title="Nested Arrays"></a>Nested Arrays</h3><p>二维数组可以看作是一维数组，其类型为一维数组，本质上多维数组和一维数组没什么区别，都是连续分配。</p>
 <p>例如</p>
@@ -414,7 +510,9 @@ $$
 
 <h3 id="Fixed-Size-Arrays"><a href="#Fixed-Size-Arrays" class="headerlink" title="Fixed-Size Arrays"></a>Fixed-Size Arrays</h3><p>固定大小的数组，翻译成汇编形式通常会对其进行优化，书上239页给了一个计算2个定长矩阵的乘积的汇编优化。</p>
 <h3 id="Variable-Size-Arrays"><a href="#Variable-Size-Arrays" class="headerlink" title="Variable-Size Arrays"></a>Variable-Size Arrays</h3><p>早些年C语言只支持固定大小的数组（编译时确定），那时候对于变量大小的数组（不确定的），需要使用<code>malloc</code>这类系统调用来实现。而现在支持变量大小的数组了，因为变量已经指定了数组的大小，那么仍然可以根据变量的值计算出地址的。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">var_ele</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> A[n][n], <span class="keyword">int</span> i, <span class="keyword">int</span> j)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> A[i][j];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-c" data-language="c"><code class="language-c"><span class="token keyword">int</span> <span class="token function">var_ele</span><span class="token punctuation">(</span><span class="token keyword">int</span> n<span class="token punctuation">,</span> <span class="token keyword">int</span> A<span class="token punctuation">[</span>n<span class="token punctuation">]</span><span class="token punctuation">[</span>n<span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword">int</span> i<span class="token punctuation">,</span> <span class="token keyword">int</span> j<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> A<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre>
 
 <p>同理，元素的地址可以这样计算：</p>
 

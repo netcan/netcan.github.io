@@ -41,10 +41,6 @@
 
 
   
-    
-<link rel="stylesheet" href="/css/personal-style.css">
-
-  
 
   
 <!-- Google Analytics -->
@@ -106,7 +102,9 @@ ga('send', 'pageview');
     <span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
   
 
-  <div class="post-header CENTER">
+  <link rel="stylesheet" href="/css/prism.css">
+
+<div class="post-header CENTER">
    
   <div class="toolbox">
     <a class="toolbox-entry" href="/">
@@ -266,33 +264,107 @@ ga('send', 'pageview');
 <p>后来想起了小学爱玩的斗兽棋，心血来潮，规则比较简单，分支因子也小，相对象棋来说简单多了，然后就收集素材，很快把象棋的GUI改成了斗兽棋的，并添加了AI。虽然目前的AI比较弱智，但是我目前已经很难赢了😂。</p>
 <p><img src="animal_chess.png" alt="animal_chess.png"></p>
 <h2 id="模块划分"><a href="#模块划分" class="headerlink" title="模块划分"></a>模块划分</h2><p>接下来讲讲实现部分。目前项目由四部分实现：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">src</span><br><span class="line">├── ai.rs    # AI实现</span><br><span class="line">├── chess.rs # 棋子的定义</span><br><span class="line">├── game.rs  # 核心框架、图像渲染</span><br><span class="line">└── main.rs  # 程序主入口</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">src
+├── ai.rs    # AI实现
+├── chess.rs # 棋子的定义
+├── game.rs  # 核心框架、图像渲染
+└── main.rs  # 程序主入口</code></pre>
 
 <p>首先需要GUI来交互，我考虑了<code>SDL</code>框架，因为上手简单，很快仿着<code>rust-sdl2</code>例子写了个gui出来：<a target="_blank" rel="noopener" href="https://docs.rs/sdl2/0.34.0/sdl2/#getting-started">https://docs.rs/sdl2/0.34.0/sdl2/#getting-started</a>。</p>
 <h2 id="类型别名"><a href="#类型别名" class="headerlink" title="类型别名"></a>类型别名</h2><p>和C的<code>typedef</code>，C++的<code>using</code>类似，Rust也支持别名：</p>
-<figure class="highlight rs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">pub</span> <span class="class"><span class="keyword">type</span> <span class="title">POS</span></span> = <span class="built_in">u8</span>;</span><br><span class="line"><span class="keyword">pub</span> <span class="class"><span class="keyword">type</span> <span class="title">MOVE</span></span> = <span class="built_in">u16</span>;</span><br><span class="line"><span class="keyword">pub</span> <span class="class"><span class="keyword">type</span> <span class="title">ScoreType</span></span> = <span class="built_in">i32</span>;</span><br></pre></td></tr></table></figure>
+<pre class="language-rs" data-language="rs"><code class="language-rs">pub type POS &#x3D; u8;
+pub type MOVE &#x3D; u16;
+pub type ScoreType &#x3D; i32;</code></pre>
 
 <h2 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h2><p>来看看异常处理，Rust有个语法糖<code>?</code>可以很简单的处理异常：</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() -&gt; <span class="built_in">Result</span>&lt;(), <span class="built_in">String</span>&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> sdl_ctx = sdl2::init()?;</span><br><span class="line">    <span class="keyword">let</span> video_sys = sdl_ctx.video()?;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> windows = video_sys.window(<span class="string">&quot;AnimalChess&quot;</span>, WINDOW_WIDTH, WINDOW_HEIGHT)</span><br><span class="line">        .position_centered()</span><br><span class="line">        <span class="comment">// .resizable()</span></span><br><span class="line">        .allow_highdpi()</span><br><span class="line">        .build().expect(<span class="string">&quot;could not initialize video subsystem&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut</span> game = Game::new(windows, sdl_ctx.event_pump()?);</span><br><span class="line"></span><br><span class="line">    game.run()?;</span><br><span class="line"></span><br><span class="line">    <span class="literal">Ok</span>(())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">fn</span> <span class="token function-definition function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">-></span> <span class="token class-name">Result</span><span class="token operator">&lt;</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token class-name">String</span><span class="token operator">></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">let</span> sdl_ctx <span class="token operator">=</span> <span class="token namespace">sdl2<span class="token punctuation">::</span></span><span class="token function">init</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">?</span><span class="token punctuation">;</span>
+    <span class="token keyword">let</span> video_sys <span class="token operator">=</span> sdl_ctx<span class="token punctuation">.</span><span class="token function">video</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">?</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">let</span> windows <span class="token operator">=</span> video_sys<span class="token punctuation">.</span><span class="token function">window</span><span class="token punctuation">(</span><span class="token string">"AnimalChess"</span><span class="token punctuation">,</span> <span class="token constant">WINDOW_WIDTH</span><span class="token punctuation">,</span> <span class="token constant">WINDOW_HEIGHT</span><span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">position_centered</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token comment">// .resizable()</span>
+        <span class="token punctuation">.</span><span class="token function">allow_highdpi</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">expect</span><span class="token punctuation">(</span><span class="token string">"could not initialize video subsystem"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">let</span> <span class="token keyword">mut</span> game <span class="token operator">=</span> <span class="token class-name">Game</span><span class="token punctuation">::</span><span class="token function">new</span><span class="token punctuation">(</span>windows<span class="token punctuation">,</span> sdl_ctx<span class="token punctuation">.</span><span class="token function">event_pump</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">?</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    game<span class="token punctuation">.</span><span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">?</span><span class="token punctuation">;</span>
+
+    <span class="token class-name">Ok</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span></code></pre>
 
 <p>其中<code>sdl2::init()?</code>表达了<code>init</code>可能失败导致<code>panic</code>，我也不处理这个异常，直接通过<code>?</code>扔出去。</p>
 <h2 id="结构体定义"><a href="#结构体定义" class="headerlink" title="结构体定义"></a>结构体定义</h2><p>然后把GUI部分从<code>main</code>提取出来，封装到<code>Game</code>类中：</p>
-<figure class="highlight rs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">pub</span> <span class="class"><span class="keyword">struct</span> <span class="title">Game</span></span> &#123;</span><br><span class="line">    <span class="keyword">pub</span> chesses: [[ChessId; COL_NUM]; ROW_NUM],</span><br><span class="line">    chesses_textures: <span class="built_in">Vec</span>&lt;Texture&gt;,</span><br><span class="line">    <span class="keyword">pub</span> role: Role, <span class="comment">// 轮到谁下</span></span><br><span class="line">    board: Texture,</span><br><span class="line">    canvas: WindowCanvas,</span><br><span class="line">    event_pump: EventPump,</span><br><span class="line">    selected_chess: <span class="built_in">Option</span>&lt;POS&gt;,</span><br><span class="line">    selected_frame: Texture,</span><br><span class="line">    movable_pos: <span class="built_in">Vec</span>&lt;MOVE&gt;,</span><br><span class="line">    <span class="keyword">pub</span> compture_turn: <span class="built_in">bool</span>,</span><br><span class="line">    <span class="keyword">pub</span> compture_mv: <span class="built_in">Option</span>&lt;MOVE&gt;,</span><br><span class="line">    ctx: VecDeque&lt;Context&gt;,</span><br><span class="line">    <span class="keyword">pub</span> history_table: HisTblType,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-rs" data-language="rs"><code class="language-rs">pub struct Game &#123;
+    pub chesses: [[ChessId; COL_NUM]; ROW_NUM],
+    chesses_textures: Vec&lt;Texture&gt;,
+    pub role: Role, &#x2F;&#x2F; 轮到谁下
+    board: Texture,
+    canvas: WindowCanvas,
+    event_pump: EventPump,
+    selected_chess: Option&lt;POS&gt;,
+    selected_frame: Texture,
+    movable_pos: Vec&lt;MOVE&gt;,
+    pub compture_turn: bool,
+    pub compture_mv: Option&lt;MOVE&gt;,
+    ctx: VecDeque&lt;Context&gt;,
+    pub history_table: HisTblType,
+&#125;</code></pre>
 
 <h2 id="if-let表达式，结构化绑定"><a href="#if-let表达式，结构化绑定" class="headerlink" title="if-let表达式，结构化绑定"></a><code>if-let</code>表达式，结构化绑定</h2><p>其中棋子、棋盘的素材存到了<code>chesses_textures</code>, <code>board</code>成员中，并用<code>chesses</code>存放了棋盘内容。<code>selected_chess</code>存的是当前用户点击的棋子，<code>movable_pos</code>存放的是当前选中棋子可走的格子，当用户点击棋盘的时候，可能是选中棋子，也可能是移动棋子，如下实现：</p>
-<figure class="highlight rs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">process_click</span></span>(&amp;<span class="keyword">mut</span> <span class="keyword">self</span>, pos: (<span class="built_in">i32</span>, <span class="built_in">i32</span>)) &#123;</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">let</span> <span class="literal">Some</span>(dst) = <span class="keyword">self</span>.get_click_rect(pos) &#123;</span><br><span class="line">        <span class="keyword">if</span> get_chess_role(<span class="keyword">self</span>.chesses[dst.<span class="number">0</span>][dst.<span class="number">1</span>]) != <span class="keyword">self</span>.role &#123;</span><br><span class="line">            <span class="comment">// may be move</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">let</span> <span class="literal">Some</span>(_) = <span class="keyword">self</span>.movable_pos.iter().find(|&amp;&amp;mv| &#123; <span class="keyword">return</span> get_dst_pos(mv) == to_pos(&amp;dst) &#125;) &#123;</span><br><span class="line">                <span class="keyword">let</span> src = <span class="keyword">self</span>.selected_chess.unwrap();</span><br><span class="line">                <span class="keyword">self</span>.move_chess(to_move(&amp;(get_pos(src), dst)));</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">self</span>.selected_chess = <span class="literal">None</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123; <span class="comment">// must be selected, because role is same as chess</span></span><br><span class="line">            <span class="built_in">println!</span>(<span class="string">&quot;selected_chess: &#123;:?&#125;&quot;</span>, to_pos(&amp;dst));</span><br><span class="line">            <span class="keyword">self</span>.selected_chess = <span class="literal">Some</span>(to_pos(&amp;dst));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">self</span>.movable_pos.clear();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-rs" data-language="rs"><code class="language-rs">fn process_click(&amp;mut self, pos: (i32, i32)) &#123;
+    if let Some(dst) &#x3D; self.get_click_rect(pos) &#123;
+        if get_chess_role(self.chesses[dst.0][dst.1]) !&#x3D; self.role &#123;
+            &#x2F;&#x2F; may be move
+            if let Some(_) &#x3D; self.movable_pos.iter().find(|&amp;&amp;mv| &#123; return get_dst_pos(mv) &#x3D;&#x3D; to_pos(&amp;dst) &#125;) &#123;
+                let src &#x3D; self.selected_chess.unwrap();
+                self.move_chess(to_move(&amp;(get_pos(src), dst)));
+            &#125;
+            self.selected_chess &#x3D; None;
+        &#125; else &#123; &#x2F;&#x2F; must be selected, because role is same as chess
+            println!(&quot;selected_chess: &#123;:?&#125;&quot;, to_pos(&amp;dst));
+            self.selected_chess &#x3D; Some(to_pos(&amp;dst));
+        &#125;
+
+        self.movable_pos.clear();
+    &#125;
+&#125;</code></pre>
 <p>这时候看到结构绑定的好处了，<code>get_click_rect</code>返回一个<code>Option&lt;(usize, usize)&gt;</code>值，将用户的鼠标位置转换成棋盘的行列位置。通过<code>if let</code>语句来获得<code>Some</code>里面的值并取出，接着进行判断。若用户没有选中棋子，这可能是移动棋子，这时候通过查找<code>movable_pos</code>来判断是否移动。</p>
 <p>再来看一个例子：</p>
-<figure class="highlight rs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> event <span class="keyword">in</span> <span class="keyword">self</span>.event_pump.poll_iter() &#123;</span><br><span class="line">    <span class="keyword">match</span> event &#123;</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">        Event::KeyDown &#123; keycode: <span class="literal">Some</span>(keycode), .. &#125; =&gt; &#123;</span><br><span class="line">            <span class="keyword">match</span> keycode &#123;</span><br><span class="line">                Keycode::Escape =&gt; &#123; <span class="keyword">break</span>;       &#125;</span><br><span class="line">                Keycode::U      =&gt; &#123; undo = <span class="literal">true</span>; &#125;</span><br><span class="line">                _ =&gt; &#123;&#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        Event::MouseButtonDown &#123;x, y, ..&#125; =&gt; &#123; click_pos = (x, y); &#125;</span><br><span class="line">        _ =&gt; &#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-rs" data-language="rs"><code class="language-rs">for event in self.event_pump.poll_iter() &#123;
+    match event &#123;
+        &#x2F;&#x2F; ...
+        Event::KeyDown &#123; keycode: Some(keycode), .. &#125; &#x3D;&gt; &#123;
+            match keycode &#123;
+                Keycode::Escape &#x3D;&gt; &#123; break;       &#125;
+                Keycode::U      &#x3D;&gt; &#123; undo &#x3D; true; &#125;
+                _ &#x3D;&gt; &#123;&#125;
+            &#125;
+        &#125;
+        Event::MouseButtonDown &#123;x, y, ..&#125; &#x3D;&gt; &#123; click_pos &#x3D; (x, y); &#125;
+        _ &#x3D;&gt; &#123;&#125;
+    &#125;
+&#125;</code></pre>
 
 <p>结构化绑定，可以分别取出结构体<code>Event::KeyDown</code>, <code>Event::MouseButtonDown</code>对象里的成员变量：<code>keycode</code>, <code>x, y</code>。</p>
 <p>通过结构化绑定，写起来很爽。目前C++ 17也有了结构化绑定，但是没有Rust那么强大。对于<code>Option</code>这个表达可有的概念，C++17也有了<code>std::optional</code>。</p>
 <h2 id="match表达式"><a href="#match表达式" class="headerlink" title="match表达式"></a>match表达式</h2><p>Rust还有一个强大的语句，那就是<code>match</code>，前面例子已经介绍过了，写起来是这样的。判断棋子是否进入了对方的兽穴：</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">pub</span> <span class="function"><span class="keyword">fn</span> <span class="title">check_in_den</span></span>(&amp;<span class="keyword">self</span>, pos: POS) -&gt; <span class="built_in">bool</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> pos_ = get_pos(pos);</span><br><span class="line">    <span class="keyword">match</span> (get_chess_role(<span class="keyword">self</span>.chesses[pos_.<span class="number">0</span>][pos_.<span class="number">1</span>]), pos) &#123;</span><br><span class="line">        (RED, BLACK_DEN) | (BLACK, RED_DEN) =&gt; <span class="keyword">return</span> <span class="literal">true</span>,</span><br><span class="line">        _ =&gt; &#123; <span class="keyword">return</span> <span class="literal">false</span> &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">pub</span> <span class="token keyword">fn</span> <span class="token function-definition function">check_in_den</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token keyword">self</span><span class="token punctuation">,</span> pos<span class="token punctuation">:</span> <span class="token constant">POS</span><span class="token punctuation">)</span> <span class="token punctuation">-></span> <span class="token keyword">bool</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">let</span> pos_ <span class="token operator">=</span> <span class="token function">get_pos</span><span class="token punctuation">(</span>pos<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">match</span> <span class="token punctuation">(</span><span class="token function">get_chess_role</span><span class="token punctuation">(</span><span class="token keyword">self</span><span class="token punctuation">.</span>chesses<span class="token punctuation">[</span>pos_<span class="token number">.0</span><span class="token punctuation">]</span><span class="token punctuation">[</span>pos_<span class="token number">.1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span> pos<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token punctuation">(</span><span class="token constant">RED</span><span class="token punctuation">,</span> <span class="token constant">BLACK_DEN</span><span class="token punctuation">)</span> <span class="token operator">|</span> <span class="token punctuation">(</span><span class="token constant">BLACK</span><span class="token punctuation">,</span> <span class="token constant">RED_DEN</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+        _ <span class="token operator">=></span> <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> <span class="token boolean">false</span> <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span></code></pre>
 
 <p>其中<code>(RED, BLACK_DEN) | (BLACK, RED_DEN) =&gt; return true</code>语义很清晰，如果红色棋子进了黑色兽穴，或者黑色棋子进了红色兽穴，则为真；其他情况为假。如果换成<code>if-else</code>语句，写出来就很丑了。</p>
 <p>还有<code>check_movable</code>里的判断吃子代码也很简洁：</p>
-<figure class="highlight rs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">match</span> (src_chess_type, dst_chess_type) &#123;</span><br><span class="line">    (RAT, ELEPHANT) =&gt; ! Self::check_in_water(src),</span><br><span class="line">    (ELEPHANT, RAT) =&gt; <span class="literal">false</span>,</span><br><span class="line">    (s, d)          =&gt; s &lt;= d || <span class="keyword">self</span>.check_in_traps(dst)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-rs" data-language="rs"><code class="language-rs">match (src_chess_type, dst_chess_type) &#123;
+    (RAT, ELEPHANT) &#x3D;&gt; ! Self::check_in_water(src),
+    (ELEPHANT, RAT) &#x3D;&gt; false,
+    (s, d)          &#x3D;&gt; s &lt;&#x3D; d || self.check_in_traps(dst)
+&#125;</code></pre>
 
 <ul>
 <li>老鼠若不在水里则能够吃大象：<code>(RAT, ELEPHANT) =&gt; ! Self::check_in_water(src)</code></li>
@@ -301,31 +373,125 @@ ga('send', 'pageview');
 </ul>
 <p>再来看看一个例子，就是根据fen串来初始化棋盘。fen串是用字符串记录了棋子在棋盘中的位置，例如初始化的fen串是这样的：<code>l5t/1d3c1/r1p1w1e/7/7/7/E1W1P1R/1C3D1/T5L</code>，小写表示黑方，大写表示红方。一个字母表示一个棋子，如果没有棋子，则用数字表示出相邻连续的空位数。斗兽棋共有九行，每行都用一个字符串表示，行间使用正斜杠分割。</p>
 <p>解析<code>fen</code>串的代码是这样的，很清爽：</p>
-<figure class="highlight rs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">load_fen</span></span>(&amp;<span class="keyword">mut</span> <span class="keyword">self</span>, fen: &amp;<span class="built_in">str</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> fen_u8 = fen.as_bytes();</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut</span> fen_idx = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> get_role = |c: <span class="built_in">u8</span>| -&gt; Role &#123;</span><br><span class="line">        <span class="keyword">if</span> (c <span class="keyword">as</span> <span class="built_in">char</span>).is_lowercase() &#123; BLACK &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123; RED &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut</span> pos = <span class="number">0usize</span>;</span><br><span class="line">    <span class="keyword">while</span> fen_idx &lt; fen_u8.len() &#123;</span><br><span class="line">        <span class="keyword">let</span> <span class="keyword">mut</span> chess_id = EMPTY;</span><br><span class="line">        <span class="keyword">match</span> fen_u8[fen_idx] &#123;</span><br><span class="line">            c @ <span class="string">b&#x27;e&#x27;</span> | c @ <span class="string">b&#x27;E&#x27;</span> =&gt; &#123; chess_id = get_chess_id(get_role(c), ELEPHANT); &#125;</span><br><span class="line">            c @ <span class="string">b&#x27;l&#x27;</span> | c @ <span class="string">b&#x27;L&#x27;</span> =&gt; &#123; chess_id = get_chess_id(get_role(c), LION);     &#125;</span><br><span class="line">            c @ <span class="string">b&#x27;t&#x27;</span> | c @ <span class="string">b&#x27;T&#x27;</span> =&gt; &#123; chess_id = get_chess_id(get_role(c), TIGER);    &#125;</span><br><span class="line">            c @ <span class="string">b&#x27;p&#x27;</span> | c @ <span class="string">b&#x27;P&#x27;</span> =&gt; &#123; chess_id = get_chess_id(get_role(c), PANTHER);  &#125;</span><br><span class="line">            c @ <span class="string">b&#x27;w&#x27;</span> | c @ <span class="string">b&#x27;W&#x27;</span> =&gt; &#123; chess_id = get_chess_id(get_role(c), WOLF);     &#125;</span><br><span class="line">            c @ <span class="string">b&#x27;d&#x27;</span> | c @ <span class="string">b&#x27;D&#x27;</span> =&gt; &#123; chess_id = get_chess_id(get_role(c), DOG);      &#125;</span><br><span class="line">            c @ <span class="string">b&#x27;c&#x27;</span> | c @ <span class="string">b&#x27;C&#x27;</span> =&gt; &#123; chess_id = get_chess_id(get_role(c), CAT);      &#125;</span><br><span class="line">            c @ <span class="string">b&#x27;r&#x27;</span> | c @ <span class="string">b&#x27;R&#x27;</span> =&gt; &#123; chess_id = get_chess_id(get_role(c), RAT);      &#125;</span><br><span class="line">            n @ <span class="string">b&#x27;1&#x27;</span> ..= <span class="string">b&#x27;9&#x27;</span>   =&gt; &#123; pos += (n - <span class="string">b&#x27;0&#x27;</span>) <span class="keyword">as</span> <span class="built_in">usize</span>; &#125;</span><br><span class="line">            <span class="string">b&#x27;/&#x27;</span> =&gt; &#123; &#125;</span><br><span class="line">            <span class="string">b&#x27; &#x27;</span> =&gt; &#123; <span class="keyword">break</span>; &#125;</span><br><span class="line">            _    =&gt; &#123; <span class="built_in">unreachable!</span>() &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> chess_id != EMPTY &#123;</span><br><span class="line">            <span class="keyword">self</span>.chesses[pos / COL_NUM][pos % COL_NUM] = chess_id;</span><br><span class="line">            pos += <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        fen_idx += <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    fen_idx += <span class="number">1</span>; <span class="comment">// eat &#x27; &#x27;</span></span><br><span class="line">    <span class="keyword">self</span>.role = <span class="keyword">if</span> fen_u8[fen_idx] == <span class="string">b&#x27;w&#x27;</span> &#123; RED &#125;</span><br><span class="line">                <span class="keyword">else</span> &#123; BLACK &#125;;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-rs" data-language="rs"><code class="language-rs">fn load_fen(&amp;mut self, fen: &amp;str) &#123;
+    let fen_u8 &#x3D; fen.as_bytes();
+    let mut fen_idx &#x3D; 0;
+
+    let get_role &#x3D; |c: u8| -&gt; Role &#123;
+        if (c as char).is_lowercase() &#123; BLACK &#125;
+        else &#123; RED &#125;
+    &#125;;
+
+    let mut pos &#x3D; 0usize;
+    while fen_idx &lt; fen_u8.len() &#123;
+        let mut chess_id &#x3D; EMPTY;
+        match fen_u8[fen_idx] &#123;
+            c @ b&#39;e&#39; | c @ b&#39;E&#39; &#x3D;&gt; &#123; chess_id &#x3D; get_chess_id(get_role(c), ELEPHANT); &#125;
+            c @ b&#39;l&#39; | c @ b&#39;L&#39; &#x3D;&gt; &#123; chess_id &#x3D; get_chess_id(get_role(c), LION);     &#125;
+            c @ b&#39;t&#39; | c @ b&#39;T&#39; &#x3D;&gt; &#123; chess_id &#x3D; get_chess_id(get_role(c), TIGER);    &#125;
+            c @ b&#39;p&#39; | c @ b&#39;P&#39; &#x3D;&gt; &#123; chess_id &#x3D; get_chess_id(get_role(c), PANTHER);  &#125;
+            c @ b&#39;w&#39; | c @ b&#39;W&#39; &#x3D;&gt; &#123; chess_id &#x3D; get_chess_id(get_role(c), WOLF);     &#125;
+            c @ b&#39;d&#39; | c @ b&#39;D&#39; &#x3D;&gt; &#123; chess_id &#x3D; get_chess_id(get_role(c), DOG);      &#125;
+            c @ b&#39;c&#39; | c @ b&#39;C&#39; &#x3D;&gt; &#123; chess_id &#x3D; get_chess_id(get_role(c), CAT);      &#125;
+            c @ b&#39;r&#39; | c @ b&#39;R&#39; &#x3D;&gt; &#123; chess_id &#x3D; get_chess_id(get_role(c), RAT);      &#125;
+            n @ b&#39;1&#39; ..&#x3D; b&#39;9&#39;   &#x3D;&gt; &#123; pos +&#x3D; (n - b&#39;0&#39;) as usize; &#125;
+            b&#39;&#x2F;&#39; &#x3D;&gt; &#123; &#125;
+            b&#39; &#39; &#x3D;&gt; &#123; break; &#125;
+            _    &#x3D;&gt; &#123; unreachable!() &#125;
+        &#125;
+
+        if chess_id !&#x3D; EMPTY &#123;
+            self.chesses[pos &#x2F; COL_NUM][pos % COL_NUM] &#x3D; chess_id;
+            pos +&#x3D; 1;
+        &#125;
+        fen_idx +&#x3D; 1;
+    &#125;
+    fen_idx +&#x3D; 1; &#x2F;&#x2F; eat &#39; &#39;
+    self.role &#x3D; if fen_u8[fen_idx] &#x3D;&#x3D; b&#39;w&#39; &#123; RED &#125;
+                else &#123; BLACK &#125;;
+
+&#125;</code></pre>
 
 <p><code>c @ b&#39;e&#39; | c @ b&#39;E&#39; =&gt; &#123; chess_id = get_chess_id(get_role(c), ELEPHANT); &#125;</code>这句表达了若为<code>e</code>或者<code>E</code>，则通过颜色来得到对应的棋子id。可惜Rust目前还不支持这种写法：<code>c @ (b&#39;e&#39; | b&#39;E&#39;)</code>，目前or-patterns syntax is experimental，暂时这么写了。</p>
-<h2 id="lambda表达式"><a href="#lambda表达式" class="headerlink" title="lambda表达式"></a>lambda表达式</h2><figure class="highlight rs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> get_role = |c: <span class="built_in">u8</span>| -&gt; Role &#123;</span><br><span class="line">    <span class="keyword">if</span> (c <span class="keyword">as</span> <span class="built_in">char</span>).is_lowercase() &#123; BLACK &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123; RED &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="lambda表达式"><a href="#lambda表达式" class="headerlink" title="lambda表达式"></a>lambda表达式</h2><pre class="language-rs" data-language="rs"><code class="language-rs">let get_role &#x3D; |c: u8| -&gt; Role &#123;
+    if (c as char).is_lowercase() &#123; BLACK &#125;
+    else &#123; RED &#125;
+&#125;;</code></pre>
 <p>用<code>lambda</code>表达式封装<code>get_role</code>来通过字符大小写判断红黑色，避免重复代码，因为这个函数只有内部使用，没必要封装成一个单独函数。</p>
 <h2 id="迭代器"><a href="#迭代器" class="headerlink" title="迭代器"></a>迭代器</h2><p>Rust的迭代器也很爽，目前C++ 20的<code>std::views</code>也简化了这种操作，看看例子。</p>
 <p>来看看基本走法的生成，也就是只能走十字，每次只能走一格，老鼠可以进河。</p>
-<figure class="highlight rs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">generate_basic_steps</span></span>(&amp;<span class="keyword">self</span>, src: POS, to_water: <span class="built_in">bool</span>) -&gt; <span class="built_in">Vec</span>&lt;MOVE&gt; &#123;</span><br><span class="line">    <span class="keyword">const</span> DX: [<span class="built_in">i32</span>; <span class="number">4</span>] = [<span class="number">1</span>, <span class="number">0</span>, -<span class="number">1</span>, <span class="number">0</span>];</span><br><span class="line">    <span class="keyword">const</span> DY: [<span class="built_in">i32</span>; <span class="number">4</span>] = [<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, -<span class="number">1</span>];</span><br><span class="line">    <span class="keyword">let</span> src_ = get_pos(src);</span><br><span class="line">    <span class="keyword">let</span> (x, y) = (src_.<span class="number">0</span> <span class="keyword">as</span> <span class="built_in">i32</span>, src_.<span class="number">1</span> <span class="keyword">as</span> <span class="built_in">i32</span>);</span><br><span class="line"></span><br><span class="line">    (<span class="number">0</span>..<span class="number">4</span>).into_iter().map(|idx| &#123;</span><br><span class="line">        to_move(&amp;(get_pos(src), ((x + DX[idx]) <span class="keyword">as</span> <span class="built_in">usize</span>, (y + DY[idx]) <span class="keyword">as</span> <span class="built_in">usize</span>)))</span><br><span class="line">    &#125;).filter(|&amp;mv| &#123;</span><br><span class="line">        <span class="keyword">let</span> (_, dst) = get_move(mv);</span><br><span class="line">        dst.<span class="number">0</span> &lt; ROW_NUM &amp;&amp; dst.<span class="number">1</span> &lt; COL_NUM &amp;&amp;</span><br><span class="line">        <span class="keyword">self</span>.check_movable(src, get_dst_pos(mv)) &amp;&amp;</span><br><span class="line">        (! Self::check_in_water(to_pos(&amp;dst)) || to_water)</span><br><span class="line">    &#125;).collect()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-rs" data-language="rs"><code class="language-rs">fn generate_basic_steps(&amp;self, src: POS, to_water: bool) -&gt; Vec&lt;MOVE&gt; &#123;
+    const DX: [i32; 4] &#x3D; [1, 0, -1, 0];
+    const DY: [i32; 4] &#x3D; [0, 1, 0, -1];
+    let src_ &#x3D; get_pos(src);
+    let (x, y) &#x3D; (src_.0 as i32, src_.1 as i32);
+
+    (0..4).into_iter().map(|idx| &#123;
+        to_move(&amp;(get_pos(src), ((x + DX[idx]) as usize, (y + DY[idx]) as usize)))
+    &#125;).filter(|&amp;mv| &#123;
+        let (_, dst) &#x3D; get_move(mv);
+        dst.0 &lt; ROW_NUM &amp;&amp; dst.1 &lt; COL_NUM &amp;&amp;
+        self.check_movable(src, get_dst_pos(mv)) &amp;&amp;
+        (! Self::check_in_water(to_pos(&amp;dst)) || to_water)
+    &#125;).collect()
+&#125;</code></pre>
 
 <p><code>(0..4).into_iter()</code>生成<code>[0,4)</code>的range，然后基于range做计算。</p>
 <p>通过<code>idx</code>得到四个方向的坐标，生成(src, dst)移动向量。</p>
-<figure class="highlight rs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.map(|idx| &#123;</span><br><span class="line">    to_move(&amp;(get_pos(src), ((x + DX[idx]) <span class="keyword">as</span> <span class="built_in">usize</span>, (y + DY[idx]) <span class="keyword">as</span> <span class="built_in">usize</span>)))</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<pre class="language-rs" data-language="rs"><code class="language-rs">.map(|idx| &#123;
+    to_move(&amp;(get_pos(src), ((x + DX[idx]) as usize, (y + DY[idx]) as usize)))
+&#125;)</code></pre>
 
 <p>过滤四个方向，只有在范围内、可以吃掉对方、能过河的结果保留下来：</p>
-<figure class="highlight rs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">.filter(|&amp;mv| &#123;</span><br><span class="line">    <span class="keyword">let</span> (_, dst) = get_move(mv);</span><br><span class="line">    dst.<span class="number">0</span> &lt; ROW_NUM &amp;&amp; dst.<span class="number">1</span> &lt; COL_NUM &amp;&amp;</span><br><span class="line">    <span class="keyword">self</span>.check_movable(src, get_dst_pos(mv)) &amp;&amp;</span><br><span class="line">    (! Self::check_in_water(to_pos(&amp;dst)) || to_water)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<pre class="language-rs" data-language="rs"><code class="language-rs">.filter(|&amp;mv| &#123;
+    let (_, dst) &#x3D; get_move(mv);
+    dst.0 &lt; ROW_NUM &amp;&amp; dst.1 &lt; COL_NUM &amp;&amp;
+    self.check_movable(src, get_dst_pos(mv)) &amp;&amp;
+    (! Self::check_in_water(to_pos(&amp;dst)) || to_water)
+&#125;)</code></pre>
 
 
 <p>接下来是狮子、老虎的走法生成：</p>
-<figure class="highlight rs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">generate_tl_steps</span></span>(&amp;<span class="keyword">self</span>, src: POS) -&gt; <span class="built_in">Vec</span>&lt;MOVE&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut</span> basic_steps = <span class="keyword">self</span>.generate_basic_steps(src, <span class="literal">false</span>);</span><br><span class="line">    <span class="keyword">let</span> src_ = get_pos(src);</span><br><span class="line">    <span class="keyword">if</span> Self::check_at_bank(src) &#123;</span><br><span class="line">        <span class="comment">// [2, 6]</span></span><br><span class="line">        <span class="keyword">if</span> (src_.<span class="number">0</span> + <span class="number">2</span>) % <span class="number">4</span> == <span class="number">0</span> &#123;</span><br><span class="line">            basic_steps.push(to_move(&amp;(src_, ((src_.<span class="number">0</span> + <span class="number">4</span>) % <span class="number">8</span>, src_.<span class="number">1</span>))));</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> src_.<span class="number">1</span> % <span class="number">6</span> == <span class="number">0</span> &#123;</span><br><span class="line">                basic_steps.push(to_move(&amp;(src_, (src_.<span class="number">0</span>, <span class="number">3</span>))));</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                basic_steps.push(to_move(&amp;(src_, (src_.<span class="number">0</span>, <span class="number">0</span>))));</span><br><span class="line">                basic_steps.push(to_move(&amp;(src_, (src_.<span class="number">0</span>, <span class="number">6</span>))));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        basic_steps = basic_steps.into_iter().filter(|&amp;mv| &#123;</span><br><span class="line">            <span class="keyword">let</span> (src, dst) = (get_src_pos(mv), get_dst_pos(mv));</span><br><span class="line">            <span class="keyword">self</span>.check_movable(src, dst) &amp;&amp; !<span class="keyword">self</span>.check_rat(src, dst)</span><br><span class="line">        &#125;).collect()</span><br><span class="line">    &#125;</span><br><span class="line">    basic_steps</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-rs" data-language="rs"><code class="language-rs">fn generate_tl_steps(&amp;self, src: POS) -&gt; Vec&lt;MOVE&gt; &#123;
+    let mut basic_steps &#x3D; self.generate_basic_steps(src, false);
+    let src_ &#x3D; get_pos(src);
+    if Self::check_at_bank(src) &#123;
+        &#x2F;&#x2F; [2, 6]
+        if (src_.0 + 2) % 4 &#x3D;&#x3D; 0 &#123;
+            basic_steps.push(to_move(&amp;(src_, ((src_.0 + 4) % 8, src_.1))));
+        &#125; else &#123;
+            if src_.1 % 6 &#x3D;&#x3D; 0 &#123;
+                basic_steps.push(to_move(&amp;(src_, (src_.0, 3))));
+            &#125; else &#123;
+                basic_steps.push(to_move(&amp;(src_, (src_.0, 0))));
+                basic_steps.push(to_move(&amp;(src_, (src_.0, 6))));
+            &#125;
+        &#125;
+
+        basic_steps &#x3D; basic_steps.into_iter().filter(|&amp;mv| &#123;
+            let (src, dst) &#x3D; (get_src_pos(mv), get_dst_pos(mv));
+            self.check_movable(src, dst) &amp;&amp; !self.check_rat(src, dst)
+        &#125;).collect()
+    &#125;
+    basic_steps
+&#125;</code></pre>
 
 <p>首先得到基本走法，然后生成跳河走法。最后的<code>filter</code>过滤无效的移动，例如狮子老虎跳河的时候中间不能有老鼠，对岸的棋子比自己小时。</p>
-<figure class="highlight rs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">basic_steps.into_iter().filter(|&amp;mv| &#123;</span><br><span class="line">    <span class="keyword">let</span> (src, dst) = (get_src_pos(mv), get_dst_pos(mv));</span><br><span class="line">    <span class="keyword">self</span>.check_movable(src, dst) &amp;&amp; !<span class="keyword">self</span>.check_rat(src, dst)</span><br><span class="line">&#125;).collect()</span><br></pre></td></tr></table></figure>
+<pre class="language-rs" data-language="rs"><code class="language-rs">basic_steps.into_iter().filter(|&amp;mv| &#123;
+    let (src, dst) &#x3D; (get_src_pos(mv), get_dst_pos(mv));
+    self.check_movable(src, dst) &amp;&amp; !self.check_rat(src, dst)
+&#125;).collect()</code></pre>
 
 <p>通过迭代器的<code>map</code>可以做类型转换，从而传参给指定类型的接口。例如<code>fn draw_frame(&amp;mut self, tgt_pos: &amp;Vec&lt;POS&gt;)</code>接口，需要的参数类型为<code>Vec&lt;POS&gt;</code>，可实际参数是<code>Vec&lt;MOVE&gt;</code>，通过如下转换：</p>
-<figure class="highlight rs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">process_selected_chess</span></span>(&amp;<span class="keyword">mut</span> <span class="keyword">self</span>) -&gt; <span class="built_in">Result</span>&lt;(), <span class="built_in">String</span>&gt; &#123;</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">let</span> <span class="literal">Some</span>(pos) = <span class="keyword">self</span>.selected_chess &#123;</span><br><span class="line">        <span class="keyword">self</span>.draw_frame(&amp;<span class="built_in">vec!</span>[pos])?;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">self</span>.movable_pos = <span class="keyword">self</span>.generate_steps(pos);</span><br><span class="line">        <span class="keyword">self</span>.draw_frame(&amp;<span class="keyword">self</span>.movable_pos.iter().map(|&amp;mv| &#123; get_dst_pos(mv) &#125;).collect())?;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="literal">Ok</span>(())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-rs" data-language="rs"><code class="language-rs">fn process_selected_chess(&amp;mut self) -&gt; Result&lt;(), String&gt; &#123;
+    if let Some(pos) &#x3D; self.selected_chess &#123;
+        self.draw_frame(&amp;vec![pos])?;
+
+        self.movable_pos &#x3D; self.generate_steps(pos);
+        self.draw_frame(&amp;self.movable_pos.iter().map(|&amp;mv| &#123; get_dst_pos(mv) &#125;).collect())?;
+    &#125;
+    Ok(())
+&#125;</code></pre>
 
 <p>这个接口绘制选中的棋子、以及可移动的格子的框框，<code>self.movable_pos.iter().map(|&amp;mv| &#123; get_dst_pos(mv) &#125;).collect()</code>进行类型转换，只保留<code>dst</code>的坐标。</p>
 <h2 id="Borrow-Checker"><a href="#Borrow-Checker" class="headerlink" title="Borrow Checker"></a>Borrow Checker</h2><p>Rust通过借用检查来避免写出不安全的代码：</p>
@@ -334,22 +500,84 @@ ga('send', 'pageview');
 <li>第二，对于同一个资源（resource）的借用，即同一个作用域下，要么只有一个对资源 A 的可变引用（<code>&amp;mut T</code>），要么有N个不可变引用（<code>&amp;T</code>），但不能同时存在可变和不可变的引用</li>
 </ul>
 <p>所以如下代码：</p>
-<figure class="highlight rs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut</span> undo = <span class="literal">false</span>;</span><br><span class="line"><span class="keyword">for</span> event <span class="keyword">in</span> <span class="keyword">self</span>.event_pump.poll_iter() &#123;</span><br><span class="line">    <span class="keyword">match</span> event &#123;</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">        Event::KeyDown &#123; keycode: <span class="literal">Some</span>(keycode), .. &#125; =&gt; &#123;</span><br><span class="line">            <span class="keyword">match</span> keycode &#123;</span><br><span class="line">                Keycode::U      =&gt; &#123; undo = <span class="literal">true</span>; &#125;</span><br><span class="line">                _ =&gt; &#123;&#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        _ =&gt; &#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> undo &#123;</span><br><span class="line">    <span class="keyword">self</span>.undo_move();</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">self</span>.compture_turn &#123; <span class="keyword">self</span>.undo_move(); &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-rs" data-language="rs"><code class="language-rs">let mut undo &#x3D; false;
+for event in self.event_pump.poll_iter() &#123;
+    match event &#123;
+        &#x2F;&#x2F; ...
+        Event::KeyDown &#123; keycode: Some(keycode), .. &#125; &#x3D;&gt; &#123;
+            match keycode &#123;
+                Keycode::U      &#x3D;&gt; &#123; undo &#x3D; true; &#125;
+                _ &#x3D;&gt; &#123;&#125;
+            &#125;
+        &#125;
+        _ &#x3D;&gt; &#123;&#125;
+    &#125;
+&#125;
+if undo &#123;
+    self.undo_move();
+    if self.compture_turn &#123; self.undo_move(); &#125;
+&#125;</code></pre>
 <p>不能直接写成：</p>
-<figure class="highlight rs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> event <span class="keyword">in</span> <span class="keyword">self</span>.event_pump.poll_iter() &#123;</span><br><span class="line">    <span class="keyword">match</span> event &#123;</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">        Event::KeyDown &#123; keycode: <span class="literal">Some</span>(keycode), .. &#125; =&gt; &#123;</span><br><span class="line">            <span class="keyword">match</span> keycode &#123;</span><br><span class="line">                Keycode::U      =&gt; &#123;</span><br><span class="line">                    <span class="keyword">self</span>.undo_move();</span><br><span class="line">                    <span class="keyword">if</span> <span class="keyword">self</span>.compture_turn &#123; <span class="keyword">self</span>.undo_move(); &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                _ =&gt; &#123;&#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        _ =&gt; &#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-rs" data-language="rs"><code class="language-rs">for event in self.event_pump.poll_iter() &#123;
+    match event &#123;
+        &#x2F;&#x2F; ...
+        Event::KeyDown &#123; keycode: Some(keycode), .. &#125; &#x3D;&gt; &#123;
+            match keycode &#123;
+                Keycode::U      &#x3D;&gt; &#123;
+                    self.undo_move();
+                    if self.compture_turn &#123; self.undo_move(); &#125;
+                &#125;
+                _ &#x3D;&gt; &#123;&#125;
+            &#125;
+        &#125;
+        _ &#x3D;&gt; &#123;&#125;
+    &#125;
+&#125;</code></pre>
 
 <p>因为<code>self.event_pump.poll_iter()</code>拿到了<code>&amp;mut self</code>，而<code>self.undo_move()</code>也拿到了<code>&amp;mut self</code>，这在Rust是绝对不允许的。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">error[E0499]: cannot borrow &#96;*self&#96; as mutable more than once at a time</span><br><span class="line">   --&gt; src&#x2F;game.rs:440:33</span><br><span class="line">    |</span><br><span class="line">433 |             for event in self.event_pump.poll_iter() &#123;</span><br><span class="line">    |                          ---------------------------</span><br><span class="line">    |                          |</span><br><span class="line">    |                          first mutable borrow occurs here</span><br><span class="line">    |                          first borrow later used here</span><br><span class="line">...</span><br><span class="line">440 |                                 self.undo_move();</span><br><span class="line">    |                                 ^^^^ second mutable borrow occurs here</span><br><span class="line"></span><br><span class="line">error[E0499]: cannot borrow &#96;*self&#96; as mutable more than once at a time</span><br><span class="line">   --&gt; src&#x2F;game.rs:441:57</span><br><span class="line">    |</span><br><span class="line">433 |             for event in self.event_pump.poll_iter() &#123;</span><br><span class="line">    |                          ---------------------------</span><br><span class="line">    |                          |</span><br><span class="line">    |                          first mutable borrow occurs here</span><br><span class="line">    |                          first borrow later used here</span><br><span class="line">...</span><br><span class="line">441 |                                 if self.compture_turn &#123; self.undo_move(); &#125;</span><br><span class="line">    |                                                         ^^^^ second mutable borrow occurs here</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">error[E0499]: cannot borrow &#96;*self&#96; as mutable more than once at a time
+   --&gt; src&#x2F;game.rs:440:33
+    |
+433 |             for event in self.event_pump.poll_iter() &#123;
+    |                          ---------------------------
+    |                          |
+    |                          first mutable borrow occurs here
+    |                          first borrow later used here
+...
+440 |                                 self.undo_move();
+    |                                 ^^^^ second mutable borrow occurs here
+
+error[E0499]: cannot borrow &#96;*self&#96; as mutable more than once at a time
+   --&gt; src&#x2F;game.rs:441:57
+    |
+433 |             for event in self.event_pump.poll_iter() &#123;
+    |                          ---------------------------
+    |                          |
+    |                          first mutable borrow occurs here
+    |                          first borrow later used here
+...
+441 |                                 if self.compture_turn &#123; self.undo_move(); &#125;
+    |                                                         ^^^^ second mutable borrow occurs here</code></pre>
 
 <h2 id="吐槽"><a href="#吐槽" class="headerlink" title="吐槽"></a>吐槽</h2><p>开发过程还是很爽的，但是也有一些小问题，记录在这。</p>
 <p><code>cargo publish</code>发布包的时候，没考虑<code>assets</code>的情况，所以<code>cargo install</code>后图片资源没法定位，目前没什么好的方案，所以最好通过下载源代码<code>cargo run</code>的形式来运行。</p>
 <p>相对C++来说标准库不够完善，很多基本接口都没有，例如<code>std::collections::LinkedList</code>连排序接口都没有，导致只能使用<code>Vec</code>这种简单的数据类型。估计是鼓励用第三方库吧，毕竟Rust对依赖处理的很好。</p>
 <p>标准库里的容器没有统一的<code>Trait</code>，导致写不出泛型参数，比如C++会通过<code>begin()/end()</code>接口来统一类型，C++ 20有<code>Concepts</code>来约束类型，而Rust的链表迭代器<code>Trait</code>都是链表自有的。</p>
 <p>C++代码是这样：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">process</span><span class="params">(T&amp; container)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> iter = container.begin(); iter != container.end(); iter += <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span><span class="token operator">&lt;</span>T<span class="token operator">></span>
+<span class="token keyword">void</span> <span class="token function">process</span><span class="token punctuation">(</span>T<span class="token operator">&amp;</span> container<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">auto</span> iter <span class="token operator">=</span> container<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> iter <span class="token operator">!=</span> container<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> iter <span class="token operator">+=</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">// ...</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span></code></pre>
 
 <p>Rust写不出来：</p>
-<figure class="highlight rs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">process</span></span>&lt;T&gt;(container: &amp;T)</span><br><span class="line">    <span class="keyword">where</span> T: ??</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">for</span> data <span class="keyword">in</span> container &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-rs" data-language="rs"><code class="language-rs">fn process&lt;T&gt;(container: &amp;T)
+    where T: ??
+&#123;
+    for data in container &#123;
+    &#125;
+&#125;</code></pre>
 
 <p>关于内存安全性，例如开发过程中数组越界访问了，会导致<code>panic</code>然后挂掉，这应该是最好结果。如果是C语言的话，数组越界访问是不会直接挂掉，这就留下了隐患让别有用心的人利用了。</p>
 <h2 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h2><p>接下来要做的是继续优化AI，可以考虑将AI模块分离出来，抽象<code>Trait</code>接口，实现类似于C++的<code>pImpl</code>模式，也就是策略模式吧。也不知道好不好做，毕竟这两个模块存在相互依赖的关系。</p>

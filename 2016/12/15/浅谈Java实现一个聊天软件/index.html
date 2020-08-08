@@ -45,10 +45,6 @@
 
 
   
-    
-<link rel="stylesheet" href="/css/personal-style.css">
-
-  
 
   
 <!-- Google Analytics -->
@@ -110,7 +106,9 @@ ga('send', 'pageview');
     <span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
   
 
-  <div class="post-header CENTER">
+  <link rel="stylesheet" href="/css/prism.css">
+
+<div class="post-header CENTER">
    
   <div class="toolbox">
     <a class="toolbox-entry" href="/">
@@ -310,16 +308,25 @@ ga('send', 'pageview');
 <h3 id="客户端pers-netcan-talk-client"><a href="#客户端pers-netcan-talk-client" class="headerlink" title="客户端pers.netcan.talk.client"></a>客户端<code>pers.netcan.talk.client</code></h3><p>客户端写的就比较凌乱了，它的职责无非就是解析服务器响应，展现给用户，同时将用户的操作（主要是发送命令）发送给服务器处理。</p>
 <p>看起来比较容易，细节还是比较难处理的。客户端开一个线程，每<code>300ms</code>发送一个<code>[GETUSRS]</code>报文给服务器，服务器响应报文，返回用户列表，也就是说每<code>300ms</code>刷新一下用户列表，这里起到2个作用，一是相当于心跳包，维持<code>TCP</code>长连接，二是实时获取在线用户，之后就是接收消息，每<code>300ms</code>接收一条消息是可以接受的。</p>
 <p>然而这个专门用来刷新消息的线程，若修改<code>UI</code>会出错，无奈查了大量资料，用<code>Task&lt;Void&gt;</code>来处理，将修改<code>UI</code>、刷新消息部分代码放到如下代码块中处理。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Platform.runLater(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<pre class="language-java" data-language="java"><code class="language-java"><span class="token class-name">Platform</span><span class="token punctuation">.</span><span class="token function">runLater</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Runnable</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
 
 <p>用户状态标记，这里当用户离线的时候，就加个<code>(Offline)</code>标记，有新消息，就加个<code>(*)</code>标记，用正则表达式<code>&quot;([\\w\\d]+)( \\((\\*|Offline)\\))?&quot;</code>来匹配是哪种状态，看起来够难写的。</p>
 <p>发送消息，响应发送按钮点击事件，和回车事件，然后将发送框中的消息<code>&lt;msg&gt;</code>，用户列表选中的用户<code>&lt;to&gt;</code>，发送<code>[SENDTO &lt;to&gt;]&lt;msg&gt;</code>指令给服务端。需要注意的是，为了减少特殊字符（例如换行）带来的麻烦，将消息字符串利用<code>base64</code>编码再发送，接收的时候再<code>base64</code>解码，就不用考虑那么多文本处理细节了。</p>
 <p>接收消息，每<code>300ms</code>响应一下服务端，然后检查是否有<code>[*FROM]</code>响应，并将消息存储至消息记录中。客户端展现出来。</p>
 <p>表情支持，将一些<code>Emoji</code>表情的<code>Unicode</code>码存到按钮中，然后响应按钮事件，点击按钮就把表情附加到发送框中，这里又出现一个问题，我将<code>emojis</code>定义为一个按钮数组，那么绑定事件会出现问题：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;TalkEmoji.emoji.length; ++i) &#123; <span class="comment">// 将表情显示到按钮上</span></span><br><span class="line">    emojis[i].setOnAction((event) -&gt; &#123;</span><br><span class="line">            sendMsg.appendText(emojis[i].getText());</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">&lt;</span><span class="token class-name">TalkEmoji</span><span class="token punctuation">.</span>emoji<span class="token punctuation">.</span>length<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 将表情显示到按钮上</span>
+    emojis<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">setOnAction</span><span class="token punctuation">(</span><span class="token punctuation">(</span>event<span class="token punctuation">)</span> <span class="token operator">-></span> <span class="token punctuation">&#123;</span>
+            sendMsg<span class="token punctuation">.</span><span class="token function">appendText</span><span class="token punctuation">(</span>emojis<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">getText</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre>
 
 <p>将编译不过去，因为<code>event</code>的<code>lambda</code>表达式引用了<code>i</code>这个外部变量，这在<code>Java</code>中是不允许的（只能将外部变量声明为<code>final</code>），<code>this</code>我也想过了，不行，没办法，又查了大量资料，解决如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">((Button) event.getSource()).getText()</span><br></pre></td></tr></table></figure>
+<pre class="language-java" data-language="java"><code class="language-java"><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token class-name">Button</span><span class="token punctuation">)</span> event<span class="token punctuation">.</span><span class="token function">getSource</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getText</span><span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
 
 <p>利用<code>event.getSource()</code>方法获取是哪个对象响应的事件。</p>
 <p>当用户点击退出按钮的时候，就将内存中的聊天记录以用户名为文件名的方式保存到文件中，登录的时候加载一下文件的内容到内存中即可。</p>

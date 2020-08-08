@@ -38,10 +38,6 @@
 
 
   
-    
-<link rel="stylesheet" href="/css/personal-style.css">
-
-  
 
   
 <!-- Google Analytics -->
@@ -103,7 +99,9 @@ ga('send', 'pageview');
     <span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
   
 
-  <div class="post-header CENTER">
+  <link rel="stylesheet" href="/css/prism.css">
+
+<div class="post-header CENTER">
    
   <div class="toolbox">
     <a class="toolbox-entry" href="/">
@@ -296,7 +294,17 @@ ga('send', 'pageview');
 <li><code>pushl</code>后<code>%esp</code>的值，亦即<code>-4</code>后的值</li>
 </ul>
 <p>似乎2个都对，<em>IA32</em>对这种问题有约定答案，<em>Y86</em>也遵循这些约定。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">.text</span><br><span class="line">.globl pushtest</span><br><span class="line">pushtest:</span><br><span class="line">    pushl %ebp</span><br><span class="line">    movl %esp, %ebp</span><br><span class="line">    movl %esp, %eax</span><br><span class="line">    pushl %esp</span><br><span class="line">    popl %edx</span><br><span class="line">    subl %edx,%eax</span><br><span class="line">    leave</span><br><span class="line">    ret</span><br></pre></td></tr></table></figure>
+<pre class="language-asm" data-language="asm"><code class="language-asm">.text
+.globl pushtest
+pushtest:
+    pushl %ebp
+    movl %esp, %ebp
+    movl %esp, %eax
+    pushl %esp
+    popl %edx
+    subl %edx,%eax
+    leave
+    ret</code></pre>
 
 <p>运行以上代码，结果总是0，那么答案就是第一种可能。<em>INTEL</em>文档约定了这个问题的答案：</p>
 <ul>

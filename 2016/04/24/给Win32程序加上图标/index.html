@@ -41,10 +41,6 @@
 
 
   
-    
-<link rel="stylesheet" href="/css/personal-style.css">
-
-  
 
   
 <!-- Google Analytics -->
@@ -106,7 +102,9 @@ ga('send', 'pageview');
     <span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
   
 
-  <div class="post-header CENTER">
+  <link rel="stylesheet" href="/css/prism.css">
+
+<div class="post-header CENTER">
    
   <div class="toolbox">
     <a class="toolbox-entry" href="/">
@@ -254,7 +252,31 @@ ga('send', 'pageview');
 <p>下面说下具体步骤：</p>
 <a id="more"></a>
 <h3 id="创建rc文件"><a href="#创建rc文件" class="headerlink" title="创建rc文件"></a>创建rc文件</h3><p>首先创建<code>.rc</code>文件，添加如下内容：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">id ICON &quot;slidepuzzle.ico&quot;</span><br><span class="line">VERSIONINFO</span><br><span class="line">FILEVERSION     1,1,0,0</span><br><span class="line">PRODUCTVERSION  1,1,0,0</span><br><span class="line">BEGIN</span><br><span class="line">  BLOCK &quot;StringFileInfo&quot;</span><br><span class="line">  BEGIN</span><br><span class="line">    BLOCK &quot;040904E4&quot;</span><br><span class="line">    BEGIN</span><br><span class="line">      VALUE &quot;CompanyName&quot;, &quot;Netcan Soft&quot;</span><br><span class="line">      VALUE &quot;FileDescription&quot;, &quot;Sliding Puzzle&quot;</span><br><span class="line">      VALUE &quot;FileVersion&quot;, &quot;1.1&quot;</span><br><span class="line">      VALUE &quot;InternalName&quot;, &quot;slidepuzzle&quot;</span><br><span class="line">      VALUE &quot;LegalCopyright&quot;, &quot;Netcan Soft&quot;</span><br><span class="line">      VALUE &quot;OriginalFilename&quot;, &quot;slidepuzzle.exe&quot;</span><br><span class="line">      VALUE &quot;ProductName&quot;, &quot;SlidePuzzle&quot;</span><br><span class="line">      VALUE &quot;ProductVersion&quot;, &quot;1.1&quot;</span><br><span class="line">    END</span><br><span class="line">  END</span><br><span class="line"></span><br><span class="line">  BLOCK &quot;VarFileInfo&quot;</span><br><span class="line">  BEGIN</span><br><span class="line">    VALUE &quot;Translation&quot;, 0x409, 1252</span><br><span class="line">  END</span><br><span class="line">END</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">id ICON &quot;slidepuzzle.ico&quot;
+VERSIONINFO
+FILEVERSION     1,1,0,0
+PRODUCTVERSION  1,1,0,0
+BEGIN
+  BLOCK &quot;StringFileInfo&quot;
+  BEGIN
+    BLOCK &quot;040904E4&quot;
+    BEGIN
+      VALUE &quot;CompanyName&quot;, &quot;Netcan Soft&quot;
+      VALUE &quot;FileDescription&quot;, &quot;Sliding Puzzle&quot;
+      VALUE &quot;FileVersion&quot;, &quot;1.1&quot;
+      VALUE &quot;InternalName&quot;, &quot;slidepuzzle&quot;
+      VALUE &quot;LegalCopyright&quot;, &quot;Netcan Soft&quot;
+      VALUE &quot;OriginalFilename&quot;, &quot;slidepuzzle.exe&quot;
+      VALUE &quot;ProductName&quot;, &quot;SlidePuzzle&quot;
+      VALUE &quot;ProductVersion&quot;, &quot;1.1&quot;
+    END
+  END
+
+  BLOCK &quot;VarFileInfo&quot;
+  BEGIN
+    VALUE &quot;Translation&quot;, 0x409, 1252
+  END
+END</code></pre>
 
 <p>根据相关字段进行修改即可，<code>ICON</code>指定了图标。</p>
 <h3 id="导出-res文件"><a href="#导出-res文件" class="headerlink" title="导出.res文件"></a>导出.res文件</h3><pre><code>windres my.rc -O coff -o my.res</code></pre>
