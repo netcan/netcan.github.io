@@ -5,9 +5,9 @@
 
 
 <head>
-  <meta charset="utf-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
-  <title>数据链路层差错编码之奇偶校验码和CRC校验 | Netcan on Programming</title>
+  <title>数据链路层差错编码之奇偶校验码和 CRC 校验 | Netcan on Programming</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -15,15 +15,15 @@
     <meta name="keywords" content="计算机网络," />
   
 
-  <meta name="description" content="刚刚到操场完成了大学第一个5公里慢跑，现在神清气爽。 今天学到了数据链路层，看到了各种差错编码，例如奇偶校验码，循环冗余校验码（CRC）等等，都是在数据后面加个冗余信息用于判断。 D &#x3D;&gt; DR(R为差错检验或者纠正比特) 奇偶校验码奇偶校验码比较简单了，就是在一串数据后面加一位，用来凑够奇数个（奇校验）或偶数个（偶校验）1。 举个栗子： 奇校验:01100110 &#x3D;&gt; 0110011">
+  <meta name="description" content="刚刚到操场完成了大学第一个 5 公里慢跑，现在神清气爽。 今天学到了数据链路层，看到了各种差错编码，例如奇偶校验码，循环冗余校验码（CRC）等等，都是在数据后面加个冗余信息用于判断。 D &#x3D;&gt; DR (R 为差错检验或者纠正比特)  奇偶校验码 奇偶校验码比较简单了，就是在一串数据后面加一位，用来凑够奇数个（奇校验）或偶数个（偶校验）1。 举个栗子： 奇校验: 01100110 &#x3D;&gt;">
 <meta property="og:type" content="article">
-<meta property="og:title" content="数据链路层差错编码之奇偶校验码和CRC校验">
+<meta property="og:title" content="数据链路层差错编码之奇偶校验码和 CRC 校验">
 <meta property="og:url" content="https://netcan.github.io/2016/03/11/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%E5%B7%AE%E9%94%99%E7%BC%96%E7%A0%81%E4%B9%8B%E5%A5%87%E5%81%B6%E6%A0%A1%E9%AA%8C%E7%A0%81%E5%92%8CCRC%E6%A0%A1%E9%AA%8C/index.html">
 <meta property="og:site_name" content="Netcan on Programming">
-<meta property="og:description" content="刚刚到操场完成了大学第一个5公里慢跑，现在神清气爽。 今天学到了数据链路层，看到了各种差错编码，例如奇偶校验码，循环冗余校验码（CRC）等等，都是在数据后面加个冗余信息用于判断。 D &#x3D;&gt; DR(R为差错检验或者纠正比特) 奇偶校验码奇偶校验码比较简单了，就是在一串数据后面加一位，用来凑够奇数个（奇校验）或偶数个（偶校验）1。 举个栗子： 奇校验:01100110 &#x3D;&gt; 0110011">
+<meta property="og:description" content="刚刚到操场完成了大学第一个 5 公里慢跑，现在神清气爽。 今天学到了数据链路层，看到了各种差错编码，例如奇偶校验码，循环冗余校验码（CRC）等等，都是在数据后面加个冗余信息用于判断。 D &#x3D;&gt; DR (R 为差错检验或者纠正比特)  奇偶校验码 奇偶校验码比较简单了，就是在一串数据后面加一位，用来凑够奇数个（奇校验）或偶数个（偶校验）1。 举个栗子： 奇校验: 01100110 &#x3D;&gt;">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2016-03-11T11:59:32.000Z">
-<meta property="article:modified_time" content="2016-09-24T14:18:45.000Z">
+<meta property="article:modified_time" content="2020-08-09T01:01:02.177Z">
 <meta property="article:author" content="Netcan">
 <meta property="article:tag" content="计算机网络">
 <meta name="twitter:card" content="summary">
@@ -93,14 +93,14 @@ ga('send', 'pageview');
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
   
 
-<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body>
 
 
   
-    <span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
   
 
   <link rel="stylesheet" href="/css/prism.css">
@@ -190,7 +190,7 @@ ga('send', 'pageview');
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A5%87%E5%81%B6%E6%A0%A1%E9%AA%8C%E7%A0%81"><span class="toc-text">奇偶校验码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A5%87%E6%A0%A1%E9%AA%8C"><span class="toc-text">奇校验:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%81%B6%E6%A0%A1%E9%AA%8C"><span class="toc-text">偶校验</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E7%BB%B4%E5%A5%87%E5%81%B6%E6%A0%A1%E9%AA%8C"><span class="toc-text">二维奇偶校验</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A0%E9%94%99%E6%83%85%E5%86%B5"><span class="toc-text">无错情况</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%89%E9%94%99-amp-%E7%BA%A0%E9%94%99"><span class="toc-text">有错&amp;纠错</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CRC%E6%A0%A1%E9%AA%8C"><span class="toc-text">CRC校验</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B1%82R"><span class="toc-text">求R</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%A1%E9%AA%8C"><span class="toc-text">校验</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A5%87%E5%81%B6%E6%A0%A1%E9%AA%8C%E7%A0%81"><span class="toc-text">奇偶校验码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A5%87%E6%A0%A1%E9%AA%8C"><span class="toc-text">奇校验:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%81%B6%E6%A0%A1%E9%AA%8C"><span class="toc-text">偶校验</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E7%BB%B4%E5%A5%87%E5%81%B6%E6%A0%A1%E9%AA%8C"><span class="toc-text">二维奇偶校验</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A0%E9%94%99%E6%83%85%E5%86%B5"><span class="toc-text">无错情况</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%89%E9%94%99-%E7%BA%A0%E9%94%99"><span class="toc-text">有错 &amp; 纠错</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CRC-%E6%A0%A1%E9%AA%8C"><span class="toc-text">CRC 校验</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B1%82-R"><span class="toc-text">求 R</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%A1%E9%AA%8C"><span class="toc-text">校验</span></a></li></ol></li></ol>
   </div>
 
 
@@ -198,7 +198,7 @@ ga('send', 'pageview');
 <div class="content content-post CENTER">
    <article id="post-数据链路层差错编码之奇偶校验码和CRC校验" class="article article-type-post" itemprop="blogPost">
   <header class="article-header">
-    <h1 class="post-title">数据链路层差错编码之奇偶校验码和CRC校验</h1>
+    <h1 class="post-title">数据链路层差错编码之奇偶校验码和 CRC 校验</h1>
 
     <div class="article-meta">
       <span>
@@ -236,109 +236,113 @@ ga('send', 'pageview');
 
   <div class="article-content">
     
-      <p>刚刚到操场完成了大学第一个5公里慢跑，现在神清气爽。</p>
+      <p>刚刚到操场完成了大学第一个 5 公里慢跑，现在神清气爽。</p>
 <p>今天学到了数据链路层，看到了各种差错编码，例如奇偶校验码，循环冗余校验码（<code>CRC</code>）等等，都是在数据后面加个冗余信息用于判断。</p>
-<pre><code>D =&gt; DR(R为差错检验或者纠正比特)</code></pre>
-<h2 id="奇偶校验码"><a href="#奇偶校验码" class="headerlink" title="奇偶校验码"></a>奇偶校验码</h2><p>奇偶校验码比较简单了，就是在一串数据后面加一位，用来凑够奇数个（奇校验）或偶数个（偶校验）<code>1</code>。</p>
+<pre><code>D =&gt; DR (R 为差错检验或者纠正比特)
+</code></pre>
+<h2 id="奇偶校验码">奇偶校验码</h2>
+<p>奇偶校验码比较简单了，就是在一串数据后面加一位，用来凑够奇数个（奇校验）或偶数个（偶校验）<code>1</code>。</p>
 <p>举个栗子：</p>
-<h3 id="奇校验"><a href="#奇校验" class="headerlink" title="奇校验:"></a>奇校验:</h3><pre><code>01100110 =&gt; 01100110(1)</code></pre>
-<h3 id="偶校验"><a href="#偶校验" class="headerlink" title="偶校验"></a>偶校验</h3><pre><code>01100110 =&gt; 01100110(0)</code></pre>
-<h3 id="二维奇偶校验"><a href="#二维奇偶校验" class="headerlink" title="二维奇偶校验"></a>二维奇偶校验</h3><p>二维奇偶校验就是同时检验每行，每列的奇偶校验，可以纠错。</p>
-<a id="more"></a>
-
+<h3 id="奇校验">奇校验:</h3>
+<pre><code>01100110 =&gt; 01100110 (1)
+</code></pre>
+<h3 id="偶校验">偶校验</h3>
+<pre><code>01100110 =&gt; 01100110 (0)
+</code></pre>
+<h3 id="二维奇偶校验">二维奇偶校验</h3>
+<p>二维奇偶校验就是同时检验每行，每列的奇偶校验，可以纠错。</p>
 
 $$
-\begin{array}{ccc|c}
+\begin {array}{ccc|c}
 d_{1,1} & \cdots & d_{1,j} & d_{1,j+1} \\
 d_{2,1} & \cdots & d_{2,j} & d_{2,j+1} \\
 \cdots & \cdots & \cdots & \cdots \\
 d_{i,1} & \cdots & d_{i,j} & d_{i,j+1} \\ \hline
 d_{i+1,1} & \cdots & d_{i+1,j} & d_{i+1,j+1}
-\end{array}
+\end {array}
 $$
-
 
 <p>举个栗子（下面都是偶校验）：</p>
-<h4 id="无错情况"><a href="#无错情况" class="headerlink" title="无错情况"></a>无错情况</h4>
+<h4 id="无错情况">无错情况</h4>
+
 $$
-\begin{array}{ccccc|c}
+\begin {array}{ccccc|c}
 1&0&1&0&1&1\\
 1&1&1&1&0&0\\
 0&1&1&1&0&1\\ \hline
 0&0&1&0&1&0
-\end{array}
+\end {array}
 $$
 
+<h4 id="有错-纠错">有错 &amp; 纠错</h4>
 
-<h4 id="有错-amp-纠错"><a href="#有错-amp-纠错" class="headerlink" title="有错&amp;纠错"></a>有错&amp;纠错</h4>
 $$
-\begin{array}{ccccc|c}
+\begin {array}{ccccc|c}
 1&0&1&0&1&1\\
-1&\color{red}{0}&1&1&0&0\\
+1&\color {red}{0}&1&1&0&0\\
 0&1&1&1&0&1\\ \hline
 0&0&1&0&1&0
-\end{array}
+\end {array}
 $$
 
-
-<h2 id="CRC校验"><a href="#CRC校验" class="headerlink" title="CRC校验"></a>CRC校验</h2><p>这才是重头戏，检错能力极强，据说准确率可达<code>99%</code>。先来看看它的算法：</p>
+<h2 id="CRC-校验">CRC 校验</h2>
+<p>这才是重头戏，检错能力极强，据说准确率可达 <code>99%</code>。先来看看它的算法：</p>
 <ol>
-<li>将原数据比特$D$视为一个二进制数（本来就是二进制）</li>
-<li>发送接收双方约定一个$r+1$位的生成函数$G$，也是用二进制表示。</li>
-<li>找出一个$r$位<code>CRC</code>比特$R$，附带在$D$后面用于冗余校验码。</li>
+<li>将原数据比特 $D$ 视为一个二进制数（本来就是二进制）</li>
+<li>发送接收双方约定一个 $r+1$ 位的生成函数 $G$，也是用二进制表示。</li>
+<li>找出一个 $r$ 位 <code>CRC</code> 比特 $R$，附带在 $D$ 后面用于冗余校验码。</li>
 </ol>
-<p>检错的时候，就看看$G$能否整除$DR$，若余式全0，无错；否则有错。</p>
-<p>需要注意的是这里的整除，并不是平常所用的除法，而是<strong>模2除法</strong>，就是长除的时候减法用<strong>异或</strong>来计算，也就是不进位。</p>
-<p>所以可以这样来找$R$:</p>
+<p>检错的时候，就看看 $G$ 能否整除 $DR$，若余式全 0，无错；否则有错。</p>
+<p>需要注意的是这里的整除，并不是平常所用的除法，而是 ** 模 2 除法 **，就是长除的时候减法用 ** 异或 ** 来计算，也就是不进位。</p>
+<p>所以可以这样来找 $R$:</p>
 
 $$
-\begin{align}
-& D\cdot 2^r \oplus R = n G \Rightarrow(两边异或)\\
+\begin {align}
+& D\cdot 2^r \oplus R = n G \Rightarrow (两边异或)\\
 & D\cdot 2^r = n G \oplus R \\
-\end{align}
+\end {align}
 $$
 
-
-<p>因为这里是用<strong>异或</strong>来代替加减法（不进位），所以上式可看做加法，那么$R$就是通过$D\cdot 2^r$（$\cdot 2^r$相当于$D$左移$r$位）除以$G$得到的余式。</p>
+<p>因为这里是用 ** 异或 ** 来代替加减法（不进位），所以上式可看做加法，那么 $R$ 就是通过 $D\cdot 2^r$（$\cdot 2^r$ 相当于 $D$ 左移 $r$ 位）除以 $G$ 得到的余式。</p>
 <p>例如：</p>
-<h3 id="求R"><a href="#求R" class="headerlink" title="求R"></a>求R</h3><p>$D=101110$，$G=x^3+1(1001)$，</p>
+<h3 id="求-R">求 R</h3>
+<p>$D=101110$，$G=x^3+1 (1001)$，</p>
 
 $$
-\require{enclose}
-\begin{array}{rl}
-    101011 & \hbox{(模二除法)}\\[-3pt]
-   1001 \enclose{longdiv}{101110\color{red}{000}}\kern-.2ex \\[-3pt]
-      \underline{1001\phantom{00000}} \\[-3pt]
-      1010\phantom{000} \\[-3pt]
-      \underline{1001}\phantom{000}\\[-3pt]
-      1100\phantom{0}  \\[-3pt]
-      \underline{1001}\phantom{0}\\[-3pt]
+\require {enclose}
+\begin {array}{rl}
+    101011 & \hbox {(模二除法)}\\[-3pt]
+   1001 \enclose {longdiv}{101110\color {red}{000}}\kern-.2ex \\[-3pt]
+      \underline {1001\phantom {00000}} \\[-3pt]
+      1010\phantom {000} \\[-3pt]
+      \underline {1001}\phantom {000}\\[-3pt]
+      1100\phantom {0}  \\[-3pt]
+      \underline {1001}\phantom {0}\\[-3pt]
       1010  \\[-3pt]
-      \underline{1001}\\[-3pt]
-      \phantom{00}\color{red}{011}
-  \end{array}
+      \underline {1001}\\[-3pt]
+      \phantom {00}\color {red}{011}
+  \end {array}
 $$
 
-
-<p>最后求得$R=011$。</p>
-<h3 id="校验"><a href="#校验" class="headerlink" title="校验"></a>校验</h3><p>最后来校验一下所求的结果是否正确，就是拿$101110\color{red}{011}$除以$1001$看看余式是否为0。</p>
+<p>最后求得 $R=011$。</p>
+<h3 id="校验">校验</h3>
+<p>最后来校验一下所求的结果是否正确，就是拿 $101110\color {red}{011}$ 除以 $1001$ 看看余式是否为 0。</p>
 
 $$
-\require{enclose}
-\begin{array}{rl}
+\require {enclose}
+\begin {array}{rl}
     101011\\[-3pt]
-   1001 \enclose{longdiv}{101110\color{red}{011}}\kern-.2ex \\[-3pt]
-      \underline{1001\phantom{00000}} \\[-3pt]
-      1010\phantom{000} \\[-3pt]
-      \underline{1001}\phantom{000}\\[-3pt]
-      1101\phantom{0}  \\[-3pt]
-      \underline{1001}\phantom{0}\\[-3pt]
+   1001 \enclose {longdiv}{101110\color {red}{011}}\kern-.2ex \\[-3pt]
+      \underline {1001\phantom {00000}} \\[-3pt]
+      1010\phantom {000} \\[-3pt]
+      \underline {1001}\phantom {000}\\[-3pt]
+      1101\phantom {0}  \\[-3pt]
+      \underline {1001}\phantom {0}\\[-3pt]
       1001  \\[-3pt]
-      \underline{1001}\\[-3pt]
+      \underline {1001}\\[-3pt]
       0
-  \end{array}
+  \end {array}
 $$
-
 
 <p>结果是显然的。。</p>
 
@@ -351,11 +355,11 @@ $$
    
        <div class="original">
     <ul>
-        <li>本文标题：数据链路层差错编码之奇偶校验码和CRC校验</li>
+        <li>本文标题：数据链路层差错编码之奇偶校验码和 CRC 校验</li>
         <li>本文字数：758</li>
         <li>本文作者：Netcan</li>
         <li>发布时间：2016年03月11日 - 19时59分</li>
-        <li>最后更新：2016年09月24日 - 22时18分</li>
+        <li>最后更新：2020年08月09日 - 09时01分</li>
         <li>原始链接：<a href="https://netcan.github.io/2016/03/11/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%E5%B7%AE%E9%94%99%E7%BC%96%E7%A0%81%E4%B9%8B%E5%A5%87%E5%81%B6%E6%A0%A1%E9%AA%8C%E7%A0%81%E5%92%8CCRC%E6%A0%A1%E9%AA%8C/">https://netcan.github.io/2016/03/11/数据链路层差错编码之奇偶校验码和CRC校验/</a></li>
         <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
     </ul>
@@ -588,6 +592,6 @@ gitalk.render('gitalk-container')
             all[i].SourceElement().parentNode.className += ' has-jax';
     });
 </script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </body>
 </html>

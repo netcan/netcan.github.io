@@ -5,9 +5,9 @@
 
 
 <head>
-  <meta charset="utf-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
-  <title>蒙特卡罗法之随机素数判定算法Miller_Rabin与Pollard_Rho质因数分解算法 | Netcan on Programming</title>
+  <title>蒙特卡罗法之随机素数判定算法 Miller_Rabin 与 Pollard_Rho 质因数分解算法 | Netcan on Programming</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -15,15 +15,15 @@
     <meta name="keywords" content="数学,数论," />
   
 
-  <meta name="description" content="昨天刷到POJ 2429，没刷出来&#x3D; &#x3D;，难度太大，翻Discuss翻到了一题POJ 1811，了解了两个算法：Miller_Rabin$O(log n)$素数判定与Pollard_Rho$O(\sqrt[4] n)$分解质因数算法。   Miller_Rabin算法这是我从《算法导论》和Google搜刮的资料上面整理出来的笔记，若有错误，请指出，谢谢。 素数定理：素数分布函数$\pi(n)$描述">
+  <meta name="description" content="昨天刷到 POJ 2429，没刷出来 &#x3D; &#x3D;，难度太大，翻 * Discuss * 翻到了一题 POJ 1811，了解了两个算法：Miller_Rabin$O (log n)$ 素数判定与 Pollard_Rho$O (\sqrt [4] n)$ 分解质因数算法。  Miller_Rabin 算法 这是我从 《算法导论》 和 Google 搜刮的资料上面整理出来的笔记，若有错误，请指出，谢谢。 素">
 <meta property="og:type" content="article">
-<meta property="og:title" content="蒙特卡罗法之随机素数判定算法Miller_Rabin与Pollard_Rho质因数分解算法">
+<meta property="og:title" content="蒙特卡罗法之随机素数判定算法 Miller_Rabin 与 Pollard_Rho 质因数分解算法">
 <meta property="og:url" content="https://netcan.github.io/2015/12/06/%E8%92%99%E7%89%B9%E5%8D%A1%E7%BD%97%E6%B3%95%E4%B9%8B%E9%9A%8F%E6%9C%BA%E7%B4%A0%E6%95%B0%E6%B5%8B%E8%AF%95%E7%AE%97%E6%B3%95Miller-Rabin%E4%B8%8EPollard-Rho%E5%9B%A0%E6%95%B0%E5%88%86%E8%A7%A3%E7%AE%97%E6%B3%95/index.html">
 <meta property="og:site_name" content="Netcan on Programming">
-<meta property="og:description" content="昨天刷到POJ 2429，没刷出来&#x3D; &#x3D;，难度太大，翻Discuss翻到了一题POJ 1811，了解了两个算法：Miller_Rabin$O(log n)$素数判定与Pollard_Rho$O(\sqrt[4] n)$分解质因数算法。   Miller_Rabin算法这是我从《算法导论》和Google搜刮的资料上面整理出来的笔记，若有错误，请指出，谢谢。 素数定理：素数分布函数$\pi(n)$描述">
+<meta property="og:description" content="昨天刷到 POJ 2429，没刷出来 &#x3D; &#x3D;，难度太大，翻 * Discuss * 翻到了一题 POJ 1811，了解了两个算法：Miller_Rabin$O (log n)$ 素数判定与 Pollard_Rho$O (\sqrt [4] n)$ 分解质因数算法。  Miller_Rabin 算法 这是我从 《算法导论》 和 Google 搜刮的资料上面整理出来的笔记，若有错误，请指出，谢谢。 素">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2015-12-06T06:50:53.000Z">
-<meta property="article:modified_time" content="2017-02-07T06:19:46.000Z">
+<meta property="article:modified_time" content="2020-08-09T01:01:02.175Z">
 <meta property="article:author" content="Netcan">
 <meta property="article:tag" content="数学">
 <meta property="article:tag" content="数论">
@@ -94,14 +94,14 @@ ga('send', 'pageview');
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
   
 
-<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body>
 
 
   
-    <span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
   
 
   <link rel="stylesheet" href="/css/prism.css">
@@ -191,7 +191,7 @@ ga('send', 'pageview');
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Miller-Rabin%E7%AE%97%E6%B3%95"><span class="toc-text">Miller_Rabin算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B4%A0%E6%95%B0%E5%AE%9A%E7%90%86%EF%BC%9A"><span class="toc-text">素数定理：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%95%E9%99%A4%E6%B3%95"><span class="toc-text">试除法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B4%B9%E9%A9%AC%E5%AE%9A%E7%90%86"><span class="toc-text">费马定理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%AA%E7%B4%A0%E6%95%B0%E6%B5%8B%E8%AF%95%E8%BF%87%E7%A8%8B"><span class="toc-text">伪素数测试过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Miller-Rabin%E7%B4%A0%E6%95%B0%E6%B5%8B%E8%AF%95%E6%96%B9%E6%B3%95"><span class="toc-text">Miller_Rabin素数测试方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Miller-Rabin%E7%B4%A0%E6%95%B0%E6%B5%8B%E8%AF%95%E7%9A%84%E5%87%BA%E9%94%99%E7%8E%87"><span class="toc-text">Miller_Rabin素数测试的出错率</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Pollard-Rho%E5%88%86%E8%A7%A3%E8%B4%A8%E5%9B%A0%E6%95%B0%E7%AE%97%E6%B3%95"><span class="toc-text">Pollard_Rho分解质因数算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%95%E9%99%A4%E6%B3%95%E5%88%86%E8%A7%A3%E5%90%88%E6%95%B0"><span class="toc-text">试除法分解合数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E4%B8%80%E6%AD%A5%E4%BC%98%E5%8C%96"><span class="toc-text">进一步优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%AA%E9%9A%8F%E6%9C%BA%E5%87%BD%E6%95%B0"><span class="toc-text">伪随机函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GCD"><span class="toc-text">GCD</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A4%E7%8E%AF"><span class="toc-text">判环</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E7%BB%88%E4%BB%A3%E7%A0%81"><span class="toc-text">最终代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%92%E5%BD%92%E5%88%86%E8%A7%A3%E5%B9%B6%E5%82%A8%E5%AD%98%E6%89%80%E6%9C%89%E8%B4%A8%E5%9B%A0%E6%95%B0"><span class="toc-text">递归分解并储存所有质因数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B9%A0%E9%A2%98"><span class="toc-text">习题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#POJ-1811"><span class="toc-text">POJ 1811</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E5%A4%A7%E6%84%8F"><span class="toc-text">题目大意</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF"><span class="toc-text">思路</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AC%E4%BB%A3%E7%A0%81"><span class="toc-text">AC代码</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#POJ-2429"><span class="toc-text">POJ 2429</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E5%A4%A7%E6%84%8F-1"><span class="toc-text">题目大意</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF-1"><span class="toc-text">思路</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AC%E4%BB%A3%E7%A0%81-1"><span class="toc-text">AC代码</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-text">参考资料</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Miller-Rabin-%E7%AE%97%E6%B3%95"><span class="toc-text">Miller_Rabin 算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B4%A0%E6%95%B0%E5%AE%9A%E7%90%86%EF%BC%9A"><span class="toc-text">素数定理：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%95%E9%99%A4%E6%B3%95"><span class="toc-text">试除法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B4%B9%E9%A9%AC%E5%AE%9A%E7%90%86"><span class="toc-text">费马定理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%AA%E7%B4%A0%E6%95%B0%E6%B5%8B%E8%AF%95%E8%BF%87%E7%A8%8B"><span class="toc-text">伪素数测试过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Miller-Rabin-%E7%B4%A0%E6%95%B0%E6%B5%8B%E8%AF%95%E6%96%B9%E6%B3%95"><span class="toc-text">Miller_Rabin 素数测试方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Miller-Rabin-%E7%B4%A0%E6%95%B0%E6%B5%8B%E8%AF%95%E7%9A%84%E5%87%BA%E9%94%99%E7%8E%87"><span class="toc-text">Miller_Rabin 素数测试的出错率</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Pollard-Rho-%E5%88%86%E8%A7%A3%E8%B4%A8%E5%9B%A0%E6%95%B0%E7%AE%97%E6%B3%95"><span class="toc-text">Pollard_Rho 分解质因数算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%95%E9%99%A4%E6%B3%95%E5%88%86%E8%A7%A3%E5%90%88%E6%95%B0"><span class="toc-text">试除法分解合数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E4%B8%80%E6%AD%A5%E4%BC%98%E5%8C%96"><span class="toc-text">进一步优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%AA%E9%9A%8F%E6%9C%BA%E5%87%BD%E6%95%B0"><span class="toc-text">伪随机函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GCD"><span class="toc-text">GCD</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A4%E7%8E%AF"><span class="toc-text">判环</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E7%BB%88%E4%BB%A3%E7%A0%81"><span class="toc-text">最终代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%92%E5%BD%92%E5%88%86%E8%A7%A3%E5%B9%B6%E5%82%A8%E5%AD%98%E6%89%80%E6%9C%89%E8%B4%A8%E5%9B%A0%E6%95%B0"><span class="toc-text">递归分解并储存所有质因数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B9%A0%E9%A2%98"><span class="toc-text">习题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#POJ-1811"><span class="toc-text">POJ 1811</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E5%A4%A7%E6%84%8F"><span class="toc-text">题目大意</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF"><span class="toc-text">思路</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AC-%E4%BB%A3%E7%A0%81"><span class="toc-text">AC 代码</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#POJ-2429"><span class="toc-text">POJ 2429</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E5%A4%A7%E6%84%8F-2"><span class="toc-text">题目大意</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF-2"><span class="toc-text">思路</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AC-%E4%BB%A3%E7%A0%81-2"><span class="toc-text">AC 代码</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-text">参考资料</span></a></li></ol>
   </div>
 
 
@@ -199,7 +199,7 @@ ga('send', 'pageview');
 <div class="content content-post CENTER">
    <article id="post-蒙特卡罗法之随机素数测试算法Miller-Rabin与Pollard-Rho因数分解算法" class="article article-type-post" itemprop="blogPost">
   <header class="article-header">
-    <h1 class="post-title">蒙特卡罗法之随机素数判定算法Miller_Rabin与Pollard_Rho质因数分解算法</h1>
+    <h1 class="post-title">蒙特卡罗法之随机素数判定算法 Miller_Rabin 与 Pollard_Rho 质因数分解算法</h1>
 
     <div class="article-meta">
       <span>
@@ -237,164 +237,181 @@ ga('send', 'pageview');
 
   <div class="article-content">
     
-      <p>昨天刷到<a target="_blank" rel="noopener" href="http://poj.org/problem?id=2429">POJ 2429</a>，没刷出来= =，难度太大，翻<em>Discuss</em>翻到了一题<a target="_blank" rel="noopener" href="http://poj.org/problem?id=1811">POJ 1811</a>，了解了两个算法：<code>Miller_Rabin</code>$O(log n)$素数判定与<code>Pollard_Rho</code>$O(\sqrt[4] n)$分解质因数算法。</p>
-<!--~~看室友打垃圾游戏`LOL`毫不考虑他人的份上，若能争取换宿舍，迟早会一个人住的，远离室友保平安，废物一个。~~-->
+      <p>昨天刷到 <a target="_blank" rel="noopener" href="http://poj.org/problem?id=2429">POJ 2429</a>，没刷出来 = =，难度太大，翻 * Discuss * 翻到了一题 <a target="_blank" rel="noopener" href="http://poj.org/problem?id=1811">POJ 1811</a>，了解了两个算法：<code>Miller_Rabin</code>$O (log n)$ 素数判定与 <code>Pollard_Rho</code>$O (\sqrt [4] n)$ 分解质因数算法。</p>
+<!--~~ 看室友打垃圾游戏 `LOL` 毫不考虑他人的份上，若能争取换宿舍，迟早会一个人住的，远离室友保平安，废物一个。~~-->
+<h2 id="Miller-Rabin-算法">Miller_Rabin 算法</h2>
+<p>这是我从 <strong>《算法导论》</strong> 和 Google 搜刮的资料上面整理出来的笔记，若有错误，请指出，谢谢。</p>
+<h3 id="素数定理：">素数定理：</h3>
+<p>素数分布函数 $\pi (n)$ 描述了小于等于 n 的素数数量。</p>
 
-<h2 id="Miller-Rabin算法"><a href="#Miller-Rabin算法" class="headerlink" title="Miller_Rabin算法"></a>Miller_Rabin算法</h2><p>这是我从<strong>《算法导论》</strong>和Google搜刮的资料上面整理出来的笔记，若有错误，请指出，谢谢。</p>
-<h3 id="素数定理："><a href="#素数定理：" class="headerlink" title="素数定理："></a>素数定理：</h3><p>素数分布函数$\pi(n)$描述了小于等于n的素数数量。</p>
+$$\lim_{n\to \infty} \dfrac {\pi (n)}{n/ln n} = 1$$
 
-$$\lim_{n\to \infty} \dfrac{\pi (n)}{n/ln n} = 1$$
+<p>在 $n$ 非常小的情况下有 $\pi (n)\sim n/ln n$，例如 $n=10^9$ 次方时，$\pi (n)=508 475 34$，而 $n/ln n \approx 48254942$，误差不超过 $6%$。</p>
+<p>随机选取一个数字 $n$，通过素数定理，该数字 $n$ 为素数的概率为 $1/ln n$，期望值近似为 $ln n$，因此为了找出一个长度与 $n$ 相同的素数，需要在 n 附近随机取 $ln n$ 个整数。</p>
+<h3 id="试除法">试除法</h3>
+<p>假定 $n$ 具有下列素数分解的因子：</p>
 
+$$n = p_1^{e_1} p_2^{e_2}\cdots p_r^{e_r}$$
 
-<p>在$n$非常小的情况下有$\pi(n)\sim n/ln n$，例如$n=10^9$次方时，$\pi(n)=508 475 34$，而$n/ln n \approx 48254942$，误差不超过$6%$。</p>
-<p>随机选取一个数字$n$，通过素数定理，该数字$n$为素数的概率为$1/ln n$，期望值近似为$ln n$，因此为了找出一个长度与$n$相同的素数，需要在n附近随机取$ln n$个整数。</p>
-<a id="more"></a>
-<h3 id="试除法"><a href="#试除法" class="headerlink" title="试除法"></a>试除法</h3><p>假定$n$具有下列素数分解的因子：</p>
+<p>当且仅当 $r=1$ 并且 $e_1=1$ 时，$n$ 是素数。</p>
+<p>所以可以用 $2, 3, \cdots, [\sqrt n]$ 去试除，最坏情况下，复杂度达到 $\Theta (\sqrt n)$，若 $n$ 非常大显然效率非常低，于是出现了一种高效判定大素数算法。。。</p>
+<h3 id="费马定理">费马定理</h3>
+<p>若 $n$ 是素数，则对任意 $a \in \{1, 2, \cdots, n-1\}$，有</p>
 
-$$n = p_1^{e_1}p_2^{e_2}\cdots p_r^{e_r}$$
-
-
-<p>当且仅当$r=1$并且$e_1=1$时，$n$是素数。</p>
-<p>所以可以用$2, 3, \cdots, [\sqrt n]$去试除，最坏情况下，复杂度达到$\Theta(\sqrt n)$，若$n$非常大显然效率非常低，于是出现了一种高效判定大素数算法。。。</p>
-<h3 id="费马定理"><a href="#费马定理" class="headerlink" title="费马定理"></a>费马定理</h3><p>若$n$是素数，则对任意$a \in \{1, 2, \cdots, n-1\}$，有</p>
-
-$$ \tag{费马定理}\label{Fermat}a^{n-1} \equiv 1\pmod n$$
-
+$$ \tag {费马定理}\label {Fermat} a^{n-1} \equiv 1\pmod n$$
 
 <p>证：</p>
-<p>先引出一个结论：对任意$a&lt;n$的数$a, 2a, 3a, \cdots, (n-1)a$除以$n$的余数正好为1到$n-1$的一个排列，例如5是素数，取$2, 4, 6, 8$，余数为$2, 4, 1, 3$，为1到4的一个排列。</p>
-<p>反证法：若结论不成立的话，也就是至少有两个数$i, j &lt; n, i &lt; j$，使得$i a$与$j a$的余数相同，即</p>
+<p>先引出一个结论：对任意 $a&lt;n$ 的数 $a, 2a, 3a, \cdots, (n-1) a$ 除以 $n$ 的余数正好为 1 到 $n-1$ 的一个排列，例如 5 是素数，取 $2, 4, 6, 8$，余数为 $2, 4, 1, 3$，为 1 到 4 的一个排列。</p>
+<p>反证法：若结论不成立的话，也就是至少有两个数 $i, j &lt; n, i &lt; j$，使得 $i a$ 与 $j a$ 的余数相同，即</p>
 
-$$ i a = k_1 n+m, j a = k_2 n + m，做差得(j-i)a = (k_2 - k_1)n$$
+$$ i a = k_1 n+m, j a = k_2 n + m，做差得 (j-i) a = (k_2 - k_1) n$$
 
-
-<p>也就是说$n$可以整除$(j-i)a$，而$n$是素数且$j-i \leq n$，与条件矛盾。</p>
+<p>也就是说 $n$ 可以整除 $(j-i) a$，而 $n$ 是素数且 $j-i \leq n$，与条件矛盾。</p>
 <p>那么有</p>
 
-$$ (n-1)! \equiv a 2a 3a \cdots (n-1)a = (n-1)! a^{n-1}\pmod n即\\
+$$ (n-1)! \equiv a 2a 3a \cdots (n-1) a = (n-1)! a^{n-1}\pmod n 即 \\
 a^{n-1} \equiv 1\pmod n$$
 
-
-<h3 id="伪素数测试过程"><a href="#伪素数测试过程" class="headerlink" title="伪素数测试过程"></a>伪素数测试过程</h3><p>根据费马定理，称$n$是一个基为$a$的伪素数。</p>
-<p>费马定理意味着若$n$是素数，则对$a\leq n$都满足$\eqref{Fermat}$，令人惊讶的是它的逆命题也几乎成立（注意是几乎成立。。）</p>
-<p>于是对$a=2$，看看$n$是否满足$\eqref{Fermat}$，若不满足则返回<em>COMPOSITE</em>声明$n$是合数，否则返回<em>PRIME</em>，猜测$n$是素数（实际是只是$n$或者是素数，或者是基于2的伪素数）</p>
-<pre class="language-none"><code class="language-none">if(mod_pow(a, n-1, n) !&#x3D; 1) return COMPOSITE; &#x2F;&#x2F; 总是正确的
-else return PRIME; &#x2F;&#x2F; 可能错误，如果基于a的伪素数</code></pre>
-
-<p>这个过程可能产生错误，但是它判定合数总是正确的。如果判定素数，只有基于2的伪素数时才可能出错。</p>
-<p>出错的几率非常小，但是不能无视它，在小于10000的$n$值中，有22个值会产生错误。可惜我们也不能通过取其他基数（例如$a=3$）来消除所有的错误，因为还有一种称作<code>Carmichael</code>的<strong>合数</strong>，对任意$a\leq n$，满足$\eqref{Fermat}$。（真抓狂233）</p>
-<p>下一步是对素数测试方法改进，使得测试过程中不会将<code>Carmichael</code>当成素数。</p>
-<h3 id="Miller-Rabin素数测试方法"><a href="#Miller-Rabin素数测试方法" class="headerlink" title="Miller_Rabin素数测试方法"></a>Miller_Rabin素数测试方法</h3><p>Miller_Rabin测试方法对上述测试过程做了改进，克服其存在的问题。</p>
-<p>测试方法引进<code>witness</code>，当且仅当$a$为合数$n$的证据时，返回<code>TRUE</code>，<code>witness</code>取$a=2$测试的扩展：<br>$$a^{n-1} \not \equiv 1\pmod n$$</p>
-<p>来介绍下<code>witness</code>的构造过程，令$n-1=2^t u$，其中$t\geq 1$且$u$是奇数，即$n-1$的二进制表示是奇数$u$的二进制后面接$t$个$0$。</p>
-<p>则$a^{n-1} \equiv (a^u)^{2^t}$，所以可以通过先计算$a^u\ \bmod n$，然后<strong>连续平方</strong>$t$次来计算最终的$a^{n-1}\ \bmod n$，期间若有一次$\neq 1或者\neq n-1，即x_i\equiv (a^u)^{2^i}\pmod n\neq \pm 1, (i=0, 1,\cdots, t)$则返回合数。</p>
-<p>现在再来证明一下为什么$x_i\not \equiv \pm 1$时，$n$为合数。</p>
+<h3 id="伪素数测试过程">伪素数测试过程</h3>
+<p>根据费马定理，称 $n$ 是一个基为 $a$ 的伪素数。</p>
+<p>费马定理意味着若 $n$ 是素数，则对 $a\leq n$ 都满足 $\eqref {Fermat}$，令人惊讶的是它的逆命题也几乎成立（注意是几乎成立。。）</p>
+<p>于是对 $a=2$，看看 $n$ 是否满足 $\eqref {Fermat}$，若不满足则返回 * COMPOSITE * 声明 $n$ 是合数，否则返回 * PRIME*，猜测 $n$ 是素数（实际是只是 $n$ 或者是素数，或者是基于 2 的伪素数）</p>
+<pre class="language-none"><code class="language-none">if (mod_pow (a, n-1, n) !&#x3D; 1) return COMPOSITE; &#x2F;&#x2F; 总是正确的
+else return PRIME; &#x2F;&#x2F; 可能错误，如果基于 a 的伪素数 </code></pre>
+<p>这个过程可能产生错误，但是它判定合数总是正确的。如果判定素数，只有基于 2 的伪素数时才可能出错。</p>
+<p>出错的几率非常小，但是不能无视它，在小于 10000 的 $n$ 值中，有 22 个值会产生错误。可惜我们也不能通过取其他基数（例如 $a=3$）来消除所有的错误，因为还有一种称作 <code>Carmichael</code> 的 ** 合数 **，对任意 $a\leq n$，满足 $\eqref {Fermat}$。（真抓狂 233）</p>
+<p>下一步是对素数测试方法改进，使得测试过程中不会将 <code>Carmichael</code> 当成素数。</p>
+<h3 id="Miller-Rabin-素数测试方法">Miller_Rabin 素数测试方法</h3>
+<p>Miller_Rabin 测试方法对上述测试过程做了改进，克服其存在的问题。</p>
+<p>测试方法引进 <code>witness</code>，当且仅当 $a$ 为合数 $n$ 的证据时，返回 <code>TRUE</code>，<code>witness</code> 取 $a=2$ 测试的扩展：<br>
+$$a^{n-1} \not \equiv 1\pmod n$$</p>
+<p>来介绍下 <code>witness</code> 的构造过程，令 $n-1=2^t u$，其中 $t\geq 1$ 且 $u$ 是奇数，即 $n-1$ 的二进制表示是奇数 $u$ 的二进制后面接 $t$ 个 $0$。</p>
+<p>则 $a^{n-1} \equiv (a^u)^{2^t}$，所以可以通过先计算 $a^u\ \bmod n$，然后 ** 连续平方 **$t$ 次来计算最终的 $a^{n-1}\ \bmod n$，期间若有一次 $\neq 1 或者 \neq n-1，即 x_i\equiv (a^u)^{2^i}\pmod n\neq \pm 1, (i=0, 1,\cdots, t)$ 则返回合数。</p>
+<p>现在再来证明一下为什么 $x_i\not \equiv \pm 1$ 时，$n$ 为合数。</p>
 <p>首先引出定理：</p>
-<p>如果$p$是一个奇素数($&gt;2$)且$e\geq 1$，则方程<br>$$x^2\equiv 1\pmod {p^e}$$</p>
-<p>仅有两个解，即$x=\pm 1$。</p>
+<p>如果 $p$ 是一个奇素数 ($&gt;2$) 且 $e\geq 1$，则方程<br>
+$$x^2\equiv 1\pmod {p^e}$$</p>
+<p>仅有两个解，即 $x=\pm 1$。</p>
 <p>证：</p>
-<p>方程等价于(<code>|</code>是整除的意思。。)：<br>$$p^e|x^2-1 \Rightarrow p^e|(x+1)(x-1)$$</p>
-<p>这说明了$p|(x-1)$或者$p|(x+1)$，但不同时成立，否则$p$也能整除它们的差$(x+1)-(x-1)=2$。</p>
-<p>若$p\not |(x-1)$，则$p^e|(x+1)$，也就是$x\equiv -1\pmod {p^e}$。对称地，得出$x\equiv 1\pmod{p^e}$，综上可得$x\equiv \pm1\pmod{p^e}$。</p>
-<p>所以<strong>不断平方</strong>，期间$\not \equiv \pm 1$，则可说明$n$是合数。</p>
-<p>下面是<code>witness</code>实现过程</p>
-<pre><code>bool witness(ll a, ll n, ll u, ll t) &#123; // a随机数，u, t于外部计算
-    ll ret = mod_pow(a, u, n);
-    ll last = ret;
-    for(int i=1; i&lt;=t; ++i) &#123;
-        ret = mod_mult(ret, ret, n);
-        if(ret == 1 &amp;&amp; last != 1 &amp;&amp; last != n-1) return true;
-        last = ret;
-    &#125;
-    if(ret!=1) return true; // a^(n-1)%n!=1
-    return false;
-&#125;</code></pre>
-<p>举个例子，比如<code>Carmichael</code>数$n=561$，首先$n-1=561-1=2^t u=2^4\times 35$，随机取$a=5\leq  561$，这里采用从后往前的顺序计算。</p>
+<p>方程等价于 (<code>|</code> 是整除的意思。。)：<br>
+$$p^e|x^2-1 \Rightarrow p^e|(x+1)(x-1)$$</p>
+<p>这说明了 $p|(x-1)$ 或者 $p|(x+1)$，但不同时成立，否则 $p$ 也能整除它们的差 $(x+1)-(x-1)=2$。</p>
+<p>若 $p\not |(x-1)$，则 $p^e|(x+1)$，也就是 $x\equiv -1\pmod {p^e}$。对称地，得出 $x\equiv 1\pmod {p^e}$，综上可得 $x\equiv \pm1\pmod {p^e}$。</p>
+<p>所以 ** 不断平方 **，期间 $\not \equiv \pm 1$，则可说明 $n$ 是合数。</p>
+<p>下面是 <code>witness</code> 实现过程</p>
+<pre><code>bool witness (ll a, ll n, ll u, ll t) &#123; //a 随机数，u, t 于外部计算
+	ll ret = mod_pow (a, u, n);
+	ll last = ret;
+	for (int i=1; i&lt;=t; ++i) &#123;
+		ret = mod_mult (ret, ret, n);
+		if (ret == 1 &amp;&amp; last != 1 &amp;&amp; last != n-1) return true;
+		last = ret;
+	&#125;
+	if (ret!=1) return true; //a^(n-1)% n!=1
+	return false;
+&#125;
+</code></pre>
+<p>举个例子，比如 <code>Carmichael</code> 数 $n=561$，首先 $n-1=561-1=2^t u=2^4\times 35$，随机取 $a=5\leq  561$，这里采用从后往前的顺序计算。</p>
 <ol>
-<li>先计算$x_t=a^{n-1}\pmod n$，即$x_t=5^{560}\equiv 1\pmod {561}$</li>
-<li>再计算$x_{t-1}=5^{280}\equiv 67\pmod {561}$，直接说明了$561$是合数= =</li>
+<li>先计算 $x_t=a^{n-1}\pmod n$，即 $x_t=5^{560}\equiv 1\pmod {561}$</li>
+<li>再计算 $x_{t-1}=5^{280}\equiv 67\pmod {561}$，直接说明了 $561$ 是合数 = =</li>
 </ol>
-<p>若按程序从前往后算，$x_0=a^u\pmod n=5^{35}\equiv 23\pmod {561}$，$x_1=(a^u)^2\pmod n=5^{70}\equiv 529\pmod {561}$，直到算到$x_{t-1}, x_t$即能检验出来。</p>
-<p>整个$X$序列如下：</p>
+<p>若按程序从前往后算，$x_0=a^u\pmod n=5^{35}\equiv 23\pmod {561}$，$x_1=(a^u)^2\pmod n=5^{70}\equiv 529\pmod {561}$，直到算到 $x_{t-1}, x_t$ 即能检验出来。</p>
+<p>整个 $X$ 序列如下：</p>
 
 $$ x=<23, 529, 463, 67, 1>$$
 
-
-<p>最后的<code>Miller_Rabin</code>函数就出炉了：</p>
-<pre><code>bool Miller_Rabin(ll n, int s) &#123; // 随机取s次a
-    if(n==2) return true;
-    if(n &lt; 2 || !(n&amp;1)) return false;
-    ll u=n-1;
-    ll t=0;
-    while(!(u&amp;1)) &#123;u&gt;&gt;=1; ++t;&#125; // 2^t*u = n-1
-    for(int i=0; i&lt;s; ++i) &#123;
-        ll a=rand()%(n-1)+1; // 若n为合数，证据为a的概率至少为1/2
-        if(witness(a, n, u, t)) return false; // 合数
-    &#125;
-    return true;
-&#125;</code></pre>
-<h3 id="Miller-Rabin素数测试的出错率"><a href="#Miller-Rabin素数测试的出错率" class="headerlink" title="Miller_Rabin素数测试的出错率"></a>Miller_Rabin素数测试的出错率</h3><p>如果<code>Miller_Rabin</code>返回<code>true</code>(即<code>PRIME</code>)，则它还是有一种很小的可能性出错。然而概率非常低，仅取决于<code>s</code>的大小和选取<code>a</code>值的运气。。而且每次都需要经过<code>witness</code>的严格判断，出错率应该极小，出错概率最多为$(1/2)^s$，然而对于一个长度为<code>1024</code>位的数字，大概需要$s=9$次，对于64位数，长度不超过20，计算得$s=1.14$，取$s=9$出错率可忽略不计。</p>
-<h2 id="Pollard-Rho分解质因数算法"><a href="#Pollard-Rho分解质因数算法" class="headerlink" title="Pollard_Rho分解质因数算法"></a>Pollard_Rho分解质因数算法</h2><p><del>实验报告抄死人，实验累死人，退化学保平安，待续。。。</del></p>
-<p>首先用<code>Miller_Rabin</code>判断一个数是否是质数，若不是质数则对其分解质因数。</p>
-<h3 id="试除法分解合数"><a href="#试除法分解合数" class="headerlink" title="试除法分解合数"></a>试除法分解合数</h3><p>试除法前面有介绍，效率较低，复杂度达$\Theta(\sqrt n)$。</p>
+<p>最后的 <code>Miller_Rabin</code> 函数就出炉了：</p>
+<pre><code>bool Miller_Rabin (ll n, int s) &#123; // 随机取 s 次 a
+	if (n==2) return true;
+	if (n &lt; 2 || !(n&amp;1)) return false;
+	ll u=n-1;
+	ll t=0;
+	while (!(u&amp;1)) &#123;u&gt;&gt;=1; ++t;&#125; // 2^t*u = n-1
+	for (int i=0; i&lt;s; ++i) &#123;
+		ll a=rand ()%(n-1)+1; // 若 n 为合数，证据为 a 的概率至少为 1/2
+		if (witness (a, n, u, t)) return false; // 合数
+	&#125;
+	return true;
+&#125;
+</code></pre>
+<h3 id="Miller-Rabin-素数测试的出错率">Miller_Rabin 素数测试的出错率</h3>
+<p>如果 <code>Miller_Rabin</code> 返回 <code>true</code>(即 <code>PRIME</code>)，则它还是有一种很小的可能性出错。然而概率非常低，仅取决于 <code>s</code> 的大小和选取 <code>a</code> 值的运气。。而且每次都需要经过 <code>witness</code> 的严格判断，出错率应该极小，出错概率最多为 $(1/2)^s$，然而对于一个长度为 <code>1024</code> 位的数字，大概需要 $s=9$ 次，对于 64 位数，长度不超过 20，计算得 $s=1.14$，取 $s=9$ 出错率可忽略不计。</p>
+<h2 id="Pollard-Rho-分解质因数算法">Pollard_Rho 分解质因数算法</h2>
+<p>~~ 实验报告抄死人，实验累死人，退化学保平安，待续。。。~~</p>
+<p>首先用 <code>Miller_Rabin</code> 判断一个数是否是质数，若不是质数则对其分解质因数。</p>
+<h3 id="试除法分解合数">试除法分解合数</h3>
+<p>试除法前面有介绍，效率较低，复杂度达 $\Theta (\sqrt n)$。</p>
 <p>试除法是一个一个试，可对其进行随机选取的方法提高效率。</p>
-<p>简单起见，假设$n$是一个合数，并且只有两个真因子$p,q(p\times q=n)$。</p>
-<p>若从小于$n$的数随机取一个，取到真因子的概率为$2/n$，若$n$比较大，效率也比较低。</p>
-<h3 id="进一步优化"><a href="#进一步优化" class="headerlink" title="进一步优化"></a>进一步优化</h3><p>假设从1000中随机去一个数，为6的概率为$1/1000=0.001$。</p>
-<p>若换种方法，每次取两个数$i, j(i\leq j)$，问$j-i$是否为6，概率是$(1000-6)*2/(1000*1000)\approx0.002$，概率提高了。。</p>
-<p>试着将这个方法推广：随机选择k个数，并在其中两两比较。（对于n，在$k = \sqrt n$处有一半的命中率。）</p>
-<p>所以直接推广，选出$\sqrt n$个数并在之中两两比较，寻找到$n|j - i$（即$i - j = p 或 q$）</p>
-<p>可以问题没有这么简单，现在我们要储存$\sqrt n$个数，还要进行$\sqrt n \times \sqrt n$次比较，而且只有一半的概率找到真因子。</p>
-<h3 id="伪随机函数"><a href="#伪随机函数" class="headerlink" title="伪随机函数"></a>伪随机函数</h3><p>显然，我们不能储存$\sqrt n$个数，也不能进行n次比较。</p>
+<p>简单起见，假设 $n$ 是一个合数，并且只有两个真因子 $p,q (p\times q=n)$。</p>
+<p>若从小于 $n$ 的数随机取一个，取到真因子的概率为 $2/n$，若 $n$ 比较大，效率也比较低。</p>
+<h3 id="进一步优化">进一步优化</h3>
+<p>假设从 1000 中随机去一个数，为 6 的概率为 $1/1000=0.001$。</p>
+<p>若换种方法，每次取两个数 $i, j (i\leq j)$，问 $j-i$ 是否为 6，概率是 $(1000-6)*2/(1000*1000)\approx0.002$，概率提高了。。</p>
+<p>试着将这个方法推广：随机选择 k 个数，并在其中两两比较。（对于 n，在 $k = \sqrt n$ 处有一半的命中率。）</p>
+<p>所以直接推广，选出 $\sqrt n$ 个数并在之中两两比较，寻找到 $n|j - i$（即 $i - j = p 或 q$）</p>
+<p>可以问题没有这么简单，现在我们要储存 $\sqrt n$ 个数，还要进行 $\sqrt n \times \sqrt n$ 次比较，而且只有一半的概率找到真因子。</p>
+<h3 id="伪随机函数">伪随机函数</h3>
+<p>显然，我们不能储存 $\sqrt n$ 个数，也不能进行 n 次比较。</p>
 <p>如果我们只是在生成随机数时，比较生成时间上相邻的两个随机数，就可以同时解决上面的两个问题。</p>
-<p>有伪随机函数$f(x) = (x ^ 2 + a) \bmod N$，其中N是常数，a是随机生成的常数。 并给出序列$x_1 = c, x_2 = f(x_1), x_3 = f(x_2) \cdots$。（<a target="_blank" rel="noopener" href="https://www.cs.colorado.edu/~srirams/courses/csci2824-spr14/pollardsRho.html">原文</a>没有解释为什么这个函数可以替换上述机制）</p>
-<h3 id="GCD"><a href="#GCD" class="headerlink" title="GCD"></a>GCD</h3><p>同时我们可以优化检测手段：我们不检测$n|j-i$，而是检测$p,q=GCD(j - i, n) &gt; 1$</p>
-<p>因为只有$p,q$整除$n$，令$x=j-i$，则</p>
+<p>有伪随机函数 $f (x) = (x ^ 2 + a) \bmod N$，其中 N 是常数，a 是随机生成的常数。 并给出序列 $x_1 = c, x_2 = f (x_1), x_3 = f (x_2) \cdots$。（<a target="_blank" rel="noopener" href="https://www.cs.colorado.edu/~srirams/courses/csci2824-spr14/pollardsRho.html">原文</a> 没有解释为什么这个函数可以替换上述机制）</p>
+<h3 id="GCD">GCD</h3>
+<p>同时我们可以优化检测手段：我们不检测 $n|j-i$，而是检测 $p,q=GCD (j - i, n) &gt; 1$</p>
+<p>因为只有 $p,q$ 整除 $n$，令 $x=j-i$，则</p>
 
 $$
 x = p, = 2p, = 3p \cdots = (q - 1) \times p\\
 x = q, = 2q, = 3q \cdots = (p - 1) \times q\\
-(p \times q不再内，因为i \leq j < n)$$
+(p \times q 不再内，因为 i \leq j < n)$$
 
-
-<p>共有$p+q-2$个。</p>
-<h3 id="判环"><a href="#判环" class="headerlink" title="判环"></a>判环</h3><p>看似大功告成了，不过我们引入的伪随机函数$f(x)$还有问题，$f(x)$生成的数的轨迹有可能有环（这也是算法名字中Rho($\rho$)的来历）。也就是对$f(x)$的不断迭代可能陷入一个死循环。</p>
+<p>共有 $p+q-2$ 个。</p>
+<h3 id="判环">判环</h3>
+<p>看似大功告成了，不过我们引入的伪随机函数 $f (x)$ 还有问题，$f (x)$ 生成的数的轨迹有可能有环（这也是算法名字中 Rho ($\rho$) 的来历）。也就是对 $f (x)$ 的不断迭代可能陷入一个死循环。</p>
 <p>为此我们需要在终点未知而空间有限的条件下判断是否陷入环中。</p>
-<p>如果发现了有环，可以重新（随机）给出常数$x_1 = c$，再次运行算法。</p>
-<h3 id="最终代码"><a href="#最终代码" class="headerlink" title="最终代码"></a>最终代码</h3><pre><code>ll Pollard_rho(ll n, ll c) &#123; // 伪随机函数f(x)=x^2+c，c为随机数
-    ll i=1, k=2;
-    ll x=rand()%n;
-    ll y = x;
-    while(1) &#123;
-        ++i;
-        x=(mod_mult(x, x, n)+c)%n; // 伪随机数
-        ll d = gcd(y-x+n, n); // gcd注意负数
-        if(d!=1 &amp;&amp; d!=n) return d;
-        if(y==x) return n; // 遇环退出
-        if(i==k) &#123;y=x; k&lt;&lt;=1;&#125;
-    &#125;
-&#125;</code></pre>
-<h3 id="递归分解并储存所有质因数"><a href="#递归分解并储存所有质因数" class="headerlink" title="递归分解并储存所有质因数"></a>递归分解并储存所有质因数</h3><p>这里再给出递归分解所有质因数的方法。</p>
+<p>如果发现了有环，可以重新（随机）给出常数 $x_1 = c$，再次运行算法。</p>
+<h3 id="最终代码">最终代码</h3>
+<pre><code>ll Pollard_rho (ll n, ll c) &#123; // 伪随机函数 f (x)=x^2+c，c 为随机数
+	ll i=1, k=2;
+	ll x=rand ()% n;
+	ll y = x;
+	while (1) &#123;
+		++i;
+		x=(mod_mult (x, x, n)+c)% n; // 伪随机数
+		ll d = gcd (y-x+n, n); //gcd 注意负数
+		if (d!=1 &amp;&amp; d!=n) return d;
+		if (y==x) return n; // 遇环退出
+		if (i==k) &#123;y=x; k&lt;&lt;=1;&#125;
+	&#125;
+&#125;
+</code></pre>
+<h3 id="递归分解并储存所有质因数">递归分解并储存所有质因数</h3>
+<p>这里再给出递归分解所有质因数的方法。</p>
 <pre><code>vector&lt;ll&gt; factors; // 储存质因数分解结果（无序）
-void findfac(ll n) &#123;
-    if(Miller_Rabin(n, 20)) &#123; // 素数
-        factors.push_back(n); // 储存素因子
-        return;
-    &#125;
-    ll p = n;
-    while(p&gt;=n) p = Pollard_rho(p, rand()%(n-1)+1); // 找出当前合数的一个素因子
-    findfac(p);
-    findfac(n/p);
-&#125;</code></pre>
-<h2 id="习题"><a href="#习题" class="headerlink" title="习题"></a>习题</h2><h3 id="POJ-1811"><a href="#POJ-1811" class="headerlink" title="POJ 1811"></a>POJ 1811</h3><p>题目地址：<a target="_blank" rel="noopener" href="http://poj.org/problem?id=1811">http://poj.org/problem?id=1811</a></p>
-<h4 id="题目大意"><a href="#题目大意" class="headerlink" title="题目大意"></a>题目大意</h4><p>给你一个64位大整数，判断是否为素数，若不是，则找出最小质因子。</p>
-<h4 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h4><p>直接用<code>Miller_Rabin</code>进行判定，然后<code>findfac</code>求出所有质因子，最后输出最小的质因子。</p>
-<h4 id="AC代码"><a href="#AC代码" class="headerlink" title="AC代码"></a>AC代码</h4><pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">/*************************************************************************
-    > File Name: 1811.cpp
-      > Author: Netcan
-      > Blog: http://www.netcan.xyz
-      > Mail: 1469709759@qq.com
-      > Created Time: 2015-12-05 六 14:27:28 CST
+void findfac (ll n) &#123;
+	if (Miller_Rabin (n, 20)) &#123; // 素数
+		factors.push_back (n); // 储存素因子
+		return;
+	&#125;
+	ll p = n;
+	while (p&gt;=n) p = Pollard_rho (p, rand ()%(n-1)+1); // 找出当前合数的一个素因子
+	findfac (p);
+	findfac (n/p);
+&#125;
+</code></pre>
+<h2 id="习题">习题</h2>
+<h3 id="POJ-1811">POJ 1811</h3>
+<p>题目地址：<a target="_blank" rel="noopener" href="http://poj.org/problem?id=1811">http://poj.org/problem?id=1811</a></p>
+<h4 id="题目大意">题目大意</h4>
+<p>给你一个 64 位大整数，判断是否为素数，若不是，则找出最小质因子。</p>
+<h4 id="思路">思路</h4>
+<p>直接用 <code>Miller_Rabin</code> 进行判定，然后 <code>findfac</code> 求出所有质因子，最后输出最小的质因子。</p>
+<h4 id="AC-代码">AC 代码</h4>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">/*************************************************************************
+	> File Name: 1811.cpp
+	  > Author: Netcan
+	  > Blog: http://www.netcan.xyz
+	  > Mail: 1469709759@qq.com
+	  > Created Time: 2015-12-05 六 14:27:28 CST
  ************************************************************************/</span>
 
 <span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;iostream></span></span>
@@ -420,135 +437,138 @@ void findfac(ll n) &#123;
 <span class="token keyword">using</span> <span class="token keyword">namespace</span> std<span class="token punctuation">;</span>
 <span class="token keyword">typedef</span> <span class="token keyword">long</span> <span class="token keyword">long</span> ll<span class="token punctuation">;</span>
 
-ll <span class="token function">mod_mult</span><span class="token punctuation">(</span>ll a<span class="token punctuation">,</span> ll b<span class="token punctuation">,</span> ll mod<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">//return a*b%mod</span>
-    ll s <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
-    <span class="token keyword">while</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">if</span><span class="token punctuation">(</span>b<span class="token operator">&amp;</span><span class="token number">1</span><span class="token punctuation">)</span> s<span class="token operator">=</span><span class="token punctuation">(</span>s<span class="token operator">+</span>a<span class="token punctuation">)</span><span class="token operator">%</span>mod<span class="token punctuation">;</span>
-        a<span class="token operator">&lt;&lt;=</span><span class="token number">1</span><span class="token punctuation">,</span> b<span class="token operator">>>=</span><span class="token number">1</span><span class="token punctuation">;</span>
-        <span class="token keyword">if</span><span class="token punctuation">(</span>a <span class="token operator">></span> mod<span class="token punctuation">)</span> a <span class="token operator">%=</span> mod<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-    <span class="token keyword">return</span> s<span class="token punctuation">;</span>
+ll <span class="token function">mod_mult</span><span class="token punctuation">(</span>ll a<span class="token punctuation">,</span> ll b<span class="token punctuation">,</span> ll mod<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">//return a*b% mod</span>
+	ll s <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+	<span class="token keyword">while</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token keyword">if</span><span class="token punctuation">(</span>b<span class="token operator">&amp;</span><span class="token number">1</span><span class="token punctuation">)</span> s<span class="token operator">=</span><span class="token punctuation">(</span>s<span class="token operator">+</span>a<span class="token punctuation">)</span><span class="token operator">%</span>mod<span class="token punctuation">;</span>
+		a<span class="token operator">&lt;&lt;=</span><span class="token number">1</span><span class="token punctuation">,</span> b<span class="token operator">>>=</span><span class="token number">1</span><span class="token punctuation">;</span>
+		<span class="token keyword">if</span><span class="token punctuation">(</span>a <span class="token operator">></span> mod<span class="token punctuation">)</span> a <span class="token operator">%=</span> mod<span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token keyword">return</span> s<span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span>
 
-ll <span class="token function">mod_pow</span><span class="token punctuation">(</span>ll x<span class="token punctuation">,</span> ll n<span class="token punctuation">,</span> ll mod<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>  <span class="token comment">// a^b%mod</span>
-    ll res <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
-    <span class="token keyword">while</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">if</span><span class="token punctuation">(</span>n<span class="token operator">&amp;</span><span class="token number">1</span><span class="token punctuation">)</span> res <span class="token operator">=</span> <span class="token function">mod_mult</span><span class="token punctuation">(</span>res<span class="token punctuation">,</span> x<span class="token punctuation">,</span> mod<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        x<span class="token operator">=</span><span class="token function">mod_mult</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> x<span class="token punctuation">,</span> mod<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        n<span class="token operator">>>=</span><span class="token number">1</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-    <span class="token keyword">return</span> res<span class="token punctuation">;</span>
+ll <span class="token function">mod_pow</span><span class="token punctuation">(</span>ll x<span class="token punctuation">,</span> ll n<span class="token punctuation">,</span> ll mod<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>  <span class="token comment">//a^b% mod</span>
+	ll res <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+	<span class="token keyword">while</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token keyword">if</span><span class="token punctuation">(</span>n<span class="token operator">&amp;</span><span class="token number">1</span><span class="token punctuation">)</span> res <span class="token operator">=</span> <span class="token function">mod_mult</span><span class="token punctuation">(</span>res<span class="token punctuation">,</span> x<span class="token punctuation">,</span> mod<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		x<span class="token operator">=</span><span class="token function">mod_mult</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> x<span class="token punctuation">,</span> mod<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		n<span class="token operator">>>=</span><span class="token number">1</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token keyword">return</span> res<span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span>
 
-<span class="token comment">//以a为基,n-1=u*2^t      a^(n-1)=1(mod n)  验证n是不是合数</span>
-<span class="token comment">//一定是合数返回true,不一定返回false</span>
-<span class="token keyword">bool</span> <span class="token function">witness</span><span class="token punctuation">(</span>ll a<span class="token punctuation">,</span> ll n<span class="token punctuation">,</span> ll u<span class="token punctuation">,</span> ll t<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// a随机数，u, t于外部计算</span>
-    ll ret <span class="token operator">=</span> <span class="token function">mod_pow</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> u<span class="token punctuation">,</span> n<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    ll last <span class="token operator">=</span> ret<span class="token punctuation">;</span>
-    <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span> i<span class="token operator">&lt;=</span>t<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        ret <span class="token operator">=</span> <span class="token function">mod_mult</span><span class="token punctuation">(</span>ret<span class="token punctuation">,</span> ret<span class="token punctuation">,</span> n<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">if</span><span class="token punctuation">(</span>ret <span class="token operator">==</span> <span class="token number">1</span> <span class="token operator">&amp;&amp;</span> last <span class="token operator">!=</span> <span class="token number">1</span> <span class="token operator">&amp;&amp;</span> last <span class="token operator">!=</span> n<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
-        last <span class="token operator">=</span> ret<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-    <span class="token keyword">if</span><span class="token punctuation">(</span>ret<span class="token operator">!=</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span> <span class="token comment">// a^(n-1)!=1(mod n)</span>
-    <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+<span class="token comment">// 以 a 为基，n-1=u*2^t      a^(n-1)=1 (mod n)  验证 n 是不是合数 </span>
+<span class="token comment">// 一定是合数返回 true, 不一定返回 false</span>
+<span class="token keyword">bool</span> <span class="token function">witness</span><span class="token punctuation">(</span>ll a<span class="token punctuation">,</span> ll n<span class="token punctuation">,</span> ll u<span class="token punctuation">,</span> ll t<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">//a 随机数，u, t 于外部计算 </span>
+	ll ret <span class="token operator">=</span> <span class="token function">mod_pow</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> u<span class="token punctuation">,</span> n<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	ll last <span class="token operator">=</span> ret<span class="token punctuation">;</span>
+	<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span> i<span class="token operator">&lt;=</span>t<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		ret <span class="token operator">=</span> <span class="token function">mod_mult</span><span class="token punctuation">(</span>ret<span class="token punctuation">,</span> ret<span class="token punctuation">,</span> n<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token keyword">if</span><span class="token punctuation">(</span>ret <span class="token operator">==</span> <span class="token number">1</span> <span class="token operator">&amp;&amp;</span> last <span class="token operator">!=</span> <span class="token number">1</span> <span class="token operator">&amp;&amp;</span> last <span class="token operator">!=</span> n<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+		last <span class="token operator">=</span> ret<span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token keyword">if</span><span class="token punctuation">(</span>ret<span class="token operator">!=</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span> <span class="token comment">//a^(n-1)!=1 (mod n)</span>
+	<span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span>
 
-<span class="token comment">// Miller_Rabin()算法素数判定</span>
-<span class="token comment">//是素数返回true.(可能是伪素数，但概率极小，P=(1/2)^s)</span>
-<span class="token comment">//合数返回false;</span>
-<span class="token comment">// s:挑选s个随机数</span>
+<span class="token comment">// Miller_Rabin () 算法素数判定 </span>
+<span class="token comment">// 是素数返回 true.(可能是伪素数，但概率极小，P=(1/2)^s)</span>
+<span class="token comment">// 合数返回 false;</span>
+<span class="token comment">//s: 挑选 s 个随机数 </span>
 <span class="token keyword">bool</span> <span class="token function">Miller_Rabin</span><span class="token punctuation">(</span>ll n<span class="token punctuation">,</span> <span class="token keyword">int</span> s<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">if</span><span class="token punctuation">(</span>n<span class="token operator">==</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
-    <span class="token keyword">if</span><span class="token punctuation">(</span>n <span class="token operator">&lt;</span> <span class="token number">2</span> <span class="token operator">||</span> <span class="token operator">!</span><span class="token punctuation">(</span>n<span class="token operator">&amp;</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-    ll u<span class="token operator">=</span>n<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
-    ll t<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>
-    <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token operator">!</span><span class="token punctuation">(</span>u<span class="token operator">&amp;</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>u<span class="token operator">>>=</span><span class="token number">1</span><span class="token punctuation">;</span> <span class="token operator">++</span>t<span class="token punctuation">;</span><span class="token punctuation">&#125;</span> <span class="token comment">// 2^t*u = n-1</span>
-    <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">&lt;</span>s<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        ll a<span class="token operator">=</span><span class="token function">rand</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">%</span><span class="token punctuation">(</span>n<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">;</span> <span class="token comment">// 若n为合数，证据为a的概率至少为1/2</span>
-        <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">witness</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> n<span class="token punctuation">,</span> u<span class="token punctuation">,</span> t<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span> <span class="token comment">// 合数</span>
-    <span class="token punctuation">&#125;</span>
-    <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+	<span class="token keyword">if</span><span class="token punctuation">(</span>n<span class="token operator">==</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+	<span class="token keyword">if</span><span class="token punctuation">(</span>n <span class="token operator">&lt;</span> <span class="token number">2</span> <span class="token operator">||</span> <span class="token operator">!</span><span class="token punctuation">(</span>n<span class="token operator">&amp;</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+	ll u<span class="token operator">=</span>n<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+	ll t<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>
+	<span class="token keyword">while</span><span class="token punctuation">(</span><span class="token operator">!</span><span class="token punctuation">(</span>u<span class="token operator">&amp;</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>u<span class="token operator">>>=</span><span class="token number">1</span><span class="token punctuation">;</span> <span class="token operator">++</span>t<span class="token punctuation">;</span><span class="token punctuation">&#125;</span> <span class="token comment">// 2^t*u = n-1</span>
+	<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">&lt;</span>s<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		ll a<span class="token operator">=</span><span class="token function">rand</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">%</span><span class="token punctuation">(</span>n<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">;</span> <span class="token comment">// 若 n 为合数，证据为 a 的概率至少为 1/2</span>
+		<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">witness</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> n<span class="token punctuation">,</span> u<span class="token punctuation">,</span> t<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span> <span class="token comment">// 合数 </span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span>
 
 <span class="token comment">//************************************************</span>
-<span class="token comment">//pollard_rho 算法进行质因数分解</span>
+<span class="token comment">//pollard_rho 算法进行质因数分解 </span>
 <span class="token comment">//************************************************</span>
 vector<span class="token operator">&lt;</span>ll<span class="token operator">></span> factors<span class="token punctuation">;</span> <span class="token comment">// 质因数分解结果（无序）</span>
 
 <span class="token keyword">inline</span> ll <span class="token function">gcd</span><span class="token punctuation">(</span>ll a<span class="token punctuation">,</span> ll b<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">return</span> b<span class="token operator">==</span><span class="token number">0</span><span class="token operator">?</span>a<span class="token operator">:</span><span class="token function">gcd</span><span class="token punctuation">(</span>b<span class="token punctuation">,</span> a<span class="token operator">%</span>b<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">return</span> b<span class="token operator">==</span><span class="token number">0</span><span class="token operator">?</span>a<span class="token operator">:</span><span class="token function">gcd</span><span class="token punctuation">(</span>b<span class="token punctuation">,</span> a<span class="token operator">%</span>b<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span>
 
-ll <span class="token function">Pollard_rho</span><span class="token punctuation">(</span>ll n<span class="token punctuation">,</span> ll c<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 伪随机函数f(x)=x^2+c，c为随机数</span>
-    ll i<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">,</span> k<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">;</span>
-    ll x<span class="token operator">=</span><span class="token function">rand</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">%</span>n<span class="token punctuation">;</span>
-    ll y <span class="token operator">=</span> x<span class="token punctuation">;</span>
-    <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token operator">++</span>i<span class="token punctuation">;</span>
-        x<span class="token operator">=</span><span class="token punctuation">(</span><span class="token function">mod_mult</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> x<span class="token punctuation">,</span> n<span class="token punctuation">)</span><span class="token operator">+</span>c<span class="token punctuation">)</span><span class="token operator">%</span>n<span class="token punctuation">;</span> <span class="token comment">// 伪随机数</span>
-        ll d <span class="token operator">=</span> <span class="token function">gcd</span><span class="token punctuation">(</span>y<span class="token operator">-</span>x<span class="token operator">+</span>n<span class="token punctuation">,</span> n<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// gcd注意负数</span>
-        <span class="token keyword">if</span><span class="token punctuation">(</span>d<span class="token operator">!=</span><span class="token number">1</span> <span class="token operator">&amp;&amp;</span> d<span class="token operator">!=</span>n<span class="token punctuation">)</span> <span class="token keyword">return</span> d<span class="token punctuation">;</span>
-        <span class="token keyword">if</span><span class="token punctuation">(</span>y<span class="token operator">==</span>x<span class="token punctuation">)</span> <span class="token keyword">return</span> n<span class="token punctuation">;</span> <span class="token comment">// 遇环退出</span>
-        <span class="token keyword">if</span><span class="token punctuation">(</span>i<span class="token operator">==</span>k<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>y<span class="token operator">=</span>x<span class="token punctuation">;</span> k<span class="token operator">&lt;&lt;=</span><span class="token number">1</span><span class="token punctuation">;</span><span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
+ll <span class="token function">Pollard_rho</span><span class="token punctuation">(</span>ll n<span class="token punctuation">,</span> ll c<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 伪随机函数 f (x)=x^2+c，c 为随机数 </span>
+	ll i<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">,</span> k<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">;</span>
+	ll x<span class="token operator">=</span><span class="token function">rand</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">%</span>n<span class="token punctuation">;</span>
+	ll y <span class="token operator">=</span> x<span class="token punctuation">;</span>
+	<span class="token keyword">while</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token operator">++</span>i<span class="token punctuation">;</span>
+		x<span class="token operator">=</span><span class="token punctuation">(</span><span class="token function">mod_mult</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> x<span class="token punctuation">,</span> n<span class="token punctuation">)</span><span class="token operator">+</span>c<span class="token punctuation">)</span><span class="token operator">%</span>n<span class="token punctuation">;</span> <span class="token comment">// 伪随机数 </span>
+		ll d <span class="token operator">=</span> <span class="token function">gcd</span><span class="token punctuation">(</span>y<span class="token operator">-</span>x<span class="token operator">+</span>n<span class="token punctuation">,</span> n<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//gcd 注意负数 </span>
+		<span class="token keyword">if</span><span class="token punctuation">(</span>d<span class="token operator">!=</span><span class="token number">1</span> <span class="token operator">&amp;&amp;</span> d<span class="token operator">!=</span>n<span class="token punctuation">)</span> <span class="token keyword">return</span> d<span class="token punctuation">;</span>
+		<span class="token keyword">if</span><span class="token punctuation">(</span>y<span class="token operator">==</span>x<span class="token punctuation">)</span> <span class="token keyword">return</span> n<span class="token punctuation">;</span> <span class="token comment">// 遇环退出 </span>
+		<span class="token keyword">if</span><span class="token punctuation">(</span>i<span class="token operator">==</span>k<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>y<span class="token operator">=</span>x<span class="token punctuation">;</span> k<span class="token operator">&lt;&lt;=</span><span class="token number">1</span><span class="token punctuation">;</span><span class="token punctuation">&#125;</span>
+	<span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span>
 
-<span class="token comment">// 对n进行递归素因子分解</span>
+<span class="token comment">// 对 n 进行递归素因子分解 </span>
 <span class="token keyword">void</span> <span class="token function">findfac</span><span class="token punctuation">(</span>ll n<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">Miller_Rabin</span><span class="token punctuation">(</span>n<span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 素数</span>
-        factors<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 储存素因子</span>
-        <span class="token keyword">return</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-    ll p <span class="token operator">=</span> n<span class="token punctuation">;</span>
-    <span class="token keyword">while</span><span class="token punctuation">(</span>p<span class="token operator">>=</span>n<span class="token punctuation">)</span> p <span class="token operator">=</span> <span class="token function">Pollard_rho</span><span class="token punctuation">(</span>p<span class="token punctuation">,</span> <span class="token function">rand</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">%</span><span class="token punctuation">(</span>n<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 找出当前合数的一个素因子</span>
-    <span class="token function">findfac</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token function">findfac</span><span class="token punctuation">(</span>n<span class="token operator">/</span>p<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">Miller_Rabin</span><span class="token punctuation">(</span>n<span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 素数 </span>
+		factors<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 储存素因子 </span>
+		<span class="token keyword">return</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	ll p <span class="token operator">=</span> n<span class="token punctuation">;</span>
+	<span class="token keyword">while</span><span class="token punctuation">(</span>p<span class="token operator">>=</span>n<span class="token punctuation">)</span> p <span class="token operator">=</span> <span class="token function">Pollard_rho</span><span class="token punctuation">(</span>p<span class="token punctuation">,</span> <span class="token function">rand</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">%</span><span class="token punctuation">(</span>n<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 找出当前合数的一个素因子 </span>
+	<span class="token function">findfac</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token function">findfac</span><span class="token punctuation">(</span>n<span class="token operator">/</span>p<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span>
 
 <span class="token keyword">int</span> T<span class="token punctuation">;</span>
 ll N<span class="token punctuation">;</span>
 
 <span class="token keyword">void</span> <span class="token function">solve</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">Miller_Rabin</span><span class="token punctuation">(</span>N<span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        cout <span class="token operator">&lt;&lt;</span> <span class="token string">"Prime"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-    <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
-        factors<span class="token punctuation">.</span><span class="token function">clear</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token function">findfac</span><span class="token punctuation">(</span>N<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        cout <span class="token operator">&lt;&lt;</span> <span class="token operator">*</span><span class="token function">min_element</span><span class="token punctuation">(</span>factors<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> factors<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-    <span class="token comment">// cout &lt;&lt; "因子：\n";</span>
-    <span class="token comment">// for(vector&lt;ll>::iterator i=factors.begin(); i!=factors.end(); ++i) &#123;</span>
-        <span class="token comment">// printf("%lld ", *i);</span>
-    <span class="token comment">// &#125;</span>
-    <span class="token comment">// cout &lt;&lt;endl;</span>
+	<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">Miller_Rabin</span><span class="token punctuation">(</span>N<span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		cout <span class="token operator">&lt;&lt;</span> <span class="token string">"Prime"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+		factors<span class="token punctuation">.</span><span class="token function">clear</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token function">findfac</span><span class="token punctuation">(</span>N<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		cout <span class="token operator">&lt;&lt;</span> <span class="token operator">*</span><span class="token function">min_element</span><span class="token punctuation">(</span>factors<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> factors<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token comment">//cout &lt;&lt; "因子：\n";</span>
+	<span class="token comment">//for (vector&lt;ll>::iterator i=factors.begin (); i!=factors.end (); ++i) &#123;</span>
+		<span class="token comment">//printf ("% lld", *i);</span>
+	<span class="token comment">// &#125;</span>
+	<span class="token comment">//cout &lt;&lt;endl;</span>
 <span class="token punctuation">&#125;</span>
 
 <span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 <span class="token punctuation">&#123;</span>
 <span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">ifdef</span> <span class="token expression">Oj</span></span>
-    <span class="token function">freopen</span><span class="token punctuation">(</span><span class="token string">"1811.in"</span><span class="token punctuation">,</span> <span class="token string">"r"</span><span class="token punctuation">,</span> <span class="token constant">stdin</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token function">freopen</span><span class="token punctuation">(</span><span class="token string">"1811.in"</span><span class="token punctuation">,</span> <span class="token string">"r"</span><span class="token punctuation">,</span> <span class="token constant">stdin</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">endif</span></span>
-    cin <span class="token operator">>></span> T<span class="token punctuation">;</span>
-    <span class="token keyword">while</span><span class="token punctuation">(</span>T<span class="token operator">--</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        cin <span class="token operator">>></span> N<span class="token punctuation">;</span>
-        <span class="token function">solve</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+	cin <span class="token operator">>></span> T<span class="token punctuation">;</span>
+	<span class="token keyword">while</span><span class="token punctuation">(</span>T<span class="token operator">--</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		cin <span class="token operator">>></span> N<span class="token punctuation">;</span>
+		<span class="token function">solve</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span></code></pre>
-
-<h3 id="POJ-2429"><a href="#POJ-2429" class="headerlink" title="POJ 2429"></a>POJ 2429</h3><p>题目地址：<a target="_blank" rel="noopener" href="http://poj.org/problem?id=2429">http://poj.org/problem?id=2429</a></p>
-<h4 id="题目大意-1"><a href="#题目大意-1" class="headerlink" title="题目大意"></a>题目大意</h4><p>给你两个数$a, b$，求他们的最大公约数$GCD$和最小公倍数$LCM$比较简单；那么给出$GCD$和$LCM$，求出$a, b$（升序），若有多解，求出$a+b$最小的那组解。</p>
-<h4 id="思路-1"><a href="#思路-1" class="headerlink" title="思路"></a>思路</h4><p>题目给的GCD, LCM都是64位的，暴力是行不通的。</p>
-<p>$$\dfrac{a}{GCD}\dfrac{b}{GCD} = p\times q= \dfrac{LCM}{GCD}$$</p>
-<p>那么用<code>Pollard_Rho</code>分解$\dfrac{LCM}{GCD}$求出所有质因子，然后在合并相同的质因子，最终搜索最小p+q，则$a=p\times GCD, b=q\times GCD$</p>
-<h4 id="AC代码-1"><a href="#AC代码-1" class="headerlink" title="AC代码"></a>AC代码</h4><pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">/*************************************************************************
-    > File Name: 2429.cpp
-      > Author: Netcan
-      > Blog: http://www.netcan.xyz
-      > Mail: 1469709759@qq.com
-      > Created Time: 2015-12-07 一 21:11:13 CST
+<h3 id="POJ-2429">POJ 2429</h3>
+<p>题目地址：<a target="_blank" rel="noopener" href="http://poj.org/problem?id=2429">http://poj.org/problem?id=2429</a></p>
+<h4 id="题目大意-2">题目大意</h4>
+<p>给你两个数 $a, b$，求他们的最大公约数 $GCD$ 和最小公倍数 $LCM$ 比较简单；那么给出 $GCD$ 和 $LCM$，求出 $a, b$（升序），若有多解，求出 $a+b$ 最小的那组解。</p>
+<h4 id="思路-2">思路</h4>
+<p>题目给的 GCD, LCM 都是 64 位的，暴力是行不通的。</p>
+<p>$$\dfrac {a}{GCD}\dfrac {b}{GCD} = p\times q= \dfrac {LCM}{GCD}$$</p>
+<p>那么用 <code>Pollard_Rho</code> 分解 $\dfrac {LCM}{GCD}$ 求出所有质因子，然后在合并相同的质因子，最终搜索最小 p+q，则 $a=p\times GCD, b=q\times GCD$</p>
+<h4 id="AC-代码-2">AC 代码</h4>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">/*************************************************************************
+	> File Name: 2429.cpp
+	  > Author: Netcan
+	  > Blog: http://www.netcan.xyz
+	  > Mail: 1469709759@qq.com
+	  > Created Time: 2015-12-07 一 21:11:13 CST
  ************************************************************************/</span>
 
 <span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;iostream></span></span>
@@ -575,28 +595,28 @@ ll N<span class="token punctuation">;</span>
 <span class="token keyword">typedef</span> <span class="token keyword">long</span> <span class="token keyword">long</span> ll<span class="token punctuation">;</span>
 ll GCD<span class="token punctuation">,</span> LCM<span class="token punctuation">;</span>
 
-ll <span class="token function">mod_mult</span><span class="token punctuation">(</span>ll a<span class="token punctuation">,</span> ll b<span class="token punctuation">,</span> ll mod<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// return    a*b%mod</span>
-    ll s <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
-    <span class="token keyword">while</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">if</span><span class="token punctuation">(</span>b<span class="token operator">&amp;</span><span class="token number">1</span><span class="token punctuation">)</span> s<span class="token operator">=</span><span class="token punctuation">(</span>s<span class="token operator">+</span>a<span class="token punctuation">)</span><span class="token operator">%</span>mod<span class="token punctuation">;</span>
-        a<span class="token operator">&lt;&lt;=</span><span class="token number">1</span><span class="token punctuation">,</span> b<span class="token operator">>>=</span><span class="token number">1</span><span class="token punctuation">;</span>
-        <span class="token keyword">if</span><span class="token punctuation">(</span>a <span class="token operator">></span> mod<span class="token punctuation">)</span> a <span class="token operator">-=</span> mod<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-    <span class="token keyword">return</span> s<span class="token punctuation">;</span>
+ll <span class="token function">mod_mult</span><span class="token punctuation">(</span>ll a<span class="token punctuation">,</span> ll b<span class="token punctuation">,</span> ll mod<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">//return	a*b% mod</span>
+	ll s <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+	<span class="token keyword">while</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token keyword">if</span><span class="token punctuation">(</span>b<span class="token operator">&amp;</span><span class="token number">1</span><span class="token punctuation">)</span> s<span class="token operator">=</span><span class="token punctuation">(</span>s<span class="token operator">+</span>a<span class="token punctuation">)</span><span class="token operator">%</span>mod<span class="token punctuation">;</span>
+		a<span class="token operator">&lt;&lt;=</span><span class="token number">1</span><span class="token punctuation">,</span> b<span class="token operator">>>=</span><span class="token number">1</span><span class="token punctuation">;</span>
+		<span class="token keyword">if</span><span class="token punctuation">(</span>a <span class="token operator">></span> mod<span class="token punctuation">)</span> a <span class="token operator">-=</span> mod<span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token keyword">return</span> s<span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span>
 
-ll <span class="token function">mod_pow</span><span class="token punctuation">(</span>ll x<span class="token punctuation">,</span> ll n<span class="token punctuation">,</span> ll mod<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// return a^b%mod</span>
-    ll res <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
-    <span class="token keyword">while</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">if</span><span class="token punctuation">(</span>n<span class="token operator">&amp;</span><span class="token number">1</span><span class="token punctuation">)</span> res <span class="token operator">=</span> <span class="token function">mod_mult</span><span class="token punctuation">(</span>res<span class="token punctuation">,</span> x<span class="token punctuation">,</span> mod<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        x<span class="token operator">=</span><span class="token function">mod_mult</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> x<span class="token punctuation">,</span> mod<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        n<span class="token operator">>>=</span><span class="token number">1</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-    <span class="token keyword">return</span> res<span class="token punctuation">;</span>
+ll <span class="token function">mod_pow</span><span class="token punctuation">(</span>ll x<span class="token punctuation">,</span> ll n<span class="token punctuation">,</span> ll mod<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">//return a^b% mod</span>
+	ll res <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+	<span class="token keyword">while</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token keyword">if</span><span class="token punctuation">(</span>n<span class="token operator">&amp;</span><span class="token number">1</span><span class="token punctuation">)</span> res <span class="token operator">=</span> <span class="token function">mod_mult</span><span class="token punctuation">(</span>res<span class="token punctuation">,</span> x<span class="token punctuation">,</span> mod<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		x<span class="token operator">=</span><span class="token function">mod_mult</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> x<span class="token punctuation">,</span> mod<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		n<span class="token operator">>>=</span><span class="token number">1</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token keyword">return</span> res<span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span>
-<span class="token comment">//以a为基,n-1=u*2^t      a^(n-1)=1(mod n)  验证n是不是合数</span>
-<span class="token comment">//一定是合数返回true,不一定返回false</span>
-<span class="token keyword">bool</span> <span class="token function">witness</span><span class="token punctuation">(</span>ll a<span class="token punctuation">,</span> ll n<span class="token punctuation">,</span> ll u<span class="token punctuation">,</span> ll t<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// a随机数，u, t于外部计算</span>
+<span class="token comment">// 以 a 为基，n-1=u*2^t      a^(n-1)=1 (mod n)  验证 n 是不是合数 </span>
+<span class="token comment">// 一定是合数返回 true, 不一定返回 false</span>
+<span class="token keyword">bool</span> <span class="token function">witness</span><span class="token punctuation">(</span>ll a<span class="token punctuation">,</span> ll n<span class="token punctuation">,</span> ll u<span class="token punctuation">,</span> ll t<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">//a 随机数，u, t 于外部计算 </span>
     ll ret <span class="token operator">=</span> <span class="token function">mod_pow</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> u<span class="token punctuation">,</span> n<span class="token punctuation">)</span><span class="token punctuation">;</span>
     ll last <span class="token operator">=</span> ret<span class="token punctuation">;</span>
     <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span> i<span class="token operator">&lt;=</span>t<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
@@ -604,14 +624,14 @@ ll <span class="token function">mod_pow</span><span class="token punctuation">(<
         <span class="token keyword">if</span><span class="token punctuation">(</span>ret <span class="token operator">==</span> <span class="token number">1</span> <span class="token operator">&amp;&amp;</span> last <span class="token operator">!=</span> <span class="token number">1</span> <span class="token operator">&amp;&amp;</span> last <span class="token operator">!=</span> n<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
         last <span class="token operator">=</span> ret<span class="token punctuation">;</span>
     <span class="token punctuation">&#125;</span>
-    <span class="token keyword">if</span><span class="token punctuation">(</span>ret<span class="token operator">!=</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span> <span class="token comment">// a^(n-1)!=1(mod n)</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span>ret<span class="token operator">!=</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span> <span class="token comment">//a^(n-1)!=1 (mod n)</span>
     <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span>
 
-<span class="token comment">// Miller_Rabin()算法素数判定</span>
-<span class="token comment">//是素数返回true.(可能是伪素数，但概率极小，P=(1/2)^s)</span>
-<span class="token comment">//合数返回false;</span>
-<span class="token comment">// s:挑选s个随机数</span>
+<span class="token comment">// Miller_Rabin () 算法素数判定 </span>
+<span class="token comment">// 是素数返回 true.(可能是伪素数，但概率极小，P=(1/2)^s)</span>
+<span class="token comment">// 合数返回 false;</span>
+<span class="token comment">//s: 挑选 s 个随机数 </span>
 <span class="token keyword">bool</span> <span class="token function">Miller_Rabin</span><span class="token punctuation">(</span>ll n<span class="token punctuation">,</span> <span class="token keyword">int</span> s<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
     <span class="token keyword">if</span><span class="token punctuation">(</span>n<span class="token operator">==</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
     <span class="token keyword">if</span><span class="token punctuation">(</span>n <span class="token operator">&lt;</span> <span class="token number">2</span> <span class="token operator">||</span> <span class="token operator">!</span><span class="token punctuation">(</span>n<span class="token operator">&amp;</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
@@ -619,110 +639,110 @@ ll <span class="token function">mod_pow</span><span class="token punctuation">(<
     ll t<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>
     <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token operator">!</span><span class="token punctuation">(</span>u<span class="token operator">&amp;</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>u<span class="token operator">>>=</span><span class="token number">1</span><span class="token punctuation">;</span> <span class="token operator">++</span>t<span class="token punctuation">;</span><span class="token punctuation">&#125;</span> <span class="token comment">// 2^t*u = n-1</span>
     <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">&lt;</span>s<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        ll a<span class="token operator">=</span><span class="token function">rand</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">%</span><span class="token punctuation">(</span>n<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">;</span> <span class="token comment">// 若n为合数，证据为a的概率至少为1/2</span>
-        <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">witness</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> n<span class="token punctuation">,</span> u<span class="token punctuation">,</span> t<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span> <span class="token comment">// 合数</span>
+        ll a<span class="token operator">=</span><span class="token function">rand</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">%</span><span class="token punctuation">(</span>n<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">;</span> <span class="token comment">// 若 n 为合数，证据为 a 的概率至少为 1/2</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">witness</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> n<span class="token punctuation">,</span> u<span class="token punctuation">,</span> t<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span> <span class="token comment">// 合数 </span>
     <span class="token punctuation">&#125;</span>
     <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span>
 
 <span class="token comment">//************************************************</span>
-<span class="token comment">//pollard_rho 算法进行质因数分解</span>
+<span class="token comment">//pollard_rho 算法进行质因数分解 </span>
 <span class="token comment">//************************************************</span>
-map<span class="token operator">&lt;</span>ll<span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token operator">></span> factors<span class="token punctuation">;</span> <span class="token comment">// 质因数分解结果（无序，每个质因子的n次方）</span>
+map<span class="token operator">&lt;</span>ll<span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token operator">></span> factors<span class="token punctuation">;</span> <span class="token comment">// 质因数分解结果（无序，每个质因子的 n 次方）</span>
 
 <span class="token keyword">inline</span> ll <span class="token function">gcd</span><span class="token punctuation">(</span>ll a<span class="token punctuation">,</span> ll b<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
     <span class="token keyword">return</span> b<span class="token operator">==</span><span class="token number">0</span><span class="token operator">?</span>a<span class="token operator">:</span><span class="token function">gcd</span><span class="token punctuation">(</span>b<span class="token punctuation">,</span> a<span class="token operator">%</span>b<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span>
 
-ll <span class="token function">Pollard_rho</span><span class="token punctuation">(</span>ll n<span class="token punctuation">,</span> ll c<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 伪随机函数f(x)=x^2+c，c为随机数</span>
+ll <span class="token function">Pollard_rho</span><span class="token punctuation">(</span>ll n<span class="token punctuation">,</span> ll c<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 伪随机函数 f (x)=x^2+c，c 为随机数 </span>
     ll i<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">,</span> k<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">;</span>
     ll x<span class="token operator">=</span><span class="token function">rand</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">%</span>n<span class="token punctuation">;</span>
     ll y <span class="token operator">=</span> x<span class="token punctuation">;</span>
     <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
         <span class="token operator">++</span>i<span class="token punctuation">;</span>
-        x<span class="token operator">=</span><span class="token punctuation">(</span><span class="token function">mod_mult</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> x<span class="token punctuation">,</span> n<span class="token punctuation">)</span><span class="token operator">+</span>c<span class="token punctuation">)</span><span class="token operator">%</span>n<span class="token punctuation">;</span> <span class="token comment">// 伪随机数</span>
-        ll d <span class="token operator">=</span> <span class="token function">gcd</span><span class="token punctuation">(</span>y<span class="token operator">-</span>x<span class="token operator">+</span>n<span class="token punctuation">,</span> n<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// gcd注意负数</span>
+        x<span class="token operator">=</span><span class="token punctuation">(</span><span class="token function">mod_mult</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> x<span class="token punctuation">,</span> n<span class="token punctuation">)</span><span class="token operator">+</span>c<span class="token punctuation">)</span><span class="token operator">%</span>n<span class="token punctuation">;</span> <span class="token comment">// 伪随机数 </span>
+        ll d <span class="token operator">=</span> <span class="token function">gcd</span><span class="token punctuation">(</span>y<span class="token operator">-</span>x<span class="token operator">+</span>n<span class="token punctuation">,</span> n<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//gcd 注意负数 </span>
         <span class="token keyword">if</span><span class="token punctuation">(</span>d<span class="token operator">!=</span><span class="token number">1</span> <span class="token operator">&amp;&amp;</span> d<span class="token operator">!=</span>n<span class="token punctuation">)</span> <span class="token keyword">return</span> d<span class="token punctuation">;</span>
-        <span class="token keyword">if</span><span class="token punctuation">(</span>y<span class="token operator">==</span>x<span class="token punctuation">)</span> <span class="token keyword">return</span> n<span class="token punctuation">;</span> <span class="token comment">// 遇环退出</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>y<span class="token operator">==</span>x<span class="token punctuation">)</span> <span class="token keyword">return</span> n<span class="token punctuation">;</span> <span class="token comment">// 遇环退出 </span>
         <span class="token keyword">if</span><span class="token punctuation">(</span>i<span class="token operator">==</span>k<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>y<span class="token operator">=</span>x<span class="token punctuation">;</span> k<span class="token operator">&lt;&lt;=</span><span class="token number">1</span><span class="token punctuation">;</span><span class="token punctuation">&#125;</span>
     <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span>
 
-<span class="token comment">// 对n进行递归素因子分解</span>
+<span class="token comment">// 对 n 进行递归素因子分解 </span>
 <span class="token keyword">void</span> <span class="token function">findfac</span><span class="token punctuation">(</span>ll n<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">Miller_Rabin</span><span class="token punctuation">(</span>n<span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 素数</span>
-        <span class="token operator">++</span>factors<span class="token punctuation">[</span>n<span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment">// 储存素因子，用map后面方便处理</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">Miller_Rabin</span><span class="token punctuation">(</span>n<span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 素数 </span>
+		<span class="token operator">++</span>factors<span class="token punctuation">[</span>n<span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment">// 储存素因子，用 map 后面方便处理 </span>
         <span class="token keyword">return</span><span class="token punctuation">;</span>
     <span class="token punctuation">&#125;</span>
     ll p <span class="token operator">=</span> n<span class="token punctuation">;</span>
-    <span class="token keyword">while</span><span class="token punctuation">(</span>p<span class="token operator">>=</span>n<span class="token punctuation">)</span> p <span class="token operator">=</span> <span class="token function">Pollard_rho</span><span class="token punctuation">(</span>p<span class="token punctuation">,</span> <span class="token function">rand</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">%</span><span class="token punctuation">(</span>n<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 找出当前合数的一个素因子</span>
+    <span class="token keyword">while</span><span class="token punctuation">(</span>p<span class="token operator">>=</span>n<span class="token punctuation">)</span> p <span class="token operator">=</span> <span class="token function">Pollard_rho</span><span class="token punctuation">(</span>p<span class="token punctuation">,</span> <span class="token function">rand</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">%</span><span class="token punctuation">(</span>n<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 找出当前合数的一个素因子 </span>
     <span class="token function">findfac</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token function">findfac</span><span class="token punctuation">(</span>n<span class="token operator">/</span>p<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span>
 
-<span class="token keyword">void</span> <span class="token function">dfs</span><span class="token punctuation">(</span><span class="token keyword">const</span> vector<span class="token operator">&lt;</span>ll<span class="token operator">></span> <span class="token operator">&amp;</span>nf<span class="token punctuation">,</span><span class="token keyword">const</span> ll d<span class="token punctuation">,</span> <span class="token keyword">int</span> i<span class="token punctuation">,</span> ll<span class="token operator">&amp;</span> sum<span class="token punctuation">,</span>  ll x<span class="token punctuation">,</span> ll <span class="token operator">&amp;</span>a<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 搜索最小的a+b，x为当前搜索的a，sum为储存最小和，a为最终答案</span>
-    <span class="token keyword">if</span><span class="token punctuation">(</span>i <span class="token operator">>=</span> nf<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span>
-    <span class="token keyword">if</span><span class="token punctuation">(</span>sum <span class="token operator">></span> d<span class="token operator">/</span>x<span class="token operator">+</span>x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 更新最小和</span>
-        a<span class="token operator">=</span>x<span class="token punctuation">;</span>
-        sum <span class="token operator">=</span> d<span class="token operator">/</span>x<span class="token operator">+</span>x<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-    <span class="token function">dfs</span><span class="token punctuation">(</span>nf<span class="token punctuation">,</span> d<span class="token punctuation">,</span> i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">,</span> sum<span class="token punctuation">,</span> x<span class="token punctuation">,</span> a<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 不选nf[i]并搜索</span>
-    x<span class="token operator">*=</span>nf<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment">// 选择nf[i]并搜索</span>
-    <span class="token keyword">if</span><span class="token punctuation">(</span>sum <span class="token operator">></span> d<span class="token operator">/</span>x<span class="token operator">+</span>x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 更新最小和</span>
-        a <span class="token operator">=</span> x<span class="token punctuation">;</span>
-        sum <span class="token operator">=</span> d<span class="token operator">/</span>x<span class="token operator">+</span>x<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-    <span class="token function">dfs</span><span class="token punctuation">(</span>nf<span class="token punctuation">,</span> d<span class="token punctuation">,</span> i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">,</span> sum<span class="token punctuation">,</span> x<span class="token punctuation">,</span> a<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 这是选择nf[i]的情况</span>
+<span class="token keyword">void</span> <span class="token function">dfs</span><span class="token punctuation">(</span><span class="token keyword">const</span> vector<span class="token operator">&lt;</span>ll<span class="token operator">></span> <span class="token operator">&amp;</span>nf<span class="token punctuation">,</span><span class="token keyword">const</span> ll d<span class="token punctuation">,</span> <span class="token keyword">int</span> i<span class="token punctuation">,</span> ll<span class="token operator">&amp;</span> sum<span class="token punctuation">,</span>  ll x<span class="token punctuation">,</span> ll <span class="token operator">&amp;</span>a<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 搜索最小的 a+b，x 为当前搜索的 a，sum 为储存最小和，a 为最终答案 </span>
+	<span class="token keyword">if</span><span class="token punctuation">(</span>i <span class="token operator">>=</span> nf<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span>
+	<span class="token keyword">if</span><span class="token punctuation">(</span>sum <span class="token operator">></span> d<span class="token operator">/</span>x<span class="token operator">+</span>x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 更新最小和 </span>
+		a<span class="token operator">=</span>x<span class="token punctuation">;</span>
+		sum <span class="token operator">=</span> d<span class="token operator">/</span>x<span class="token operator">+</span>x<span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token function">dfs</span><span class="token punctuation">(</span>nf<span class="token punctuation">,</span> d<span class="token punctuation">,</span> i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">,</span> sum<span class="token punctuation">,</span> x<span class="token punctuation">,</span> a<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 不选 nf [i] 并搜索 </span>
+	x<span class="token operator">*=</span>nf<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment">// 选择 nf [i] 并搜索 </span>
+	<span class="token keyword">if</span><span class="token punctuation">(</span>sum <span class="token operator">></span> d<span class="token operator">/</span>x<span class="token operator">+</span>x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 更新最小和 </span>
+		a <span class="token operator">=</span> x<span class="token punctuation">;</span>
+		sum <span class="token operator">=</span> d<span class="token operator">/</span>x<span class="token operator">+</span>x<span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token function">dfs</span><span class="token punctuation">(</span>nf<span class="token punctuation">,</span> d<span class="token punctuation">,</span> i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">,</span> sum<span class="token punctuation">,</span> x<span class="token punctuation">,</span> a<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 这是选择 nf [i] 的情况 </span>
 <span class="token punctuation">&#125;</span>
 
 <span class="token keyword">void</span> <span class="token function">solve</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    factors<span class="token punctuation">.</span><span class="token function">clear</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    vector<span class="token operator">&lt;</span>ll<span class="token operator">></span> nfactors<span class="token punctuation">;</span> <span class="token comment">// 最终因子</span>
-    ll d <span class="token operator">=</span> LCM<span class="token operator">/</span>GCD<span class="token punctuation">;</span> <span class="token comment">// (a/gcd)(b/gcd)=lcm/gcd，然后分解d，求出最终的(a/gcd), (b/gcd)</span>
-    <span class="token keyword">if</span><span class="token punctuation">(</span>d<span class="token operator">==</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%lld %lld\n"</span><span class="token punctuation">,</span> GCD<span class="token punctuation">,</span> LCM<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-    <span class="token function">findfac</span><span class="token punctuation">(</span>d<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	factors<span class="token punctuation">.</span><span class="token function">clear</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	vector<span class="token operator">&lt;</span>ll<span class="token operator">></span> nfactors<span class="token punctuation">;</span> <span class="token comment">// 最终因子 </span>
+	ll d <span class="token operator">=</span> LCM<span class="token operator">/</span>GCD<span class="token punctuation">;</span> <span class="token comment">// (a/gcd)(b/gcd)=lcm/gcd，然后分解 d，求出最终的 (a/gcd), (b/gcd)</span>
+	<span class="token keyword">if</span><span class="token punctuation">(</span>d<span class="token operator">==</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"% lld % lld\n"</span><span class="token punctuation">,</span> GCD<span class="token punctuation">,</span> LCM<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token keyword">return</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token function">findfac</span><span class="token punctuation">(</span>d<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    <span class="token keyword">for</span><span class="token punctuation">(</span>map<span class="token operator">&lt;</span>ll<span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token operator">></span><span class="token operator">::</span>iterator i <span class="token operator">=</span> factors<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> i<span class="token operator">!=</span>factors<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span>
-        nfactors<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span><span class="token function">mod_pow</span><span class="token punctuation">(</span>i<span class="token operator">-></span>first<span class="token punctuation">,</span> i<span class="token operator">-></span>second<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">1ll</span><span class="token operator">&lt;&lt;</span><span class="token number">63</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 对相同的质因子进行合并</span>
+	<span class="token keyword">for</span><span class="token punctuation">(</span>map<span class="token operator">&lt;</span>ll<span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token operator">></span><span class="token operator">::</span>iterator i <span class="token operator">=</span> factors<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> i<span class="token operator">!=</span>factors<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span>
+		nfactors<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span><span class="token function">mod_pow</span><span class="token punctuation">(</span>i<span class="token operator">-></span>first<span class="token punctuation">,</span> i<span class="token operator">-></span>second<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">1ll</span><span class="token operator">&lt;&lt;</span><span class="token number">63</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 对相同的质因子进行合并 </span>
 
-    <span class="token comment">// for(vector&lt;ll>::iterator i=nfactors.begin(); i!=nfactors.end(); ++i) &#123;</span>
-        <span class="token comment">// printf("%lld ", *i);</span>
-    <span class="token comment">// &#125;</span>
-    <span class="token comment">// cout &lt;&lt; endl;</span>
-    ll a <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
-    ll sum <span class="token operator">=</span> a<span class="token operator">+</span>d<span class="token operator">/</span>a<span class="token punctuation">;</span>
-    <span class="token function">dfs</span><span class="token punctuation">(</span>nfactors<span class="token punctuation">,</span> d<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> sum<span class="token punctuation">,</span> a<span class="token punctuation">,</span> a<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token comment">//for (vector&lt;ll>::iterator i=nfactors.begin (); i!=nfactors.end (); ++i) &#123;</span>
+		<span class="token comment">//printf ("% lld", *i);</span>
+	<span class="token comment">// &#125;</span>
+	<span class="token comment">//cout &lt;&lt; endl;</span>
+	ll a <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+	ll sum <span class="token operator">=</span> a<span class="token operator">+</span>d<span class="token operator">/</span>a<span class="token punctuation">;</span>
+	<span class="token function">dfs</span><span class="token punctuation">(</span>nfactors<span class="token punctuation">,</span> d<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> sum<span class="token punctuation">,</span> a<span class="token punctuation">,</span> a<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    <span class="token comment">// for(int i=0; i&lt;(1&lt;&lt;nfactors.size()); ++i) &#123;</span>
-        <span class="token comment">// ll aa = 1;</span>
-        <span class="token comment">// for(int j=0; j&lt;nfactors.size(); ++j) // 神奇的搜索。。。</span>
-            <span class="token comment">// if(i &amp; (1&lt;&lt;j)) aa*=nfactors[j];</span>
+	<span class="token comment">//for (int i=0; i&lt;(1&lt;&lt;nfactors.size ()); ++i) &#123;</span>
+		<span class="token comment">//ll aa = 1;</span>
+		<span class="token comment">//for (int j=0; j&lt;nfactors.size (); ++j) // 神奇的搜索。。。</span>
+			<span class="token comment">//if (i &amp; (1&lt;&lt;j)) aa*=nfactors [j];</span>
 
-        <span class="token comment">// if(d/aa + aa &lt; min_sum) &#123;</span>
-            <span class="token comment">// min_sum = d/aa + aa;</span>
-            <span class="token comment">// a = aa;</span>
-        <span class="token comment">// &#125;</span>
-    <span class="token comment">// &#125;</span>
-    a <span class="token operator">=</span> <span class="token function">min</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> d<span class="token operator">/</span>a<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token comment">//if (d/aa + aa &lt; min_sum) &#123;</span>
+			<span class="token comment">//min_sum = d/aa + aa;</span>
+			<span class="token comment">//a = aa;</span>
+		<span class="token comment">// &#125;</span>
+	<span class="token comment">// &#125;</span>
+	a <span class="token operator">=</span> <span class="token function">min</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> d<span class="token operator">/</span>a<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%lld %lld\n"</span><span class="token punctuation">,</span> a<span class="token operator">*</span>GCD<span class="token punctuation">,</span> d<span class="token operator">/</span>a<span class="token operator">*</span>GCD<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"% lld % lld\n"</span><span class="token punctuation">,</span> a<span class="token operator">*</span>GCD<span class="token punctuation">,</span> d<span class="token operator">/</span>a<span class="token operator">*</span>GCD<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span>
 
 <span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 <span class="token punctuation">&#123;</span>
 <span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">ifdef</span> <span class="token expression">Oj</span></span>
-    <span class="token function">freopen</span><span class="token punctuation">(</span><span class="token string">"2429.in"</span><span class="token punctuation">,</span> <span class="token string">"r"</span><span class="token punctuation">,</span> <span class="token constant">stdin</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token function">freopen</span><span class="token punctuation">(</span><span class="token string">"2429.in"</span><span class="token punctuation">,</span> <span class="token string">"r"</span><span class="token punctuation">,</span> <span class="token constant">stdin</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">endif</span></span>
-    <span class="token keyword">while</span><span class="token punctuation">(</span>cin <span class="token operator">>></span> GCD <span class="token operator">>></span> LCM<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token function">solve</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+	<span class="token keyword">while</span><span class="token punctuation">(</span>cin <span class="token operator">>></span> GCD <span class="token operator">>></span> LCM<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token function">solve</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span></code></pre>
-
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
+<h2 id="参考资料">参考资料</h2>
+<ol>
 <li>《算法导论》素数测试部分</li>
 <li><a target="_blank" rel="noopener" href="http://www.matrix67.com/blog/archives/234">数论部分第一节：素数与素性测试</a></li>
 <li><a target="_blank" rel="noopener" href="http://www.ituring.com.cn/article/192557">笔记：A Quick Tutorial on Pollard’s Rho Algorithm</a></li>
@@ -737,11 +757,11 @@ ll <span class="token function">Pollard_rho</span><span class="token punctuation
    
        <div class="original">
     <ul>
-        <li>本文标题：蒙特卡罗法之随机素数判定算法Miller_Rabin与Pollard_Rho质因数分解算法</li>
+        <li>本文标题：蒙特卡罗法之随机素数判定算法 Miller_Rabin 与 Pollard_Rho 质因数分解算法</li>
         <li>本文字数：4.5k</li>
         <li>本文作者：Netcan</li>
         <li>发布时间：2015年12月06日 - 14时50分</li>
-        <li>最后更新：2017年02月07日 - 14时19分</li>
+        <li>最后更新：2020年08月09日 - 09时01分</li>
         <li>原始链接：<a href="https://netcan.github.io/2015/12/06/%E8%92%99%E7%89%B9%E5%8D%A1%E7%BD%97%E6%B3%95%E4%B9%8B%E9%9A%8F%E6%9C%BA%E7%B4%A0%E6%95%B0%E6%B5%8B%E8%AF%95%E7%AE%97%E6%B3%95Miller-Rabin%E4%B8%8EPollard-Rho%E5%9B%A0%E6%95%B0%E5%88%86%E8%A7%A3%E7%AE%97%E6%B3%95/">https://netcan.github.io/2015/12/06/蒙特卡罗法之随机素数测试算法Miller-Rabin与Pollard-Rho因数分解算法/</a></li>
         <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
     </ul>
@@ -974,6 +994,6 @@ gitalk.render('gitalk-container')
             all[i].SourceElement().parentNode.className += ' has-jax';
     });
 </script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </body>
 </html>

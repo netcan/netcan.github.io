@@ -5,9 +5,9 @@
 
 
 <head>
-  <meta charset="utf-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
-  <title>PHP数组 | Netcan on Programming</title>
+  <title>PHP 数组 | Netcan on Programming</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -15,12 +15,12 @@
     <meta name="keywords" content="PHP," />
   
 
-  <meta name="description" content="PHP 数组有两种： 数字索引数组和联合索引数组数字索引数组定义：$a &#x3D; array(&#39;语文&#39;, &#39;数学&#39;, &#39;英语&#39;, &#39;物理&#39;, &#39;化学&#39;, &#39;生物&#39;); print_r($a); 输出: Array([0] &#x3D;&gt; 语文 [1] &#x3D;&gt; 数学 [2] &#x3D;&gt; 英语 [3] &#x3D;&gt;">
+  <meta name="description" content="PHP 数组有两种： 数字索引数组和联合索引数组 数字索引数组定义： $a &#x3D; array (&#39; 语文 &#39;, &#39; 数学 &#39;, &#39; 英语 &#39;, &#39; 物理 &#39;, &#39; 化学 &#39;, &#39; 生物 &#39;); print_r ($a);  输出: Array ([0] &#x3D;&gt; 语文 [1] &#x3D;&gt; 数学 [2] &#x3D;&gt; 英语 [3] &#x3D;&gt; 物理 [4] &#x3D;&gt; 化学 [5] &#x3D;&gt; 生物)">
 <meta property="og:type" content="article">
-<meta property="og:title" content="PHP数组">
+<meta property="og:title" content="PHP 数组">
 <meta property="og:url" content="https://netcan.github.io/2015/03/11/PHP%E6%95%B0%E7%BB%84/index.html">
 <meta property="og:site_name" content="Netcan on Programming">
-<meta property="og:description" content="PHP 数组有两种： 数字索引数组和联合索引数组数字索引数组定义：$a &#x3D; array(&#39;语文&#39;, &#39;数学&#39;, &#39;英语&#39;, &#39;物理&#39;, &#39;化学&#39;, &#39;生物&#39;); print_r($a); 输出: Array([0] &#x3D;&gt; 语文 [1] &#x3D;&gt; 数学 [2] &#x3D;&gt; 英语 [3] &#x3D;&gt;">
+<meta property="og:description" content="PHP 数组有两种： 数字索引数组和联合索引数组 数字索引数组定义： $a &#x3D; array (&#39; 语文 &#39;, &#39; 数学 &#39;, &#39; 英语 &#39;, &#39; 物理 &#39;, &#39; 化学 &#39;, &#39; 生物 &#39;); print_r ($a);  输出: Array ([0] &#x3D;&gt; 语文 [1] &#x3D;&gt; 数学 [2] &#x3D;&gt; 英语 [3] &#x3D;&gt; 物理 [4] &#x3D;&gt; 化学 [5] &#x3D;&gt; 生物)">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2015-03-11T07:31:19.000Z">
 <meta property="article:modified_time" content="2015-03-11T07:31:19.000Z">
@@ -93,14 +93,14 @@ ga('send', 'pageview');
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
   
 
-<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body>
 
 
   
-    <span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
   
 
   <link rel="stylesheet" href="/css/prism.css">
@@ -190,7 +190,7 @@ ga('send', 'pageview');
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#PHP-%E6%95%B0%E7%BB%84%E6%9C%89%E4%B8%A4%E7%A7%8D%EF%BC%9A-%E6%95%B0%E5%AD%97%E7%B4%A2%E5%BC%95%E6%95%B0%E7%BB%84%E5%92%8C%E8%81%94%E5%90%88%E7%B4%A2%E5%BC%95%E6%95%B0%E7%BB%84"><span class="toc-text">PHP 数组有两种： 数字索引数组和联合索引数组</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E5%AD%97%E7%B4%A2%E5%BC%95%E6%95%B0%E7%BB%84%E5%AE%9A%E4%B9%89%EF%BC%9A"><span class="toc-text">数字索引数组定义：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%81%94%E5%90%88%E7%B4%A2%E5%BC%95%E6%95%B0%E7%BB%84%E5%AE%9A%E4%B9%89%EF%BC%9A"><span class="toc-text">联合索引数组定义：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E7%BB%B4%E6%95%B0%E7%BB%84%E7%9A%84%E9%81%8D%E5%8E%86"><span class="toc-text">一维数组的遍历</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%81%8D%E5%8E%86%E6%95%B0%E5%AD%97%E7%B4%A2%E5%BC%95%E6%95%B0%E7%BB%84%EF%BC%9A"><span class="toc-text">遍历数字索引数组：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%81%8D%E5%8E%86%E8%81%94%E5%90%88%E7%B4%A2%E5%BC%95%E6%95%B0%E7%BB%84%EF%BC%9A"><span class="toc-text">遍历联合索引数组：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E7%9A%84%E6%8E%92%E5%BA%8F"><span class="toc-text">数组的排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%8E%E6%95%B0%E7%BB%84%E7%9A%84%E8%BD%AC%E6%8D%A2"><span class="toc-text">字符串与数组的转换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%91%E6%95%B0%E7%BB%84%E4%B8%AD%E6%B7%BB%E5%8A%A0-%E5%88%A0%E9%99%A4%E5%85%83%E7%B4%A0"><span class="toc-text">向数组中添加&#x2F;删除元素</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E5%85%83%E7%B4%A0"><span class="toc-text">查询数组中的元素</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%9F%E8%AE%A1%E6%95%B0%E7%BB%84%E4%B8%AD%E5%85%83%E7%B4%A0%E4%B8%AA%E6%95%B0"><span class="toc-text">统计数组中元素个数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E6%95%B0%E7%BB%84%E4%B8%AD%E9%87%8D%E5%A4%8D%E5%85%83%E7%B4%A0"><span class="toc-text">删除数组中重复元素</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%83%E6%8D%A2%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E9%94%AE%E5%90%8D%E5%92%8C%E5%85%83%E7%B4%A0%E5%80%BC"><span class="toc-text">调换数组中的键名和元素值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E7%9A%84%E5%BA%8F%E5%88%97%E5%8C%96"><span class="toc-text">数组的序列化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E5%88%B0%E5%90%88%E5%B9%B6%E4%B8%8E%E8%81%94%E5%90%88"><span class="toc-text">数组到合并与联合</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B8%85%E7%90%86%E6%95%B0%E7%BB%84"><span class="toc-text">清理数组</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#PHP-%E6%95%B0%E7%BB%84%E6%9C%89%E4%B8%A4%E7%A7%8D%EF%BC%9A-%E6%95%B0%E5%AD%97%E7%B4%A2%E5%BC%95%E6%95%B0%E7%BB%84%E5%92%8C%E8%81%94%E5%90%88%E7%B4%A2%E5%BC%95%E6%95%B0%E7%BB%84"><span class="toc-text">PHP 数组有两种： 数字索引数组和联合索引数组</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E5%AD%97%E7%B4%A2%E5%BC%95%E6%95%B0%E7%BB%84%E5%AE%9A%E4%B9%89%EF%BC%9A"><span class="toc-text">数字索引数组定义：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%81%94%E5%90%88%E7%B4%A2%E5%BC%95%E6%95%B0%E7%BB%84%E5%AE%9A%E4%B9%89%EF%BC%9A"><span class="toc-text">联合索引数组定义：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E7%BB%B4%E6%95%B0%E7%BB%84%E7%9A%84%E9%81%8D%E5%8E%86"><span class="toc-text">一维数组的遍历</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%81%8D%E5%8E%86%E6%95%B0%E5%AD%97%E7%B4%A2%E5%BC%95%E6%95%B0%E7%BB%84%EF%BC%9A"><span class="toc-text">遍历数字索引数组：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%81%8D%E5%8E%86%E8%81%94%E5%90%88%E7%B4%A2%E5%BC%95%E6%95%B0%E7%BB%84%EF%BC%9A"><span class="toc-text">遍历联合索引数组：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E7%9A%84%E6%8E%92%E5%BA%8F"><span class="toc-text">数组的排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%8E%E6%95%B0%E7%BB%84%E7%9A%84%E8%BD%AC%E6%8D%A2"><span class="toc-text">字符串与数组的转换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%91%E6%95%B0%E7%BB%84%E4%B8%AD%E6%B7%BB%E5%8A%A0-%E5%88%A0%E9%99%A4%E5%85%83%E7%B4%A0"><span class="toc-text">向数组中添加 &#x2F; 删除元素</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E5%85%83%E7%B4%A0"><span class="toc-text">查询数组中的元素</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%9F%E8%AE%A1%E6%95%B0%E7%BB%84%E4%B8%AD%E5%85%83%E7%B4%A0%E4%B8%AA%E6%95%B0"><span class="toc-text">统计数组中元素个数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E6%95%B0%E7%BB%84%E4%B8%AD%E9%87%8D%E5%A4%8D%E5%85%83%E7%B4%A0"><span class="toc-text">删除数组中重复元素</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%83%E6%8D%A2%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E9%94%AE%E5%90%8D%E5%92%8C%E5%85%83%E7%B4%A0%E5%80%BC"><span class="toc-text">调换数组中的键名和元素值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E7%9A%84%E5%BA%8F%E5%88%97%E5%8C%96"><span class="toc-text">数组的序列化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E5%88%B0%E5%90%88%E5%B9%B6%E4%B8%8E%E8%81%94%E5%90%88"><span class="toc-text">数组到合并与联合</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B8%85%E7%90%86%E6%95%B0%E7%BB%84"><span class="toc-text">清理数组</span></a></li></ol>
   </div>
 
 
@@ -198,7 +198,7 @@ ga('send', 'pageview');
 <div class="content content-post CENTER">
    <article id="post-PHP数组" class="article article-type-post" itemprop="blogPost">
   <header class="article-header">
-    <h1 class="post-title">PHP数组</h1>
+    <h1 class="post-title">PHP 数组</h1>
 
     <div class="article-meta">
       <span>
@@ -236,167 +236,210 @@ ga('send', 'pageview');
 
   <div class="article-content">
     
-      <h3 id="PHP-数组有两种：-数字索引数组和联合索引数组"><a href="#PHP-数组有两种：-数字索引数组和联合索引数组" class="headerlink" title="PHP 数组有两种： 数字索引数组和联合索引数组"></a>PHP 数组有两种： 数字索引数组和联合索引数组</h3><h4 id="数字索引数组定义："><a href="#数字索引数组定义：" class="headerlink" title="数字索引数组定义："></a>数字索引数组定义：</h4><pre><code>$a = array(&#39;语文&#39;, &#39;数学&#39;, &#39;英语&#39;, &#39;物理&#39;, &#39;化学&#39;, &#39;生物&#39;);
-print_r($a);</code></pre>
+      <h3 id="PHP-数组有两种：-数字索引数组和联合索引数组">PHP 数组有两种： 数字索引数组和联合索引数组</h3>
+<h4 id="数字索引数组定义：">数字索引数组定义：</h4>
+<pre><code>$a = array (' 语文 ', ' 数学 ', ' 英语 ', ' 物理 ', ' 化学 ', ' 生物 ');
+print_r ($a);
+</code></pre>
 <p>输出:</p>
-<pre><code>Array([0] =&gt; 语文 [1] =&gt; 数学 [2] =&gt; 英语 [3] =&gt; 物理 [4] =&gt; 化学 [5] =&gt; 生物)</code></pre>
-<h4 id="联合索引数组定义："><a href="#联合索引数组定义：" class="headerlink" title="联合索引数组定义："></a>联合索引数组定义：</h4><pre><code>$b = array(&#39;语文&#39;=&gt;150, &#39;数学&#39;=&gt;150, &#39;英语&#39;=&gt;150, &#39;物理&#39;=&gt;120, &#39;化学&#39;=&gt;108, &#39;生物&#39;=&gt;72);
-print_r($b);</code></pre>
+<pre><code>Array ([0] =&gt; 语文 [1] =&gt; 数学 [2] =&gt; 英语 [3] =&gt; 物理 [4] =&gt; 化学 [5] =&gt; 生物)
+</code></pre>
+<h4 id="联合索引数组定义：">联合索引数组定义：</h4>
+<pre><code>$b = array (' 语文 '=&gt;150, ' 数学 '=&gt;150, ' 英语 '=&gt;150, ' 物理 '=&gt;120, ' 化学 '=&gt;108, ' 生物 '=&gt;72);
+print_r ($b);
+</code></pre>
 <p>输出：</p>
-<pre><code>Array ( [语文] =&gt; 150 [数学] =&gt; 150 [英语] =&gt; 150 [物理] =&gt; 120 [化学] =&gt; 108 [生物] =&gt; 72 )</code></pre>
-<a id="more"></a>
-<h3 id="一维数组的遍历"><a href="#一维数组的遍历" class="headerlink" title="一维数组的遍历"></a>一维数组的遍历</h3><h4 id="遍历数字索引数组："><a href="#遍历数字索引数组：" class="headerlink" title="遍历数字索引数组："></a>遍历数字索引数组：</h4><pre><code>for($i=0; $i &lt; 6; ++$i)
-        echo $a[$i].&quot; &quot;;</code></pre>
+<pre><code>Array ( [语文] =&gt; 150 [数学] =&gt; 150 [英语] =&gt; 150 [物理] =&gt; 120 [化学] =&gt; 108 [生物] =&gt; 72 )
+</code></pre>
+<h3 id="一维数组的遍历">一维数组的遍历</h3>
+<h4 id="遍历数字索引数组：">遍历数字索引数组：</h4>
+<pre><code>for ($i=0; $i &lt; 6; ++$i)
+        echo $a [$i].&quot; &quot;;
+</code></pre>
 <p>输出</p>
-<pre><code>语文 数学 英语 物理 化学 生物</code></pre>
-<h4 id="遍历联合索引数组："><a href="#遍历联合索引数组：" class="headerlink" title="遍历联合索引数组："></a>遍历联合索引数组：</h4><pre><code>foreach($b as $v) // 遍历元素值到V变量中
+<pre><code>语文 数学 英语 物理 化学 生物
+</code></pre>
+<h4 id="遍历联合索引数组：">遍历联合索引数组：</h4>
+<pre><code>foreach ($b as $v) // 遍历元素值到 V 变量中
    echo $v . &quot; &quot;;
    echo &quot;&lt;br&gt;&quot;;
-foreach($b as $k =&gt; $v) // 分别遍历键值和元素值到$k和$V中
+foreach ($b as $k =&gt; $v) // 分别遍历键值和元素值到 $k 和 $V 中
    echo &quot;$k:$v&quot; . &quot; &quot;;
 echo &quot;&lt;br&gt;&quot;;
-reset($b);               // foreach遍历后，必须要reset重置为开头元素给while遍历
-while($e = each($b))     // 两个键值: key, value
-   echo $e[&#39;key&#39;] . $e[&#39;value&#39;] . &quot; &quot;;
+reset ($b);               // foreach 遍历后，必须要 reset 重置为开头元素给 while 遍历
+while ($e = each ($b))     // 两个键值: key, value
+   echo $e ['key'] . $e ['value'] . &quot; &quot;;
 echo &quot;&lt;br&gt;&quot;;
-reset($b);
-while(list($k, $v) = each($b)) // 用list来分别获取键值和元素值list($key, $value)
+reset ($b);
+while (list ($k, $v) = each ($b)) // 用 list 来分别获取键值和元素值 list ($key, $value)
    echo &quot;$k:$v&quot; . &quot; &quot;;
-echo &quot;&lt;br&gt;&quot;;</code></pre>
+echo &quot;&lt;br&gt;&quot;;
+</code></pre>
 <p>输出：</p>
 <pre><code>150 150 150 120 108 72 
-语文:150 数学:150 英语:150 物理:120 化学:108 生物:72 
-语文150 数学150 英语150 物理120 化学108 生物72 
-语文:150 数学:150 英语:150 物理:120 化学:108 生物:72</code></pre>
-<h3 id="数组的排序"><a href="#数组的排序" class="headerlink" title="数组的排序"></a>数组的排序</h3><p>排序涉及 <code>sort()</code>, <code>asort()</code>, <code>ksort()</code>, <code>arsort()</code>, <code>krsort()</code></p>
-<p><code>sort()</code>是默认排序(针对数字索引数组，如果是联合索引数组则会丢失键值，转换为数字索引数组），<code>asort()</code>根据元素值升序排序，<code>ksort()</code>根据键值升序排序，<code>arsort()</code>和<code>krsort()</code>为对应的降序排序。</p>
-<pre><code>sort($a);    // 升序排列(针对数字索引数组)元素值
-print_r($a);
+语文：150 数学：150 英语：150 物理：120 化学：108 生物：72 
+语文 150 数学 150 英语 150 物理 120 化学 108 生物 72 
+语文：150 数学：150 英语：150 物理：120 化学：108 生物：72
+</code></pre>
+<h3 id="数组的排序">数组的排序</h3>
+<p>排序涉及 <code>sort ()</code>, <code>asort ()</code>, <code>ksort ()</code>, <code>arsort ()</code>, <code>krsort ()</code></p>
+<p><code>sort ()</code> 是默认排序 (针对数字索引数组，如果是联合索引数组则会丢失键值，转换为数字索引数组），<code>asort ()</code> 根据元素值升序排序，<code>ksort ()</code> 根据键值升序排序，<code>arsort ()</code> 和 <code>krsort ()</code> 为对应的降序排序。</p>
+<pre><code>sort ($a);    // 升序排列 (针对数字索引数组) 元素值
+print_r ($a);
 echo &quot;&lt;br&gt;&quot;;
-asort($b);    // 升序排列元素值
-print_r($b);
+asort ($b);    // 升序排列元素值
+print_r ($b);
 echo &quot;&lt;br&gt;&quot;;
-ksort($b);    // 升序排列键值
-print_r($b);
-echo &quot;&lt;br&gt;&quot;;</code></pre>
+ksort ($b);    // 升序排列键值
+print_r ($b);
+echo &quot;&lt;br&gt;&quot;;
+</code></pre>
 <p>输出：</p>
 <pre><code>Array ( [0] =&gt; 化学 [1] =&gt; 数学 [2] =&gt; 物理 [3] =&gt; 生物 [4] =&gt; 英语 [5] =&gt; 语文 )
 Array ( [生物] =&gt; 72 [化学] =&gt; 108 [物理] =&gt; 120 [英语] =&gt; 150 [数学] =&gt; 150 [语文] =&gt; 150 )
-Array ( [化学] =&gt; 108 [数学] =&gt; 150 [物理] =&gt; 120 [生物] =&gt; 72 [英语] =&gt; 150 [语文] =&gt; 150 )</code></pre>
-<p><code>usort()</code>可以对二维数组进行排序，需要写个比较函数，<code>usort($arr, ‘compare’)</code>;</p>
-<pre><code>function compare($a, $b)
+Array ( [化学] =&gt; 108 [数学] =&gt; 150 [物理] =&gt; 120 [生物] =&gt; 72 [英语] =&gt; 150 [语文] =&gt; 150 )
+</code></pre>
+<p><code>usort ()</code> 可以对二维数组进行排序，需要写个比较函数，<code>usort ($arr, ‘compare’)</code>;</p>
+<pre><code>function compare ($a, $b)
 &#123;
-    return $a[&#39;value&#39;] &lt; $b[&#39;value&#39;]; // 将根据二维数组中的value键值对应的元素值进行升序
-&#125;</code></pre>
-<h3 id="字符串与数组的转换"><a href="#字符串与数组的转换" class="headerlink" title="字符串与数组的转换"></a>字符串与数组的转换</h3><p>采用<code>explode()</code>和<code>implode()</code>函数，<code>explode()</code>和<code>implode()</code>分别为切分(返回数组)和组合(合并数组)字符串函数，</p>
-<pre><code> $str = implode(&#39;, &#39;,$a);
+    return $a ['value'] &lt; $b ['value']; // 将根据二维数组中的 value 键值对应的元素值进行升序
+&#125;
+</code></pre>
+<h3 id="字符串与数组的转换">字符串与数组的转换</h3>
+<p>采用 <code>explode ()</code> 和 <code>implode ()</code> 函数，<code>explode ()</code> 和 <code>implode ()</code> 分别为切分 (返回数组) 和组合 (合并数组) 字符串函数，</p>
+<pre><code> $str = implode (', ',$a);
  echo $str;
  echo &quot;&lt;br&gt;&quot;;
- $a = explode(&#39;, &#39;,$str);
- print_r($a);
- echo &quot;&lt;br&gt;&quot;;</code></pre>
+ $a = explode (', ',$str);
+ print_r ($a);
+ echo &quot;&lt;br&gt;&quot;;
+</code></pre>
 <p>输出：</p>
-<pre><code>语文, 数学, 英语, 物理, 化学, 生物
-Array ( [0] =&gt; 语文 [1] =&gt; 数学 [2] =&gt; 英语 [3] =&gt; 物理 [4] =&gt; 化学 [5] =&gt; 生物 )</code></pre>
-<h3 id="向数组中添加-删除元素"><a href="#向数组中添加-删除元素" class="headerlink" title="向数组中添加/删除元素"></a>向数组中添加/删除元素</h3><p>采用<code>array_push($arr, $val1, $val2,)</code>, <code>array_unshift($arr, $val1, $val2, ...)</code>, <code>array_pop($arr)</code>, <code>array_shift($arr)</code>，作用分别是：向数组末尾添加元素，向数组开头添加元素，向数组结尾删除元素，向数组开头删除元素。</p>
-<pre><code>echo &quot;长度:&quot; . array_push($a, &#39;C语言&#39;,&#39;离散数学&#39;) . &quot;&lt;br&gt;&quot;;    // 尾部添加元素，返回数组元素个数
-print_r($a);
+<pre><code>语文， 数学， 英语， 物理， 化学， 生物
+Array ( [0] =&gt; 语文 [1] =&gt; 数学 [2] =&gt; 英语 [3] =&gt; 物理 [4] =&gt; 化学 [5] =&gt; 生物 )
+</code></pre>
+<h3 id="向数组中添加-删除元素">向数组中添加 / 删除元素</h3>
+<p>采用 <code>array_push ($arr, $val1, $val2,)</code>, <code>array_unshift ($arr, $val1, $val2, ...)</code>, <code>array_pop ($arr)</code>, <code>array_shift ($arr)</code>，作用分别是：向数组末尾添加元素，向数组开头添加元素，向数组结尾删除元素，向数组开头删除元素。</p>
+<pre><code>echo &quot;长度:&quot; . array_push ($a, 'C 语言 ',' 离散数学 ') . &quot;&lt;br&gt;&quot;;    // 尾部添加元素，返回数组元素个数
+print_r ($a);
 echo &quot;&lt;br&gt;&quot;;
-echo &quot;长度:&quot; . array_unshift($a,&#39;体育&#39;) . &quot;&lt;br&gt;&quot;; // 头部添加元素，返回元素个数
-print_r($a);
+echo &quot;长度:&quot; . array_unshift ($a,' 体育 ') . &quot;&lt;br&gt;&quot;; // 头部添加元素，返回元素个数
+print_r ($a);
 echo &quot;&lt;br&gt;&quot;;
-echo &quot;删除了:&quot; . array_pop($a) . &quot;&lt;br&gt;&quot;; // 尾部删除，返回删除的元素
-print_r($a);
+echo &quot;删除了:&quot; . array_pop ($a) . &quot;&lt;br&gt;&quot;; // 尾部删除，返回删除的元素
+print_r ($a);
 echo &quot;&lt;br&gt;&quot;;
-echo &quot;删除了:&quot; . array_shift($a) . &quot;&lt;br&gt;&quot;; // 头部删除，返回删除到元素
-print_r($a);
-echo &quot;&lt;br&gt;&quot;;</code></pre>
+echo &quot;删除了:&quot; . array_shift ($a) . &quot;&lt;br&gt;&quot;; // 头部删除，返回删除到元素
+print_r ($a);
+echo &quot;&lt;br&gt;&quot;;
+</code></pre>
 <p>输出：</p>
-<pre><code>长度:8
-Array ( [0] =&gt; 语文 [1] =&gt; 数学 [2] =&gt; 英语 [3] =&gt; 物理 [4] =&gt; 化学 [5] =&gt; 生物 [6] =&gt; C语言 [7] =&gt; 离散数学 )
-长度:9
-Array ( [0] =&gt; 体育 [1] =&gt; 语文 [2] =&gt; 数学 [3] =&gt; 英语 [4] =&gt; 物理 [5] =&gt; 化学 [6] =&gt; 生物 [7] =&gt; C语言 [8] =&gt; 离散数学 )
-删除了:离散数学
-Array ( [0] =&gt; 体育 [1] =&gt; 语文 [2] =&gt; 数学 [3] =&gt; 英语 [4] =&gt; 物理 [5] =&gt; 化学 [6] =&gt; 生物 [7] =&gt; C语言 )
-删除了:体育
-Array ( [0] =&gt; 语文 [1] =&gt; 数学 [2] =&gt; 英语 [3] =&gt; 物理 [4] =&gt; 化学 [5] =&gt; 生物 [6] =&gt; C语言 )</code></pre>
-<h3 id="查询数组中的元素"><a href="#查询数组中的元素" class="headerlink" title="查询数组中的元素"></a>查询数组中的元素</h3><p>采用<code>in_array()</code>, <code>array_key_exists()</code>, <code>array_search()</code>, <code>array_keys()</code>, <code>array_values()</code>函数。</p>
-<p><code>in_array($value, $arr)</code>判断<code>$value</code>(元素值)值是否在数组中</p>
-<p><code>array_key_exists($key, $arr)</code>判断数组中是否有名为<code>$key</code>的键名，针对联合索引数组</p>
-<p><code>array_search($value, $arr)</code>判断数组中是否有值为<code>$value</code>，针对联合索引数组</p>
-<p><code>array_keys($arr)</code>返回一个将（联合索引数组）键名作为元素的数字索引数组</p>
-<p><code>array_values($arr)</code>返回一个（联合索引数组）元素值作为元素的数字索引数组</p>
-<pre><code>if(in_array(&#39;语文&#39;, $a))    // 判断元素值是否在数组中
+<pre><code>长度：8
+Array ( [0] =&gt; 语文 [1] =&gt; 数学 [2] =&gt; 英语 [3] =&gt; 物理 [4] =&gt; 化学 [5] =&gt; 生物 [6] =&gt; C 语言 [7] =&gt; 离散数学 )
+长度：9
+Array ( [0] =&gt; 体育 [1] =&gt; 语文 [2] =&gt; 数学 [3] =&gt; 英语 [4] =&gt; 物理 [5] =&gt; 化学 [6] =&gt; 生物 [7] =&gt; C 语言 [8] =&gt; 离散数学 )
+删除了：离散数学
+Array ( [0] =&gt; 体育 [1] =&gt; 语文 [2] =&gt; 数学 [3] =&gt; 英语 [4] =&gt; 物理 [5] =&gt; 化学 [6] =&gt; 生物 [7] =&gt; C 语言 )
+删除了：体育
+Array ( [0] =&gt; 语文 [1] =&gt; 数学 [2] =&gt; 英语 [3] =&gt; 物理 [4] =&gt; 化学 [5] =&gt; 生物 [6] =&gt; C 语言 )
+</code></pre>
+<h3 id="查询数组中的元素">查询数组中的元素</h3>
+<p>采用 <code>in_array ()</code>, <code>array_key_exists ()</code>, <code>array_search ()</code>, <code>array_keys ()</code>, <code>array_values ()</code> 函数。</p>
+<p><code>in_array ($value, $arr)</code> 判断 <code>$value</code>(元素值) 值是否在数组中</p>
+<p><code>array_key_exists ($key, $arr)</code> 判断数组中是否有名为 <code>$key</code> 的键名，针对联合索引数组</p>
+<p><code>array_search ($value, $arr)</code> 判断数组中是否有值为 <code>$value</code>，针对联合索引数组</p>
+<p><code>array_keys ($arr)</code> 返回一个将（联合索引数组）键名作为元素的数字索引数组</p>
+<p><code>array_values ($arr)</code> 返回一个（联合索引数组）元素值作为元素的数字索引数组</p>
+<pre><code>if (in_array (' 语文 ', $a))    // 判断元素值是否在数组中
     echo &quot;yes&lt;br&gt;&quot;;
 else
     echo &quot;no&lt;br&gt;&quot;;
-if(array_key_exists(&#39;语文&#39;, $b)) // 判断键名是否在数组（联合索引数组）中
+if (array_key_exists (' 语文 ', $b)) // 判断键名是否在数组（联合索引数组）中
     echo &quot;yes&lt;br&gt;&quot;;
 else
     echo &quot;no&lt;br&gt;&quot;;
-if(array_search(&#39;72&#39;, $b))    // 判断元素值是否在数组（联合索引数组）中
+if (array_search ('72', $b))    // 判断元素值是否在数组（联合索引数组）中
     echo &quot;yes&lt;br&gt;&quot;;
 else
     echo &quot;no&lt;br&gt;&quot;;
-$k = array_keys($b); // 分离键名（联合索引数组）
-print_r($k);
+$k = array_keys ($b); // 分离键名（联合索引数组）
+print_r ($k);
 echo &quot;&lt;br&gt;&quot;;
-$v = array_values($b);     // 分离元素值（联合索引数组）
-print_r($v);
-echo &quot;&lt;br&gt;&quot;</code></pre>
+$v = array_values ($b);     // 分离元素值（联合索引数组）
+print_r ($v);
+echo &quot;&lt;br&gt;&quot;
+</code></pre>
 <p>输出：</p>
 <pre><code>yes
 yes
 yes
 Array ( [0] =&gt; 语文 [1] =&gt; 数学 [2] =&gt; 英语 [3] =&gt; 物理 [4] =&gt; 化学 [5] =&gt; 生物 )
-Array ( [0] =&gt; 150 [1] =&gt; 150 [2] =&gt; 150 [3] =&gt; 120 [4] =&gt; 108 [5] =&gt; 72 )</code></pre>
-<h3 id="统计数组中元素个数"><a href="#统计数组中元素个数" class="headerlink" title="统计数组中元素个数"></a>统计数组中元素个数</h3><p>采用<code>count($arr)</code>函数可以返回数组元素个数，<code>array_count_values($arr)</code>，返回一个数组。</p>
-<pre><code>echo count($a) . &quot;个元素&lt;br&gt;&quot;; // 返回元素值个数
-echo count($b) . &quot;个元素&lt;br&gt;&quot;;    // 同上
-$c = array_count_values($b);    // 返回一个统计数组元素值的个数的数组
-print_r($c);
-echo &quot;&lt;br&gt;&quot;;</code></pre>
-<p>输出：</p>
-<pre><code>6个元素
-6个元素
-Array ( [150] =&gt; 3 [120] =&gt; 1 [108] =&gt; 1 [72] =&gt; 1 )</code></pre>
-<h3 id="删除数组中重复元素"><a href="#删除数组中重复元素" class="headerlink" title="删除数组中重复元素"></a>删除数组中重复元素</h3><p>采用<code>array_unique($arr)</code>删除数组中重复的元素值（以元素值为准），返回删除重复元素后的数组。</p>
-<pre><code>$c = array(&#39;语文&#39;, &#39;数学&#39;, &#39;英语&#39;, &#39;物理&#39;, &#39;化学&#39;, &#39;生物&#39;, &#39;语文&#39;, &#39;语文&#39;);
-print_r(array_unique($c)); // 返回删除重复元素后的数组。
+Array ( [0] =&gt; 150 [1] =&gt; 150 [2] =&gt; 150 [3] =&gt; 120 [4] =&gt; 108 [5] =&gt; 72 )
+</code></pre>
+<h3 id="统计数组中元素个数">统计数组中元素个数</h3>
+<p>采用 <code>count ($arr)</code> 函数可以返回数组元素个数，<code>array_count_values ($arr)</code>，返回一个数组。</p>
+<pre><code>echo count ($a) . &quot;个元素 &lt; br&gt;&quot;; // 返回元素值个数
+echo count ($b) . &quot;个元素 &lt; br&gt;&quot;;    // 同上
+$c = array_count_values ($b);    // 返回一个统计数组元素值的个数的数组
+print_r ($c);
 echo &quot;&lt;br&gt;&quot;;
-print_r($c);
-echo &quot;&lt;br&gt;&quot;;</code></pre>
+</code></pre>
+<p>输出：</p>
+<pre><code>6 个元素
+6 个元素
+Array ( [150] =&gt; 3 [120] =&gt; 1 [108] =&gt; 1 [72] =&gt; 1 )
+</code></pre>
+<h3 id="删除数组中重复元素">删除数组中重复元素</h3>
+<p>采用 <code>array_unique ($arr)</code> 删除数组中重复的元素值（以元素值为准），返回删除重复元素后的数组。</p>
+<pre><code>$c = array (' 语文 ', ' 数学 ', ' 英语 ', ' 物理 ', ' 化学 ', ' 生物 ', ' 语文 ', ' 语文 ');
+print_r (array_unique ($c)); // 返回删除重复元素后的数组。
+echo &quot;&lt;br&gt;&quot;;
+print_r ($c);
+echo &quot;&lt;br&gt;&quot;;
+</code></pre>
 <p>输出：</p>
 <pre><code>Array ( [0] =&gt; 语文 [1] =&gt; 数学 [2] =&gt; 英语 [3] =&gt; 物理 [4] =&gt; 化学 [5] =&gt; 生物 )
-Array ( [0] =&gt; 语文 [1] =&gt; 数学 [2] =&gt; 英语 [3] =&gt; 物理 [4] =&gt; 化学 [5] =&gt; 生物 [6] =&gt; 语文 [7] =&gt; 语文 )</code></pre>
-<h3 id="调换数组中的键名和元素值"><a href="#调换数组中的键名和元素值" class="headerlink" title="调换数组中的键名和元素值"></a>调换数组中的键名和元素值</h3><p>采用<code>array_flip($arr)</code>函数返回调换数组中的键名和元素值后的数组。</p>
-<pre><code>print_r(array_flip($b));    // 返回调换数组中的键名和元素值后的数组
+Array ( [0] =&gt; 语文 [1] =&gt; 数学 [2] =&gt; 英语 [3] =&gt; 物理 [4] =&gt; 化学 [5] =&gt; 生物 [6] =&gt; 语文 [7] =&gt; 语文 )
+</code></pre>
+<h3 id="调换数组中的键名和元素值">调换数组中的键名和元素值</h3>
+<p>采用 <code>array_flip ($arr)</code> 函数返回调换数组中的键名和元素值后的数组。</p>
+<pre><code>print_r (array_flip ($b));    // 返回调换数组中的键名和元素值后的数组
 echo &quot;&lt;br&gt;&quot;;
-print_r($b);</code></pre>
+print_r ($b);
+</code></pre>
 <p>输出：</p>
 <pre><code>Array ( [150] =&gt; 英语 [120] =&gt; 物理 [108] =&gt; 化学 [72] =&gt; 生物 )
-Array ( [语文] =&gt; 150 [数学] =&gt; 150 [英语] =&gt; 150 [物理] =&gt; 120 [化学] =&gt; 108 [生物] =&gt; 72 )</code></pre>
-<h3 id="数组的序列化"><a href="#数组的序列化" class="headerlink" title="数组的序列化"></a>数组的序列化</h3><p>数组的序列化就是将数组的数据转换为字符串，与之对应的操作就是反序列化。</p>
-<p>采用<code>serialize($arr)</code>返回字符串和unserialize($str)返回数组的函数。</p>
-<pre><code>$str=serialize($b);
+Array ( [语文] =&gt; 150 [数学] =&gt; 150 [英语] =&gt; 150 [物理] =&gt; 120 [化学] =&gt; 108 [生物] =&gt; 72 )
+</code></pre>
+<h3 id="数组的序列化">数组的序列化</h3>
+<p>数组的序列化就是将数组的数据转换为字符串，与之对应的操作就是反序列化。</p>
+<p>采用 <code>serialize ($arr)</code> 返回字符串和 unserialize ($str) 返回数组的函数。</p>
+<pre><code>$str=serialize ($b);
 echo $str . &quot;&lt;br&gt;&quot;;
-print_r(unserialize($str));</code></pre>
+print_r (unserialize ($str));
+</code></pre>
 <p>输出：</p>
 <pre><code>a:6:&#123;s:6:&quot;语文&quot;;i:150;s:6:&quot;数学&quot;;i:150;s:6:&quot;英语&quot;;i:150;s:6:&quot;物理&quot;;i:120;s:6:&quot;化学&quot;;i:108;s:6:&quot;生物&quot;;i:72;&#125;
-Array ( [语文] =&gt; 150 [数学] =&gt; 150 [英语] =&gt; 150 [物理] =&gt; 120 [化学] =&gt; 108 [生物] =&gt; 72 )</code></pre>
-<h3 id="数组到合并与联合"><a href="#数组到合并与联合" class="headerlink" title="数组到合并与联合"></a>数组到合并与联合</h3><p>数组的合并是多个数组的元素值合并为一个数组，而联合是一个数组作为键名，一个数组作为元素值进行合并。</p>
-<p><code>array_merge($arr1, $arr2, ...)</code>合并，<code>array_combine($arr1, $arr2)</code>联合（要求<code>$arr1</code>和<code>$arr2</code>的元素个数一致）。</p>
-<pre><code>$a = array(&#39;语文&#39;, &#39;数学&#39;, &#39;英语&#39;, &#39;物理&#39;, &#39;化学&#39;, &#39;生物&#39;);
-$c = array(150, 150, 150, 120, 108, 72);
-print_r(array_merge($a, $c)); // 两数组合并
+Array ( [语文] =&gt; 150 [数学] =&gt; 150 [英语] =&gt; 150 [物理] =&gt; 120 [化学] =&gt; 108 [生物] =&gt; 72 )
+</code></pre>
+<h3 id="数组到合并与联合">数组到合并与联合</h3>
+<p>数组的合并是多个数组的元素值合并为一个数组，而联合是一个数组作为键名，一个数组作为元素值进行合并。</p>
+<p><code>array_merge ($arr1, $arr2, ...)</code> 合并，<code>array_combine ($arr1, $arr2)</code> 联合（要求 <code>$arr1</code> 和 <code>$arr2</code> 的元素个数一致）。</p>
+<pre><code>$a = array (' 语文 ', ' 数学 ', ' 英语 ', ' 物理 ', ' 化学 ', ' 生物 ');
+$c = array (150, 150, 150, 120, 108, 72);
+print_r (array_merge ($a, $c)); // 两数组合并
 echo &quot;&lt;br&gt;&quot;;
-print_r(array_combine($a, $c)); // 两数组联合</code></pre>
+print_r (array_combine ($a, $c)); // 两数组联合
+</code></pre>
 <p>输出：</p>
 <pre><code>Array ( [0] =&gt; 语文 [1] =&gt; 数学 [2] =&gt; 英语 [3] =&gt; 物理 [4] =&gt; 化学 [5] =&gt; 生物 [6] =&gt; 150 [7] =&gt; 150 [8] =&gt; 150 [9] =&gt; 120 [10] =&gt; 108 [11] =&gt; 72 )
-Array ( [语文] =&gt; 150 [数学] =&gt; 150 [英语] =&gt; 150 [物理] =&gt; 120 [化学] =&gt; 108 [生物] =&gt; 72 )</code></pre>
-<h3 id="清理数组"><a href="#清理数组" class="headerlink" title="清理数组"></a>清理数组</h3><p><code>unset($arr)</code>清理数组，完全释放资源。</p>
-<pre><code>unset($a);
-unset($b);</code></pre>
+Array ( [语文] =&gt; 150 [数学] =&gt; 150 [英语] =&gt; 150 [物理] =&gt; 120 [化学] =&gt; 108 [生物] =&gt; 72 )
+</code></pre>
+<h3 id="清理数组">清理数组</h3>
+<p><code>unset ($arr)</code> 清理数组，完全释放资源。</p>
+<pre><code>unset ($a);
+unset ($b);
+</code></pre>
 
     
   </div>
@@ -407,8 +450,8 @@ unset($b);</code></pre>
    
        <div class="original">
     <ul>
-        <li>本文标题：PHP数组</li>
-        <li>本文字数：2.3k</li>
+        <li>本文标题：PHP 数组</li>
+        <li>本文字数：2.2k</li>
         <li>本文作者：Netcan</li>
         <li>发布时间：2015年03月11日 - 15时31分</li>
         <li>最后更新：2015年03月11日 - 15时31分</li>
@@ -644,6 +687,6 @@ gitalk.render('gitalk-container')
             all[i].SourceElement().parentNode.className += ' has-jax';
     });
 </script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </body>
 </html>

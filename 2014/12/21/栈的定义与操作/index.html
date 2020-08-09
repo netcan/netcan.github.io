@@ -5,7 +5,7 @@
 
 
 <head>
-  <meta charset="utf-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
   <title>栈的定义与操作 | Netcan on Programming</title>
 
@@ -15,12 +15,12 @@
     <meta name="keywords" content="C/C++,数据结构," />
   
 
-  <meta name="description" content="看代码理解。。">
+  <meta name="description" content="看代码理解。。 &#x2F;*************************************************************************     &gt; File Name: stack.c     &gt; Author: Netcan     &gt; Mail: 1469709759@qq.com     &gt; Created Time: 2014&#x2F;12&#x2F;21 9:39:37  *">
 <meta property="og:type" content="article">
 <meta property="og:title" content="栈的定义与操作">
 <meta property="og:url" content="https://netcan.github.io/2014/12/21/%E6%A0%88%E7%9A%84%E5%AE%9A%E4%B9%89%E4%B8%8E%E6%93%8D%E4%BD%9C/index.html">
 <meta property="og:site_name" content="Netcan on Programming">
-<meta property="og:description" content="看代码理解。。">
+<meta property="og:description" content="看代码理解。。 &#x2F;*************************************************************************     &gt; File Name: stack.c     &gt; Author: Netcan     &gt; Mail: 1469709759@qq.com     &gt; Created Time: 2014&#x2F;12&#x2F;21 9:39:37  *">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2014-12-21T02:25:56.000Z">
 <meta property="article:modified_time" content="2014-12-21T02:25:56.000Z">
@@ -94,14 +94,14 @@ ga('send', 'pageview');
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
   
 
-<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body>
 
 
   
-    <span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
   
 
   <link rel="stylesheet" href="/css/prism.css">
@@ -233,7 +233,6 @@ ga('send', 'pageview');
   <div class="article-content">
     
       <p>看代码理解。。</p>
-<a id="more"></a>
 <pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">/*************************************************************************
     > File Name: stack.c
     > Author: Netcan
@@ -244,27 +243,27 @@ ga('send', 'pageview');
 <span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span><span class="token string">&lt;stdio.h></span></span>
 <span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span><span class="token string">&lt;malloc.h></span></span>
 
-<span class="token keyword">struct</span> <span class="token class-name">Node</span> <span class="token punctuation">&#123;</span>  <span class="token comment">// 定义节点</span>
+<span class="token keyword">struct</span> <span class="token class-name">Node</span> <span class="token punctuation">&#123;</span>  <span class="token comment">// 定义节点 </span>
     <span class="token keyword">int</span> data<span class="token punctuation">;</span>
     Node <span class="token operator">*</span> pNext<span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
 
-<span class="token keyword">struct</span> <span class="token class-name">Stack</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 定义栈</span>
-    Node <span class="token operator">*</span>pTop<span class="token punctuation">;</span> <span class="token comment">// 栈顶指针</span>
-    Node <span class="token operator">*</span>pBottom<span class="token punctuation">;</span> <span class="token comment">// 栈底指针</span>
+<span class="token keyword">struct</span> <span class="token class-name">Stack</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 定义栈 </span>
+    Node <span class="token operator">*</span>pTop<span class="token punctuation">;</span> <span class="token comment">// 栈顶指针 </span>
+    Node <span class="token operator">*</span>pBottom<span class="token punctuation">;</span> <span class="token comment">// 栈底指针 </span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
 
-<span class="token keyword">void</span> <span class="token function">init_Stack</span><span class="token punctuation">(</span>Stack <span class="token operator">*</span>S<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 初始化栈</span>
-<span class="token keyword">void</span> <span class="token function">traverse_Stack</span><span class="token punctuation">(</span>Stack <span class="token operator">*</span>S<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 遍历栈</span>
-<span class="token keyword">bool</span> <span class="token function">push_Stack</span><span class="token punctuation">(</span>Stack <span class="token operator">*</span>S<span class="token punctuation">,</span><span class="token keyword">int</span> val<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 压栈</span>
-<span class="token keyword">bool</span> <span class="token function">pop_Stack</span><span class="token punctuation">(</span>Stack <span class="token operator">*</span>S<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 出栈</span>
-<span class="token keyword">void</span> <span class="token function">clear_Stack</span><span class="token punctuation">(</span>Stack <span class="token operator">*</span>S<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 清空栈</span>
+<span class="token keyword">void</span> <span class="token function">init_Stack</span><span class="token punctuation">(</span>Stack <span class="token operator">*</span>S<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 初始化栈 </span>
+<span class="token keyword">void</span> <span class="token function">traverse_Stack</span><span class="token punctuation">(</span>Stack <span class="token operator">*</span>S<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 遍历栈 </span>
+<span class="token keyword">bool</span> <span class="token function">push_Stack</span><span class="token punctuation">(</span>Stack <span class="token operator">*</span>S<span class="token punctuation">,</span><span class="token keyword">int</span> val<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 压栈 </span>
+<span class="token keyword">bool</span> <span class="token function">pop_Stack</span><span class="token punctuation">(</span>Stack <span class="token operator">*</span>S<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 出栈 </span>
+<span class="token keyword">void</span> <span class="token function">clear_Stack</span><span class="token punctuation">(</span>Stack <span class="token operator">*</span>S<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 清空栈 </span>
 
 
 <span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    Stack S<span class="token punctuation">;</span> <span class="token comment">// 声明一个栈</span>
-    <span class="token function">init_Stack</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>S<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 初始化</span>
-    <span class="token function">push_Stack</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>S<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 压栈测试</span>
+    Stack S<span class="token punctuation">;</span> <span class="token comment">// 声明一个栈 </span>
+    <span class="token function">init_Stack</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>S<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 初始化 </span>
+    <span class="token function">push_Stack</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>S<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 压栈测试 </span>
     <span class="token function">push_Stack</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>S<span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token function">push_Stack</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>S<span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token function">push_Stack</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>S<span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -274,11 +273,11 @@ ga('send', 'pageview');
     <span class="token function">push_Stack</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>S<span class="token punctuation">,</span><span class="token number">7</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token function">push_Stack</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>S<span class="token punctuation">,</span><span class="token number">8</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token function">push_Stack</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>S<span class="token punctuation">,</span><span class="token number">9</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token function">traverse_Stack</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>S<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 遍历</span>
-    <span class="token function">pop_Stack</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>S<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 出栈测试</span>
+    <span class="token function">traverse_Stack</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>S<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 遍历 </span>
+    <span class="token function">pop_Stack</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>S<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 出栈测试 </span>
     <span class="token function">pop_Stack</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>S<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token function">traverse_Stack</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>S<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token function">clear_Stack</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>S<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 清空栈测试</span>
+    <span class="token function">clear_Stack</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>S<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 清空栈测试 </span>
     <span class="token function">traverse_Stack</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>S<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
     <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
@@ -286,16 +285,16 @@ ga('send', 'pageview');
 
 <span class="token keyword">void</span> <span class="token function">init_Stack</span><span class="token punctuation">(</span>Stack <span class="token operator">*</span>S<span class="token punctuation">)</span>
 <span class="token punctuation">&#123;</span>
-    S<span class="token operator">-></span>pBottom <span class="token operator">=</span> <span class="token punctuation">(</span>Node <span class="token operator">*</span><span class="token punctuation">)</span><span class="token function">malloc</span><span class="token punctuation">(</span><span class="token keyword">sizeof</span><span class="token punctuation">(</span>Node<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 分配一个新结点给栈顶和栈底</span>
+    S<span class="token operator">-></span>pBottom <span class="token operator">=</span> <span class="token punctuation">(</span>Node <span class="token operator">*</span><span class="token punctuation">)</span><span class="token function">malloc</span><span class="token punctuation">(</span><span class="token keyword">sizeof</span><span class="token punctuation">(</span>Node<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 分配一个新结点给栈顶和栈底 </span>
     S<span class="token operator">-></span>pTop <span class="token operator">=</span> S<span class="token operator">-></span>pBottom<span class="token punctuation">;</span>
-    S<span class="token operator">-></span>pBottom<span class="token operator">-></span>pNext <span class="token operator">=</span> <span class="token constant">NULL</span><span class="token punctuation">;</span> <span class="token comment">// 栈底的不指向其他节点</span>
+    S<span class="token operator">-></span>pBottom<span class="token operator">-></span>pNext <span class="token operator">=</span> <span class="token constant">NULL</span><span class="token punctuation">;</span> <span class="token comment">// 栈底的不指向其他节点 </span>
     <span class="token keyword">return</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span>
 
 <span class="token keyword">void</span> <span class="token function">traverse_Stack</span><span class="token punctuation">(</span>Stack <span class="token operator">*</span>S<span class="token punctuation">)</span>
 <span class="token punctuation">&#123;</span>
-    Node <span class="token operator">*</span> p <span class="token operator">=</span> S<span class="token operator">-></span>pTop<span class="token punctuation">;</span>  <span class="token comment">// 遍历用的指针</span>
-    <span class="token keyword">while</span><span class="token punctuation">(</span> p <span class="token operator">!=</span> S<span class="token operator">-></span>pBottom <span class="token punctuation">)</span><span class="token punctuation">&#123;</span> <span class="token comment">// 如果没遍历到栈底</span>
+    Node <span class="token operator">*</span> p <span class="token operator">=</span> S<span class="token operator">-></span>pTop<span class="token punctuation">;</span>  <span class="token comment">// 遍历用的指针 </span>
+    <span class="token keyword">while</span><span class="token punctuation">(</span> p <span class="token operator">!=</span> S<span class="token operator">-></span>pBottom <span class="token punctuation">)</span><span class="token punctuation">&#123;</span> <span class="token comment">// 如果没遍历到栈底 </span>
         <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%3d"</span><span class="token punctuation">,</span>p<span class="token operator">-></span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
         p <span class="token operator">=</span> p<span class="token operator">-></span>pNext<span class="token punctuation">;</span>
     <span class="token punctuation">&#125;</span>
@@ -304,36 +303,35 @@ ga('send', 'pageview');
 
 <span class="token keyword">bool</span> <span class="token function">push_Stack</span><span class="token punctuation">(</span>Stack <span class="token operator">*</span>S<span class="token punctuation">,</span><span class="token keyword">int</span> val<span class="token punctuation">)</span>
 <span class="token punctuation">&#123;</span>
-    Node <span class="token operator">*</span>pNew <span class="token operator">=</span> <span class="token punctuation">(</span>Node<span class="token operator">*</span><span class="token punctuation">)</span><span class="token function">malloc</span><span class="token punctuation">(</span><span class="token keyword">sizeof</span><span class="token punctuation">(</span>Node<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 分配一个新节点</span>
-    <span class="token keyword">if</span><span class="token punctuation">(</span> pNew <span class="token operator">==</span> <span class="token constant">NULL</span> <span class="token punctuation">)</span> <span class="token comment">// 如果分配失败</span>
+    Node <span class="token operator">*</span>pNew <span class="token operator">=</span> <span class="token punctuation">(</span>Node<span class="token operator">*</span><span class="token punctuation">)</span><span class="token function">malloc</span><span class="token punctuation">(</span><span class="token keyword">sizeof</span><span class="token punctuation">(</span>Node<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 分配一个新节点 </span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span> pNew <span class="token operator">==</span> <span class="token constant">NULL</span> <span class="token punctuation">)</span> <span class="token comment">// 如果分配失败 </span>
         <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-    pNew<span class="token operator">-></span>data <span class="token operator">=</span> val<span class="token punctuation">;</span> <span class="token comment">// 节点赋值</span>
-    pNew<span class="token operator">-></span>pNext <span class="token operator">=</span> S<span class="token operator">-></span>pTop<span class="token punctuation">;</span> <span class="token comment">// 使新节点成为栈顶</span>
+    pNew<span class="token operator">-></span>data <span class="token operator">=</span> val<span class="token punctuation">;</span> <span class="token comment">// 节点赋值 </span>
+    pNew<span class="token operator">-></span>pNext <span class="token operator">=</span> S<span class="token operator">-></span>pTop<span class="token punctuation">;</span> <span class="token comment">// 使新节点成为栈顶 </span>
     S<span class="token operator">-></span>pTop <span class="token operator">=</span> pNew<span class="token punctuation">;</span>
     <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span>
 
 <span class="token keyword">bool</span> <span class="token function">pop_Stack</span><span class="token punctuation">(</span>Stack <span class="token operator">*</span>S<span class="token punctuation">)</span>
 <span class="token punctuation">&#123;</span>
-    <span class="token keyword">if</span><span class="token punctuation">(</span>S<span class="token operator">-></span>pTop <span class="token operator">==</span> S<span class="token operator">-></span>pBottom<span class="token punctuation">)</span> <span class="token comment">// 如果栈为空则不必出栈</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span>S<span class="token operator">-></span>pTop <span class="token operator">==</span> S<span class="token operator">-></span>pBottom<span class="token punctuation">)</span> <span class="token comment">// 如果栈为空则不必出栈 </span>
         <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-    Node <span class="token operator">*</span>p <span class="token operator">=</span> S<span class="token operator">-></span>pTop<span class="token punctuation">;</span> <span class="token comment">// 使p指向栈顶，为了释放栈顶节点</span>
-    S<span class="token operator">-></span>pTop <span class="token operator">=</span> p<span class="token operator">-></span>pNext<span class="token punctuation">;</span> <span class="token comment">// 栈顶下移</span>
-    <span class="token function">free</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 释放</span>
+    Node <span class="token operator">*</span>p <span class="token operator">=</span> S<span class="token operator">-></span>pTop<span class="token punctuation">;</span> <span class="token comment">// 使 p 指向栈顶，为了释放栈顶节点 </span>
+    S<span class="token operator">-></span>pTop <span class="token operator">=</span> p<span class="token operator">-></span>pNext<span class="token punctuation">;</span> <span class="token comment">// 栈顶下移 </span>
+    <span class="token function">free</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 释放 </span>
     p <span class="token operator">=</span> <span class="token constant">NULL</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span>
 
 <span class="token keyword">void</span> <span class="token function">clear_Stack</span><span class="token punctuation">(</span>Stack <span class="token operator">*</span>S<span class="token punctuation">)</span>
 <span class="token punctuation">&#123;</span>
-<span class="token comment">//  while( pop_Stack(S));  其实可以这样写。。。一直出栈直到栈为空</span>
-    Node <span class="token operator">*</span> p <span class="token operator">=</span> S<span class="token operator">-></span>pTop<span class="token punctuation">;</span> <span class="token comment">// p一直指向栈顶</span>
-    <span class="token keyword">while</span><span class="token punctuation">(</span> S<span class="token operator">-></span>pTop <span class="token operator">!=</span> S<span class="token operator">-></span>pBottom <span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 如果栈顶还没到栈底就继续释放</span>
-        S<span class="token operator">-></span>pTop <span class="token operator">=</span> p<span class="token operator">-></span>pNext<span class="token punctuation">;</span> <span class="token comment">// 栈顶下移</span>
-        <span class="token function">free</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//释放</span>
+<span class="token comment">//  while ( pop_Stack (S));  其实可以这样写。。。一直出栈直到栈为空 </span>
+    Node <span class="token operator">*</span> p <span class="token operator">=</span> S<span class="token operator">-></span>pTop<span class="token punctuation">;</span> <span class="token comment">//p 一直指向栈顶 </span>
+    <span class="token keyword">while</span><span class="token punctuation">(</span> S<span class="token operator">-></span>pTop <span class="token operator">!=</span> S<span class="token operator">-></span>pBottom <span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 如果栈顶还没到栈底就继续释放 </span>
+        S<span class="token operator">-></span>pTop <span class="token operator">=</span> p<span class="token operator">-></span>pNext<span class="token punctuation">;</span> <span class="token comment">// 栈顶下移 </span>
+        <span class="token function">free</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 释放 </span>
         p <span class="token operator">=</span> S<span class="token operator">-></span>pTop<span class="token punctuation">;</span>
     <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span></code></pre>
-
 
     
   </div>
@@ -581,6 +579,6 @@ gitalk.render('gitalk-container')
             all[i].SourceElement().parentNode.className += ' has-jax';
     });
 </script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </body>
 </html>

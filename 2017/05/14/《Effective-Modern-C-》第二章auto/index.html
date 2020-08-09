@@ -5,7 +5,7 @@
 
 
 <head>
-  <meta charset="utf-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
   <title>《Effective Modern C++》第二章笔记：auto | Netcan on Programming</title>
 
@@ -15,15 +15,15 @@
     <meta name="keywords" content="C/C++," />
   
 
-  <meta name="description" content="这章更加详细地介绍auto关键字。 Item 5: 优先考虑使用auto来代替显式类型声明习惯C的写法可能都会为变量指出一个类型，然而这有可能忘记初始化；有些场合若显式指出变量的类型，那么写起来非常长；将局部变量定义成闭包类型，因为闭包类型只有编译器知道，所以无法显式指出它的类型。 因为C++11有了auto关键字，这些问题很好地解决了。首先用auto来定义一个变量的话，必须要初始化，这就避免了变">
+  <meta name="description" content="这章更加详细地介绍 auto 关键字。 Item 5: 优先考虑使用 auto 来代替显式类型声明 习惯 C 的写法可能都会为变量指出一个类型，然而这有可能忘记初始化；有些场合若显式指出变量的类型，那么写起来非常长；将局部变量定义成闭包类型，因为闭包类型只有编译器知道，所以无法显式指出它的类型。 因为 C++11 有了 auto 关键字，这些问题很好地解决了。首先用 auto 来定义一个变量的话，">
 <meta property="og:type" content="article">
 <meta property="og:title" content="《Effective Modern C++》第二章笔记：auto">
 <meta property="og:url" content="https://netcan.github.io/2017/05/14/%E3%80%8AEffective-Modern-C-%E3%80%8B%E7%AC%AC%E4%BA%8C%E7%AB%A0auto/index.html">
 <meta property="og:site_name" content="Netcan on Programming">
-<meta property="og:description" content="这章更加详细地介绍auto关键字。 Item 5: 优先考虑使用auto来代替显式类型声明习惯C的写法可能都会为变量指出一个类型，然而这有可能忘记初始化；有些场合若显式指出变量的类型，那么写起来非常长；将局部变量定义成闭包类型，因为闭包类型只有编译器知道，所以无法显式指出它的类型。 因为C++11有了auto关键字，这些问题很好地解决了。首先用auto来定义一个变量的话，必须要初始化，这就避免了变">
+<meta property="og:description" content="这章更加详细地介绍 auto 关键字。 Item 5: 优先考虑使用 auto 来代替显式类型声明 习惯 C 的写法可能都会为变量指出一个类型，然而这有可能忘记初始化；有些场合若显式指出变量的类型，那么写起来非常长；将局部变量定义成闭包类型，因为闭包类型只有编译器知道，所以无法显式指出它的类型。 因为 C++11 有了 auto 关键字，这些问题很好地解决了。首先用 auto 来定义一个变量的话，">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2017-05-14T07:19:26.000Z">
-<meta property="article:modified_time" content="2017-05-14T09:35:59.000Z">
+<meta property="article:modified_time" content="2020-08-09T01:01:02.139Z">
 <meta property="article:author" content="Netcan">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta name="twitter:card" content="summary">
@@ -93,14 +93,14 @@ ga('send', 'pageview');
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
   
 
-<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body>
 
 
   
-    <span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
   
 
   <link rel="stylesheet" href="/css/prism.css">
@@ -190,7 +190,7 @@ ga('send', 'pageview');
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Item-5-%E4%BC%98%E5%85%88%E8%80%83%E8%99%91%E4%BD%BF%E7%94%A8auto%E6%9D%A5%E4%BB%A3%E6%9B%BF%E6%98%BE%E5%BC%8F%E7%B1%BB%E5%9E%8B%E5%A3%B0%E6%98%8E"><span class="toc-text">Item 5: 优先考虑使用auto来代替显式类型声明</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Things-to-Remember"><span class="toc-text">Things to Remember</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Item-6-%E5%BD%93auto%E6%8E%A8%E5%AF%BC%E5%87%BA%E4%B8%8D%E6%83%B3%E8%A6%81%E7%9A%84%E7%B1%BB%E5%9E%8B%E6%97%B6%EF%BC%8C%E4%BD%BF%E7%94%A8%E6%98%BE%E5%BC%8F%E7%B1%BB%E5%9E%8B%E5%A3%B0%E6%98%8E"><span class="toc-text">Item 6: 当auto推导出不想要的类型时，使用显式类型声明</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Things-to-Remember-1"><span class="toc-text">Things to Remember</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Item-5-%E4%BC%98%E5%85%88%E8%80%83%E8%99%91%E4%BD%BF%E7%94%A8-auto-%E6%9D%A5%E4%BB%A3%E6%9B%BF%E6%98%BE%E5%BC%8F%E7%B1%BB%E5%9E%8B%E5%A3%B0%E6%98%8E"><span class="toc-text">Item 5: 优先考虑使用 auto 来代替显式类型声明</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Things-to-Remember"><span class="toc-text">Things to Remember</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Item-6-%E5%BD%93-auto-%E6%8E%A8%E5%AF%BC%E5%87%BA%E4%B8%8D%E6%83%B3%E8%A6%81%E7%9A%84%E7%B1%BB%E5%9E%8B%E6%97%B6%EF%BC%8C%E4%BD%BF%E7%94%A8%E6%98%BE%E5%BC%8F%E7%B1%BB%E5%9E%8B%E5%A3%B0%E6%98%8E"><span class="toc-text">Item 6: 当 auto 推导出不想要的类型时，使用显式类型声明</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Things-to-Remember-2"><span class="toc-text">Things to Remember</span></a></li></ol></li></ol>
   </div>
 
 
@@ -236,54 +236,56 @@ ga('send', 'pageview');
 
   <div class="article-content">
     
-      <p>这章更加详细地介绍auto关键字。</p>
-<h2 id="Item-5-优先考虑使用auto来代替显式类型声明"><a href="#Item-5-优先考虑使用auto来代替显式类型声明" class="headerlink" title="Item 5: 优先考虑使用auto来代替显式类型声明"></a>Item 5: 优先考虑使用auto来代替显式类型声明</h2><p>习惯C的写法可能都会为变量指出一个类型，然而这有可能忘记初始化；有些场合若显式指出变量的类型，那么写起来非常长；将局部变量定义成闭包类型，因为闭包类型只有编译器知道，所以无法显式指出它的类型。</p>
-<p>因为C++11有了auto关键字，这些问题很好地解决了。首先用auto来定义一个变量的话，必须要初始化，这就避免了变量未初始化的错误；其次能节省输入时间；auto类型推导也可以指出只有编译器才知道的类型（比如说闭包）。</p>
+      <p>这章更加详细地介绍 auto 关键字。</p>
+<h2 id="Item-5-优先考虑使用-auto-来代替显式类型声明">Item 5: 优先考虑使用 auto 来代替显式类型声明</h2>
+<p>习惯 C 的写法可能都会为变量指出一个类型，然而这有可能忘记初始化；有些场合若显式指出变量的类型，那么写起来非常长；将局部变量定义成闭包类型，因为闭包类型只有编译器知道，所以无法显式指出它的类型。</p>
+<p>因为 C++11 有了 auto 关键字，这些问题很好地解决了。首先用 auto 来定义一个变量的话，必须要初始化，这就避免了变量未初始化的错误；其次能节省输入时间；auto 类型推导也可以指出只有编译器才知道的类型（比如说闭包）。</p>
 <pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">auto</span> derefUpless <span class="token operator">=</span>
-    <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token keyword">const</span> std<span class="token operator">::</span>unique_ptr<span class="token operator">&lt;</span>Widget<span class="token operator">></span> <span class="token operator">&amp;</span>p1<span class="token punctuation">,</span>
-       <span class="token keyword">const</span> std<span class="token operator">::</span>unique_ptr<span class="token operator">&lt;</span>Widget<span class="token operator">></span> <span class="token operator">&amp;</span>p2<span class="token punctuation">)</span>
-    <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> <span class="token operator">*</span>p1 <span class="token operator">&lt;</span> <span class="token operator">*</span>p2<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
-
-<p>在C++14中甚至能省略参数的类型：</p>
+	<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token keyword">const</span> std<span class="token operator">::</span>unique_ptr<span class="token operator">&lt;</span>Widget<span class="token operator">></span> <span class="token operator">&amp;</span>p1<span class="token punctuation">,</span>
+	   <span class="token keyword">const</span> std<span class="token operator">::</span>unique_ptr<span class="token operator">&lt;</span>Widget<span class="token operator">></span> <span class="token operator">&amp;</span>p2<span class="token punctuation">)</span>
+	<span class="token punctuation">&#123;</span> <span class="token keyword">return</span> <span class="token operator">*</span>p1 <span class="token operator">&lt;</span> <span class="token operator">*</span>p2<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
+<p>在 C++14 中甚至能省略参数的类型：</p>
 <pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">auto</span> derefUpless <span class="token operator">=</span>
-    <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token keyword">auto</span> <span class="token operator">&amp;</span>p1<span class="token punctuation">,</span>
-       <span class="token keyword">const</span> <span class="token keyword">auto</span> <span class="token operator">&amp;</span>p2<span class="token punctuation">)</span>
-    <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> <span class="token operator">*</span>p1 <span class="token operator">&lt;</span> <span class="token operator">*</span>p2<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
-
-<p>关于用局部变量来存储闭包，可能会优先考虑<code>std::function</code>函数对象，因为函数对象也能存储闭包。比如上面那个闭包，可以这样写：</p>
+	<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token keyword">auto</span> <span class="token operator">&amp;</span>p1<span class="token punctuation">,</span>
+	   <span class="token keyword">const</span> <span class="token keyword">auto</span> <span class="token operator">&amp;</span>p2<span class="token punctuation">)</span>
+	<span class="token punctuation">&#123;</span> <span class="token keyword">return</span> <span class="token operator">*</span>p1 <span class="token operator">&lt;</span> <span class="token operator">*</span>p2<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
+<p>关于用局部变量来存储闭包，可能会优先考虑 <code>std::function</code> 函数对象，因为函数对象也能存储闭包。比如上面那个闭包，可以这样写：</p>
 <pre class="language-cpp" data-language="cpp"><code class="language-cpp">std<span class="token operator">::</span>function<span class="token operator">&lt;</span><span class="token keyword">bool</span><span class="token punctuation">(</span><span class="token keyword">const</span> std<span class="token operator">::</span>unique_ptr<span class="token operator">&lt;</span>Widget<span class="token operator">></span> <span class="token operator">&amp;</span><span class="token punctuation">,</span>
-                <span class="token keyword">const</span> std<span class="token operator">::</span>unique_ptr<span class="token operator">&lt;</span>Widget<span class="token operator">></span> <span class="token operator">&amp;</span><span class="token punctuation">)</span><span class="token operator">></span>
-    derefUpless <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token keyword">const</span> std<span class="token operator">::</span>unique_ptr<span class="token operator">&lt;</span>Widget<span class="token operator">></span> <span class="token operator">&amp;</span>p1<span class="token punctuation">,</span>
-                <span class="token keyword">const</span> std<span class="token operator">::</span>unique_ptr<span class="token operator">&lt;</span>Widget<span class="token operator">></span> <span class="token operator">&amp;</span>p2<span class="token punctuation">)</span>
-                <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> <span class="token operator">*</span>p1 <span class="token operator">&lt;</span> <span class="token operator">*</span>p2<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
-
-<p>首先可以看出，参数太冗长了，param都要写两遍。<code>std::function</code>和使用auto定义的闭包并不相同。auto定义的闭包的变量大小和闭包本身一样大，而<code>std::function</code>定义的对象来保存闭包都有固定的大小，当闭包过大的时候，它会分配堆空间来存储，有可能产生内存溢出错误，这导致在通常情况下<code>std::function</code>对象用的内存比auto定义的要多；也由于是间接调用闭包，这也会比auto定义的要慢。</p>
-<p>虽然有很多理由使用auto，同时也能避免显式声明的一些坑，但auto也有坑，有时候用auto推导出来的类型可能并不是自己想要的，这在Item 2到Item 6介绍过了。</p>
-<h3 id="Things-to-Remember"><a href="#Things-to-Remember" class="headerlink" title="Things to Remember"></a>Things to Remember</h3><ul>
-<li>auto定义的变量必须初始化，能避免一些类型不匹配导致的移植或者性能问题；同时也有利于重构，减少显式声明的代码量。</li>
-<li>auto也有坑，在Item 2到6介绍过了。</li>
+				<span class="token keyword">const</span> std<span class="token operator">::</span>unique_ptr<span class="token operator">&lt;</span>Widget<span class="token operator">></span> <span class="token operator">&amp;</span><span class="token punctuation">)</span><span class="token operator">></span>
+	derefUpless <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token keyword">const</span> std<span class="token operator">::</span>unique_ptr<span class="token operator">&lt;</span>Widget<span class="token operator">></span> <span class="token operator">&amp;</span>p1<span class="token punctuation">,</span>
+				<span class="token keyword">const</span> std<span class="token operator">::</span>unique_ptr<span class="token operator">&lt;</span>Widget<span class="token operator">></span> <span class="token operator">&amp;</span>p2<span class="token punctuation">)</span>
+				<span class="token punctuation">&#123;</span> <span class="token keyword">return</span> <span class="token operator">*</span>p1 <span class="token operator">&lt;</span> <span class="token operator">*</span>p2<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
+<p>首先可以看出，参数太冗长了，param 都要写两遍。<code>std::function</code> 和使用 auto 定义的闭包并不相同。auto 定义的闭包的变量大小和闭包本身一样大，而 <code>std::function</code> 定义的对象来保存闭包都有固定的大小，当闭包过大的时候，它会分配堆空间来存储，有可能产生内存溢出错误，这导致在通常情况下 <code>std::function</code> 对象用的内存比 auto 定义的要多；也由于是间接调用闭包，这也会比 auto 定义的要慢。</p>
+<p>虽然有很多理由使用 auto，同时也能避免显式声明的一些坑，但 auto 也有坑，有时候用 auto 推导出来的类型可能并不是自己想要的，这在 Item 2 到 Item 6 介绍过了。</p>
+<h3 id="Things-to-Remember">Things to Remember</h3>
+<ul>
+<li>auto 定义的变量必须初始化，能避免一些类型不匹配导致的移植或者性能问题；同时也有利于重构，减少显式声明的代码量。</li>
+<li>auto 也有坑，在 Item 2 到 6 介绍过了。</li>
 </ul>
-<h2 id="Item-6-当auto推导出不想要的类型时，使用显式类型声明"><a href="#Item-6-当auto推导出不想要的类型时，使用显式类型声明" class="headerlink" title="Item 6: 当auto推导出不想要的类型时，使用显式类型声明"></a>Item 6: 当auto推导出不想要的类型时，使用显式类型声明</h2><p>这里介绍了一种情况，使用<code>std::vector&lt;bool&gt;::operator[]</code>来检索元素的时候。比如说：</p>
-<pre class="language-cpp" data-language="cpp"><code class="language-cpp">vector<span class="token operator">&lt;</span><span class="token keyword">bool</span><span class="token operator">></span> <span class="token function">features</span><span class="token punctuation">(</span><span class="token keyword">const</span> Widget <span class="token operator">&amp;</span>w<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 返回widget对象的属性位向量</span>
+<h2 id="Item-6-当-auto-推导出不想要的类型时，使用显式类型声明">Item 6: 当 auto 推导出不想要的类型时，使用显式类型声明</h2>
+<p>这里介绍了一种情况，使用 <code>std::vector&lt;bool&gt;::operator []</code> 来检索元素的时候。比如说：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp">vector<span class="token operator">&lt;</span><span class="token keyword">bool</span><span class="token operator">></span> <span class="token function">features</span><span class="token punctuation">(</span><span class="token keyword">const</span> Widget <span class="token operator">&amp;</span>w<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 返回 widget 对象的属性位向量 </span>
 
 Widget w<span class="token punctuation">;</span>
 
 <span class="token keyword">bool</span> highPriority <span class="token operator">=</span> <span class="token function">features</span><span class="token punctuation">(</span>w<span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
 
 <span class="token function">process</span><span class="token punctuation">(</span>highPriority<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
-<p>如果把上面的<code>bool</code>换成auto来声明的话，那么就会出现未定义行为了。</p>
-<p>因为<code>vector&lt;bool&gt;::operator[]</code>返回的并不是<code>bool &amp;</code>，因为C++是按<strong>字节</strong>寻址的，不可能返回一个比特位的地址。为了达到和<code>bool &amp;</code>一样的效果，它返回的是一个<code>vector&lt;bool&gt;::reference</code>对象，可以隐式转换成<code>bool</code>类型。</p>
-<p>再来看看使用显式声明的<code>bool</code>定义为什么没有问题，因为<code>operator[]</code>返回一个<code>vector&lt;bool&gt;::reference</code>对象，然后转换成<code>bool</code>，赋值给<code>highPriority</code>，这相当于取第5位。</p>
-<p>而使用auto声明的<code>highPriority</code>，将是一个<code>vector&lt;bool&gt;::reference</code>类型的对象。它的值取决于实现，一种实现是<code>reference</code>指向内存中包含那一位的字，然后通过位移运算来取得指定位。</p>
-<p>因为<code>features</code>这个函数返回的是<code>w</code>的属性位向量，是一个<strong>临时变量</strong>。当赋值语句结束后，临时变量就销毁了，到后面的<code>process(highPriority)</code>的时候，<code>highPriority</code>包含悬空指针，导致不确定的行为。</p>
-<p><code>vector&lt;bool&gt;::reference</code>也是代理类(<em>proxy class</em>)的一个例子，它为对象提供一种代理以控制对这个对象的访问。在某些情况下，一个客户不想或者不能直接引用另一个对象，而代理对象可以在客户端和目标对象之间起到中介的作用。不过<code>vector&lt;bool&gt;::operator[]</code>的这个代理类隐藏的比较深，几乎看不出来被代理了。而C++有些代理类设计的比较明显，比如<code>std::shared_ptr</code>和<code>std::unique_ptr</code>。</p>
-<p>对于这些隐藏的代理类，就不要直接用auto了，因为代理类的对象一般活不长。</p>
-<p>当然这并不是auto的错，只是它没有推导出想要的类型，可以通过显式类型定义或者强制类型转换来解决。比如说：</p>
-<pre><code>auto highPriority = static_cast&lt;bool&gt;(features(w)[5]);</code></pre>
-<p>也并不是代理类这么干，比如auto推导出自己不想要的类型，可以通过强制类型转换来得到。</p>
-<h3 id="Things-to-Remember-1"><a href="#Things-to-Remember-1" class="headerlink" title="Things to Remember"></a>Things to Remember</h3><ul>
-<li>隐藏的代理类可能使得auto推导出一个错误的类型</li>
-<li>使用强制类型转换来使得auto推导出想要的类型</li>
+<p>如果把上面的 <code>bool</code> 换成 auto 来声明的话，那么就会出现未定义行为了。</p>
+<p>因为 <code>vector&lt;bool&gt;::operator []</code> 返回的并不是 <code>bool &amp;</code>，因为 C++ 是按 ** 字节 ** 寻址的，不可能返回一个比特位的地址。为了达到和 <code>bool &amp;</code> 一样的效果，它返回的是一个 <code>vector&lt;bool&gt;::reference</code> 对象，可以隐式转换成 <code>bool</code> 类型。</p>
+<p>再来看看使用显式声明的 <code>bool</code> 定义为什么没有问题，因为 <code>operator []</code> 返回一个 <code>vector&lt;bool&gt;::reference</code> 对象，然后转换成 <code>bool</code>，赋值给 <code>highPriority</code>，这相当于取第 5 位。</p>
+<p>而使用 auto 声明的 <code>highPriority</code>，将是一个 <code>vector&lt;bool&gt;::reference</code> 类型的对象。它的值取决于实现，一种实现是 <code>reference</code> 指向内存中包含那一位的字，然后通过位移运算来取得指定位。</p>
+<p>因为 <code>features</code> 这个函数返回的是 <code>w</code> 的属性位向量，是一个 ** 临时变量 **。当赋值语句结束后，临时变量就销毁了，到后面的 <code>process (highPriority)</code> 的时候，<code>highPriority</code> 包含悬空指针，导致不确定的行为。</p>
+<p><code>vector&lt;bool&gt;::reference</code> 也是代理类 (<em>proxy class</em>) 的一个例子，它为对象提供一种代理以控制对这个对象的访问。在某些情况下，一个客户不想或者不能直接引用另一个对象，而代理对象可以在客户端和目标对象之间起到中介的作用。不过 <code>vector&lt;bool&gt;::operator []</code> 的这个代理类隐藏的比较深，几乎看不出来被代理了。而 C++ 有些代理类设计的比较明显，比如 <code>std::shared_ptr</code> 和 <code>std::unique_ptr</code>。</p>
+<p>对于这些隐藏的代理类，就不要直接用 auto 了，因为代理类的对象一般活不长。</p>
+<p>当然这并不是 auto 的错，只是它没有推导出想要的类型，可以通过显式类型定义或者强制类型转换来解决。比如说：</p>
+<pre><code>auto highPriority = static_cast&lt;bool&gt;(features (w)[5]);
+</code></pre>
+<p>也并不是代理类这么干，比如 auto 推导出自己不想要的类型，可以通过强制类型转换来得到。</p>
+<h3 id="Things-to-Remember-2">Things to Remember</h3>
+<ul>
+<li>隐藏的代理类可能使得 auto 推导出一个错误的类型</li>
+<li>使用强制类型转换来使得 auto 推导出想要的类型</li>
 </ul>
 
     
@@ -299,7 +301,7 @@ Widget w<span class="token punctuation">;</span>
         <li>本文字数：1.3k</li>
         <li>本文作者：Netcan</li>
         <li>发布时间：2017年05月14日 - 15时19分</li>
-        <li>最后更新：2017年05月14日 - 17时35分</li>
+        <li>最后更新：2020年08月09日 - 09时01分</li>
         <li>原始链接：<a href="https://netcan.github.io/2017/05/14/%E3%80%8AEffective-Modern-C-%E3%80%8B%E7%AC%AC%E4%BA%8C%E7%AB%A0auto/">https://netcan.github.io/2017/05/14/《Effective-Modern-C-》第二章auto/</a></li>
         <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
     </ul>
@@ -532,6 +534,6 @@ gitalk.render('gitalk-container')
             all[i].SourceElement().parentNode.className += ' has-jax';
     });
 </script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </body>
 </html>

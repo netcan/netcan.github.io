@@ -5,7 +5,7 @@
 
 
 <head>
-  <meta charset="utf-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
   <title>集合的二进制操作 | Netcan on Programming</title>
 
@@ -15,15 +15,15 @@
     <meta name="keywords" content="算法,数学," />
   
 
-  <meta name="description" content="集合与二进制前面的代码里（【开关问题】POJ 3276 3279 3185 1222）可以看到一些为了枚举所有状态用到了集合的整数表现与位操作。 虽然位操作枚举比较简单但是这种方法只能在元素比较少的情况下（20个左右）使用。 假设集合有$N$个元素，依次给它们编号$0, 1, \cdots, N-1$，由于每个元素在集合中只有两种状态：存在或者不存在。那么可以令相应二进制位来表示，存在则为1，否则">
+  <meta name="description" content="集合与二进制 前面的代码里（【开关问题】POJ 3276 3279 3185 1222）可以看到一些为了枚举所有状态用到了集合的整数表现与位操作。 虽然位操作枚举比较简单但是这种方法只能在元素比较少的情况下（20 个左右）使用。 假设集合有 $N$ 个元素，依次给它们编号 $0, 1, \cdots, N-1$，由于每个元素在集合中只有两种状态：** 存在 ** 或者 ** 不存在 **。那么可以">
 <meta property="og:type" content="article">
 <meta property="og:title" content="集合的二进制操作">
 <meta property="og:url" content="https://netcan.github.io/2016/01/02/%E9%9B%86%E5%90%88%E7%9A%84%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%93%8D%E4%BD%9C/index.html">
 <meta property="og:site_name" content="Netcan on Programming">
-<meta property="og:description" content="集合与二进制前面的代码里（【开关问题】POJ 3276 3279 3185 1222）可以看到一些为了枚举所有状态用到了集合的整数表现与位操作。 虽然位操作枚举比较简单但是这种方法只能在元素比较少的情况下（20个左右）使用。 假设集合有$N$个元素，依次给它们编号$0, 1, \cdots, N-1$，由于每个元素在集合中只有两种状态：存在或者不存在。那么可以令相应二进制位来表示，存在则为1，否则">
+<meta property="og:description" content="集合与二进制 前面的代码里（【开关问题】POJ 3276 3279 3185 1222）可以看到一些为了枚举所有状态用到了集合的整数表现与位操作。 虽然位操作枚举比较简单但是这种方法只能在元素比较少的情况下（20 个左右）使用。 假设集合有 $N$ 个元素，依次给它们编号 $0, 1, \cdots, N-1$，由于每个元素在集合中只有两种状态：** 存在 ** 或者 ** 不存在 **。那么可以">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2016-01-02T09:35:52.000Z">
-<meta property="article:modified_time" content="2017-02-07T06:21:22.000Z">
+<meta property="article:modified_time" content="2020-08-09T01:01:02.162Z">
 <meta property="article:author" content="Netcan">
 <meta property="article:tag" content="算法">
 <meta property="article:tag" content="数学">
@@ -94,14 +94,14 @@ ga('send', 'pageview');
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
   
 
-<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body>
 
 
   
-    <span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
   
 
   <link rel="stylesheet" href="/css/prism.css">
@@ -191,7 +191,7 @@ ga('send', 'pageview');
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9B%86%E5%90%88%E4%B8%8E%E4%BA%8C%E8%BF%9B%E5%88%B6"><span class="toc-text">集合与二进制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9B%86%E5%90%88%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="toc-text">集合的操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B"><span class="toc-text">实例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%9A%E4%B8%BE%E6%89%80%E6%9C%89%E5%AD%90%E9%9B%86"><span class="toc-text">枚举所有子集</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E4%BB%A3%E7%A0%81"><span class="toc-text">测试代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BE%93%E5%87%BA%E7%BB%93%E6%9E%9C"><span class="toc-text">输出结果</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%9A%E4%B8%BE%E6%9F%90%E4%B8%AA%E9%9B%86%E5%90%88sup%E7%9A%84%E6%89%80%E6%9C%89%E5%AD%90%E9%9B%86"><span class="toc-text">枚举某个集合sup的所有子集</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E4%BB%A3%E7%A0%81-1"><span class="toc-text">测试代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BE%93%E5%87%BA%E7%BB%93%E6%9E%9C-1"><span class="toc-text">输出结果</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%9A%E4%B8%BE%E6%89%80%E6%9C%89%E5%A4%A7%E5%B0%8F%E4%B8%BAk%E7%9A%84%E5%AD%90%E9%9B%86"><span class="toc-text">枚举所有大小为k的子集</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E4%BB%A3%E7%A0%81-2"><span class="toc-text">测试代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BE%93%E5%87%BA%E7%BB%93%E6%9E%9C-2"><span class="toc-text">输出结果</span></a></li></ol></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9B%86%E5%90%88%E4%B8%8E%E4%BA%8C%E8%BF%9B%E5%88%B6"><span class="toc-text">集合与二进制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9B%86%E5%90%88%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="toc-text">集合的操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B"><span class="toc-text">实例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%9A%E4%B8%BE%E6%89%80%E6%9C%89%E5%AD%90%E9%9B%86"><span class="toc-text">枚举所有子集</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E4%BB%A3%E7%A0%81"><span class="toc-text">测试代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BE%93%E5%87%BA%E7%BB%93%E6%9E%9C"><span class="toc-text">输出结果</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%9A%E4%B8%BE%E6%9F%90%E4%B8%AA%E9%9B%86%E5%90%88-sup-%E7%9A%84%E6%89%80%E6%9C%89%E5%AD%90%E9%9B%86"><span class="toc-text">枚举某个集合 sup 的所有子集</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E4%BB%A3%E7%A0%81-2"><span class="toc-text">测试代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BE%93%E5%87%BA%E7%BB%93%E6%9E%9C-2"><span class="toc-text">输出结果</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%9A%E4%B8%BE%E6%89%80%E6%9C%89%E5%A4%A7%E5%B0%8F%E4%B8%BA-k-%E7%9A%84%E5%AD%90%E9%9B%86"><span class="toc-text">枚举所有大小为 k 的子集</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E4%BB%A3%E7%A0%81-3"><span class="toc-text">测试代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BE%93%E5%87%BA%E7%BB%93%E6%9E%9C-3"><span class="toc-text">输出结果</span></a></li></ol></li></ol></li></ol>
   </div>
 
 
@@ -237,75 +237,82 @@ ga('send', 'pageview');
 
   <div class="article-content">
     
-      <h2 id="集合与二进制"><a href="#集合与二进制" class="headerlink" title="集合与二进制"></a>集合与二进制</h2><p>前面的代码里（<a href="/2016/01/01/%E3%80%90%E5%BC%80%E5%85%B3%E9%97%AE%E9%A2%98%E3%80%91POJ-3276">【开关问题】POJ 3276 3279 3185 1222</a>）可以看到一些为了枚举所有状态用到了集合的整数表现与位操作。</p>
-<p>虽然位操作枚举比较简单但是这种方法只能在元素比较少的情况下（20个左右）使用。</p>
-<p>假设集合有$N$个元素，依次给它们编号$0, 1, \cdots, N-1$，由于每个元素在集合中只有两种状态：<strong>存在</strong>或者<strong>不存在</strong>。那么可以令相应二进制位来表示，存在则为1，否则为0。</p>
-<p>举个例子，8个元素编号依次为$0, 1, \cdots, 7$，那么编号为$\lbrace 0, 2, 4\rbrace $的集合可以用$S = (00010101)_2 = (21)_{10} % 注意下标$来表示。那么空集$\varnothing$可用$S = (00000000)_2 = (0)_{10}$来表示（即都不存在），同理全集可用$S=(11111111)_2 = (255)_{10} = 2^8 - 1$表示。</p>
-<a id="more"></a>
-<h2 id="集合的操作"><a href="#集合的操作" class="headerlink" title="集合的操作"></a>集合的操作</h2><p>像这样表示之后，一些集合运算就可以对应地写成如下方式：</p>
+      <h2 id="集合与二进制">集合与二进制</h2>
+<p>前面的代码里（<a href="/2016/01/01/%E3%80%90%E5%BC%80%E5%85%B3%E9%97%AE%E9%A2%98%E3%80%91POJ-3276">【开关问题】POJ 3276 3279 3185 1222</a>）可以看到一些为了枚举所有状态用到了集合的整数表现与位操作。</p>
+<p>虽然位操作枚举比较简单但是这种方法只能在元素比较少的情况下（20 个左右）使用。</p>
+<p>假设集合有 $N$ 个元素，依次给它们编号 $0, 1, \cdots, N-1$，由于每个元素在集合中只有两种状态：** 存在 ** 或者 ** 不存在 **。那么可以令相应二进制位来表示，存在则为 1，否则为 0。</p>
+<p>举个例子，8 个元素编号依次为 $0, 1, \cdots, 7$，那么编号为 $\lbrace 0, 2, 4\rbrace $ 的集合可以用 $S = (00010101)_2 = (21)_{10} % 注意下标 $ 来表示。那么空集 $\varnothing$ 可用 $S = (00000000)_2 = (0)_{10}$ 来表示（即都不存在），同理全集可用 $S=(11111111)_2 = (255)_{10} = 2^8 - 1$ 表示。</p>
+<h2 id="集合的操作">集合的操作</h2>
+<p>像这样表示之后，一些集合运算就可以对应地写成如下方式：</p>
 <table>
 <thead>
 <tr>
-<th align="center">操作</th>
-<th align="center">方式</th>
+<th style="text-align:center">操作</th>
+<th style="text-align:center">方式</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">空集$\varnothing$</td>
-<td align="center"><code>0</code></td>
+<tbody>
+<tr>
+<td style="text-align:center">空集 $\varnothing$</td>
+<td style="text-align:center"><code>0</code></td>
 </tr>
 <tr>
-<td align="center">全集$\lbrace 0, 1, \cdots, N-1\rbrace $</td>
-<td align="center"><code>(1&lt;&lt;N)-1</code></td>
+<td style="text-align:center">全集 $\lbrace 0, 1, \cdots, N-1\rbrace $</td>
+<td style="text-align:center"><code>(1&lt;&lt;N)-1</code></td>
 </tr>
 <tr>
-<td align="center">只含有第$i$个元素的集合$\lbrace i\rbrace $</td>
-<td align="center"><code>1&lt;&lt;i</code></td>
+<td style="text-align:center">只含有第 $i$ 个元素的集合 $\lbrace i\rbrace $</td>
+<td style="text-align:center"><code>1&lt;&lt;i</code></td>
 </tr>
 <tr>
-<td align="center">判断第$i$个元素是否属于集合$S$</td>
-<td align="center"><code>if(S&gt;&gt;i &amp; 1)</code></td>
+<td style="text-align:center">判断第 $i$ 个元素是否属于集合 $S$</td>
+<td style="text-align:center"><code>if (S&gt;&gt;i &amp; 1)</code></td>
 </tr>
 <tr>
-<td align="center">向集合中加入第$i$个元素$S\cup \lbrace i\rbrace $</td>
-<td align="center">S&#124;1&lt;&lt;i</td>
+<td style="text-align:center">向集合中加入第 $i$ 个元素 $S\cup \lbrace i\rbrace $</td>
+<td style="text-align:center">S|1&lt;&lt;i</td>
 </tr>
 <tr>
-<td align="center">从集合中去掉第$i$个元素$S\backslash \lbrace i\rbrace $</td>
-<td align="center"><code>S&amp;~(1&lt;&lt;i)</code></td>
+<td style="text-align:center">从集合中去掉第 $i$ 个元素 $S\backslash \lbrace i\rbrace $</td>
+<td style="text-align:center"><code>S&amp;~(1&lt;&lt;i)</code></td>
 </tr>
 <tr>
-<td align="center">集合$S$和$T$的并集$S\cup T$</td>
-<td align="center">S&#124;T</td>
+<td style="text-align:center">集合 $S$ 和 $T$ 的并集 $S\cup T$</td>
+<td style="text-align:center">S|T</td>
 </tr>
 <tr>
-<td align="center">集合$S$和$T$的交集$S\cap T$</td>
-<td align="center"><code>S&amp;T</code></td>
+<td style="text-align:center">集合 $S$ 和 $T$ 的交集 $S\cap T$</td>
+<td style="text-align:center"><code>S&amp;T</code></td>
 </tr>
-</tbody></table>
-<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p><del>准备看学妹推荐的电影《战长沙》，原来是电视剧算了继续更，算了每天就看一集吧，一集时间也太长了。。</del></p>
-<h3 id="枚举所有子集"><a href="#枚举所有子集" class="headerlink" title="枚举所有子集"></a>枚举所有子集</h3><p>要将集合$\lbrace 0, 1, \cdots, n-1\rbrace$的所有子集都枚举出来的话，可以这样：</p>
-<pre><code>for(int S=0; S&lt;1&lt;&lt;N; ++S) &#123;
-    // ...
-&#125;</code></pre>
-<p>$S$从空集开始，然后按照$\lbrace 0 \rbrace, \lbrace 1 \rbrace, \lbrace 0, 1 \rbrace, \cdots, \lbrace 0, 1, \cdots, N-1 \rbrace $的升序顺序枚举出来。</p>
-<h4 id="测试代码"><a href="#测试代码" class="headerlink" title="测试代码"></a>测试代码</h4><pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">void</span> <span class="token function">print_set</span><span class="token punctuation">(</span><span class="token keyword">int</span> Subset<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span>uSet<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">int</span> N <span class="token operator">=</span> <span class="token function">strlen</span><span class="token punctuation">(</span>uSet<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"&#123;"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">&lt;</span>N<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span>
-        <span class="token keyword">if</span><span class="token punctuation">(</span>Subset<span class="token operator">&amp;</span><span class="token number">1</span><span class="token operator">&lt;&lt;</span>i<span class="token punctuation">)</span> <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%c,"</span><span class="token punctuation">,</span> uSet<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">if</span><span class="token punctuation">(</span>Subset <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"\b"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"&#125;\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</tbody>
+</table>
+<h2 id="实例">实例</h2>
+<h3 id="枚举所有子集">枚举所有子集</h3>
+<p>要将集合 $\lbrace 0, 1, \cdots, n-1\rbrace$ 的所有子集都枚举出来的话，可以这样：</p>
+<pre><code>for (int S=0; S&lt;1&lt;&lt;N; ++S) &#123;
+	//...
+&#125;
+</code></pre>
+<p>$S$ 从空集开始，然后按照 $\lbrace 0 \rbrace, \lbrace 1 \rbrace, \lbrace 0, 1 \rbrace, \cdots, \lbrace 0, 1, \cdots, N-1 \rbrace $ 的升序顺序枚举出来。</p>
+<h4 id="测试代码">测试代码</h4>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">void</span> <span class="token function">print_set</span><span class="token punctuation">(</span><span class="token keyword">int</span> Subset<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span>uSet<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	<span class="token keyword">int</span> N <span class="token operator">=</span> <span class="token function">strlen</span><span class="token punctuation">(</span>uSet<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"&#123;"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">&lt;</span>N<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span>
+		<span class="token keyword">if</span><span class="token punctuation">(</span>Subset<span class="token operator">&amp;</span><span class="token number">1</span><span class="token operator">&lt;&lt;</span>i<span class="token punctuation">)</span> <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"% c,"</span><span class="token punctuation">,</span> uSet<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">if</span><span class="token punctuation">(</span>Subset <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"\b"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"&#125;\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span>
 
 <span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">char</span> Set<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">"ABC"</span><span class="token punctuation">;</span>
-    <span class="token function">puts</span><span class="token punctuation">(</span><span class="token string">"集合&#123;A, B, C&#125;的所有子集:"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">int</span> N <span class="token operator">=</span> <span class="token function">strlen</span><span class="token punctuation">(</span>Set<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> S<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> S<span class="token operator">&lt;</span><span class="token number">1</span><span class="token operator">&lt;&lt;</span>N<span class="token punctuation">;</span> <span class="token operator">++</span>S<span class="token punctuation">)</span>
-        <span class="token function">print_set</span><span class="token punctuation">(</span>S<span class="token punctuation">,</span> Set<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">char</span> Set<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">"ABC"</span><span class="token punctuation">;</span>
+	<span class="token function">puts</span><span class="token punctuation">(</span><span class="token string">"集合 &#123;A, B, C&#125; 的所有子集:"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">int</span> N <span class="token operator">=</span> <span class="token function">strlen</span><span class="token punctuation">(</span>Set<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> S<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> S<span class="token operator">&lt;</span><span class="token number">1</span><span class="token operator">&lt;&lt;</span>N<span class="token punctuation">;</span> <span class="token operator">++</span>S<span class="token punctuation">)</span>
+		<span class="token function">print_set</span><span class="token punctuation">(</span>S<span class="token punctuation">,</span> Set<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span></code></pre>
-<h4 id="输出结果"><a href="#输出结果" class="headerlink" title="输出结果"></a>输出结果</h4><pre><code>集合&#123;A, B, C&#125;的所有子集:
+<h4 id="输出结果">输出结果</h4>
+<pre><code>集合 &#123;A, B, C&#125; 的所有子集:
 &#123;&#125;
 &#123;A&#125;
 &#123;B&#125;
@@ -313,27 +320,32 @@ ga('send', 'pageview');
 &#123;C&#125;
 &#123;A,C&#125;
 &#123;B,C&#125;
-&#123;A,B,C&#125;</code></pre>
-<h3 id="枚举某个集合sup的所有子集"><a href="#枚举某个集合sup的所有子集" class="headerlink" title="枚举某个集合sup的所有子集"></a>枚举某个集合sup的所有子集</h3><pre><code>int sub = sup;
+&#123;A,B,C&#125;
+</code></pre>
+<h3 id="枚举某个集合-sup-的所有子集">枚举某个集合 sup 的所有子集</h3>
+<pre><code>int sub = sup;
 do &#123;
-    // ...
-    sub = (sub-1) &amp; sup;
-&#125; while(sub != sup); // 当sub = 0的时候，有sub = (-1 &amp; sup) = sup</code></pre>
-<h4 id="测试代码-1"><a href="#测试代码-1" class="headerlink" title="测试代码"></a>测试代码</h4><pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">char</span> Set<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">"ABCDEF"</span><span class="token punctuation">;</span>
-    <span class="token keyword">int</span> sup <span class="token operator">=</span> <span class="token number">11</span><span class="token punctuation">;</span> <span class="token comment">// 001011</span>
-    <span class="token function">puts</span><span class="token punctuation">(</span><span class="token string">"sup集合元素为："</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token function">print_set</span><span class="token punctuation">(</span>sup<span class="token punctuation">,</span> Set<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token function">puts</span><span class="token punctuation">(</span><span class="token string">"其所有子集为："</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">int</span> sub <span class="token operator">=</span> sup<span class="token punctuation">;</span>
-    <span class="token keyword">do</span> <span class="token punctuation">&#123;</span>
-        <span class="token function">print_set</span><span class="token punctuation">(</span>sub<span class="token punctuation">,</span> Set<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        sub <span class="token operator">=</span> <span class="token punctuation">(</span>sub<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span> sup<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span> <span class="token keyword">while</span><span class="token punctuation">(</span>sub <span class="token operator">!=</span> sup<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 当sub = 0的时候，有sub = (-1 &amp; sup) = sup</span>
-    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+	//...
+	sub = (sub-1) &amp; sup;
+&#125; while (sub != sup); // 当 sub = 0 的时候，有 sub = (-1 &amp; sup) = sup
+</code></pre>
+<h4 id="测试代码-2">测试代码</h4>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	<span class="token keyword">char</span> Set<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">"ABCDEF"</span><span class="token punctuation">;</span>
+	<span class="token keyword">int</span> sup <span class="token operator">=</span> <span class="token number">11</span><span class="token punctuation">;</span> <span class="token comment">// 001011</span>
+	<span class="token function">puts</span><span class="token punctuation">(</span><span class="token string">"sup 集合元素为："</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token function">print_set</span><span class="token punctuation">(</span>sup<span class="token punctuation">,</span> Set<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token function">puts</span><span class="token punctuation">(</span><span class="token string">"其所有子集为："</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">int</span> sub <span class="token operator">=</span> sup<span class="token punctuation">;</span>
+	<span class="token keyword">do</span> <span class="token punctuation">&#123;</span>
+		<span class="token function">print_set</span><span class="token punctuation">(</span>sub<span class="token punctuation">,</span> Set<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		sub <span class="token operator">=</span> <span class="token punctuation">(</span>sub<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span> sup<span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span> <span class="token keyword">while</span><span class="token punctuation">(</span>sub <span class="token operator">!=</span> sup<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 当 sub = 0 的时候，有 sub = (-1 &amp; sup) = sup</span>
+	<span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span>
 </code></pre>
-<h4 id="输出结果-1"><a href="#输出结果-1" class="headerlink" title="输出结果"></a>输出结果</h4><pre><code>sup集合元素为：
+<h4 id="输出结果-2">输出结果</h4>
+<pre><code>sup 集合元素为：
 &#123;A,B,D&#125;
 其所有子集为：
 &#123;A,B,D&#125;
@@ -343,25 +355,30 @@ do &#123;
 &#123;A,B&#125;
 &#123;B&#125;
 &#123;A&#125;
-&#123;&#125;</code></pre>
-<h3 id="枚举所有大小为k的子集"><a href="#枚举所有大小为k的子集" class="headerlink" title="枚举所有大小为k的子集"></a>枚举所有大小为k的子集</h3><pre><code>int comb = (1&lt;&lt;k) - 1;
-while(comb &lt; 1&lt;&lt;N) &#123;
-    // ...
-    int x = comb &amp; -comb, y = comb + x; // x为独立最低位的1，y为从最低位的1开始连续的1都置为0
-    comb = ((comb &amp; ~y) / x &gt;&gt; 1) | y;
-&#125;</code></pre>
-<h4 id="测试代码-2"><a href="#测试代码-2" class="headerlink" title="测试代码"></a>测试代码</h4><pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">char</span> Set<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">"ABCDEF"</span><span class="token punctuation">;</span>
-    <span class="token keyword">int</span> N <span class="token operator">=</span> <span class="token function">strlen</span><span class="token punctuation">(</span>Set<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">int</span> K <span class="token operator">=</span> <span class="token number">4</span><span class="token punctuation">;</span> <span class="token comment">// 枚举长度为4的所有集合</span>
-    <span class="token keyword">int</span> S <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token number">1</span><span class="token operator">&lt;&lt;</span>K<span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span>
-    <span class="token keyword">while</span><span class="token punctuation">(</span>S <span class="token operator">&lt;</span> <span class="token number">1</span><span class="token operator">&lt;&lt;</span>N<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token function">print_set</span><span class="token punctuation">(</span>S<span class="token punctuation">,</span> Set<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">int</span> x <span class="token operator">=</span> S <span class="token operator">&amp;</span> <span class="token operator">-</span>S<span class="token punctuation">,</span> y <span class="token operator">=</span> S <span class="token operator">+</span> x<span class="token punctuation">;</span> <span class="token comment">// x为独立最低位的1，y为从最低位的1开始连续的1都置为0</span>
-        S <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>S <span class="token operator">&amp;</span> <span class="token operator">~</span>y<span class="token punctuation">)</span> <span class="token operator">/</span> x <span class="token operator">>></span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">|</span> y<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+&#123;&#125;
+</code></pre>
+<h3 id="枚举所有大小为-k-的子集">枚举所有大小为 k 的子集</h3>
+<pre><code>int comb = (1&lt;&lt;k) - 1;
+while (comb &lt; 1&lt;&lt;N) &#123;
+	//...
+	int x = comb &amp; -comb, y = comb + x; //x 为独立最低位的 1，y 为从最低位的 1 开始连续的 1 都置为 0
+	comb = ((comb &amp; ~y) /x &gt;&gt; 1) | y;
+&#125;
+</code></pre>
+<h4 id="测试代码-3">测试代码</h4>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	<span class="token keyword">char</span> Set<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">"ABCDEF"</span><span class="token punctuation">;</span>
+	<span class="token keyword">int</span> N <span class="token operator">=</span> <span class="token function">strlen</span><span class="token punctuation">(</span>Set<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">int</span> K <span class="token operator">=</span> <span class="token number">4</span><span class="token punctuation">;</span> <span class="token comment">// 枚举长度为 4 的所有集合 </span>
+	<span class="token keyword">int</span> S <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token number">1</span><span class="token operator">&lt;&lt;</span>K<span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span>
+	<span class="token keyword">while</span><span class="token punctuation">(</span>S <span class="token operator">&lt;</span> <span class="token number">1</span><span class="token operator">&lt;&lt;</span>N<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token function">print_set</span><span class="token punctuation">(</span>S<span class="token punctuation">,</span> Set<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token keyword">int</span> x <span class="token operator">=</span> S <span class="token operator">&amp;</span> <span class="token operator">-</span>S<span class="token punctuation">,</span> y <span class="token operator">=</span> S <span class="token operator">+</span> x<span class="token punctuation">;</span> <span class="token comment">//x 为独立最低位的 1，y 为从最低位的 1 开始连续的 1 都置为 0</span>
+		S <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>S <span class="token operator">&amp;</span> <span class="token operator">~</span>y<span class="token punctuation">)</span> <span class="token operator">/</span> x <span class="token operator">>></span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">|</span> y<span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span></code></pre>
-<h4 id="输出结果-2"><a href="#输出结果-2" class="headerlink" title="输出结果"></a>输出结果</h4><pre><code>&#123;A,B,C,D&#125;
+<h4 id="输出结果-3">输出结果</h4>
+<pre><code>&#123;A,B,C,D&#125;
 &#123;A,B,C,E&#125;
 &#123;A,B,D,E&#125;
 &#123;A,C,D,E&#125;
@@ -375,7 +392,8 @@ while(comb &lt; 1&lt;&lt;N) &#123;
 &#123;B,C,E,F&#125;
 &#123;A,D,E,F&#125;
 &#123;B,D,E,F&#125;
-&#123;C,D,E,F&#125;</code></pre>
+&#123;C,D,E,F&#125;
+</code></pre>
 
     
   </div>
@@ -390,7 +408,7 @@ while(comb &lt; 1&lt;&lt;N) &#123;
         <li>本文字数：1k</li>
         <li>本文作者：Netcan</li>
         <li>发布时间：2016年01月02日 - 17时35分</li>
-        <li>最后更新：2017年02月07日 - 14时21分</li>
+        <li>最后更新：2020年08月09日 - 09时01分</li>
         <li>原始链接：<a href="https://netcan.github.io/2016/01/02/%E9%9B%86%E5%90%88%E7%9A%84%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%93%8D%E4%BD%9C/">https://netcan.github.io/2016/01/02/集合的二进制操作/</a></li>
         <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
     </ul>
@@ -623,6 +641,6 @@ gitalk.render('gitalk-container')
             all[i].SourceElement().parentNode.className += ' has-jax';
     });
 </script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </body>
 </html>

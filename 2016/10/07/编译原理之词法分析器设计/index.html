@@ -5,7 +5,7 @@
 
 
 <head>
-  <meta charset="utf-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
   <title>编译原理之词法分析器设计 | Netcan on Programming</title>
 
@@ -15,16 +15,16 @@
     <meta name="keywords" content="PHP,C/C++,编译原理,字典树," />
   
 
-  <meta name="description" content="这两天把编译原理词法分析实验提前给做了，作品地址：http:&#x2F;&#x2F;115.159.147.250:666&#x2F;Lexical&#x2F;，源码：https:&#x2F;&#x2F;github.com&#x2F;netcan&#x2F;compilingTheory，效果图：">
+  <meta name="description" content="这两天把编译原理词法分析实验提前给做了，作品地址：http:&#x2F;&#x2F;115.159.147.250:666&#x2F;Lexical&#x2F;，源码：https:&#x2F;&#x2F;github.com&#x2F;netcan&#x2F;compilingTheory，效果图：  现在来记录下编写心得，这是编译原理的第一个实验，算是热身实验吧，确实很简单，花了一晚上就把词法分析器底层部分写完了，老师比较喜欢图形界面，后来又加了前端，也就是现在看到的效果。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="编译原理之词法分析器设计">
 <meta property="og:url" content="https://netcan.github.io/2016/10/07/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B9%8B%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90%E5%99%A8%E8%AE%BE%E8%AE%A1/index.html">
 <meta property="og:site_name" content="Netcan on Programming">
-<meta property="og:description" content="这两天把编译原理词法分析实验提前给做了，作品地址：http:&#x2F;&#x2F;115.159.147.250:666&#x2F;Lexical&#x2F;，源码：https:&#x2F;&#x2F;github.com&#x2F;netcan&#x2F;compilingTheory，效果图：">
+<meta property="og:description" content="这两天把编译原理词法分析实验提前给做了，作品地址：http:&#x2F;&#x2F;115.159.147.250:666&#x2F;Lexical&#x2F;，源码：https:&#x2F;&#x2F;github.com&#x2F;netcan&#x2F;compilingTheory，效果图：  现在来记录下编写心得，这是编译原理的第一个实验，算是热身实验吧，确实很简单，花了一晚上就把词法分析器底层部分写完了，老师比较喜欢图形界面，后来又加了前端，也就是现在看到的效果。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://raw.githubusercontent.com/netcan/compilingTheory/master/lexical.gif">
 <meta property="article:published_time" content="2016-10-07T14:12:56.000Z">
-<meta property="article:modified_time" content="2016-11-05T08:23:08.000Z">
+<meta property="article:modified_time" content="2020-08-09T01:01:02.173Z">
 <meta property="article:author" content="Netcan">
 <meta property="article:tag" content="PHP">
 <meta property="article:tag" content="C&#x2F;C++">
@@ -98,14 +98,14 @@ ga('send', 'pageview');
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
   
 
-<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body>
 
 
   
-    <span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
   
 
   <link rel="stylesheet" href="/css/prism.css">
@@ -195,7 +195,7 @@ ga('send', 'pageview');
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90%E5%99%A8%E5%BA%95%E5%B1%82%E9%83%A8%E5%88%86"><span class="toc-text">词法分析器底层部分</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%B9%E9%85%8D%E5%85%B3%E9%94%AE%E5%AD%97%E6%88%96%E6%A0%87%E8%AE%B0%E7%AC%A6%E8%87%AA%E5%8A%A8%E6%9C%BA"><span class="toc-text">匹配关键字或标记符自动机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%B9%E9%85%8D%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%95%B0%E8%87%AA%E5%8A%A8%E6%9C%BA"><span class="toc-text">匹配无符号数自动机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%B9%E9%85%8D%E8%A1%8C%E9%97%B4%E6%B3%A8%E9%87%8A%E8%87%AA%E5%8A%A8%E6%9C%BA"><span class="toc-text">匹配行间注释自动机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%B9%E9%85%8D%E8%BF%90%E7%AE%97%E7%AC%A6%E3%80%81%E5%88%86%E7%95%8C%E7%AC%A6%E8%87%AA%E5%8A%A8%E6%9C%BA"><span class="toc-text">匹配运算符、分界符自动机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%B9%E9%85%8D%E5%AD%97%E7%AC%A6%E3%80%81%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%87%AA%E5%8A%A8%E6%9C%BA"><span class="toc-text">匹配字符、字符串自动机</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90%E5%99%A8%E5%89%8D%E7%AB%AF%E9%83%A8%E5%88%86"><span class="toc-text">词法分析器前端部分</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90%E5%99%A8%E5%BA%95%E5%B1%82%E9%83%A8%E5%88%86"><span class="toc-text">词法分析器底层部分</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%B9%E9%85%8D-%E5%85%B3%E9%94%AE%E5%AD%97-%E6%88%96-%E6%A0%87%E8%AE%B0%E7%AC%A6-%E8%87%AA%E5%8A%A8%E6%9C%BA"><span class="toc-text">匹配 ** 关键字 ** 或 ** 标记符 ** 自动机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%B9%E9%85%8D-%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%95%B0-%E8%87%AA%E5%8A%A8%E6%9C%BA"><span class="toc-text">匹配 ** 无符号数 ** 自动机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%B9%E9%85%8D-%E8%A1%8C%E9%97%B4%E6%B3%A8%E9%87%8A-%E8%87%AA%E5%8A%A8%E6%9C%BA"><span class="toc-text">匹配 ** 行间注释 ** 自动机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%B9%E9%85%8D-%E8%BF%90%E7%AE%97%E7%AC%A6-%E3%80%81-%E5%88%86%E7%95%8C%E7%AC%A6-%E8%87%AA%E5%8A%A8%E6%9C%BA"><span class="toc-text">匹配 ** 运算符 、 分界符 ** 自动机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%B9%E9%85%8D-%E5%AD%97%E7%AC%A6-%E3%80%81-%E5%AD%97%E7%AC%A6%E4%B8%B2-%E8%87%AA%E5%8A%A8%E6%9C%BA"><span class="toc-text">匹配 ** 字符 、 字符串 ** 自动机</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90%E5%99%A8%E5%89%8D%E7%AB%AF%E9%83%A8%E5%88%86"><span class="toc-text">词法分析器前端部分</span></a></li></ol>
   </div>
 
 
@@ -241,18 +241,25 @@ ga('send', 'pageview');
 
   <div class="article-content">
     
-      <p>这两天把编译原理词法分析实验提前给做了，作品地址：<a target="_blank" rel="noopener" href="http://115.159.147.250:666/Lexical/">http://115.159.147.250:666/Lexical/</a>，源码：<a target="_blank" rel="noopener" href="https://github.com/netcan/compilingTheory">https://github.com/netcan/compilingTheory</a>，效果图：<br><img src="https://raw.githubusercontent.com/netcan/compilingTheory/master/lexical.gif" alt="https://raw.githubusercontent.com/netcan/compilingTheory/master/lexical.gif"></p>
-<a id="more"></a>
-<p>现在来记录下编写心得，这是编译原理的第一个实验，算是热身实验吧，确实很简单，花了一晚上就把词法分析器底层部分写完了，老师比较喜欢图形界面，后来又加了前端，也就是现在看到的效果。实验要求能够匹配出<strong>关键字</strong>、<strong>标记符</strong>、<strong>运算符</strong>、<strong>分界符</strong>、<strong>无符号数</strong>，后来我又添加了一部分，现在能匹配出<strong>字符/字符串</strong>、<strong>行间注释</strong>。</p>
-<h2 id="词法分析器底层部分"><a href="#词法分析器底层部分" class="headerlink" title="词法分析器底层部分"></a>词法分析器底层部分</h2><p>底层部分是用C++写的，大体思路就是，每次从<code>stdin</code>读取出一行，然后从这行的第一个字符开始匹配。匹配完了，读取下一行，行号+1。</p>
-<h3 id="匹配关键字或标记符自动机"><a href="#匹配关键字或标记符自动机" class="headerlink" title="匹配关键字或标记符自动机"></a>匹配<strong>关键字</strong>或<strong>标记符</strong>自动机</h3><p>若当前匹配到的字符$i$是<em>字母</em>，就继续匹配下一个字符，直到下个字符$j$不是<em>字母</em>或者<em>数字</em>或者’_’为止，则截取字符串$(i, j)$，判断这个字符串是不是<strong>关键字</strong>或者<strong>标记符</strong>，否则<strong>错误</strong>处理。如果是<strong>标记符</strong>，将其存入<strong>标记符</strong>表中，其在<strong>标记符</strong>表的位置即为其<code>Pointer</code>。最后输出相关信息。</p>
-<h3 id="匹配无符号数自动机"><a href="#匹配无符号数自动机" class="headerlink" title="匹配无符号数自动机"></a>匹配<strong>无符号数</strong>自动机</h3><p>若当前匹配到的字符$i$是<em>数字</em>，就继续匹配下一个字符，直到下个字符$j$不是<em>字母</em>或者<em>数字</em>或者’_’为止，则截取字符串$(i, j)$，判断这个字符串是不是<strong>无符号数</strong>。如果是<strong>无符号数</strong>，将其存入<strong>常数</strong>表中，其在<strong>常数</strong>表的位置即为其<code>Pointer</code>，若不是<strong>无符号数</strong>则当<strong>错误</strong>处理。最后输出相关信息。</p>
-<h3 id="匹配行间注释自动机"><a href="#匹配行间注释自动机" class="headerlink" title="匹配行间注释自动机"></a>匹配<strong>行间注释</strong>自动机</h3><p>若当前匹配到的字符$i$是’/‘并且下一个字符也是’/‘，就继续匹配下一个字符，直到下个字符$j$不是<em>空白</em>（空格或tab）为止，则截取字符串$(j, lineEnd)$，作为注释处理。</p>
-<h3 id="匹配运算符、分界符自动机"><a href="#匹配运算符、分界符自动机" class="headerlink" title="匹配运算符、分界符自动机"></a>匹配<strong>运算符</strong>、<strong>分界符</strong>自动机</h3><p>我将<strong>运算符</strong>和<strong>分界符</strong>放到一个<code>optrs</code>表中，若当前匹配到的字符$i$是<code>optrs</code>的元素，就继续匹配下一个字符，直到下个字符$j$不是<code>optrs</code>的元素或者运算符类型与字符$i$不一样或者就是分界符为止，则截取字符串$(i, j)$，判断这个字符串是不是<code>optrs</code>的元素，并确定其类型，其Pointer为该<strong>运算符</strong>或<strong>分界符</strong>在<code>optrs</code>的位置，输出相关信息，否则当<strong>错误</strong>处理。最后输出相关信息。</p>
-<h3 id="匹配字符、字符串自动机"><a href="#匹配字符、字符串自动机" class="headerlink" title="匹配字符、字符串自动机"></a>匹配<strong>字符</strong>、<strong>字符串</strong>自动机</h3><p>若当前匹配到的字符$i$是<code>&quot;</code>或者<code>&#39;</code>，就继续匹配下一个字符，直到下个字符$j$是字符$i$为止，则截取字符串$(i, j)$，判断这个字符串是<strong>字符</strong>还是<strong>字符串</strong>。如果是的话，将其存入<strong>字符</strong>或<strong>字符串</strong>表中，其在相应表的位置即为其<code>Pointer</code>，若不符合则<strong>错误</strong>处理。最后输出相关信息。</p>
-<h2 id="词法分析器前端部分"><a href="#词法分析器前端部分" class="headerlink" title="词法分析器前端部分"></a>词法分析器前端部分</h2><p>前端部分我比较认真，我用<code>html</code>+<code>js</code>+<code>php</code>来实现图形界面，之所以写成网页，是因为我不想写<code>native app</code>，我也没<code>GUI</code>开发环境。在互联网时代，<code>webapp</code>是趋势，谁还写本地客户端啊，况且带个几十M的<code>GUI</code>库实在是麻烦。</p>
-<p>于是我的分析器底层部分设计成输出<code>json</code>格式，然后利用管道将<code>C++</code>程序与<code>php</code>程序进行数据传送。前端只要用<code>js</code>输数据取数据渲染页面即可。</p>
-<p>在这之中发现一个问题，如果<em>输入文本</em>一长，渲染效率大大降低，因为我用<code>append</code>方法一个个加元素的。解决方案是最后转换为字符串一次性输出渲染，效率提高了不少。具体可看这个优化片段：<a target="_blank" rel="noopener" href="https://github.com/netcan/compilingTheory/commit/2a09a9054e467d35d416603c5d73247acf2af764">优化js运行效率</a>。</p>
+      <p>这两天把编译原理词法分析实验提前给做了，作品地址：<a target="_blank" rel="noopener" href="http://115.159.147.250:666/Lexical/">http://115.159.147.250:666/Lexical/</a>，源码：<a target="_blank" rel="noopener" href="https://github.com/netcan/compilingTheory">https://github.com/netcan/compilingTheory</a>，效果图：<br>
+<img src="https://raw.githubusercontent.com/netcan/compilingTheory/master/lexical.gif" alt="https://raw.githubusercontent.com/netcan/compilingTheory/master/lexical.gif"></p>
+<p>现在来记录下编写心得，这是编译原理的第一个实验，算是热身实验吧，确实很简单，花了一晚上就把词法分析器底层部分写完了，老师比较喜欢图形界面，后来又加了前端，也就是现在看到的效果。实验要求能够匹配出 ** 关键字 <strong>、</strong> 标记符 <strong>、</strong> 运算符 <strong>、</strong> 分界符 <strong>、</strong> 无符号数 **，后来我又添加了一部分，现在能匹配出 ** 字符 / 字符串 <strong>、</strong> 行间注释 **。</p>
+<h2 id="词法分析器底层部分">词法分析器底层部分</h2>
+<p>底层部分是用 C++ 写的，大体思路就是，每次从 <code>stdin</code> 读取出一行，然后从这行的第一个字符开始匹配。匹配完了，读取下一行，行号 + 1。</p>
+<h3 id="匹配-关键字-或-标记符-自动机">匹配 ** 关键字 ** 或 ** 标记符 ** 自动机</h3>
+<p>若当前匹配到的字符 $i$ 是 * 字母 *，就继续匹配下一个字符，直到下个字符 $j$ 不是 * 字母 * 或者 * 数字 * 或者 ‘_’ 为止，则截取字符串 $(i, j)$，判断这个字符串是不是 ** 关键字 ** 或者 ** 标记符 **，否则 ** 错误 ** 处理。如果是 ** 标记符 **，将其存入 ** 标记符 ** 表中，其在 ** 标记符 ** 表的位置即为其 <code>Pointer</code>。最后输出相关信息。</p>
+<h3 id="匹配-无符号数-自动机">匹配 ** 无符号数 ** 自动机</h3>
+<p>若当前匹配到的字符 $i$ 是 * 数字 *，就继续匹配下一个字符，直到下个字符 $j$ 不是 * 字母 * 或者 * 数字 * 或者 ‘_’ 为止，则截取字符串 $(i, j)$，判断这个字符串是不是 ** 无符号数 **。如果是 ** 无符号数 **，将其存入 ** 常数 ** 表中，其在 ** 常数 ** 表的位置即为其 <code>Pointer</code>，若不是 ** 无符号数 ** 则当 ** 错误 ** 处理。最后输出相关信息。</p>
+<h3 id="匹配-行间注释-自动机">匹配 ** 行间注释 ** 自动机</h3>
+<p>若当前匹配到的字符 $i$ 是 ‘/’ 并且下一个字符也是 ‘/’，就继续匹配下一个字符，直到下个字符 $j$ 不是 * 空白 *（空格或 tab）为止，则截取字符串 $(j, lineEnd)$，作为注释处理。</p>
+<h3 id="匹配-运算符-、-分界符-自动机">匹配 ** 运算符 <strong>、</strong> 分界符 ** 自动机</h3>
+<p>我将 ** 运算符 ** 和 ** 分界符 ** 放到一个 <code>optrs</code> 表中，若当前匹配到的字符 $i$ 是 <code>optrs</code> 的元素，就继续匹配下一个字符，直到下个字符 $j$ 不是 <code>optrs</code> 的元素或者运算符类型与字符 $i$ 不一样或者就是分界符为止，则截取字符串 $(i, j)$，判断这个字符串是不是 <code>optrs</code> 的元素，并确定其类型，其 Pointer 为该 ** 运算符 ** 或 ** 分界符 ** 在 <code>optrs</code> 的位置，输出相关信息，否则当 ** 错误 ** 处理。最后输出相关信息。</p>
+<h3 id="匹配-字符-、-字符串-自动机">匹配 ** 字符 <strong>、</strong> 字符串 ** 自动机</h3>
+<p>若当前匹配到的字符 $i$ 是 <code>&quot;</code>或者<code>'</code>，就继续匹配下一个字符，直到下个字符 $j$ 是字符 $i$ 为止，则截取字符串 $(i, j)$，判断这个字符串是 ** 字符 ** 还是 ** 字符串 **。如果是的话，将其存入 ** 字符 ** 或 ** 字符串 ** 表中，其在相应表的位置即为其<code>Pointer</code>，若不符合则 ** 错误 ** 处理。最后输出相关信息。</p>
+<h2 id="词法分析器前端部分">词法分析器前端部分</h2>
+<p>前端部分我比较认真，我用 <code>html</code>+<code>js</code>+<code>php</code> 来实现图形界面，之所以写成网页，是因为我不想写 <code>native app</code>，我也没 <code>GUI</code> 开发环境。在互联网时代，<code>webapp</code> 是趋势，谁还写本地客户端啊，况且带个几十 M 的 <code>GUI</code> 库实在是麻烦。</p>
+<p>于是我的分析器底层部分设计成输出 <code>json</code> 格式，然后利用管道将 <code>C++</code> 程序与 <code>php</code> 程序进行数据传送。前端只要用 <code>js</code> 输数据取数据渲染页面即可。</p>
+<p>在这之中发现一个问题，如果 * 输入文本 * 一长，渲染效率大大降低，因为我用 <code>append</code> 方法一个个加元素的。解决方案是最后转换为字符串一次性输出渲染，效率提高了不少。具体可看这个优化片段：<a target="_blank" rel="noopener" href="https://github.com/netcan/compilingTheory/commit/2a09a9054e467d35d416603c5d73247acf2af764">优化 js 运行效率</a>。</p>
 
     
   </div>
@@ -267,7 +274,7 @@ ga('send', 'pageview');
         <li>本文字数：1k</li>
         <li>本文作者：Netcan</li>
         <li>发布时间：2016年10月07日 - 22时12分</li>
-        <li>最后更新：2016年11月05日 - 16时23分</li>
+        <li>最后更新：2020年08月09日 - 09时01分</li>
         <li>原始链接：<a href="https://netcan.github.io/2016/10/07/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E4%B9%8B%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90%E5%99%A8%E8%AE%BE%E8%AE%A1/">https://netcan.github.io/2016/10/07/编译原理之词法分析器设计/</a></li>
         <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
     </ul>
@@ -500,6 +507,6 @@ gitalk.render('gitalk-container')
             all[i].SourceElement().parentNode.className += ' has-jax';
     });
 </script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </body>
 </html>

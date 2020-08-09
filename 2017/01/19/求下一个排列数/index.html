@@ -5,7 +5,7 @@
 
 
 <head>
-  <meta charset="utf-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
   <title>求下一个排列数 | Netcan on Programming</title>
 
@@ -15,15 +15,15 @@
     <meta name="keywords" content="数学," />
   
 
-  <meta name="description" content="在LeetCode上遇到这么一个题：Next Permutation 意思就是给定一个序列，求下一个排列数。下一个排列数是指重排序列，使得下一个序列的字典序比当前序列要大，如果找不到，就返回最小字典序的那个序列。 要求是一步到位，不能分配多余的内存。 这个题貌似是要求实现C++的next_permutation函数，然后去瞄了一眼其实现：">
+  <meta name="description" content="在 LeetCode 上遇到这么一个题：Next Permutation 意思就是给定一个序列，求下一个排列数。下一个排列数是指重排序列，使得下一个序列的字典序比当前序列要大，如果找不到，就返回最小字典序的那个序列。 要求是一步到位，不能分配多余的内存。 这个题貌似是要求实现 C++ 的 next_permutation 函数，然后去瞄了一眼其实现： template&lt;class Bidir">
 <meta property="og:type" content="article">
 <meta property="og:title" content="求下一个排列数">
 <meta property="og:url" content="https://netcan.github.io/2017/01/19/%E6%B1%82%E4%B8%8B%E4%B8%80%E4%B8%AA%E6%8E%92%E5%88%97%E6%95%B0/index.html">
 <meta property="og:site_name" content="Netcan on Programming">
-<meta property="og:description" content="在LeetCode上遇到这么一个题：Next Permutation 意思就是给定一个序列，求下一个排列数。下一个排列数是指重排序列，使得下一个序列的字典序比当前序列要大，如果找不到，就返回最小字典序的那个序列。 要求是一步到位，不能分配多余的内存。 这个题貌似是要求实现C++的next_permutation函数，然后去瞄了一眼其实现：">
+<meta property="og:description" content="在 LeetCode 上遇到这么一个题：Next Permutation 意思就是给定一个序列，求下一个排列数。下一个排列数是指重排序列，使得下一个序列的字典序比当前序列要大，如果找不到，就返回最小字典序的那个序列。 要求是一步到位，不能分配多余的内存。 这个题貌似是要求实现 C++ 的 next_permutation 函数，然后去瞄了一眼其实现： template&lt;class Bidir">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2017-01-19T02:00:35.000Z">
-<meta property="article:modified_time" content="2017-01-19T02:25:55.000Z">
+<meta property="article:modified_time" content="2020-08-09T01:01:02.154Z">
 <meta property="article:author" content="Netcan">
 <meta property="article:tag" content="数学">
 <meta name="twitter:card" content="summary">
@@ -93,14 +93,14 @@ ga('send', 'pageview');
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
   
 
-<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body>
 
 
   
-    <span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
   
 
   <link rel="stylesheet" href="/css/prism.css">
@@ -231,11 +231,10 @@ ga('send', 'pageview');
 
   <div class="article-content">
     
-      <p>在<code>LeetCode</code>上遇到这么一个题：<a target="_blank" rel="noopener" href="https://leetcode.com/problems/next-permutation/">Next Permutation</a></p>
+      <p>在 <code>LeetCode</code> 上遇到这么一个题：<a target="_blank" rel="noopener" href="https://leetcode.com/problems/next-permutation/">Next Permutation</a></p>
 <p>意思就是给定一个序列，求下一个排列数。下一个排列数是指重排序列，使得下一个序列的字典序比当前序列要大，如果找不到，就返回最小字典序的那个序列。</p>
 <p>要求是一步到位，不能分配多余的内存。</p>
-<p>这个题貌似是要求实现C++的<code>next_permutation</code>函数，然后去瞄了一眼其实现：</p>
-<a id="more"></a>
+<p>这个题貌似是要求实现 C++ 的 <code>next_permutation</code> 函数，然后去瞄了一眼其实现：</p>
 <pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">class</span> <span class="token class-name">BidirIt</span><span class="token operator">></span>
 <span class="token keyword">bool</span> <span class="token function">next_permutation</span><span class="token punctuation">(</span>BidirIt first<span class="token punctuation">,</span> BidirIt last<span class="token punctuation">)</span>
 <span class="token punctuation">&#123;</span>
@@ -261,33 +260,32 @@ ga('send', 'pageview');
         <span class="token punctuation">&#125;</span>
     <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span></code></pre>
-
-<p>看了代码貌似很简单，都能口算下一个排列数了= =</p>
+<p>看了代码貌似很简单，都能口算下一个排列数了 = =</p>
 <p>思路很简单，就是</p>
 <ol>
-<li>从后往前找，如果找到一个数<code>x[i]</code>，使得<code>x[i] &lt; x[i+1]</code>，记下这个下标<code>i</code></li>
-<li>如果<code>i==0</code>，并且<code>x[0] &gt;= x[1]</code>，那么说明没有下一个排列数，即<strong>降序</strong>，那么就将其逆序得到升序序列，使得字典序最小。否则进入3</li>
-<li>然后又从后往前找，使得<code>x[i] &lt; x[j]</code>，记下这个下标<code>j</code>，交换<code>x[i]</code>与<code>x[j]</code>，并将<code>i</code>后面的数逆序。</li>
+<li>从后往前找，如果找到一个数 <code>x [i]</code>，使得 <code>x [i] &lt; x [i+1]</code>，记下这个下标 <code>i</code></li>
+<li>如果 <code>i==0</code>，并且 <code>x [0] &gt;= x [1]</code>，那么说明没有下一个排列数，即 ** 降序 **，那么就将其逆序得到升序序列，使得字典序最小。否则进入 3</li>
+<li>然后又从后往前找，使得 <code>x [i] &lt; x [j]</code>，记下这个下标 <code>j</code>，交换 <code>x [i]</code> 与 <code>x [j]</code>，并将 <code>i</code> 后面的数逆序。</li>
 </ol>
-<p>简要说明下，第一步是找出第一个可交换的位置<code>i</code>，第二步判断有没有下一个排列数。</p>
-<p>那么说明<code>i</code>后面的数都是<strong>降序</strong>的， 然后又从后往前找，找到一个数<code>x[j]</code>使得<code>x[i] &lt; x[j]</code>，这个<code>x[j]</code>即是<code>i</code>后面最小的一个大于<code>x[i]</code>的数。</p>
-<p>交换<code>x[i]</code>与<code>x[j]</code>，那么字典序会变大，因为<code>i</code>后面的数都是<strong>降序</strong>的，那么将其逆序得到升序，那么使得字典序最小，总而言之，就是求出一个最小的变大字典序序列。</p>
-<p>最后给出<code>AC</code>代码：</p>
+<p>简要说明下，第一步是找出第一个可交换的位置 <code>i</code>，第二步判断有没有下一个排列数。</p>
+<p>那么说明 <code>i</code> 后面的数都是 ** 降序 ** 的， 然后又从后往前找，找到一个数 <code>x [j]</code> 使得 <code>x [i] &lt; x [j]</code>，这个 <code>x [j]</code> 即是 <code>i</code> 后面最小的一个大于 <code>x [i]</code> 的数。</p>
+<p>交换 <code>x [i]</code> 与 <code>x [j]</code>，那么字典序会变大，因为 <code>i</code> 后面的数都是 ** 降序 ** 的，那么将其逆序得到升序，那么使得字典序最小，总而言之，就是求出一个最小的变大字典序序列。</p>
+<p>最后给出 <code>AC</code> 代码：</p>
 <pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">class</span> <span class="token class-name">Solution</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">public</span><span class="token operator">:</span>
-        <span class="token keyword">void</span> <span class="token function">nextPermutation</span><span class="token punctuation">(</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span><span class="token operator">&amp;</span> nums<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            <span class="token keyword">int</span> N <span class="token operator">=</span> nums<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span>N <span class="token operator">||</span> N <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span>
-            <span class="token keyword">int</span> i <span class="token operator">=</span> N <span class="token operator">-</span> <span class="token number">2</span><span class="token punctuation">,</span> j <span class="token operator">=</span> N<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
-            <span class="token keyword">while</span><span class="token punctuation">(</span>i<span class="token operator">></span><span class="token number">0</span> <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span><span class="token punctuation">(</span>nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">&lt;</span> nums<span class="token punctuation">[</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">--</span>i<span class="token punctuation">;</span> <span class="token comment">// 步骤1</span>
+	<span class="token keyword">public</span><span class="token operator">:</span>
+		<span class="token keyword">void</span> <span class="token function">nextPermutation</span><span class="token punctuation">(</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span><span class="token operator">&amp;</span> nums<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+			<span class="token keyword">int</span> N <span class="token operator">=</span> nums<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+			<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span>N <span class="token operator">||</span> N <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span>
+			<span class="token keyword">int</span> i <span class="token operator">=</span> N <span class="token operator">-</span> <span class="token number">2</span><span class="token punctuation">,</span> j <span class="token operator">=</span> N<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+			<span class="token keyword">while</span><span class="token punctuation">(</span>i<span class="token operator">></span><span class="token number">0</span> <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span><span class="token punctuation">(</span>nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">&lt;</span> nums<span class="token punctuation">[</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">--</span>i<span class="token punctuation">;</span> <span class="token comment">// 步骤 1</span>
 
-            <span class="token keyword">if</span><span class="token punctuation">(</span>i <span class="token operator">==</span> <span class="token number">0</span> <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span><span class="token punctuation">(</span>nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">&lt;</span> nums<span class="token punctuation">[</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token function">reverse</span><span class="token punctuation">(</span>nums<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> nums<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 步骤2</span>
-            <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
-                <span class="token keyword">while</span><span class="token punctuation">(</span>j <span class="token operator">></span> i <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span><span class="token punctuation">(</span>nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">&lt;</span> nums<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">--</span>j<span class="token punctuation">;</span> <span class="token comment">// 步骤3</span>
-                <span class="token function">swap</span><span class="token punctuation">(</span>nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> nums<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token function">reverse</span><span class="token punctuation">(</span>nums<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">+</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">,</span> nums<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span>
+			<span class="token keyword">if</span><span class="token punctuation">(</span>i <span class="token operator">==</span> <span class="token number">0</span> <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span><span class="token punctuation">(</span>nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">&lt;</span> nums<span class="token punctuation">[</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token function">reverse</span><span class="token punctuation">(</span>nums<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> nums<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 步骤 2</span>
+			<span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+				<span class="token keyword">while</span><span class="token punctuation">(</span>j <span class="token operator">></span> i <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span><span class="token punctuation">(</span>nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">&lt;</span> nums<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">--</span>j<span class="token punctuation">;</span> <span class="token comment">// 步骤 3</span>
+				<span class="token function">swap</span><span class="token punctuation">(</span>nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> nums<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+				<span class="token function">reverse</span><span class="token punctuation">(</span>nums<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">+</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">,</span> nums<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+			<span class="token punctuation">&#125;</span>
+		<span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
 
     
@@ -300,10 +298,10 @@ ga('send', 'pageview');
        <div class="original">
     <ul>
         <li>本文标题：求下一个排列数</li>
-        <li>本文字数：586</li>
+        <li>本文字数：587</li>
         <li>本文作者：Netcan</li>
         <li>发布时间：2017年01月19日 - 10时00分</li>
-        <li>最后更新：2017年01月19日 - 10时25分</li>
+        <li>最后更新：2020年08月09日 - 09时01分</li>
         <li>原始链接：<a href="https://netcan.github.io/2017/01/19/%E6%B1%82%E4%B8%8B%E4%B8%80%E4%B8%AA%E6%8E%92%E5%88%97%E6%95%B0/">https://netcan.github.io/2017/01/19/求下一个排列数/</a></li>
         <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
     </ul>
@@ -536,6 +534,6 @@ gitalk.render('gitalk-container')
             all[i].SourceElement().parentNode.className += ' has-jax';
     });
 </script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </body>
 </html>

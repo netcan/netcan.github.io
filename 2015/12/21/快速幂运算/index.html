@@ -5,7 +5,7 @@
 
 
 <head>
-  <meta charset="utf-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
   <title>快速幂运算 | Netcan on Programming</title>
 
@@ -15,15 +15,15 @@
     <meta name="keywords" content="数学," />
   
 
-  <meta name="description" content="快速幂运算形如$x^n$快速幂运算，一般用二进制优化加速。复杂度$O(log_2 n)$ 这里举个例子来说明是如何加速的，例如$x^n&#x3D;2^{11}$。 将$n&#x3D;11$化成二进制，即$n&#x3D;(1011)_2，2^3+2^1+2^0 &#x3D; 11$，从右往左开始，首先将$ret$初始化为1，令$x_0&#x3D;x$  第一位为1奇数位，做$ret &#x3D; ret\times  x$运算，即$ret &#x3D; \color{">
+  <meta name="description" content="快速幂运算 形如 $x^n$ 快速幂运算，一般用二进制优化加速。复杂度 $O (log_2 n)$ 这里举个例子来说明是如何加速的，例如 $x^n&#x3D;2^{11}$。 将 $n&#x3D;11$ 化成二进制，即 $n&#x3D;(1011)_2，2^3+2^1+2^0 &#x3D; 11$，从右往左开始，首先将 $ret$ 初始化为 1，令 $x_0&#x3D;x$  第一位为 1 奇数位，做 $ret &#x3D; ret\times  x$ 运">
 <meta property="og:type" content="article">
 <meta property="og:title" content="快速幂运算">
 <meta property="og:url" content="https://netcan.github.io/2015/12/21/%E5%BF%AB%E9%80%9F%E5%B9%82%E8%BF%90%E7%AE%97/index.html">
 <meta property="og:site_name" content="Netcan on Programming">
-<meta property="og:description" content="快速幂运算形如$x^n$快速幂运算，一般用二进制优化加速。复杂度$O(log_2 n)$ 这里举个例子来说明是如何加速的，例如$x^n&#x3D;2^{11}$。 将$n&#x3D;11$化成二进制，即$n&#x3D;(1011)_2，2^3+2^1+2^0 &#x3D; 11$，从右往左开始，首先将$ret$初始化为1，令$x_0&#x3D;x$  第一位为1奇数位，做$ret &#x3D; ret\times  x$运算，即$ret &#x3D; \color{">
+<meta property="og:description" content="快速幂运算 形如 $x^n$ 快速幂运算，一般用二进制优化加速。复杂度 $O (log_2 n)$ 这里举个例子来说明是如何加速的，例如 $x^n&#x3D;2^{11}$。 将 $n&#x3D;11$ 化成二进制，即 $n&#x3D;(1011)_2，2^3+2^1+2^0 &#x3D; 11$，从右往左开始，首先将 $ret$ 初始化为 1，令 $x_0&#x3D;x$  第一位为 1 奇数位，做 $ret &#x3D; ret\times  x$ 运">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2015-12-21T01:36:10.000Z">
-<meta property="article:modified_time" content="2017-02-07T06:19:39.000Z">
+<meta property="article:modified_time" content="2020-08-09T01:01:02.150Z">
 <meta property="article:author" content="Netcan">
 <meta property="article:tag" content="数学">
 <meta name="twitter:card" content="summary">
@@ -93,14 +93,14 @@ ga('send', 'pageview');
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
   
 
-<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body>
 
 
   
-    <span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
   
 
   <link rel="stylesheet" href="/css/prism.css">
@@ -190,7 +190,7 @@ ga('send', 'pageview');
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BF%AB%E9%80%9F%E5%B9%82%E8%BF%90%E7%AE%97"><span class="toc-text">快速幂运算</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%A0%81%EF%BC%88%E5%8F%96%E6%A8%A1mod%EF%BC%89"><span class="toc-text">实现代码（取模mod）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B9%A0%E9%A2%98"><span class="toc-text">习题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#POJ-3641"><span class="toc-text">POJ 3641</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E5%A4%A7%E6%84%8F"><span class="toc-text">题目大意</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF"><span class="toc-text">思路</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AC%E4%BB%A3%E7%A0%81"><span class="toc-text">AC代码</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#POJ-1995"><span class="toc-text">POJ 1995</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E5%A4%A7%E6%84%8F-1"><span class="toc-text">题目大意</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF-1"><span class="toc-text">思路</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AC%E4%BB%A3%E7%A0%81-1"><span class="toc-text">AC代码</span></a></li></ol></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BF%AB%E9%80%9F%E5%B9%82%E8%BF%90%E7%AE%97"><span class="toc-text">快速幂运算</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%A0%81%EF%BC%88%E5%8F%96%E6%A8%A1-mod%EF%BC%89"><span class="toc-text">实现代码（取模 mod）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B9%A0%E9%A2%98"><span class="toc-text">习题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#POJ-3641"><span class="toc-text">POJ 3641</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E5%A4%A7%E6%84%8F"><span class="toc-text">题目大意</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF"><span class="toc-text">思路</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AC-%E4%BB%A3%E7%A0%81"><span class="toc-text">AC 代码</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#POJ-1995"><span class="toc-text">POJ 1995</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E5%A4%A7%E6%84%8F-2"><span class="toc-text">题目大意</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF-2"><span class="toc-text">思路</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AC-%E4%BB%A3%E7%A0%81-2"><span class="toc-text">AC 代码</span></a></li></ol></li></ol></li></ol>
   </div>
 
 
@@ -236,36 +236,41 @@ ga('send', 'pageview');
 
   <div class="article-content">
     
-      <h2 id="快速幂运算"><a href="#快速幂运算" class="headerlink" title="快速幂运算"></a>快速幂运算</h2><p>形如$x^n$快速幂运算，一般用二进制优化加速。复杂度$O(log_2 n)$</p>
-<p>这里举个例子来说明是如何加速的，例如$x^n=2^{11}$。</p>
-<p>将$n=11$化成二进制，即$n=(1011)_2，2^3+2^1+2^0 = 11$，从右往左开始，首先将$ret$初始化为1，令$x_0=x$</p>
+      <h2 id="快速幂运算">快速幂运算</h2>
+<p>形如 $x^n$ 快速幂运算，一般用二进制优化加速。复杂度 $O (log_2 n)$</p>
+<p>这里举个例子来说明是如何加速的，例如 $x^n=2^{11}$。</p>
+<p>将 $n=11$ 化成二进制，即 $n=(1011)_2，2^3+2^1+2^0 = 11$，从右往左开始，首先将 $ret$ 初始化为 1，令 $x_0=x$</p>
 <ol>
-<li>第一位为1奇数位，做$ret = ret\times  x$运算，即$ret = \color{red}{1}\times \color{blue}{x_0}=2$，然后$x$自身平方一次，此时$x=x^2=4=\color{blue}{x_0^2}$</li>
-<li>第二位也为1奇数位，$ret = ret \times  x$，此时$ret = \color{red}{ret} \times x = \color{red}{x_0} \times \color{blue}{x_0^2} = \color{red}{2}\times \color{blue}{x_0^2} = \color{red}{2}\times \color{blue}{4} = 8$，即$ret=\color{red}{x_0^3}$，然后$x$自身平方一次，$x=x^2=16=\color{blue}{x_0^4}$</li>
-<li>第三位为0偶数位，不做$ret = ret\times x$运算，但$x$还是要自身平方一次，此时$x=x^2=256=\color{blue}{x_0^8}$</li>
-<li>第四位为1奇数位，做$ret = ret\times x$运算，即$ret = \color{red}{ret} \times  x = \color{red}{x_0^3} \times  \color{blue}{x_0^8} = \color{red}{8}\times \color{blue}{256} = 2048$，即$ret=\color{red}{x_0^{11}}$，运算结束，返回$ret$</li>
+<li>第一位为 1 奇数位，做 $ret = ret\times  x$ 运算，即 $ret = \color {red}{1}\times \color {blue}{x_0}=2$，然后 $x$ 自身平方一次，此时 $x=x^2=4=\color {blue}{x_0^2}$</li>
+<li>第二位也为 1 奇数位，$ret = ret \times  x$，此时 $ret = \color {red}{ret} \times x = \color {red}{x_0} \times \color {blue}{x_0^2} = \color {red}{2}\times \color {blue}{x_0^2} = \color {red}{2}\times \color {blue}{4} = 8$，即 $ret=\color {red}{x_0^3}$，然后 $x$ 自身平方一次，$x=x^2=16=\color {blue}{x_0^4}$</li>
+<li>第三位为 0 偶数位，不做 $ret = ret\times x$ 运算，但 $x$ 还是要自身平方一次，此时 $x=x^2=256=\color {blue}{x_0^8}$</li>
+<li>第四位为 1 奇数位，做 $ret = ret\times x$ 运算，即 $ret = \color {red}{ret} \times  x = \color {red}{x_0^3} \times  \color {blue}{x_0^8} = \color {red}{8}\times \color {blue}{256} = 2048$，即 $ret=\color {red}{x_0^{11}}$，运算结束，返回 $ret$</li>
 </ol>
-<h2 id="实现代码（取模mod）"><a href="#实现代码（取模mod）" class="headerlink" title="实现代码（取模mod）"></a>实现代码（取模mod）</h2><a id="more"></a>
+<h2 id="实现代码（取模-mod）">实现代码（取模 mod）</h2>
 <pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">typedef</span> <span class="token keyword">long</span> <span class="token keyword">long</span> ll<span class="token punctuation">;</span>
 ll <span class="token function">mod_pow</span><span class="token punctuation">(</span>ll x<span class="token punctuation">,</span> ll n<span class="token punctuation">,</span> ll mod<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    ll ret <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
-    <span class="token keyword">while</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">if</span><span class="token punctuation">(</span>n <span class="token operator">&amp;</span> <span class="token number">1</span><span class="token punctuation">)</span>  ret <span class="token operator">=</span> <span class="token punctuation">(</span>ret <span class="token operator">*</span> x<span class="token punctuation">)</span> <span class="token operator">%</span> mod<span class="token punctuation">;</span> <span class="token comment">// 奇数位</span>
-        x <span class="token operator">=</span> x<span class="token operator">*</span>x<span class="token operator">%</span>mod<span class="token punctuation">;</span> <span class="token comment">// 每位都平方</span>
-        n <span class="token operator">>>=</span> <span class="token number">1</span><span class="token punctuation">;</span> <span class="token comment">// 右移</span>
-    <span class="token punctuation">&#125;</span>
-    <span class="token keyword">return</span> ret<span class="token punctuation">;</span>
+	ll ret <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+	<span class="token keyword">while</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token keyword">if</span><span class="token punctuation">(</span>n <span class="token operator">&amp;</span> <span class="token number">1</span><span class="token punctuation">)</span>  ret <span class="token operator">=</span> <span class="token punctuation">(</span>ret <span class="token operator">*</span> x<span class="token punctuation">)</span> <span class="token operator">%</span> mod<span class="token punctuation">;</span> <span class="token comment">// 奇数位 </span>
+		x <span class="token operator">=</span> x<span class="token operator">*</span>x<span class="token operator">%</span>mod<span class="token punctuation">;</span> <span class="token comment">// 每位都平方 </span>
+		n <span class="token operator">>>=</span> <span class="token number">1</span><span class="token punctuation">;</span> <span class="token comment">// 右移 </span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token keyword">return</span> ret<span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span></code></pre>
-
-<h2 id="习题"><a href="#习题" class="headerlink" title="习题"></a>习题</h2><h3 id="POJ-3641"><a href="#POJ-3641" class="headerlink" title="POJ 3641"></a>POJ 3641</h3><p>题目地址：<a target="_blank" rel="noopener" href="http://poj.org/problem?id=3641">http://poj.org/problem?id=3641</a></p>
-<h4 id="题目大意"><a href="#题目大意" class="headerlink" title="题目大意"></a>题目大意</h4><p>根据费马定理，对于素数$p$和$a&gt;1$满足$a^p = a\pmod p$，若对于非素数$p$，也有一些$a$满足方程的话，则称$p$为基于$a$的伪素数，现给出$p, a$，问$p$是否为基于$a$的伪素数。</p>
-<h4 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h4><p>按照题意做即可，若非素数满足定理的话，即$p^a % p = a$那就是伪素数了。运输量较大需要用到快速幂运算，并取模。</p>
-<h4 id="AC代码"><a href="#AC代码" class="headerlink" title="AC代码"></a>AC代码</h4><pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">/*************************************************************************
-    > File Name: 3641.cpp
-      > Author: Netcan
-      > Blog: http://www.netcan666.com
-      > Mail: 1469709759@qq.com
-      > Created Time: 2015-12-21 一 08:52:02 CST
+<h2 id="习题">习题</h2>
+<h3 id="POJ-3641">POJ 3641</h3>
+<p>题目地址：<a target="_blank" rel="noopener" href="http://poj.org/problem?id=3641">http://poj.org/problem?id=3641</a></p>
+<h4 id="题目大意">题目大意</h4>
+<p>根据费马定理，对于素数 $p$ 和 $a&gt;1$ 满足 $a^p = a\pmod p$，若对于非素数 $p$，也有一些 $a$ 满足方程的话，则称 $p$ 为基于 $a$ 的伪素数，现给出 $p, a$，问 $p$ 是否为基于 $a$ 的伪素数。</p>
+<h4 id="思路">思路</h4>
+<p>按照题意做即可，若非素数满足定理的话，即 $p^a % p = a$ 那就是伪素数了。运输量较大需要用到快速幂运算，并取模。</p>
+<h4 id="AC-代码">AC 代码</h4>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">/*************************************************************************
+	> File Name: 3641.cpp
+	  > Author: Netcan
+	  > Blog: http://www.netcan666.com
+	  > Mail: 1469709759@qq.com
+	  > Created Time: 2015-12-21 一 08:52:02 CST
  ************************************************************************/</span>
 
 <span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;iostream></span></span>
@@ -295,51 +300,54 @@ ll <span class="token function">mod_pow</span><span class="token punctuation">(<
 ll a<span class="token punctuation">,</span> p<span class="token punctuation">;</span>
 
 ll <span class="token function">mod_pow</span><span class="token punctuation">(</span>ll x<span class="token punctuation">,</span> ll n<span class="token punctuation">,</span> ll mod<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    ll res <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
-    <span class="token keyword">while</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">if</span><span class="token punctuation">(</span>n<span class="token operator">&amp;</span><span class="token number">1</span><span class="token punctuation">)</span> res <span class="token operator">=</span> <span class="token punctuation">(</span>res<span class="token operator">*</span>x<span class="token punctuation">)</span> <span class="token operator">%</span> mod<span class="token punctuation">;</span>
-        x<span class="token operator">=</span>x<span class="token operator">*</span>x<span class="token operator">%</span>mod<span class="token punctuation">;</span>
-        n<span class="token operator">>>=</span><span class="token number">1</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-    <span class="token keyword">return</span> res<span class="token punctuation">;</span>
+	ll res <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+	<span class="token keyword">while</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token keyword">if</span><span class="token punctuation">(</span>n<span class="token operator">&amp;</span><span class="token number">1</span><span class="token punctuation">)</span> res <span class="token operator">=</span> <span class="token punctuation">(</span>res<span class="token operator">*</span>x<span class="token punctuation">)</span> <span class="token operator">%</span> mod<span class="token punctuation">;</span>
+		x<span class="token operator">=</span>x<span class="token operator">*</span>x<span class="token operator">%</span>mod<span class="token punctuation">;</span>
+		n<span class="token operator">>>=</span><span class="token number">1</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token keyword">return</span> res<span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span>
 
 ll <span class="token function">is_prime</span><span class="token punctuation">(</span>ll x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">if</span><span class="token punctuation">(</span>x <span class="token operator">&lt;</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-    <span class="token keyword">if</span><span class="token punctuation">(</span>x <span class="token operator">==</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
-    <span class="token keyword">for</span><span class="token punctuation">(</span>ll i<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">;</span> i<span class="token operator">*</span>i<span class="token operator">&lt;=</span>x<span class="token punctuation">;</span> i<span class="token operator">+=</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token keyword">if</span><span class="token punctuation">(</span>x<span class="token operator">%</span>i<span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-    <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+	<span class="token keyword">if</span><span class="token punctuation">(</span>x <span class="token operator">&lt;</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+	<span class="token keyword">if</span><span class="token punctuation">(</span>x <span class="token operator">==</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+	<span class="token keyword">for</span><span class="token punctuation">(</span>ll i<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">;</span> i<span class="token operator">*</span>i<span class="token operator">&lt;=</span>x<span class="token punctuation">;</span> i<span class="token operator">+=</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token keyword">if</span><span class="token punctuation">(</span>x<span class="token operator">%</span>i<span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+	<span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span>
 
 <span class="token keyword">void</span> <span class="token function">solve</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">is_prime</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        cout <span class="token operator">&lt;&lt;</span> <span class="token string">"no"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
-        <span class="token keyword">return</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-    cout <span class="token operator">&lt;&lt;</span> <span class="token punctuation">(</span><span class="token function">mod_pow</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> p<span class="token punctuation">,</span> p<span class="token punctuation">)</span> <span class="token operator">==</span> a<span class="token operator">?</span><span class="token string">"yes"</span><span class="token operator">:</span><span class="token string">"no"</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+	<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">is_prime</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		cout <span class="token operator">&lt;&lt;</span> <span class="token string">"no"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+		<span class="token keyword">return</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	cout <span class="token operator">&lt;&lt;</span> <span class="token punctuation">(</span><span class="token function">mod_pow</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> p<span class="token punctuation">,</span> p<span class="token punctuation">)</span> <span class="token operator">==</span> a<span class="token operator">?</span><span class="token string">"yes"</span><span class="token operator">:</span><span class="token string">"no"</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span>
 
 <span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 <span class="token punctuation">&#123;</span>
 <span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">ifdef</span> <span class="token expression">Oj</span></span>
-    <span class="token function">freopen</span><span class="token punctuation">(</span><span class="token string">"3641.in"</span><span class="token punctuation">,</span> <span class="token string">"r"</span><span class="token punctuation">,</span> <span class="token constant">stdin</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token function">freopen</span><span class="token punctuation">(</span><span class="token string">"3641.in"</span><span class="token punctuation">,</span> <span class="token string">"r"</span><span class="token punctuation">,</span> <span class="token constant">stdin</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">endif</span></span>
-    <span class="token keyword">while</span><span class="token punctuation">(</span>cin <span class="token operator">>></span> p <span class="token operator">>></span> a<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">if</span><span class="token punctuation">(</span>a<span class="token operator">==</span><span class="token number">0</span> <span class="token operator">&amp;&amp;</span> p <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token keyword">break</span><span class="token punctuation">;</span>
-        <span class="token function">solve</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+	<span class="token keyword">while</span><span class="token punctuation">(</span>cin <span class="token operator">>></span> p <span class="token operator">>></span> a<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token keyword">if</span><span class="token punctuation">(</span>a<span class="token operator">==</span><span class="token number">0</span> <span class="token operator">&amp;&amp;</span> p <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token keyword">break</span><span class="token punctuation">;</span>
+		<span class="token function">solve</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span></code></pre>
-
-<h3 id="POJ-1995"><a href="#POJ-1995" class="headerlink" title="POJ 1995"></a>POJ 1995</h3><p>题目地址：<a target="_blank" rel="noopener" href="http://poj.org/problem?id=1995">http://poj.org/problem?id=1995</a></p>
-<h4 id="题目大意-1"><a href="#题目大意-1" class="headerlink" title="题目大意"></a>题目大意</h4><p>求$(A_1^{B_1}+A_2^{B_2}+ ... +A_H^{B_H})\bmod M$的值。</p>
-<h4 id="思路-1"><a href="#思路-1" class="headerlink" title="思路"></a>思路</h4><p>快速幂运算并取模。</p>
-<h4 id="AC代码-1"><a href="#AC代码-1" class="headerlink" title="AC代码"></a>AC代码</h4><pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">/*************************************************************************
-    > File Name: 1995.cpp
-      > Author: Netcan
-      > Blog: http://www.netcan666.com
-      > Mail: 1469709759@qq.com
-      > Created Time: 2015-12-21 一 09:23:08 CST
+<h3 id="POJ-1995">POJ 1995</h3>
+<p>题目地址：<a target="_blank" rel="noopener" href="http://poj.org/problem?id=1995">http://poj.org/problem?id=1995</a></p>
+<h4 id="题目大意-2">题目大意</h4>
+<p>求 $(A_1^{B_1}+A_2^{B_2}+ ... +A_H^{B_H})\bmod M$ 的值。</p>
+<h4 id="思路-2">思路</h4>
+<p>快速幂运算并取模。</p>
+<h4 id="AC-代码-2">AC 代码</h4>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">/*************************************************************************
+	> File Name: 1995.cpp
+	  > Author: Netcan
+	  > Blog: http://www.netcan666.com
+	  > Mail: 1469709759@qq.com
+	  > Created Time: 2015-12-21 一 09:23:08 CST
  ************************************************************************/</span>
 
 <span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;iostream></span></span>
@@ -369,36 +377,36 @@ ll <span class="token function">is_prime</span><span class="token punctuation">(
 ll A<span class="token punctuation">[</span><span class="token number">45005</span><span class="token punctuation">]</span><span class="token punctuation">,</span> B<span class="token punctuation">[</span><span class="token number">45005</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
 
 ll <span class="token function">mod_pow</span><span class="token punctuation">(</span>ll x<span class="token punctuation">,</span> ll n<span class="token punctuation">,</span> ll mod<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    ll ret <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
-    <span class="token keyword">while</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">if</span><span class="token punctuation">(</span>n <span class="token operator">&amp;</span> <span class="token number">1</span><span class="token punctuation">)</span>  ret <span class="token operator">=</span> <span class="token punctuation">(</span>ret <span class="token operator">*</span> x<span class="token punctuation">)</span> <span class="token operator">%</span> mod<span class="token punctuation">;</span>
-        x <span class="token operator">=</span> x<span class="token operator">*</span>x<span class="token operator">%</span>mod<span class="token punctuation">;</span>
-        n <span class="token operator">>>=</span> <span class="token number">1</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-    <span class="token keyword">return</span> ret<span class="token punctuation">;</span>
+	ll ret <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+	<span class="token keyword">while</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token keyword">if</span><span class="token punctuation">(</span>n <span class="token operator">&amp;</span> <span class="token number">1</span><span class="token punctuation">)</span>  ret <span class="token operator">=</span> <span class="token punctuation">(</span>ret <span class="token operator">*</span> x<span class="token punctuation">)</span> <span class="token operator">%</span> mod<span class="token punctuation">;</span>
+		x <span class="token operator">=</span> x<span class="token operator">*</span>x<span class="token operator">%</span>mod<span class="token punctuation">;</span>
+		n <span class="token operator">>>=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token keyword">return</span> ret<span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span>
 
 <span class="token keyword">void</span> <span class="token function">solve</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    ll ans <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
-    <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">&lt;</span>H<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> ans <span class="token operator">+=</span> <span class="token function">mod_pow</span><span class="token punctuation">(</span>A<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> B<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> M<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    ans <span class="token operator">%=</span> M<span class="token punctuation">;</span>
-    cout <span class="token operator">&lt;&lt;</span> ans <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+	ll ans <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+	<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">&lt;</span>H<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> ans <span class="token operator">+=</span> <span class="token function">mod_pow</span><span class="token punctuation">(</span>A<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> B<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> M<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	ans <span class="token operator">%=</span> M<span class="token punctuation">;</span>
+	cout <span class="token operator">&lt;&lt;</span> ans <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span>
 
 <span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 <span class="token punctuation">&#123;</span>
 <span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">ifdef</span> <span class="token expression">Oj</span></span>
-    <span class="token function">freopen</span><span class="token punctuation">(</span><span class="token string">"1995.in"</span><span class="token punctuation">,</span> <span class="token string">"r"</span><span class="token punctuation">,</span> <span class="token constant">stdin</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token function">freopen</span><span class="token punctuation">(</span><span class="token string">"1995.in"</span><span class="token punctuation">,</span> <span class="token string">"r"</span><span class="token punctuation">,</span> <span class="token constant">stdin</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">endif</span></span>
-    <span class="token keyword">int</span> Z<span class="token punctuation">;</span>
-    cin <span class="token operator">>></span> Z<span class="token punctuation">;</span>
-    <span class="token keyword">while</span><span class="token punctuation">(</span>Z<span class="token operator">--</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        cin <span class="token operator">>></span> M <span class="token operator">>></span> H<span class="token punctuation">;</span>
-        <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">&lt;</span>H<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span>
-            cin <span class="token operator">>></span> A<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">>></span> B<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
-        <span class="token function">solve</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+	<span class="token keyword">int</span> Z<span class="token punctuation">;</span>
+	cin <span class="token operator">>></span> Z<span class="token punctuation">;</span>
+	<span class="token keyword">while</span><span class="token punctuation">(</span>Z<span class="token operator">--</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		cin <span class="token operator">>></span> M <span class="token operator">>></span> H<span class="token punctuation">;</span>
+		<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">&lt;</span>H<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span>
+			cin <span class="token operator">>></span> A<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">>></span> B<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+		<span class="token function">solve</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span></code></pre>
 
     
@@ -414,7 +422,7 @@ ll <span class="token function">mod_pow</span><span class="token punctuation">(<
         <li>本文字数：945</li>
         <li>本文作者：Netcan</li>
         <li>发布时间：2015年12月21日 - 09时36分</li>
-        <li>最后更新：2017年02月07日 - 14时19分</li>
+        <li>最后更新：2020年08月09日 - 09时01分</li>
         <li>原始链接：<a href="https://netcan.github.io/2015/12/21/%E5%BF%AB%E9%80%9F%E5%B9%82%E8%BF%90%E7%AE%97/">https://netcan.github.io/2015/12/21/快速幂运算/</a></li>
         <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
     </ul>
@@ -647,6 +655,6 @@ gitalk.render('gitalk-container')
             all[i].SourceElement().parentNode.className += ' has-jax';
     });
 </script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </body>
 </html>

@@ -5,9 +5,9 @@
 
 
 <head>
-  <meta charset="utf-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
-  <title>线性代数复习笔记-矩阵 | Netcan on Programming</title>
+  <title>线性代数复习笔记 - 矩阵 | Netcan on Programming</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -15,12 +15,12 @@
     <meta name="keywords" content="数学," />
   
 
-  <meta name="description" content="矩阵的定义定义2.1由$m*n$个数$a_{ij}$组成的$m$行$n$列的数表，称为$m$行$n$列的矩阵。记作 $$ \mathbf{A}&#x3D;\left( \begin{array}{cccc} a_{11} &amp; a_{12} &amp; \cdots &amp; a_{1n} \\ a_{21} &amp; a_{22} &amp; \cdots &amp; a_{2n} \\ \vdots &amp; \vdots &amp; &amp; \vdots">
+  <meta name="description" content="矩阵的定义 定义 2.1 由 $m*n$ 个数 $a_{ij}$ 组成的 $m$ 行 $n$ 列的数表，称为 $m$ 行 $n$ 列的矩阵。记作 $$ \mathbf {A}&#x3D;\left ( \begin {array}{cccc} a_{11} &amp; a_{12} &amp; \cdots &amp; a_{1n} \\ a_{21} &amp; a_{22} &amp; \cdots &amp; a_{2n} \\ \vdots &amp;">
 <meta property="og:type" content="article">
-<meta property="og:title" content="线性代数复习笔记-矩阵">
+<meta property="og:title" content="线性代数复习笔记 - 矩阵">
 <meta property="og:url" content="https://netcan.github.io/2015/09/27/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-%E7%9F%A9%E9%98%B5/index.html">
 <meta property="og:site_name" content="Netcan on Programming">
-<meta property="og:description" content="矩阵的定义定义2.1由$m*n$个数$a_{ij}$组成的$m$行$n$列的数表，称为$m$行$n$列的矩阵。记作 $$ \mathbf{A}&#x3D;\left( \begin{array}{cccc} a_{11} &amp; a_{12} &amp; \cdots &amp; a_{1n} \\ a_{21} &amp; a_{22} &amp; \cdots &amp; a_{2n} \\ \vdots &amp; \vdots &amp; &amp; \vdots">
+<meta property="og:description" content="矩阵的定义 定义 2.1 由 $m*n$ 个数 $a_{ij}$ 组成的 $m$ 行 $n$ 列的数表，称为 $m$ 行 $n$ 列的矩阵。记作 $$ \mathbf {A}&#x3D;\left ( \begin {array}{cccc} a_{11} &amp; a_{12} &amp; \cdots &amp; a_{1n} \\ a_{21} &amp; a_{22} &amp; \cdots &amp; a_{2n} \\ \vdots &amp;">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2015-09-27T09:24:22.000Z">
 <meta property="article:modified_time" content="2015-09-27T09:24:22.000Z">
@@ -93,14 +93,14 @@ ga('send', 'pageview');
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
   
 
-<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body>
 
 
   
-    <span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
   
 
   <link rel="stylesheet" href="/css/prism.css">
@@ -190,7 +190,7 @@ ga('send', 'pageview');
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-text">矩阵的定义</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E4%B9%892-1"><span class="toc-text">定义2.1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E4%B9%892-2"><span class="toc-text">定义2.2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E7%89%B9%E6%AE%8A%E7%9A%84%E7%9F%A9%E9%98%B5"><span class="toc-text">一些特殊的矩阵</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%8C%E5%90%91%E9%87%8F"><span class="toc-text">行向量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%97%E5%90%91%E9%87%8F"><span class="toc-text">列向量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9B%B6%E7%9F%A9%E9%98%B5"><span class="toc-text">零矩阵</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#n%E9%98%B6%E6%96%B9%E9%98%B5"><span class="toc-text">n阶方阵</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E8%A7%92%E7%9F%A9%E9%98%B5"><span class="toc-text">对角矩阵</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%95%E4%BD%8D%E7%9F%A9%E9%98%B5"><span class="toc-text">单位矩阵</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E9%87%8F%E7%9F%A9%E9%98%B5"><span class="toc-text">数量矩阵</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B4%9F%E7%9F%A9%E9%98%B5"><span class="toc-text">负矩阵</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5%E7%9A%84%E8%BF%90%E7%AE%97"><span class="toc-text">矩阵的运算</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5%E7%9A%84%E5%8A%A0%E6%B3%95"><span class="toc-text">矩阵的加法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5%E7%9A%84%E5%87%8F%E6%B3%95"><span class="toc-text">矩阵的减法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E4%B8%8E%E7%9F%A9%E9%98%B5%E7%9B%B8%E4%B9%98"><span class="toc-text">数与矩阵相乘</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5%E4%B8%8E%E7%9F%A9%E9%98%B5%E7%9B%B8%E4%B9%98"><span class="toc-text">矩阵与矩阵相乘</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5%E7%9A%84%E8%BD%AC%E7%BD%AE"><span class="toc-text">矩阵的转置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E9%98%B5%E7%9A%84%E8%A1%8C%E5%88%97%E5%BC%8F"><span class="toc-text">方阵的行列式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%86%E7%9F%A9%E9%98%B5"><span class="toc-text">逆矩阵</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E5%9D%97%E7%9F%A9%E9%98%B5"><span class="toc-text">分块矩阵</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89"><span class="toc-text">定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%90%E7%AE%97"><span class="toc-text">运算</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8A%A0%E6%B3%95"><span class="toc-text">加法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E4%B9%98%EF%BC%8C%E8%AE%BE"><span class="toc-text">数乘，设</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95"><span class="toc-text">矩阵乘法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E5%9D%97%E7%9F%A9%E9%98%B5%E7%9A%84%E8%BD%AC%E7%BD%AE"><span class="toc-text">分块矩阵的转置</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E5%9D%97%E5%AF%B9%E8%A7%92%E7%9F%A9%E9%98%B5"><span class="toc-text">分块对角矩阵</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89-1"><span class="toc-text">定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%A7%E8%B4%A8"><span class="toc-text">性质</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E5%9D%97%E5%AF%B9%E8%A7%92%E7%9F%A9%E9%98%B5%E7%9A%84-mathbf-A-%E7%9A%84%E8%A1%8C%E5%88%97%E5%BC%8F%E4%B8%BA"><span class="toc-text">分块对角矩阵的$\mathbf{A}$的行列式为</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E5%9D%97%E5%AF%B9%E8%A7%92%E7%9F%A9%E9%98%B5-mathbf-A-%E7%9A%84-n-%E6%AC%A1%E5%B9%82%E4%B8%BA"><span class="toc-text">分块对角矩阵$\mathbf{A}$的$n$次幂为</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E5%9D%97%E7%9F%A9%E9%98%B5%E7%9A%84%E5%8F%AF%E9%80%86%E7%9F%A9%E9%98%B5"><span class="toc-text">分块矩阵的可逆矩阵</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5%E7%9A%84%E5%88%9D%E7%AD%89%E5%8F%98%E6%8D%A2"><span class="toc-text">矩阵的初等变换</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89-2"><span class="toc-text">定义</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AD%89%E4%BB%B7%E7%9F%A9%E9%98%B5"><span class="toc-text">等价矩阵</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%A7%E8%B4%A8-1"><span class="toc-text">性质</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%98%B6%E6%A2%AF%E5%9E%8B%E7%9F%A9%E9%98%B5"><span class="toc-text">阶梯型矩阵</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9D%E7%AD%89%E7%9F%A9%E9%98%B5"><span class="toc-text">初等矩阵</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E7%90%86"><span class="toc-text">定理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A8%E8%AE%BA"><span class="toc-text">推论</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5%E7%9A%84%E7%A7%A9"><span class="toc-text">矩阵的秩</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89-3"><span class="toc-text">定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E7%BB%93%E8%AE%BA%EF%BC%8C%E6%80%A7%E8%B4%A8"><span class="toc-text">常用结论，性质</span></a></li></ol></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">矩阵的定义</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89-2-1"><span class="toc-text">定义 2.1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89-2-2"><span class="toc-text">定义 2.2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E7%89%B9%E6%AE%8A%E7%9A%84%E7%9F%A9%E9%98%B5"><span class="toc-text">一些特殊的矩阵</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%8C%E5%90%91%E9%87%8F"><span class="toc-text">行向量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%97%E5%90%91%E9%87%8F"><span class="toc-text">列向量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9B%B6%E7%9F%A9%E9%98%B5"><span class="toc-text">零矩阵</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#n-%E9%98%B6%E6%96%B9%E9%98%B5"><span class="toc-text">n 阶方阵</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E8%A7%92%E7%9F%A9%E9%98%B5"><span class="toc-text">对角矩阵</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%95%E4%BD%8D%E7%9F%A9%E9%98%B5"><span class="toc-text">单位矩阵</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E9%87%8F%E7%9F%A9%E9%98%B5"><span class="toc-text">数量矩阵</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B4%9F%E7%9F%A9%E9%98%B5"><span class="toc-text">负矩阵</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5%E7%9A%84%E8%BF%90%E7%AE%97"><span class="toc-text">矩阵的运算</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5%E7%9A%84%E5%8A%A0%E6%B3%95"><span class="toc-text">矩阵的加法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5%E7%9A%84%E5%87%8F%E6%B3%95"><span class="toc-text">矩阵的减法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E4%B8%8E%E7%9F%A9%E9%98%B5%E7%9B%B8%E4%B9%98"><span class="toc-text">数与矩阵相乘</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5%E4%B8%8E%E7%9F%A9%E9%98%B5%E7%9B%B8%E4%B9%98"><span class="toc-text">矩阵与矩阵相乘</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5%E7%9A%84%E8%BD%AC%E7%BD%AE"><span class="toc-text">矩阵的转置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E9%98%B5%E7%9A%84%E8%A1%8C%E5%88%97%E5%BC%8F"><span class="toc-text">方阵的行列式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%86%E7%9F%A9%E9%98%B5"><span class="toc-text">逆矩阵</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E5%9D%97%E7%9F%A9%E9%98%B5"><span class="toc-text">分块矩阵</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89"><span class="toc-text">定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%90%E7%AE%97"><span class="toc-text">运算</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8A%A0%E6%B3%95"><span class="toc-text">加法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E4%B9%98%EF%BC%8C%E8%AE%BE"><span class="toc-text">数乘，设</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95"><span class="toc-text">矩阵乘法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E5%9D%97%E7%9F%A9%E9%98%B5%E7%9A%84%E8%BD%AC%E7%BD%AE"><span class="toc-text">分块矩阵的转置</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E5%9D%97%E5%AF%B9%E8%A7%92%E7%9F%A9%E9%98%B5"><span class="toc-text">分块对角矩阵</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89-2"><span class="toc-text">定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%A7%E8%B4%A8"><span class="toc-text">性质</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E5%9D%97%E5%AF%B9%E8%A7%92%E7%9F%A9%E9%98%B5%E7%9A%84-mathbf-A-%E7%9A%84%E8%A1%8C%E5%88%97%E5%BC%8F%E4%B8%BA"><span class="toc-text">分块对角矩阵的 $\mathbf {A}$ 的行列式为</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E5%9D%97%E5%AF%B9%E8%A7%92%E7%9F%A9%E9%98%B5-mathbf-A-%E7%9A%84-n-%E6%AC%A1%E5%B9%82%E4%B8%BA"><span class="toc-text">分块对角矩阵 $\mathbf {A}$ 的 $n$ 次幂为</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E5%9D%97%E7%9F%A9%E9%98%B5%E7%9A%84%E5%8F%AF%E9%80%86%E7%9F%A9%E9%98%B5"><span class="toc-text">分块矩阵的可逆矩阵</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5%E7%9A%84%E5%88%9D%E7%AD%89%E5%8F%98%E6%8D%A2"><span class="toc-text">矩阵的初等变换</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89-3"><span class="toc-text">定义</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AD%89%E4%BB%B7%E7%9F%A9%E9%98%B5"><span class="toc-text">等价矩阵</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%A7%E8%B4%A8-2"><span class="toc-text">性质</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%98%B6%E6%A2%AF%E5%9E%8B%E7%9F%A9%E9%98%B5"><span class="toc-text">阶梯型矩阵</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9D%E7%AD%89%E7%9F%A9%E9%98%B5"><span class="toc-text">初等矩阵</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E7%90%86"><span class="toc-text">定理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A8%E8%AE%BA"><span class="toc-text">推论</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5%E7%9A%84%E7%A7%A9"><span class="toc-text">矩阵的秩</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89-4"><span class="toc-text">定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E7%BB%93%E8%AE%BA%EF%BC%8C%E6%80%A7%E8%B4%A8"><span class="toc-text">常用结论，性质</span></a></li></ol></li></ol></li></ol>
   </div>
 
 
@@ -198,7 +198,7 @@ ga('send', 'pageview');
 <div class="content content-post CENTER">
    <article id="post-线性代数复习笔记-矩阵" class="article article-type-post" itemprop="blogPost">
   <header class="article-header">
-    <h1 class="post-title">线性代数复习笔记-矩阵</h1>
+    <h1 class="post-title">线性代数复习笔记 - 矩阵</h1>
 
     <div class="article-meta">
       <span>
@@ -236,421 +236,443 @@ ga('send', 'pageview');
 
   <div class="article-content">
     
-      <h1 id="矩阵的定义"><a href="#矩阵的定义" class="headerlink" title="矩阵的定义"></a>矩阵的定义</h1><h2 id="定义2-1"><a href="#定义2-1" class="headerlink" title="定义2.1"></a>定义2.1</h2><p>由$m*n$个数$a_{ij}$组成的$m$行$n$列的数表，称为$m$行$n$列的矩阵。记作</p>
+      <h1>矩阵的定义</h1>
+<h2 id="定义-2-1">定义 2.1</h2>
+<p>由 $m*n$ 个数 $a_{ij}$ 组成的 $m$ 行 $n$ 列的数表，称为 $m$ 行 $n$ 列的矩阵。记作</p>
 $$
-\mathbf{A}=\left(
-\begin{array}{cccc}
+\mathbf {A}=\left (
+\begin {array}{cccc}
 a_{11} & a_{12} & \cdots & a_{1n} \\
 a_{21} & a_{22} & \cdots & a_{2n} \\
 \vdots & \vdots & & \vdots \\
 a_{m1} & a_{m2} & \cdots & a_{mn} \\
-\end{array}\right)$$
-
+\end {array}\right)$$
 
 <p>元素为实数的矩阵称为实矩阵，元素为复数的称为复矩阵。</p>
-<h2 id="定义2-2"><a href="#定义2-2" class="headerlink" title="定义2.2"></a>定义2.2</h2><p>矩阵$\mathbf{A}=(a_{ij})_{m*n}$与矩阵$\mathbf{B}=(b_{ij})_{m*n}$称为同型矩阵，若有$a_{ij}=b_{ij}$则称矩阵$\mathbf{A}=\mathbf{B}$，记作相等。</p>
-<h2 id="一些特殊的矩阵"><a href="#一些特殊的矩阵" class="headerlink" title="一些特殊的矩阵"></a>一些特殊的矩阵</h2><h3 id="行向量"><a href="#行向量" class="headerlink" title="行向量"></a>行向量</h3><p>只有一行的矩阵$A=(a_1 \  a_2 \  \cdots a_n)$称为行矩阵，又称行向量。为避免混淆也可记作</p>
+<h2 id="定义-2-2">定义 2.2</h2>
+<p>矩阵 $\mathbf {A}=(a_{ij})_{m*n}$ 与矩阵 $\mathbf {B}=(b_{ij})_{m*n}$ 称为同型矩阵，若有 $a_{ij}=b_{ij}$ 则称矩阵 $\mathbf {A}=\mathbf {B}$，记作相等。</p>
+<h2 id="一些特殊的矩阵">一些特殊的矩阵</h2>
+<h3 id="行向量">行向量</h3>
+<p>只有一行的矩阵 $A=(a_1 \  a_2 \  \cdots a_n)$ 称为行矩阵，又称行向量。为避免混淆也可记作</p>
 $$A=(a_1, a_2, \cdots, a_n)$$
-<a id="more"></a>
-<h3 id="列向量"><a href="#列向量" class="headerlink" title="列向量"></a>列向量</h3><p>只有一列的矩阵称为列矩阵，又称列向量。</p>
-<h3 id="零矩阵"><a href="#零矩阵" class="headerlink" title="零矩阵"></a>零矩阵</h3><p>元素都是0的矩阵称为零矩阵，记作$\mathbf{O}$，不同型的零矩阵是不相等的。</p>
-<h3 id="n阶方阵"><a href="#n阶方阵" class="headerlink" title="n阶方阵"></a>n阶方阵</h3><p>行数与列数都为$n$的矩阵称为$n$阶方阵，也可记作$\mathbf{A_{n}}$。</p>
-<h3 id="对角矩阵"><a href="#对角矩阵" class="headerlink" title="对角矩阵"></a>对角矩阵</h3><p>形如</p>
+<h3 id="列向量">列向量</h3>
+<p>只有一列的矩阵称为列矩阵，又称列向量。</p>
+<h3 id="零矩阵">零矩阵</h3>
+<p>元素都是 0 的矩阵称为零矩阵，记作 $\mathbf {O}$，不同型的零矩阵是不相等的。</p>
+<h3 id="n-阶方阵">n 阶方阵</h3>
+<p>行数与列数都为 $n$ 的矩阵称为 $n$ 阶方阵，也可记作 $\mathbf {A_{n}}$。</p>
+<h3 id="对角矩阵">对角矩阵</h3>
+<p>形如</p>
 $$
-\left(
-\begin{array}{cccc}
+\left (
+\begin {array}{cccc}
 \lambda_1 &  & & \\
  &\lambda_2 &  & \\
  &  &\lambda_3 & \\
  &  &  & \lambda_4 \\
-\end{array}\right)$$
+\end {array}\right)$$
 
-
-<p>的方阵称为$n$阶对角矩阵，其中未写的元素都为0，对角矩阵也可记作$diag(\lambda_1,\lambda_2,\cdots,\lambda_n)$。</p>
-<h3 id="单位矩阵"><a href="#单位矩阵" class="headerlink" title="单位矩阵"></a>单位矩阵</h3><p>对角线上元素都为1的$n$阶矩阵称为$n$阶单位矩阵，记作$\mathbf{E}$或$\mathbf{E_n}$，即</p>
+<p>的方阵称为 $n$ 阶对角矩阵，其中未写的元素都为 0，对角矩阵也可记作 $diag (\lambda_1,\lambda_2,\cdots,\lambda_n)$。</p>
+<h3 id="单位矩阵">单位矩阵</h3>
+<p>对角线上元素都为 1 的 $n$ 阶矩阵称为 $n$ 阶单位矩阵，记作 $\mathbf {E}$ 或 $\mathbf {E_n}$，即</p>
 $$
-\left(
-\begin{array}{cccc}
+\left (
+\begin {array}{cccc}
 1 &  & & \\
  &1 &  & \\
  &  &\ddots & \\
  &  &  & 1 \\
-\end{array}\right)_{n*n}$$
+\end {array}\right)_{n*n}$$
 
-
-<h3 id="数量矩阵"><a href="#数量矩阵" class="headerlink" title="数量矩阵"></a>数量矩阵</h3><p>对角线上都为数$\lambda$的$n$阶对角矩阵，称为$n$阶数量矩阵。</p>
-<h3 id="负矩阵"><a href="#负矩阵" class="headerlink" title="负矩阵"></a>负矩阵</h3><p>若矩阵$\mathbf{A}=(a_{ij})_{m*n}$，称$(-a_{ij})_{m*n}$为矩阵$\mathbf{A}$的负矩阵，记作$\mathbf{-A}$</p>
-<h2 id="矩阵的运算"><a href="#矩阵的运算" class="headerlink" title="矩阵的运算"></a>矩阵的运算</h2><h3 id="矩阵的加法"><a href="#矩阵的加法" class="headerlink" title="矩阵的加法"></a>矩阵的加法</h3><p>矩阵$\mathbf{A}=(a_{ij})_{m*n}$与矩阵$\mathbf{B}=(b_{ij})_{m*n}$的和记为$\mathbf{A+B}$，规定为</p>
+<h3 id="数量矩阵">数量矩阵</h3>
+<p>对角线上都为数 $\lambda$ 的 $n$ 阶对角矩阵，称为 $n$ 阶数量矩阵。</p>
+<h3 id="负矩阵">负矩阵</h3>
+<p>若矩阵 $\mathbf {A}=(a_{ij})_{m*n}$，称 $(-a_{ij})_{m*n}$ 为矩阵 $\mathbf {A}$ 的负矩阵，记作 $\mathbf {-A}$</p>
+<h2 id="矩阵的运算">矩阵的运算</h2>
+<h3 id="矩阵的加法">矩阵的加法</h3>
+<p>矩阵 $\mathbf {A}=(a_{ij})_{m*n}$ 与矩阵 $\mathbf {B}=(b_{ij})_{m*n}$ 的和记为 $\mathbf {A+B}$，规定为</p>
 $$
-\mathbf{A+B}=\left(
-\begin{array}{cccc}
+\mathbf {A+B}=\left (
+\begin {array}{cccc}
 a_{11}+b_{11} & a_{12}+b_{12} & \cdots & a_{1n}+b_{1n} \\
 a_{21}+b_{21} & a_{22}+b_{22} & \cdots & a_{2n}+b_{2n} \\
 \vdots & \vdots & & \vdots \\
 a_{m1}+b_{m1} & a_{m2}+b_{m2} & \cdots & a_{mn}+b_{mn} \\
-\end{array}\right)$$
+\end {array}\right)$$
 
-
-<h3 id="矩阵的减法"><a href="#矩阵的减法" class="headerlink" title="矩阵的减法"></a>矩阵的减法</h3><p>只有同型矩阵才能做加法运算，规定矩阵的减法为</p>
-$$\mathbf{A-B=A+(-B)}$$
-
-<p>设$\mathbf{A,B,C}$为同型矩阵，有：</p>
+<h3 id="矩阵的减法">矩阵的减法</h3>
+<p>只有同型矩阵才能做加法运算，规定矩阵的减法为</p>
+$$\mathbf {A-B=A+(-B)}$$
+<p>设 $\mathbf {A,B,C}$ 为同型矩阵，有：</p>
 <ol>
-<li>$\mathbf{A+B=B+A}$    交换率</li>
-<li>$\mathbf{(A+B)+C=A+(B+C)}$    结合律</li>
-<li>$\mathbf{A+(-A)=O}$</li>
+<li>$\mathbf {A+B=B+A}$    交换率</li>
+<li>$\mathbf {(A+B)+C=A+(B+C)}$    结合律</li>
+<li>$\mathbf {A+(-A)=O}$</li>
 </ol>
-<h3 id="数与矩阵相乘"><a href="#数与矩阵相乘" class="headerlink" title="数与矩阵相乘"></a>数与矩阵相乘</h3><p>数$\lambda$与矩阵$\mathbf{A}=(a_{ij})_{m*n}$的乘积记为$\lambda \mathbf{A}$，规定为</p>
+<h3 id="数与矩阵相乘">数与矩阵相乘</h3>
+<p>数 $\lambda$ 与矩阵 $\mathbf {A}=(a_{ij})_{m*n}$ 的乘积记为 $\lambda \mathbf {A}$，规定为</p>
 $$
-\lambda \mathbf{A}=\left(
-\begin{array}{cccc}
+\lambda \mathbf {A}=\left (
+\begin {array}{cccc}
 \lambda a_{11} &\lambda a_{12} & \cdots &\lambda a_{1n} \\
 \lambda a_{21} &\lambda a_{22} & \cdots &\lambda a_{2n} \\
 \vdots & \vdots & & \vdots \\
 \lambda a_{m1} &\lambda a_{m2} & \cdots &\lambda a_{mn} \\
-\end{array}\right)$$
+\end {array}\right)$$
 
-
-<p>设$\mathbf{A, B}$为同型矩阵，$\lambda, \mu$为数，有</p>
+<p>设 $\mathbf {A, B}$ 为同型矩阵，$\lambda, \mu$ 为数，有</p>
 <ol>
-<li>$(\lambda \mu) \mathbf{A} = \lambda (\mu \mathbf{A}) = \mu (\lambda \mathbf{A})$</li>
-<li>$(\lambda + \mu) \mathbf{A} = \lambda \mathbf{A} + \mu \mathbf{A}$</li>
-<li>$\lambda (\mathbf{A} + \mathbf{B}) = \lambda \mathbf{A} + \lambda \mathbf{B}$</li>
+<li>$(\lambda \mu) \mathbf {A} = \lambda (\mu \mathbf {A}) = \mu (\lambda \mathbf {A})$</li>
+<li>$(\lambda + \mu) \mathbf {A} = \lambda \mathbf {A} + \mu \mathbf {A}$</li>
+<li>$\lambda (\mathbf {A} + \mathbf {B}) = \lambda \mathbf {A} + \lambda \mathbf {B}$</li>
 </ol>
 <p>矩阵的加法和数乘统称为矩阵的线性运算。</p>
-<h3 id="矩阵与矩阵相乘"><a href="#矩阵与矩阵相乘" class="headerlink" title="矩阵与矩阵相乘"></a>矩阵与矩阵相乘</h3><p>矩阵$\mathbf{A}=(a_{ij})_{m*s}$与矩阵$\mathbf{B}=(b_{ij})_{s*n}$的乘积记为$\mathbf{A B}$，规定</p>
+<h3 id="矩阵与矩阵相乘">矩阵与矩阵相乘</h3>
+<p>矩阵 $\mathbf {A}=(a_{ij})_{m*s}$ 与矩阵 $\mathbf {B}=(b_{ij})_{s*n}$ 的乘积记为 $\mathbf {A B}$，规定</p>
 
-$$\mathbf{A B}=(C_{ij})_{m*n}, C_{ij} = \sum_{k=1}^s a_{ik} b_{kj}, (i=1,2,\cdots,m; j=1,2,\cdots,n)$$
-
+$$\mathbf {A B}=(C_{ij})_{m*n}, C_{ij} = \sum_{k=1}^s a_{ik} b_{kj}, (i=1,2,\cdots,m; j=1,2,\cdots,n)$$
 
 <p>假设以下运算可行，则有：</p>
 <ol>
-<li>$\mathbf{(A B) C = A (B C)}$</li>
-<li>$\lambda \mathbf{A B} = (\lambda \mathbf{A}) \mathbf{B} = \mathbf{A} (\lambda \mathbf{B})$</li>
-<li>$\mathbf{A} (\mathbf{B} + \mathbf{C}) = \mathbf{A} \mathbf{B} + \mathbf{A} \mathbf{C}$</li>
-<li>$\mathbf{(B+C) A=B A + C A}$</li>
-<li>$\mathbf{E_m A_{m*n} = A_{m*n} E_n = A}$
-
+<li>$\mathbf {(A B) C = A (B C)}$</li>
+<li>$\lambda \mathbf {A B} = (\lambda \mathbf {A}) \mathbf {B} = \mathbf {A} (\lambda \mathbf {B})$</li>
+<li>$\mathbf {A} (\mathbf {B} + \mathbf {C}) = \mathbf {A} \mathbf {B} + \mathbf {A} \mathbf {C}$</li>
+<li>$\mathbf {(B+C) A=B A + C A}$</li>
+<li>
+$\mathbf {E_m A_{m*n} = A_{m*n} E_n = A}$
 </li>
 </ol>
-<p>设$\mathbf{A}$为$n$阶方阵，$k$为正整数，规定</p>
+<p>设 $\mathbf {A}$ 为 $n$ 阶方阵，$k$ 为正整数，规定</p>
 
-$$\mathbf{A^k=A A \cdots A}$$
+$$\mathbf {A^k=A A \cdots A}$$
 
-
-<p>为方阵$\mathbf{A}$的$k$次幂，特别$\mathbf{A^0=E}$</p>
-<p>设$\mathbf{A}$为$n$阶方阵，$k, l$为正整数，有</p>
-<p>$$\mathbf{A^k A^l = A^{k+l}, (A^k)^l = A^{kl}}$$</p>
-<p>设$\mathbf{A, B}$为$n$阶方阵，$k$为正整数，一般地</p>
-<p>$$\mathbf{(A B)^k \neq A^k B^k}$$</p>
-<p>$$\mathbf{(A \pm B)^2 \neq A^2 \pm 2A B + B^2}$$</p>
-<p>$$\mathbf{(A+B)(A-B) \neq A^2 - B^2}$$</p>
-<p>以上各式在$$\mathbf{A B = B A}$$时成立。</p>
-<h3 id="矩阵的转置"><a href="#矩阵的转置" class="headerlink" title="矩阵的转置"></a>矩阵的转置</h3><p>将矩阵行列互换得到的矩阵为转置矩阵。即</p>
+<p>为方阵 $\mathbf {A}$ 的 $k$ 次幂，特别 $\mathbf {A^0=E}$</p>
+<p>设 $\mathbf {A}$ 为 $n$ 阶方阵，$k, l$ 为正整数，有</p>
+<p>$$\mathbf {A^k A^l = A^{k+l}, (A^k)^l = A^{kl}}$$</p>
+<p>设 $\mathbf {A, B}$ 为 $n$ 阶方阵，$k$ 为正整数，一般地</p>
+<p>$$\mathbf {(A B)^k \neq A^k B^k}$$</p>
+<p>$$\mathbf {(A \pm B)^2 \neq A^2 \pm 2A B + B^2}$$</p>
+<p>$$\mathbf {(A+B)(A-B) \neq A^2 - B^2}$$</p>
+<p>以上各式在 $$\mathbf {A B = B A}$$ 时成立。</p>
+<h3 id="矩阵的转置">矩阵的转置</h3>
+<p>将矩阵行列互换得到的矩阵为转置矩阵。即</p>
 $$
-\left(\begin{array}{cccc}
+\left (\begin {array}{cccc}
 a_{11} & a_{12} & \cdots & a_{1n} \\
 a_{21} & a_{22} & \cdots & a_{2n} \\
 \vdots & \vdots & & \vdots \\
 a_{m1} & a_{m2} & \cdots & a_{mn} \\
-\end{array}\right)^T=
-\left(\begin{array}{cccc}
+\end {array}\right)^T=
+\left (\begin {array}{cccc}
 a_{11} & a_{21} & \cdots & a_{m1} \\
 a_{12} & a_{22} & \cdots & a_{m2} \\
 \vdots & \vdots & & \vdots \\
 a_{1n} & a_{2n} & \cdots & a_{mn} \\
-\end{array}\right)$$
+\end {array}\right)$$
 
-
-<p>设$\lambda$为数，$k$为正整数，转置运算满足下列运算规律</p>
+<p>设 $\lambda$ 为数，$k$ 为正整数，转置运算满足下列运算规律</p>
 <ol>
-<li>$\mathbf{(A^T)^T = A}$</li>
-<li>$\mathbf{(\lambda A)^T = \lambda A^T}$</li>
-<li>$\mathbf{(A+B)^T = A^T+B^T}$</li>
-<li>$\mathbf{(A B)^T = B^T A^T}$</li>
-<li>$\mathbf{(A^k)^T = (A^T)^k}$</li>
+<li>$\mathbf {(A^T)^T = A}$</li>
+<li>$\mathbf {(\lambda A)^T = \lambda A^T}$</li>
+<li>$\mathbf {(A+B)^T = A^T+B^T}$</li>
+<li>$\mathbf {(A B)^T = B^T A^T}$</li>
+<li>$\mathbf {(A^k)^T = (A^T)^k}$</li>
 </ol>
-<p>若$n$阶方阵$\mathbf{A}$满足$\mathbf{A^T = A}$，则$\mathbf{A}$为对称矩阵，若$\mathbf{A^T = -A}$，则$\mathbf{A}$为反对称矩阵。</p>
-<h2 id="方阵的行列式"><a href="#方阵的行列式" class="headerlink" title="方阵的行列式"></a>方阵的行列式</h2><p>由$n$阶方阵$\mathbf{A}=(a_{ij})_{n*n}$的元素构成的行列式，称为方阵$\mathbf{A}$的行列式，记作$\mathbf{|A|}=|a_{ij}|_{n*n}$</p>
-<p>设$\mathbf{A,B}$均为$n$阶方阵，$\lambda$为数，有</p>
+<p>若 $n$ 阶方阵 $\mathbf {A}$ 满足 $\mathbf {A^T = A}$，则 $\mathbf {A}$ 为对称矩阵，若 $\mathbf {A^T = -A}$，则 $\mathbf {A}$ 为反对称矩阵。</p>
+<h2 id="方阵的行列式">方阵的行列式</h2>
+<p>由 $n$ 阶方阵 $\mathbf {A}=(a_{ij})_{n*n}$ 的元素构成的行列式，称为方阵 $\mathbf {A}$ 的行列式，记作 $\mathbf {|A|}=|a_{ij}|_{n*n}$</p>
+<p>设 $\mathbf {A,B}$ 均为 $n$ 阶方阵，$\lambda$ 为数，有</p>
 <ol>
-<li>$\mathbf{|A^T| = |A|}$</li>
-<li>$\mathbf{|\lambda A| = \lambda ^n |A|}$</li>
-<li>$\mathbf{|A B| = |A| |B| = |B| |A| = |B A|}$ 注意$\mathbf{A, B}$为方阵，但一般$\mathbf{A B \neq B A}$</li>
-<li>$\mathbf{|A^n| = |A|^n}$</li>
+<li>$\mathbf {|A^T| = |A|}$</li>
+<li>$\mathbf {|\lambda A| = \lambda ^n |A|}$</li>
+<li>$\mathbf {|A B| = |A| |B| = |B| |A| = |B A|}$ 注意 $\mathbf {A, B}$ 为方阵，但一般 $\mathbf {A B \neq B A}$</li>
+<li>$\mathbf {|A^n| = |A|^n}$</li>
 </ol>
 <p>设</p>
 $$
-\mathbf{A}=\left(
-\begin{array}{cccc}
+\mathbf {A}=\left (
+\begin {array}{cccc}
 a_{11} & a_{12} & \cdots & a_{1n} \\
 a_{21} & a_{22} & \cdots & a_{2n} \\
 \vdots & \vdots & & \vdots \\
 a_{m1} & a_{m2} & \cdots & a_{mn} \\
-\end{array}\right)$$
+\end {array}\right)$$
 
-
-<p>由行列式$\mathbf{|A|}$中的元素$a_{ij}$的代数余子式$A_{ij}$构成的矩阵</p>
+<p>由行列式 $\mathbf {|A|}$ 中的元素 $a_{ij}$ 的代数余子式 $A_{ij}$ 构成的矩阵</p>
 $$
-\mathbf{A}=\left(
-\begin{array}{cccc}
+\mathbf {A}=\left (
+\begin {array}{cccc}
 A_{11} & A_{12} & \cdots &A_{1n} \\
 A_{21} &A _{22} & \cdots & A_{2n} \\
 \vdots & \vdots & & \vdots \\
 A_{m1} & A_{m2} & \cdots & A_{mn} \\
-\end{array}\right)$$
+\end {array}\right)$$
 
-
-<p>称为方阵$\mathbf{A}$的伴随矩阵，记作$\mathbf{A^*}$</p>
-<p>设$\mathbf{A}$为$n$阶方阵，$\lambda$为数，有以下等式</p>
+<p>称为方阵 $\mathbf {A}$ 的伴随矩阵，记作 $\mathbf {A^*}$</p>
+<p>设 $\mathbf {A}$ 为 $n$ 阶方阵，$\lambda$ 为数，有以下等式</p>
 <ol>
-<li>$\mathbf{A A^* = A^* A = |A| E}$</li>
-<li>$\mathbf{(\lambda A)^* = \lambda ^{n-1} A^*}$</li>
-<li>$\mathbf{|A^*| = |A|^{n-1}}$</li>
-<li>$\mathbf{(A^*)^* = |A|^{n-2} A, (n >2)}$</li>
-<li>$\mathbf{(A^T)^* = (A^*)^T}$
-
+<li>
+$\mathbf {A A^* = A^* A = |A| E}$
+</li>
+<li>
+$\mathbf {(\lambda A)^* = \lambda ^{n-1} A^*}$
+</li>
+<li>$\mathbf {|A^*| = |A|^{n-1}}$</li>
+<li>
+$\mathbf {(A^*)^* = |A|^{n-2} A, (n >2)}$
+</li>
+<li>
+$\mathbf {(A^T)^* = (A^*)^T}$
 </li>
 </ol>
-<h2 id="逆矩阵"><a href="#逆矩阵" class="headerlink" title="逆矩阵"></a>逆矩阵</h2><p>对于$n$阶方阵$\mathbf{A}$，若有$n$阶方阵$\mathbf{B}$，使</p>
-<p>$$\mathbf{A B = B A = E}$$</p>
-<p>则称方阵$\mathbf{A}$可逆，且$\mathbf{B}$为$\mathbf{A}$的逆矩阵，$\mathbf{A^{-1}=B, B^{-1}=A}$</p>
-<p>如果方阵$\mathbf{A}$可逆，则$\mathbf{A}$的逆矩阵唯一，$\mathbf{|A| \neq 0}$是方阵$\mathbf{A}$可逆的充要条件，且$\mathbf{A^{-1} = \frac{A^*}{|A|}}$</p>
-<p>性质，$\mathbf{A, B}$均为可逆矩阵</p>
+<h2 id="逆矩阵">逆矩阵</h2>
+<p>对于 $n$ 阶方阵 $\mathbf {A}$，若有 $n$ 阶方阵 $\mathbf {B}$，使</p>
+<p>$$\mathbf {A B = B A = E}$$</p>
+<p>则称方阵 $\mathbf {A}$ 可逆，且 $\mathbf {B}$ 为 $\mathbf {A}$ 的逆矩阵，$\mathbf {A^{-1}=B, B^{-1}=A}$</p>
+<p>如果方阵 $\mathbf {A}$ 可逆，则 $\mathbf {A}$ 的逆矩阵唯一，$\mathbf {|A| \neq 0}$ 是方阵 $\mathbf {A}$ 可逆的充要条件，且 $\mathbf {A^{-1} = \frac {A^*}{|A|}}$</p>
+<p>性质，$\mathbf {A, B}$ 均为可逆矩阵</p>
 <ol>
-<li>$\mathbf{|A^{-1}| = \frac{1}{|A|}}$</li>
-<li>$\mathbf{(A^{-1})^{-1} = A}$</li>
-<li>$\mathbf{(\lambda A)^{-1} = \frac{1}{\lambda} A^{-1}}, \lambda \neq 0$</li>
-<li>$\mathbf{(A B)^{-1} = B^{-1} A^{-1}}$</li>
-<li>$\mathbf{(A^T)^{-1} = (A^{-1})^T}$</li>
+<li>$\mathbf {|A^{-1}| = \frac {1}{|A|}}$</li>
+<li>$\mathbf {(A^{-1})^{-1} = A}$</li>
+<li>$\mathbf {(\lambda A)^{-1} = \frac {1}{\lambda} A^{-1}}, \lambda \neq 0$</li>
+<li>$\mathbf {(A B)^{-1} = B^{-1} A^{-1}}$</li>
+<li>$\mathbf {(A^T)^{-1} = (A^{-1})^T}$</li>
 </ol>
-<h2 id="分块矩阵"><a href="#分块矩阵" class="headerlink" title="分块矩阵"></a>分块矩阵</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>把矩阵$\mathbf{A}$用若干条横线和纵线划分成若干个小矩阵，每个小矩阵称为$\mathbf{A}$的子块，以子块为元素的矩阵称为分块矩阵。</p>
+<h2 id="分块矩阵">分块矩阵</h2>
+<h3 id="定义">定义</h3>
+<p>把矩阵 $\mathbf {A}$ 用若干条横线和纵线划分成若干个小矩阵，每个小矩阵称为 $\mathbf {A}$ 的子块，以子块为元素的矩阵称为分块矩阵。</p>
 $$
-\left(
-\begin{array}{cc|cc}
+\left (
+\begin {array}{cc|cc}
 a_{11} & a_{12} & a_{13} & a_{14} \\ \hline
 a_{21} & a_{22} & a_{23} & a_{24} \\
 a_{31} & a_{32} & a_{33} & a_{34} \\
-\end{array}
+\end {array}
 \right) =
-\left(
-\begin{array}{cc}
-\mathbf{A_{11}} & \mathbf{A_{12}} \\
-\mathbf{A_{21}} & \mathbf{A_{22}} \\
-\end{array}\right)$$
-
+\left (
+\begin {array}{cc}
+\mathbf {A_{11}} & \mathbf {A_{12}} \\
+\mathbf {A_{21}} & \mathbf {A_{22}} \\
+\end {array}\right)$$
 
 <p>其中</p>
 $$
-\mathbf{A_{11}} = (a_{11} \;  a_{12}), \mathbf{A_{12}} = (a_{13} \;  a_{14}) \\
-\mathbf{A_{21}} =
-\left(\begin{array}{cc}
+\mathbf {A_{11}} = (a_{11} \;  a_{12}), \mathbf {A_{12}} = (a_{13} \;  a_{14}) \\
+\mathbf {A_{21}} =
+\left (\begin {array}{cc}
 a_{21} & s_{22} \\
 a_{31} & s_{32} \\
-\end{array}\right),
-\mathbf{A_{22}} =
-\left(\begin{array}{cc}
+\end {array}\right),
+\mathbf {A_{22}} =
+\left (\begin {array}{cc}
 a_{23} & s_{24} \\
 a_{33} & s_{34} \\
-\end{array}\right)$$
+\end {array}\right)$$
 
-
-<h3 id="运算"><a href="#运算" class="headerlink" title="运算"></a>运算</h3><h4 id="加法"><a href="#加法" class="headerlink" title="加法"></a>加法</h4><p>设矩阵$\mathbf{A}$与$\mathbf{B}$为同型矩阵且采用相同的分块法，且</p>
+<h3 id="运算">运算</h3>
+<h4 id="加法">加法</h4>
+<p>设矩阵 $\mathbf {A}$ 与 $\mathbf {B}$ 为同型矩阵且采用相同的分块法，且</p>
 $$
-\mathbf{A} = \left(
-\begin{array}{ccc}
-\mathbf{A_{11}} & \cdots & \mathbf{A_{1r}} \\
+\mathbf {A} = \left (
+\begin {array}{ccc}
+\mathbf {A_{11}} & \cdots & \mathbf {A_{1r}} \\
 \vdots & & \vdots \\
-\mathbf{A_{s1}} & \cdots & \mathbf{A_{sr}} \\
-\end{array}
+\mathbf {A_{s1}} & \cdots & \mathbf {A_{sr}} \\
+\end {array}
 \right),
-\mathbf{B} = \left(
-\begin{array}{ccc}
-\mathbf{B_{11}} & \cdots & \mathbf{B_{1r}} \\
+\mathbf {B} = \left (
+\begin {array}{ccc}
+\mathbf {B_{11}} & \cdots & \mathbf {B_{1r}} \\
 \vdots & & \vdots\\
-\mathbf{B_{s1}} & \cdots & \mathbf{B_{sr}} \\
-\end{array}
+\mathbf {B_{s1}} & \cdots & \mathbf {B_{sr}} \\
+\end {array}
 \right)$$
 
-
-<p>其中$\mathbf{A_{ij}}$与$\mathbf{B_{ij}}$都为同型矩阵，则</p>
+<p>其中 $\mathbf {A_{ij}}$ 与 $\mathbf {B_{ij}}$ 都为同型矩阵，则</p>
 $$
-\mathbf{A+B} = \left(
-\begin{array}{ccc}
-\mathbf{A_{11}+B_{11}} & \cdots & \mathbf{A_{1r}+B_{1r}} \\
+\mathbf {A+B} = \left (
+\begin {array}{ccc}
+\mathbf {A_{11}+B_{11}} & \cdots & \mathbf {A_{1r}+B_{1r}} \\
 \vdots & & \vdots \\
-\mathbf{A_{s1}+B_{s1}} & \cdots & \mathbf{A_{sr}+B_{sr}} \\
-\end{array}
+\mathbf {A_{s1}+B_{s1}} & \cdots & \mathbf {A_{sr}+B_{sr}} \\
+\end {array}
 \right)$$
 
-
-<h4 id="数乘，设"><a href="#数乘，设" class="headerlink" title="数乘，设"></a>数乘，设</h4>$$
-\mathbf{A} = \left(
-\begin{array}{ccc}
-\mathbf{A_{11}} & \cdots & \mathbf{A_{1r}} \\
-\vdots & & \vdots \\
-\mathbf{A_{s1}} & \cdots & \mathbf{A_{sr}} \\
-\end{array}
-\right)$$，$\lambda$为数，则
-
+<h4 id="数乘，设">数乘，设</h4>
 $$
-\lambda \mathbf{A} = \left(
-\begin{array}{ccc}
-\mathbf{\lambda A_{11}} & \cdots & \mathbf{\lambda A_{1r}} \\
+\mathbf {A} = \left (
+\begin {array}{ccc}
+\mathbf {A_{11}} & \cdots & \mathbf {A_{1r}} \\
 \vdots & & \vdots \\
-\mathbf{\lambda A_{s1}} & \cdots & \mathbf{\lambda A_{sr}} \\
-\end{array}
+\mathbf {A_{s1}} & \cdots & \mathbf {A_{sr}} \\
+\end {array}
+\right)$$，$\lambda$ 为数，则
+$$
+\lambda \mathbf {A} = \left (
+\begin {array}{ccc}
+\mathbf {\lambda A_{11}} & \cdots & \mathbf {\lambda A_{1r}} \\
+\vdots & & \vdots \\
+\mathbf {\lambda A_{s1}} & \cdots & \mathbf {\lambda A_{sr}} \\
+\end {array}
 \right) $$
 
-
-<h4 id="矩阵乘法"><a href="#矩阵乘法" class="headerlink" title="矩阵乘法"></a>矩阵乘法</h4><p>设</p>
+<h4 id="矩阵乘法">矩阵乘法</h4>
+<p>设</p>
 $$
-\mathbf{A} = \left(
-\begin{array}{ccc}
-\mathbf{A_{11}} & \cdots & \mathbf{A_{1t}} \\
+\mathbf {A} = \left (
+\begin {array}{ccc}
+\mathbf {A_{11}} & \cdots & \mathbf {A_{1t}} \\
 \vdots & & \vdots \\
-\mathbf{A_{s1}} & \cdots & \mathbf{A_{st}} \\
-\end{array}
+\mathbf {A_{s1}} & \cdots & \mathbf {A_{st}} \\
+\end {array}
 \right),
-\mathbf{B} = \left(
-\begin{array}{ccc}
-\mathbf{B_{11}} & \cdots & \mathbf{B_{1r}} \\
+\mathbf {B} = \left (
+\begin {array}{ccc}
+\mathbf {B_{11}} & \cdots & \mathbf {B_{1r}} \\
 \vdots & & \vdots\\
-\mathbf{B_{t1}} & \cdots & \mathbf{B_{tr}} \\
-\end{array}
+\mathbf {B_{t1}} & \cdots & \mathbf {B_{tr}} \\
+\end {array}
 \right)$$
 
-<p>其中$\mathbf{A_{i1}, A_{i2}, \cdots, A_{it}}$的列数分别等于$\mathbf{B_{1j}, B_{2j}, \cdots, B_{tj}}$的行数，则</p>
+<p>其中 $\mathbf {A_{i1}, A_{i2}, \cdots, A_{it}}$ 的列数分别等于 $\mathbf {B_{1j}, B_{2j}, \cdots, B_{tj}}$ 的行数，则</p>
 $$
-\mathbf{A B} = \mathbf{(C_{ij})_{sr}} \\
-\mathbf{C_{ij}} = \sum_{k=1}^r \mathbf{A_{ik} B_{kj}}$$
-
+\mathbf {A B} = \mathbf {(C_{ij})_{sr}} \\
+\mathbf {C_{ij}} = \sum_{k=1}^r \mathbf {A_{ik} B_{kj}}$$
 
 <p>分块矩阵运算时，不仅要考虑分块矩阵本身运算可行性还要考虑子块之间运算可行性。</p>
-<h4 id="分块矩阵的转置"><a href="#分块矩阵的转置" class="headerlink" title="分块矩阵的转置"></a>分块矩阵的转置</h4><p>设</p>
+<h4 id="分块矩阵的转置">分块矩阵的转置</h4>
+<p>设</p>
 $$
-\mathbf{A} = \left(
-\begin{array}{ccc}
-\mathbf{A_{11}} & \cdots & \mathbf{A_{1r}} \\
+\mathbf {A} = \left (
+\begin {array}{ccc}
+\mathbf {A_{11}} & \cdots & \mathbf {A_{1r}} \\
 \vdots & & \vdots \\
-\mathbf{A_{s1}} & \cdots & \mathbf{A_{sr}} \\
-\end{array}
+\mathbf {A_{s1}} & \cdots & \mathbf {A_{sr}} \\
+\end {array}
 \right)，$$
 
-
-<p>则$\mathbf{A}$的转置矩阵为</p>
+<p>则 $\mathbf {A}$ 的转置矩阵为</p>
 $$
-\mathbf{A^T} = \left(
-\begin{array}{ccc}
-\mathbf{A^T_{11}} & \cdots & \mathbf{A^T_{s1}} \\
+\mathbf {A^T} = \left (
+\begin {array}{ccc}
+\mathbf {A^T_{11}} & \cdots & \mathbf {A^T_{s1}} \\
 \vdots & & \vdots \\
-\mathbf{A^T_{1r}} & \cdots & \mathbf{A^T_{sr}} \\
-\end{array}
+\mathbf {A^T_{1r}} & \cdots & \mathbf {A^T_{sr}} \\
+\end {array}
 \right)$$
 
-
-<h2 id="分块对角矩阵"><a href="#分块对角矩阵" class="headerlink" title="分块对角矩阵"></a>分块对角矩阵</h2><h3 id="定义-1"><a href="#定义-1" class="headerlink" title="定义"></a>定义</h3><p>设$\mathbf{A_1, A_2, \cdots, A_s}$都是方阵，形如</p>
+<h2 id="分块对角矩阵">分块对角矩阵</h2>
+<h3 id="定义-2">定义</h3>
+<p>设 $\mathbf {A_1, A_2, \cdots, A_s}$ 都是方阵，形如</p>
 $$
-\mathbf{A} = \left(
-\begin{array}{cccc}
-\mathbf{A_{1}} & & & \\
-& \mathbf{A_{2}}& &\\
+\mathbf {A} = \left (
+\begin {array}{cccc}
+\mathbf {A_{1}} & & & \\
+& \mathbf {A_{2}}& &\\
 & & \ddots & \\
-& & & \mathbf{A_{s}} \\
-\end{array}
+& & & \mathbf {A_{s}} \\
+\end {array}
 \right)$$
-
 
 <p>的矩阵称为分块对角矩阵。</p>
-<h3 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h3><h4 id="分块对角矩阵的-mathbf-A-的行列式为"><a href="#分块对角矩阵的-mathbf-A-的行列式为" class="headerlink" title="分块对角矩阵的$\mathbf{A}$的行列式为"></a>分块对角矩阵的$\mathbf{A}$的行列式为</h4>$\mathbf{ |A| = |A_1| |A_2| \cdots |A_s|}$
-
-<h4 id="分块对角矩阵-mathbf-A-的-n-次幂为"><a href="#分块对角矩阵-mathbf-A-的-n-次幂为" class="headerlink" title="分块对角矩阵$\mathbf{A}$的$n$次幂为"></a>分块对角矩阵$\mathbf{A}$的$n$次幂为</h4>$$
-\mathbf{A^n} = \left(
-\begin{array}{cccc}
-\mathbf{A^n_{1}} & & & \\
-& \mathbf{A^n_{2}}& &\\
-& & \ddots & \\
-& & & \mathbf{A^n_{s}} \\
-\end{array}
-\right)， n为自然数$$
-
-
-<h4 id="分块矩阵的可逆矩阵"><a href="#分块矩阵的可逆矩阵" class="headerlink" title="分块矩阵的可逆矩阵"></a>分块矩阵的可逆矩阵</h4><p>有分块矩阵$\mathbf{A}$，可设与$\mathbf{A}$同型的分块矩阵$\mathbf{B}$，使</p>
-<p>$$\mathbf{A B = E}$$</p>
-<p>根据分块矩阵的乘法依次求出分块矩阵$\mathbf{B}$的各个子块。</p>
-<h2 id="矩阵的初等变换"><a href="#矩阵的初等变换" class="headerlink" title="矩阵的初等变换"></a>矩阵的初等变换</h2><h3 id="定义-2"><a href="#定义-2" class="headerlink" title="定义"></a>定义</h3><p>下面三种变换为矩阵的初等行（列）变换，统称为矩阵的初等变换。</p>
-<ol>
-<li>互换矩阵的第$i$行（列）与$j$行（列），记做$r_i \leftrightarrow r_j(c_i \leftrightarrow c_j)$</li>
-<li>用非零数$\lambda$数乘矩阵的第$i$行（列），记做$r_i \times \lambda(c_i \times \lambda)$</li>
-<li>将矩阵的第$j$行（列）元素的$k$倍加到第$i$行（列）对应元素上，记做$r_i+k r_j (c_i + k c_j)$</li>
-</ol>
-<h2 id="等价矩阵"><a href="#等价矩阵" class="headerlink" title="等价矩阵"></a>等价矩阵</h2><p>若矩阵$\mathbf{A}$经过有限次初等变换变成矩阵$\mathbf{B}$，称$\mathbf{A}$与$\mathbf{B}$等价，记做$\mathbf{A \sim B}$。</p>
-<h3 id="性质-1"><a href="#性质-1" class="headerlink" title="性质"></a>性质</h3><ol>
-<li>反身性 $\mathbf{A \sim A}$</li>
-<li>对称性 $\mathbf{A \sim B}$则$\mathbf{B \sim A}$</li>
-<li>传递性 $\mathbf{A \sim B, B \sim C}$则$\mathbf{A \sim C}$</li>
-</ol>
-<h2 id="阶梯型矩阵"><a href="#阶梯型矩阵" class="headerlink" title="阶梯型矩阵"></a>阶梯型矩阵</h2><p>若矩阵$\mathbf{A}$的零行出现在非零行的下方（如果有的话），且$\mathbf{A}$的每个非零行的第一个非零元素只出现在上一行第一个非零元素的右方，称$\mathbf{A}$为行阶梯形矩阵，简称阶梯形矩阵。。233，不好划线就不举例了，慢慢意会。。</p>
-<p>行阶梯型矩阵中每个非零行的第一个非零元为1，且这些非零元所在列的其他元素都为0，称此矩阵为行最简形矩阵。不举例了2333，自己意会。</p>
-<p>设$\mathbf{A}$为$m*n$矩阵，形如</p>
+<h3 id="性质">性质</h3>
+<h4 id="分块对角矩阵的-mathbf-A-的行列式为">分块对角矩阵的 $\mathbf {A}$ 的行列式为</h4>
+$\mathbf { |A| = |A_1| |A_2| \cdots |A_s|}$
+<h4 id="分块对角矩阵-mathbf-A-的-n-次幂为">分块对角矩阵 $\mathbf {A}$ 的 $n$ 次幂为</h4>
 $$
-\left(
-\begin{array}{cc}
-\mathbf{E_{r}} & \mathbf{O} \\
-\mathbf{O} & \mathbf{O} \\
-\end{array}
+\mathbf {A^n} = \left (
+\begin {array}{cccc}
+\mathbf {A^n_{1}} & & & \\
+& \mathbf {A^n_{2}}& &\\
+& & \ddots & \\
+& & & \mathbf {A^n_{s}} \\
+\end {array}
+\right)， n 为自然数 $$
+
+<h4 id="分块矩阵的可逆矩阵">分块矩阵的可逆矩阵</h4>
+<p>有分块矩阵 $\mathbf {A}$，可设与 $\mathbf {A}$ 同型的分块矩阵 $\mathbf {B}$，使</p>
+<p>$$\mathbf {A B = E}$$</p>
+<p>根据分块矩阵的乘法依次求出分块矩阵 $\mathbf {B}$ 的各个子块。</p>
+<h2 id="矩阵的初等变换">矩阵的初等变换</h2>
+<h3 id="定义-3">定义</h3>
+<p>下面三种变换为矩阵的初等行（列）变换，统称为矩阵的初等变换。</p>
+<ol>
+<li>互换矩阵的第 $i$ 行（列）与 $j$ 行（列），记做 $r_i \leftrightarrow r_j (c_i \leftrightarrow c_j)$</li>
+<li>用非零数 $\lambda$ 数乘矩阵的第 $i$ 行（列），记做 $r_i \times \lambda (c_i \times \lambda)$</li>
+<li>将矩阵的第 $j$ 行（列）元素的 $k$ 倍加到第 $i$ 行（列）对应元素上，记做 $r_i+k r_j (c_i + k c_j)$</li>
+</ol>
+<h2 id="等价矩阵">等价矩阵</h2>
+<p>若矩阵 $\mathbf {A}$ 经过有限次初等变换变成矩阵 $\mathbf {B}$，称 $\mathbf {A}$ 与 $\mathbf {B}$ 等价，记做 $\mathbf {A \sim B}$。</p>
+<h3 id="性质-2">性质</h3>
+<ol>
+<li>反身性 $\mathbf {A \sim A}$</li>
+<li>对称性 $\mathbf {A \sim B}$ 则 $\mathbf {B \sim A}$</li>
+<li>传递性 $\mathbf {A \sim B, B \sim C}$ 则 $\mathbf {A \sim C}$</li>
+</ol>
+<h2 id="阶梯型矩阵">阶梯型矩阵</h2>
+<p>若矩阵 $\mathbf {A}$ 的零行出现在非零行的下方（如果有的话），且 $\mathbf {A}$ 的每个非零行的第一个非零元素只出现在上一行第一个非零元素的右方，称 $\mathbf {A}$ 为行阶梯形矩阵，简称阶梯形矩阵。。233，不好划线就不举例了，慢慢意会。。</p>
+<p>行阶梯型矩阵中每个非零行的第一个非零元为 1，且这些非零元所在列的其他元素都为 0，称此矩阵为行最简形矩阵。不举例了 2333，自己意会。</p>
+<p>设 $\mathbf {A}$ 为 $m*n$ 矩阵，形如</p>
+$$
+\left (
+\begin {array}{cc}
+\mathbf {E_{r}} & \mathbf {O} \\
+\mathbf {O} & \mathbf {O} \\
+\end {array}
 \right)_{m \times n}$$
 
-
-<p>的矩阵为$\mathbf{A}$的标准型。可逆矩阵的标准型是单位矩阵。</p>
-<p>标准型中$r$就是$\mathbf{A}$的行阶梯型矩阵中非零行的行数，也是秩。</p>
-<h2 id="初等矩阵"><a href="#初等矩阵" class="headerlink" title="初等矩阵"></a>初等矩阵</h2><p>由单位矩阵$\mathbf{E}$经过一次初等变换得到的矩阵称为初等矩阵。</p>
+<p>的矩阵为 $\mathbf {A}$ 的标准型。可逆矩阵的标准型是单位矩阵。</p>
+<p>标准型中 $r$ 就是 $\mathbf {A}$ 的行阶梯型矩阵中非零行的行数，也是秩。</p>
+<h2 id="初等矩阵">初等矩阵</h2>
+<p>由单位矩阵 $\mathbf {E}$ 经过一次初等变换得到的矩阵称为初等矩阵。</p>
 <p>三种初等行、列变换对应三种类型的初等矩阵。</p>
 <ol>
-<li>对调$\mathbf{E}$的第$i$行（列）与第$j$行（列），记做$\mathbf{E}(i, j)$</li>
-<li>用非零参数$\lambda$乘以$\mathbf{E}$的第$i$行（列），记做$\mathbf{E}(i(\lambda))$</li>
-<li>将$\mathbf{E}$的第$j$行的$k$倍加到第$i$行（或将$\mathbf{E}$的第$i$列的$k$倍加到第$j$列），记做$\mathbf{E}(i, j(k))$</li>
+<li>对调 $\mathbf {E}$ 的第 $i$ 行（列）与第 $j$ 行（列），记做 $\mathbf {E}(i, j)$</li>
+<li>用非零参数 $\lambda$ 乘以 $\mathbf {E}$ 的第 $i$ 行（列），记做 $\mathbf {E}(i (\lambda))$</li>
+<li>将 $\mathbf {E}$ 的第 $j$ 行的 $k$ 倍加到第 $i$ 行（或将 $\mathbf {E}$ 的第 $i$ 列的 $k$ 倍加到第 $j$ 列），记做 $\mathbf {E}(i, j (k))$</li>
 </ol>
-<h3 id="定理"><a href="#定理" class="headerlink" title="定理"></a>定理</h3><p>设$\mathbf{A}$是$m \times n$矩阵，对$\mathbf{A}$进行一次初等行变换，相当于$\mathbf{A}$左乘相应的$m$阶初等矩阵；对$\mathbf{A}$进行一次初等列变换，相当于$\mathbf{A}$右乘相应的$n$阶初等矩阵。</p>
-<h3 id="推论"><a href="#推论" class="headerlink" title="推论"></a>推论</h3>$$
-\mathbf{E}(i, j)^{-1} = \mathbf{E}(i, j) \\
-\mathbf{E}(i(\lambda))^{-1} = \mathbf{E}(i(\frac {1} {\lambda})), \lambda \neq 0\\
-\mathbf{E}(i, j(k))^{-1} = \mathbf{E}(i, j(-k))$$
+<h3 id="定理">定理</h3>
+<p>设 $\mathbf {A}$ 是 $m \times n$ 矩阵，对 $\mathbf {A}$ 进行一次初等行变换，相当于 $\mathbf {A}$ 左乘相应的 $m$ 阶初等矩阵；对 $\mathbf {A}$ 进行一次初等列变换，相当于 $\mathbf {A}$ 右乘相应的 $n$ 阶初等矩阵。</p>
+<h3 id="推论">推论</h3>
+$$
+\mathbf {E}(i, j)^{-1} = \mathbf {E}(i, j) \\
+\mathbf {E}(i (\lambda))^{-1} = \mathbf {E}(i (\frac {1} {\lambda})), \lambda \neq 0\\
+\mathbf {E}(i, j (k))^{-1} = \mathbf {E}(i, j (-k))$$
 
-
-<p>矩阵$\mathbf{A}$与$\mathbf{B}$等价的充要条件是存在有限个初等矩阵$\mathbf{P_1, \cdots, P_l}$，使</p>
-$\mathbf{A = P_1\cdots P_s B P_{s+1}\cdots P_l = PBQ}$
-
-<p>矩阵$\mathbf{A}$可逆的充要条件是它能表示成有限个初等矩阵的乘积。</p>
+<p>矩阵 $\mathbf {A}$ 与 $\mathbf {B}$ 等价的充要条件是存在有限个初等矩阵 $\mathbf {P_1, \cdots, P_l}$，使</p>
+$\mathbf {A = P_1\cdots P_s B P_{s+1}\cdots P_l = PBQ}$
+<p>矩阵 $\mathbf {A}$ 可逆的充要条件是它能表示成有限个初等矩阵的乘积。</p>
 <p>可用初等变换法求逆矩阵，即</p>
-<p>$$P(A|E) \rightarrow (E|A^{-1})$$</p>
-<p>也可用初等变换求解矩阵方程$\mathbf{AX = B}$，即</p>
-<p>$$P(A|B) \rightarrow (E|A^{-1} B)$$</p>
-<h2 id="矩阵的秩"><a href="#矩阵的秩" class="headerlink" title="矩阵的秩"></a>矩阵的秩</h2><h3 id="定义-3"><a href="#定义-3" class="headerlink" title="定义"></a>定义</h3><p>在$m*n$的矩阵$A$中，任取$k$行$k$列，（$1\leq k \leq min(m, n)$），位于这些行和列交叉处$k^2$个元素按原来秩序构成的$k$阶行列式，称为为矩阵$\mathbf{A}$的一个$k$阶子式。</p>
-<p>若矩阵$\mathbf{A}$中有不为零的$r$阶子式，并且$\mathbf{A}$的所有$r+1$阶子式全为0（如果有的话），称$r$为矩阵$\mathbf{A}$的秩，记做$\mathbf{R(A)}$，规定零矩阵的秩为0。矩阵$\mathbf{A}$的秩就是$\mathbf{A}$中最高阶非零子式阶数，显然$\mathbf{R(A_{m*n}) \leq min(m,n)}$</p>
-<h3 id="常用结论，性质"><a href="#常用结论，性质" class="headerlink" title="常用结论，性质"></a>常用结论，性质</h3><p>$$\mathbf{R(A)=R(A^T)}$$</p>
-<p>阶梯型矩阵$\mathbf{A}$的秩等于非零行的行数。</p>
+<p>$$P (A|E) \rightarrow (E|A^{-1})$$</p>
+<p>也可用初等变换求解矩阵方程 $\mathbf {AX = B}$，即</p>
+<p>$$P (A|B) \rightarrow (E|A^{-1} B)$$</p>
+<h2 id="矩阵的秩">矩阵的秩</h2>
+<h3 id="定义-4">定义</h3>
+<p>在 $m*n$ 的矩阵 $A$ 中，任取 $k$ 行 $k$ 列，（$1\leq k \leq min (m, n)$），位于这些行和列交叉处 $k^2$ 个元素按原来秩序构成的 $k$ 阶行列式，称为为矩阵 $\mathbf {A}$ 的一个 $k$ 阶子式。</p>
+<p>若矩阵 $\mathbf {A}$ 中有不为零的 $r$ 阶子式，并且 $\mathbf {A}$ 的所有 $r+1$ 阶子式全为 0（如果有的话），称 $r$ 为矩阵 $\mathbf {A}$ 的秩，记做 $\mathbf {R (A)}$，规定零矩阵的秩为 0。矩阵 $\mathbf {A}$ 的秩就是 $\mathbf {A}$ 中最高阶非零子式阶数，显然 $\mathbf {R (A_{m*n}) \leq min (m,n)}$</p>
+<h3 id="常用结论，性质">常用结论，性质</h3>
+<p>$$\mathbf {R (A)=R (A^T)}$$</p>
+<p>阶梯型矩阵 $\mathbf {A}$ 的秩等于非零行的行数。</p>
 <p>矩阵的初等变换不改变矩阵的秩。</p>
 <p>等价矩阵具有相同的秩。</p>
-<p>$n$阶方阵$\mathbf{A}$可逆的充要条件为$\mathbf{R(A)=n}$，即满秩矩阵。</p>
-<p>设$\mathbf{A}$是$m\times n$阶矩阵，$\mathbf{P, Q}$分别为$m$阶和$n$阶可逆矩阵，则$\mathbf{R(PAQ)=R(A)}$</p>
-<p>$$\mathbf{max(R(A), R(B)) \leq R(A, B) \leq R(A)+R(B)}$$</p>
-<p>设$\mathbf{A, B}$均为$m \times n$矩阵，则</p>
-<p>$$\mathbf{R(A+B) \leq R(A) + R(B)}$$</p>
-<p>设$\mathbf{A, B}$分别为$m\times n$阶和$n \times s$阶矩阵，则</p>
-<p>$$\mathbf{R(AB) \leq min(R(A), R(B))}$$</p>
-<p>若$\mathbf{A_{m\times n} B_{n\times s} = O}$，$\mathbf{R(A)+R(B) \leq n}$</p>
-<p>设$\mathbf{A}$为$n$阶方阵（$n &gt;1$），$\mathbf{A^*}$为$\mathbf{A}$的伴随矩阵，有</p>
+<p>$n$ 阶方阵 $\mathbf {A}$ 可逆的充要条件为 $\mathbf {R (A)=n}$，即满秩矩阵。</p>
+<p>设 $\mathbf {A}$ 是 $m\times n$ 阶矩阵，$\mathbf {P, Q}$ 分别为 $m$ 阶和 $n$ 阶可逆矩阵，则 $\mathbf {R (PAQ)=R (A)}$</p>
+<p>$$\mathbf {max (R (A), R (B)) \leq R (A, B) \leq R (A)+R (B)}$$</p>
+<p>设 $\mathbf {A, B}$ 均为 $m \times n$ 矩阵，则</p>
+<p>$$\mathbf {R (A+B) \leq R (A) + R (B)}$$</p>
+<p>设 $\mathbf {A, B}$ 分别为 $m\times n$ 阶和 $n \times s$ 阶矩阵，则</p>
+<p>$$\mathbf {R (AB) \leq min (R (A), R (B))}$$</p>
+<p>若 $\mathbf {A_{m\times n} B_{n\times s} = O}$，$\mathbf {R (A)+R (B) \leq n}$</p>
+<p>设 $\mathbf {A}$ 为 $n$ 阶方阵（$n &gt;1$），$\mathbf {A^*}$ 为 $\mathbf {A}$ 的伴随矩阵，有</p>
 
 $$
-R(A^*) =
-\begin{cases}
-n, & 当R(A)=n时\\
-1, & 当R(A)=n-1时\\
-0, & 当R(A)<n-1时
-\end{cases}
+R (A^*) =
+\begin {cases}
+n, & 当 R (A)=n 时 \\
+1, & 当 R (A)=n-1 时 \\
+0, & 当 R (A)<n-1 时
+\end {cases}
 $$
-
 
 
     
@@ -662,7 +684,7 @@ $$
    
        <div class="original">
     <ul>
-        <li>本文标题：线性代数复习笔记-矩阵</li>
+        <li>本文标题：线性代数复习笔记 - 矩阵</li>
         <li>本文字数：3.4k</li>
         <li>本文作者：Netcan</li>
         <li>发布时间：2015年09月27日 - 17时24分</li>
@@ -899,6 +921,6 @@ gitalk.render('gitalk-container')
             all[i].SourceElement().parentNode.className += ' has-jax';
     });
 </script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </body>
 </html>

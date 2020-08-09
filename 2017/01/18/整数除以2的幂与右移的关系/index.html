@@ -5,9 +5,9 @@
 
 
 <head>
-  <meta charset="utf-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
-  <title>整数除以2的幂与右移的关系 | Netcan on Programming</title>
+  <title>整数除以 2 的幂与右移的关系 | Netcan on Programming</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -15,15 +15,15 @@
     <meta name="keywords" content="操作系统,C/C++," />
   
 
-  <meta name="description" content="整数除法与右移运算在C&#x2F;C++中进行除以2的幂的运算，学过计组的同学，可能会知道更高效的是进行右移运算，右移几位，相当于除以2的几次幂。 C&#x2F;C++中整数除法，去除小数部分，整数部分作为返回结果。 例如$6&#x2F;4&#x3D;1, -6&#x2F;4&#x3D;-1$ 这里$4&#x3D;2^2$，那么只要对一个数，右移2位，就相当于除以4了么？ 容易用如下代码验证： #include &lt;stdio.h&gt; int main(void)">
+  <meta name="description" content="整数除法与右移运算 在 C&#x2F;C++ 中进行除以 2 的幂的运算，学过计组的同学，可能会知道更高效的是进行右移运算，右移几位，相当于除以 2 的几次幂。 C&#x2F;C++ 中整数除法，去除小数部分，整数部分作为返回结果。 例如 $6&#x2F;4&#x3D;1, -6&#x2F;4&#x3D;-1$ 这里 $4&#x3D;2^2$，那么只要对一个数，右移 2 位，就相当于除以 4 了么？ 容易用如下代码验证： #include &lt;stdio.h&gt;">
 <meta property="og:type" content="article">
-<meta property="og:title" content="整数除以2的幂与右移的关系">
+<meta property="og:title" content="整数除以 2 的幂与右移的关系">
 <meta property="og:url" content="https://netcan.github.io/2017/01/18/%E6%95%B4%E6%95%B0%E9%99%A4%E4%BB%A52%E7%9A%84%E5%B9%82%E4%B8%8E%E5%8F%B3%E7%A7%BB%E7%9A%84%E5%85%B3%E7%B3%BB/index.html">
 <meta property="og:site_name" content="Netcan on Programming">
-<meta property="og:description" content="整数除法与右移运算在C&#x2F;C++中进行除以2的幂的运算，学过计组的同学，可能会知道更高效的是进行右移运算，右移几位，相当于除以2的几次幂。 C&#x2F;C++中整数除法，去除小数部分，整数部分作为返回结果。 例如$6&#x2F;4&#x3D;1, -6&#x2F;4&#x3D;-1$ 这里$4&#x3D;2^2$，那么只要对一个数，右移2位，就相当于除以4了么？ 容易用如下代码验证： #include &lt;stdio.h&gt; int main(void)">
+<meta property="og:description" content="整数除法与右移运算 在 C&#x2F;C++ 中进行除以 2 的幂的运算，学过计组的同学，可能会知道更高效的是进行右移运算，右移几位，相当于除以 2 的几次幂。 C&#x2F;C++ 中整数除法，去除小数部分，整数部分作为返回结果。 例如 $6&#x2F;4&#x3D;1, -6&#x2F;4&#x3D;-1$ 这里 $4&#x3D;2^2$，那么只要对一个数，右移 2 位，就相当于除以 4 了么？ 容易用如下代码验证： #include &lt;stdio.h&gt;">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2017-01-18T10:14:10.000Z">
-<meta property="article:modified_time" content="2017-01-31T08:24:30.000Z">
+<meta property="article:modified_time" content="2020-08-09T01:01:02.150Z">
 <meta property="article:author" content="Netcan">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="C&#x2F;C++">
@@ -94,14 +94,14 @@ ga('send', 'pageview');
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
   
 
-<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body>
 
 
   
-    <span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
   
 
   <link rel="stylesheet" href="/css/prism.css">
@@ -199,7 +199,7 @@ ga('send', 'pageview');
 <div class="content content-post CENTER">
    <article id="post-整数除以2的幂与右移的关系" class="article article-type-post" itemprop="blogPost">
   <header class="article-header">
-    <h1 class="post-title">整数除以2的幂与右移的关系</h1>
+    <h1 class="post-title">整数除以 2 的幂与右移的关系</h1>
 
     <div class="article-meta">
       <span>
@@ -237,189 +237,188 @@ ga('send', 'pageview');
 
   <div class="article-content">
     
-      <h2 id="整数除法与右移运算"><a href="#整数除法与右移运算" class="headerlink" title="整数除法与右移运算"></a>整数除法与右移运算</h2><p>在C/C++中进行除以2的幂的运算，学过计组的同学，可能会知道更高效的是进行右移运算，右移几位，相当于除以2的几次幂。</p>
-<p>C/C++中整数除法，去除小数部分，整数部分作为返回结果。</p>
-<p>例如$6/4=1, -6/4=-1$</p>
-<p>这里$4=2^2$，那么只要对一个数，右移2位，就相当于除以4了么？</p>
+      <h2 id="整数除法与右移运算">整数除法与右移运算</h2>
+<p>在 C/C++ 中进行除以 2 的幂的运算，学过计组的同学，可能会知道更高效的是进行右移运算，右移几位，相当于除以 2 的几次幂。</p>
+<p>C/C++ 中整数除法，去除小数部分，整数部分作为返回结果。</p>
+<p>例如 $6/4=1, -6/4=-1$</p>
+<p>这里 $4=2^2$，那么只要对一个数，右移 2 位，就相当于除以 4 了么？</p>
 <p>容易用如下代码验证：</p>
 <pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h></span></span>
 <span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%d\n%d\n"</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token operator">>></span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">6</span><span class="token operator">>></span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+	<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"% d\n% d\n"</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token operator">>></span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">6</span><span class="token operator">>></span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span></code></pre>
-
-<a id="more"></a>
 <p>输出为</p>
 <pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token number">1</span>
 -2</code></pre>
-
 <p>显然当一个数为正数的时候，结果是正确的；但是当为负数的时候，貌似就不对了，这里可以多测试几组值：</p>
 <table>
 <thead>
 <tr>
-<th align="center">k</th>
-<th align="center">&gt;&gt; k (Binary)</th>
-<th align="center">Decimal</th>
-<th align="center">12340/$2^k$</th>
+<th style="text-align:center">k</th>
+<th style="text-align:center">&gt;&gt; k (Binary)</th>
+<th style="text-align:center">Decimal</th>
+<th style="text-align:center">12340/$2^k$</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">0</td>
-<td align="center">0011000000110100</td>
-<td align="center">12340</td>
-<td align="center">12340.0</td>
+<tbody>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0011000000110100</td>
+<td style="text-align:center">12340</td>
+<td style="text-align:center">12340.0</td>
 </tr>
 <tr>
-<td align="center">1</td>
-<td align="center">0001100000011010</td>
-<td align="center">6170</td>
-<td align="center">6170.0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0001100000011010</td>
+<td style="text-align:center">6170</td>
+<td style="text-align:center">6170.0</td>
 </tr>
 <tr>
-<td align="center">4</td>
-<td align="center">0000001100000011</td>
-<td align="center">771</td>
-<td align="center">771.25</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">0000001100000011</td>
+<td style="text-align:center">771</td>
+<td style="text-align:center">771.25</td>
 </tr>
 <tr>
-<td align="center">8</td>
-<td align="center">0000000000110000</td>
-<td align="center">48</td>
-<td align="center">48.203125</td>
+<td style="text-align:center">8</td>
+<td style="text-align:center">0000000000110000</td>
+<td style="text-align:center">48</td>
+<td style="text-align:center">48.203125</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <table>
 <thead>
 <tr>
-<th align="center">k</th>
-<th align="center">&gt;&gt; k (Binary)</th>
-<th align="center">Decimal</th>
-<th align="center">-12340/$2^k$</th>
+<th style="text-align:center">k</th>
+<th style="text-align:center">&gt;&gt; k (Binary)</th>
+<th style="text-align:center">Decimal</th>
+<th style="text-align:center">-12340/$2^k$</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">0</td>
-<td align="center">1100111111001100</td>
-<td align="center">−12340</td>
-<td align="center">−12340.0</td>
+<tbody>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1100111111001100</td>
+<td style="text-align:center">−12340</td>
+<td style="text-align:center">−12340.0</td>
 </tr>
 <tr>
-<td align="center">1</td>
-<td align="center">1110011111100110</td>
-<td align="center">−6170</td>
-<td align="center">−6170.0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1110011111100110</td>
+<td style="text-align:center">−6170</td>
+<td style="text-align:center">−6170.0</td>
 </tr>
 <tr>
-<td align="center">4</td>
-<td align="center">1111110011111100</td>
-<td align="center">−772</td>
-<td align="center">−771.25</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">1111110011111100</td>
+<td style="text-align:center">−772</td>
+<td style="text-align:center">−771.25</td>
 </tr>
 <tr>
-<td align="center">8</td>
-<td align="center">1111111111001111</td>
-<td align="center">−49</td>
-<td align="center">−48.203125</td>
+<td style="text-align:center">8</td>
+<td style="text-align:center">1111111111001111</td>
+<td style="text-align:center">−49</td>
+<td style="text-align:center">−48.203125</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <p>那么如何优化，使右移对正负数都有效呢？</p>
-<h2 id="右移性质证明与优化"><a href="#右移性质证明与优化" class="headerlink" title="右移性质证明与优化"></a>右移性质证明与优化</h2><p>从上面2组数据中，我们可以看出右移结果为<strong>向下</strong>取整，即$x>>k = \lfloor \dfrac{x}{2^k} \rfloor$，如$12340>>4 = \lfloor \dfrac{12340}{2^4} \rfloor = \lfloor 771.25 \rfloor = 771$，$-12340>>4 = \lfloor \dfrac{-12340}{2^4} \rfloor = \lfloor -771.25 \rfloor = -772 \neq -771 = \lceil -771.25 \rceil$</p>
-<p>那么，若要代替除法，<strong>当为正数的时候，应该向下取整；当为负数的时候，应该向上取整。</strong></p>
-<h3 id="证明"><a href="#证明" class="headerlink" title="证明"></a>证明</h3><p>现在给出证明：<strong>证右移运算为向下取整。</strong></p>
-<p>假设x为$w$位整数，它的二进制表示如下：</p>
+<h2 id="右移性质证明与优化">右移性质证明与优化</h2>
+<p>从上面 2 组数据中，我们可以看出右移结果为 ** 向下 ** 取整，即 $x>>k = \lfloor \dfrac {x}{2^k} \rfloor$，如 $12340>>4 = \lfloor \dfrac {12340}{2^4} \rfloor = \lfloor 771.25 \rfloor = 771$，$-12340>>4 = \lfloor \dfrac {-12340}{2^4} \rfloor = \lfloor -771.25 \rfloor = -772 \neq -771 = \lceil -771.25 \rceil$</p>
+<p>那么，若要代替除法，** 当为正数的时候，应该向下取整；当为负数的时候，应该向上取整。**</p>
+<h3 id="证明">证明</h3>
+<p>现在给出证明：** 证右移运算为向下取整。**</p>
+<p>假设 x 为 $w$ 位整数，它的二进制表示如下：</p>
 
 $$x = [x_{w-1}, x_{w-2}, \cdots, x_0]$$
 
-
-<p>那么$x=\sum_{i=0}^{w-1}x_{i} \times 2^i$</p>
+<p>那么 $x=\sum_{i=0}^{w-1} x_{i} \times 2^i$</p>
 <p>设</p>
 
 $$
-\begin{align}
+\begin {align}
 x' &= [x_{w-1}, x_{w-2}, \cdots, x_{w-k}] \\
 x'' &= [x_{k-1}, x_{k-2}, \cdots, x_{0}]
-\end{align}
+\end {align}
 $$
-
 
 <p>根据公式可得</p>
 
 $$
-x'' = \sum_{i=0}^{k-1}x_{i} \times 2^i \in [0, 2^k)
+x'' = \sum_{i=0}^{k-1} x_{i} \times 2^i \in [0, 2^k)
 $$
 
-
-<p>已知一个数乘以$2^n$，相当于<strong>左移</strong>$n$位，那么有<br>$$ x=2^k x’ + x’’$$</p>
-<p>两边同时除以$2^k$可得：</p>
+<p>已知一个数乘以 $2^n$，相当于 ** 左移 **$n$ 位，那么有<br>
+$$ x=2^k x’ + x’’$$</p>
+<p>两边同时除以 $2^k$ 可得：</p>
 
 $$
-\begin{align}
-\dfrac{x}{2^k} &= x' + \dfrac{x''}{2^k} \\
+\begin {align}
+\dfrac {x}{2^k} &= x' + \dfrac {x''}{2^k} \\
 \because x'' &\in [0, 2^k) \\
-\therefore \dfrac{x''}{2^k} &= 0\\
-\therefore \lfloor \dfrac{x}{2^k} \rfloor &= \lfloor x' + \dfrac{x''}{2^k}\rfloor = \lfloor x' \rfloor
-\end{align}
+\therefore \dfrac {x''}{2^k} &= 0\\
+\therefore \lfloor \dfrac {x}{2^k} \rfloor &= \lfloor x' + \dfrac {x''}{2^k}\rfloor = \lfloor x' \rfloor
+\end {align}
 $$
 
-
-<h3 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h3><p>已经证明了右移的性质，那么代替除法运算的时候，</p>
-<p><strong>当为正数的时候，应该向下取整；当为负数的时候，应该向上取整。</strong></p>
-<p>现在给出公式，<strong>向上</strong>取整转换为<strong>向下</strong>取整：<br>$$<br>\lceil \dfrac{x}{y} \rceil = \lfloor \dfrac{x+y-1}{y}\rfloor (y&gt;0)<br>$$</p>
+<h3 id="优化">优化</h3>
+<p>已经证明了右移的性质，那么代替除法运算的时候，</p>
+<p>** 当为正数的时候，应该向下取整；当为负数的时候，应该向上取整。**</p>
+<p>现在给出公式，** 向上 ** 取整转换为 ** 向下 ** 取整：<br>
+$$<br>
+\lceil \dfrac {x}{y} \rceil = \lfloor \dfrac {x+y-1}{y}\rfloor (y&gt;0)<br>
+$$</p>
 <p>举个例子：</p>
 
 $$
-\begin{align}
-\lceil \dfrac{6}{4} \rceil &= \lfloor \dfrac{9}{4}\rfloor = 2\\
-\lceil \dfrac{-6}{4} \rceil &= \lfloor \dfrac{-3}{4}\rfloor = -1
-\end{align}
+\begin {align}
+\lceil \dfrac {6}{4} \rceil &= \lfloor \dfrac {9}{4}\rfloor = 2\\
+\lceil \dfrac {-6}{4} \rceil &= \lfloor \dfrac {-3}{4}\rfloor = -1
+\end {align}
 $$
-
 
 <p>证明：</p>
-<p>设$x=ky + r, 0\leq r&lt; y$，那么</p>
+<p>设 $x=ky + r, 0\leq r&lt; y$，那么</p>
 
 $$
-左边 = \lceil \dfrac{x}{y} \rceil = \lceil \dfrac{ky+r}{y} \rceil = k+\lceil \dfrac{r}{y} \rceil = \left\{
-	\begin{align}
+左边 = \lceil \dfrac {x}{y} \rceil = \lceil \dfrac {ky+r}{y} \rceil = k+\lceil \dfrac {r}{y} \rceil = \left\{
+	\begin {align}
 	k, & r = 0 \\
 	k+1, & r \neq 0
-	\end{align}
+	\end {align}
 	\right.
 $$
 
 $$
-右边 = \lfloor \dfrac{x+y-1}{y}\rfloor = \lfloor \dfrac{ky+r+y-1}{y}\rfloor = k+\lfloor \dfrac{r+y-1}{y}\rfloor = \left\{
-	\begin{align}
+右边 = \lfloor \dfrac {x+y-1}{y}\rfloor = \lfloor \dfrac {ky+r+y-1}{y}\rfloor = k+\lfloor \dfrac {r+y-1}{y}\rfloor = \left\{
+	\begin {align}
 	k, & r = 0\\
 	k+1, & r \neq 0
-	\end{align}
+	\end {align}
 	\right.
 $$
 
-
-<p>也就是说，负数除以$2^k$，首先加上$2^k-1$，然后右移$k$位；而正数，直接右移$k$位。</p>
+<p>也就是说，负数除以 $2^k$，首先加上 $2^k-1$，然后右移 $k$ 位；而正数，直接右移 $k$ 位。</p>
 <p>综上所述：</p>
 <pre class="language-c" data-language="c"><code class="language-c">result <span class="token operator">=</span> <span class="token punctuation">(</span>x<span class="token operator">&lt;</span><span class="token number">0</span> <span class="token operator">?</span> x<span class="token operator">+</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token operator">&lt;&lt;</span>k<span class="token punctuation">)</span><span class="token operator">-</span><span class="token number">1</span> <span class="token operator">:</span> x<span class="token punctuation">)</span> <span class="token operator">>></span> k</code></pre>
-
-<h2 id="编译器行为"><a href="#编译器行为" class="headerlink" title="编译器行为"></a>编译器行为</h2><p>有此可知，对一个数除以2的幂，是不能随随便便右移的，还需要判断正负的，那么编译器会不会帮我们优化呢？</p>
+<h2 id="编译器行为">编译器行为</h2>
+<p>有此可知，对一个数除以 2 的幂，是不能随随便便右移的，还需要判断正负的，那么编译器会不会帮我们优化呢？</p>
 <p>有如下代码：</p>
 <pre class="language-c" data-language="c"><code class="language-c"><span class="token keyword">int</span> <span class="token function">div</span><span class="token punctuation">(</span><span class="token keyword">int</span> x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">return</span> x<span class="token operator">/</span><span class="token number">8</span><span class="token punctuation">;</span>
+	<span class="token keyword">return</span> x<span class="token operator">/</span><span class="token number">8</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span></code></pre>
-
-<p>对其进行汇编（<code>-O0</code>无优化）：</p>
+<p>对其进行汇编（<code>-O0</code> 无优化）：</p>
 <pre class="language-bash" data-language="bash"><code class="language-bash">$ gcc -S -m32 -O0 div.c</code></pre>
-
 <p>截取如下汇编代码并注释：</p>
-<pre class="language-asm" data-language="asm"><code class="language-asm">movl    8(%ebp), %eax    # 将x存入%eax
-leal    7(%eax), %edx    # 将x+7存入%edx
-testl    %eax, %eax        # 判断x的正负
-cmovs    %edx, %eax        # 若x&lt;0，将x+7存入%eax
-sarl    $3, %eax        # 算数右移3位</code></pre>
-
-<p>简而言之，上面代码首先将x存入eax寄存器，若x&lt;0，就将$x+2^3-1=x+7$存入eax寄存器，然后对eax进行算数右移3位，最后返回eax。</p>
+<pre class="language-asm" data-language="asm"><code class="language-asm">movl	8 (% ebp), % eax	# 将 x 存入 % eax
+leal	7 (% eax), % edx	# 将 x+7 存入 % edx
+testl	% eax, % eax		# 判断 x 的正负
+cmovs	% edx, % eax		# 若 x&lt;0，将 x+7 存入 % eax
+sarl	$3, % eax		# 算数右移 3 位 </code></pre>
+<p>简而言之，上面代码首先将 x 存入 eax 寄存器，若 x&lt;0，就将 $x+2^3-1=x+7$ 存入 eax 寄存器，然后对 eax 进行算数右移 3 位，最后返回 eax。</p>
 <pre class="language-c" data-language="c"><code class="language-c">result <span class="token operator">=</span> <span class="token punctuation">(</span>x<span class="token operator">&lt;</span><span class="token number">0</span> <span class="token operator">?</span> x<span class="token operator">+</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token operator">&lt;&lt;</span>k<span class="token punctuation">)</span><span class="token operator">-</span><span class="token number">1</span> <span class="token operator">:</span> x<span class="token punctuation">)</span> <span class="token operator">>></span> k</code></pre>
-
 <p>所以，编译器已经帮我们做好优化了，貌似没必要自己写右移来代替除法，这是个坑。</p>
 
     
@@ -431,11 +430,11 @@ sarl    $3, %eax        # 算数右移3位</code></pre>
    
        <div class="original">
     <ul>
-        <li>本文标题：整数除以2的幂与右移的关系</li>
+        <li>本文标题：整数除以 2 的幂与右移的关系</li>
         <li>本文字数：1k</li>
         <li>本文作者：Netcan</li>
         <li>发布时间：2017年01月18日 - 18时14分</li>
-        <li>最后更新：2017年01月31日 - 16时24分</li>
+        <li>最后更新：2020年08月09日 - 09时01分</li>
         <li>原始链接：<a href="https://netcan.github.io/2017/01/18/%E6%95%B4%E6%95%B0%E9%99%A4%E4%BB%A52%E7%9A%84%E5%B9%82%E4%B8%8E%E5%8F%B3%E7%A7%BB%E7%9A%84%E5%85%B3%E7%B3%BB/">https://netcan.github.io/2017/01/18/整数除以2的幂与右移的关系/</a></li>
         <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
     </ul>
@@ -668,6 +667,6 @@ gitalk.render('gitalk-container')
             all[i].SourceElement().parentNode.className += ' has-jax';
     });
 </script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </body>
 </html>

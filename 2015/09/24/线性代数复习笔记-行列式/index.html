@@ -5,9 +5,9 @@
 
 
 <head>
-  <meta charset="utf-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
-  <title>线性代数复习笔记-行列式 | Netcan on Programming</title>
+  <title>线性代数复习笔记 - 行列式 | Netcan on Programming</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -15,12 +15,12 @@
     <meta name="keywords" content="数学," />
   
 
-  <meta name="description" content="行列式定义定义1.1将n个不同元素排成一列，称为这n个元素的一个全排列，简称排列 定义1.2对于n个不同的元素，先规定各元素之间有一个标准次序（例如n个 不同的自然数，可规定从小到大为标准次序），于是在这n个元素的任一排列中，当某两个元素的先后次序与标准次序不同时，就说有1个逆序。一个排列中所有逆序总数叫做这个排列的逆序数。逆序数个数记做$\tau(a_1, a_2, \cdots, a_n)$">
+  <meta name="description" content="行列式 定义 定义 1.1 将 n 个不同元素排成一列，称为这 n 个元素的一个全排列，简称排列 定义 1.2 对于 n 个不同的元素，先规定各元素之间有一个标准次序（例如 n 个 不同的自然数，可规定从小到大为标准次序），于是在这 n 个元素的任一排列中，当某两个元素的先后次序与标准次序不同时，就说有 1 个逆序。一个排列中所有逆序总数叫做这个排列的逆序数。逆序数个数记做 $\tau (a_1,">
 <meta property="og:type" content="article">
-<meta property="og:title" content="线性代数复习笔记-行列式">
+<meta property="og:title" content="线性代数复习笔记 - 行列式">
 <meta property="og:url" content="https://netcan.github.io/2015/09/24/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%A1%8C%E5%88%97%E5%BC%8F/index.html">
 <meta property="og:site_name" content="Netcan on Programming">
-<meta property="og:description" content="行列式定义定义1.1将n个不同元素排成一列，称为这n个元素的一个全排列，简称排列 定义1.2对于n个不同的元素，先规定各元素之间有一个标准次序（例如n个 不同的自然数，可规定从小到大为标准次序），于是在这n个元素的任一排列中，当某两个元素的先后次序与标准次序不同时，就说有1个逆序。一个排列中所有逆序总数叫做这个排列的逆序数。逆序数个数记做$\tau(a_1, a_2, \cdots, a_n)$">
+<meta property="og:description" content="行列式 定义 定义 1.1 将 n 个不同元素排成一列，称为这 n 个元素的一个全排列，简称排列 定义 1.2 对于 n 个不同的元素，先规定各元素之间有一个标准次序（例如 n 个 不同的自然数，可规定从小到大为标准次序），于是在这 n 个元素的任一排列中，当某两个元素的先后次序与标准次序不同时，就说有 1 个逆序。一个排列中所有逆序总数叫做这个排列的逆序数。逆序数个数记做 $\tau (a_1,">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2015-09-24T11:55:49.000Z">
 <meta property="article:modified_time" content="2015-09-24T11:55:49.000Z">
@@ -93,14 +93,14 @@ ga('send', 'pageview');
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
   
 
-<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body>
 
 
   
-    <span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
   
 
   <link rel="stylesheet" href="/css/prism.css">
@@ -190,7 +190,7 @@ ga('send', 'pageview');
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A1%8C%E5%88%97%E5%BC%8F"><span class="toc-text">行列式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89"><span class="toc-text">定义</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%891-1"><span class="toc-text">定义1.1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%891-2"><span class="toc-text">定义1.2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E7%90%861-1"><span class="toc-text">定理1.1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%891-3"><span class="toc-text">定义1.3</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%A7%E8%B4%A8"><span class="toc-text">性质</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%A7%E8%B4%A81-1"><span class="toc-text">性质1.1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%A7%E8%B4%A81-2"><span class="toc-text">性质1.2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%A7%E8%B4%A81-3"><span class="toc-text">性质1.3</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%A7%E8%B4%A81-4"><span class="toc-text">性质1.4</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%A7%E8%B4%A81-5"><span class="toc-text">性质1.5</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%A7%E8%B4%A81-6"><span class="toc-text">性质1.6</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%891-4"><span class="toc-text">定义1.4</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%95%E7%90%861-1"><span class="toc-text">引理1.1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E7%90%861-2"><span class="toc-text">定理1.2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8C%83%E5%BE%B7%E8%92%99%E5%BE%B7%E8%A1%8C%E5%88%97%E5%BC%8F"><span class="toc-text">范德蒙德行列式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%8B%E8%8E%B1%E5%A7%86%E6%B3%95%E5%88%99"><span class="toc-text">克莱姆法则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E7%90%861-3"><span class="toc-text">定理1.3</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9A%E7%90%861-3%E2%80%99"><span class="toc-text">定理1.3’</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E7%90%861-4"><span class="toc-text">定理1.4</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9A%E7%90%861-4%E2%80%99"><span class="toc-text">定理1.4’</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E7%89%B9%E6%AE%8A%E8%A1%8C%E5%88%97%E5%BC%8F%E7%9A%84%E8%AE%A1%E7%AE%97%E5%85%AC%E5%BC%8F"><span class="toc-text">一些特殊行列式的计算公式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8A%EF%BC%88%E4%B8%8B%EF%BC%89%E4%B8%89%E8%A7%92%E8%A1%8C%E5%88%97%E5%BC%8F"><span class="toc-text">上（下）三角行列式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%AF%E5%AF%B9%E8%A7%92%E4%B8%8B%EF%BC%88%E4%B8%8A%EF%BC%89%E7%9A%84%E5%85%83%E7%B4%A0%E5%85%A8%E4%B8%BA0%E7%9A%84%E8%A1%8C%E5%88%97%E5%BC%8F%E3%80%82"><span class="toc-text">副对角下（上）的元素全为0的行列式。</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A1%8C%E5%88%97%E5%BC%8F%E7%9A%84%E5%9F%BA%E6%9C%AC%E8%AE%A1%E7%AE%97%E6%96%B9%E6%B3%95"><span class="toc-text">行列式的基本计算方法</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">行列式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89"><span class="toc-text">定义</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89-1-1"><span class="toc-text">定义 1.1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89-1-2"><span class="toc-text">定义 1.2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E7%90%86-1-1"><span class="toc-text">定理 1.1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89-1-3"><span class="toc-text">定义 1.3</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%A7%E8%B4%A8"><span class="toc-text">性质</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%A7%E8%B4%A8-1-1"><span class="toc-text">性质 1.1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%A7%E8%B4%A8-1-2"><span class="toc-text">性质 1.2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%A7%E8%B4%A8-1-3"><span class="toc-text">性质 1.3</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%A7%E8%B4%A8-1-4"><span class="toc-text">性质 1.4</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%A7%E8%B4%A8-1-5"><span class="toc-text">性质 1.5</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%A7%E8%B4%A8-1-6"><span class="toc-text">性质 1.6</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89-1-4"><span class="toc-text">定义 1.4</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%95%E7%90%86-1-1"><span class="toc-text">引理 1.1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E7%90%86-1-2"><span class="toc-text">定理 1.2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8C%83%E5%BE%B7%E8%92%99%E5%BE%B7%E8%A1%8C%E5%88%97%E5%BC%8F"><span class="toc-text">范德蒙德行列式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%8B%E8%8E%B1%E5%A7%86%E6%B3%95%E5%88%99"><span class="toc-text">克莱姆法则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E7%90%86-1-3"><span class="toc-text">定理 1.3</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9A%E7%90%86-1-3%E2%80%99"><span class="toc-text">定理 1.3’</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E7%90%86-1-4"><span class="toc-text">定理 1.4</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9A%E7%90%86-1-4%E2%80%99"><span class="toc-text">定理 1.4’</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E7%89%B9%E6%AE%8A%E8%A1%8C%E5%88%97%E5%BC%8F%E7%9A%84%E8%AE%A1%E7%AE%97%E5%85%AC%E5%BC%8F"><span class="toc-text">一些特殊行列式的计算公式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8A%EF%BC%88%E4%B8%8B%EF%BC%89%E4%B8%89%E8%A7%92%E8%A1%8C%E5%88%97%E5%BC%8F"><span class="toc-text">上（下）三角行列式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%AF%E5%AF%B9%E8%A7%92%E4%B8%8B%EF%BC%88%E4%B8%8A%EF%BC%89%E7%9A%84%E5%85%83%E7%B4%A0%E5%85%A8%E4%B8%BA-0-%E7%9A%84%E8%A1%8C%E5%88%97%E5%BC%8F%E3%80%82"><span class="toc-text">副对角下（上）的元素全为 0 的行列式。</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A1%8C%E5%88%97%E5%BC%8F%E7%9A%84%E5%9F%BA%E6%9C%AC%E8%AE%A1%E7%AE%97%E6%96%B9%E6%B3%95"><span class="toc-text">行列式的基本计算方法</span></a></li></ol></li></ol>
   </div>
 
 
@@ -198,7 +198,7 @@ ga('send', 'pageview');
 <div class="content content-post CENTER">
    <article id="post-线性代数复习笔记-行列式" class="article article-type-post" itemprop="blogPost">
   <header class="article-header">
-    <h1 class="post-title">线性代数复习笔记-行列式</h1>
+    <h1 class="post-title">线性代数复习笔记 - 行列式</h1>
 
     <div class="article-meta">
       <span>
@@ -236,165 +236,176 @@ ga('send', 'pageview');
 
   <div class="article-content">
     
-      <h1 id="行列式"><a href="#行列式" class="headerlink" title="行列式"></a>行列式</h1><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><h3 id="定义1-1"><a href="#定义1-1" class="headerlink" title="定义1.1"></a>定义1.1</h3><p>将n个不同元素排成一列，称为这n个元素的一个全排列，简称排列</p>
-<h3 id="定义1-2"><a href="#定义1-2" class="headerlink" title="定义1.2"></a>定义1.2</h3><p>对于n个不同的元素，先规定各元素之间有一个标准次序（例如n个 不同的自然数，可规定从小到大为标准次序），于是在这n个元素的任一排列中，当某两个元素的先后次序与标准次序不同时，就说有1个逆序。一个排列中所有逆序总数叫做这个排列的逆序数。逆序数个数记做$\tau(a_1, a_2, \cdots, a_n)$</p>
+      <h1>行列式</h1>
+<h2 id="定义">定义</h2>
+<h3 id="定义-1-1">定义 1.1</h3>
+<p>将 n 个不同元素排成一列，称为这 n 个元素的一个全排列，简称排列</p>
+<h3 id="定义-1-2">定义 1.2</h3>
+<p>对于 n 个不同的元素，先规定各元素之间有一个标准次序（例如 n 个 不同的自然数，可规定从小到大为标准次序），于是在这 n 个元素的任一排列中，当某两个元素的先后次序与标准次序不同时，就说有 1 个逆序。一个排列中所有逆序总数叫做这个排列的逆序数。逆序数个数记做 $\tau (a_1, a_2, \cdots, a_n)$</p>
 <p>逆序数为奇数的称为奇排列，偶数的成为偶排列。</p>
-<h3 id="定理1-1"><a href="#定理1-1" class="headerlink" title="定理1.1"></a>定理1.1</h3><p>一个排列中任意两个元素对换，排列改变奇偶性。</p>
-<a id="more"></a>
+<h3 id="定理-1-1">定理 1.1</h3>
+<p>一个排列中任意两个元素对换，排列改变奇偶性。</p>
+<h3 id="定义-1-3">定义 1.3</h3>
+<p>由 $n^2$ 个数排成 n 行 n 列的数表组成 $n$ 阶行列式</p>
+$ A = \left| \begin {array}{ccc} a_{11} & a_{12}  & \cdots & a_{1n} \\ a_{21} & a_{22} & \cdots & a_{2n} \\ \vdots & \vdots & & \vdots \\ a_{n1} & a_{n2} & \cdots & a_{nn} \end {array} \right| $
+<p>其值 $det (A) = \sum (-1)^{\tau (j_1, j_2 \cdots j_n)} a_{1 j_1} a_{2 j_2} \cdots a_{n j_n}$</p>
+<h2 id="性质">性质</h2>
+<h3 id="性质-1-1">性质 1.1</h3>
+<p>$D$ 的转置行列式为互换 D 的行与列，记做 $D^T$。</p>
+<h3 id="性质-1-2">性质 1.2</h3>
+<p>互换行列式的两行（列），行列式符号改变。</p>
+<h3 id="性质-1-3">性质 1.3</h3>
+<p>行列式某行（列）所有元素乘以 $k$，等于用数 $k$ 乘以改行列式。即</p>
 
-<h3 id="定义1-3"><a href="#定义1-3" class="headerlink" title="定义1.3"></a>定义1.3</h3><p>由$n^2$个数排成n行n列的数表组成$n$阶行列式</p>
-$ A = \left| \begin{array}{ccc} a_{11} & a_{12}  & \cdots & a_{1n} \\ a_{21} & a_{22} & \cdots & a_{2n} \\ \vdots & \vdots & & \vdots \\ a_{n1} & a_{n2} & \cdots & a_{nn} \end{array} \right| $
-
-<p>其值$det(A) = \sum (-1)^{\tau(j_1, j_2 \cdots j_n)} a_{1 j_1} a_{2 j_2} \cdots a_{n j_n}$</p>
-<h2 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h2><h3 id="性质1-1"><a href="#性质1-1" class="headerlink" title="性质1.1"></a>性质1.1</h3><p>$D$的转置行列式为互换D的行与列，记做$D^T$。</p>
-<h3 id="性质1-2"><a href="#性质1-2" class="headerlink" title="性质1.2"></a>性质1.2</h3><p>互换行列式的两行（列），行列式符号改变。</p>
-<h3 id="性质1-3"><a href="#性质1-3" class="headerlink" title="性质1.3"></a>性质1.3</h3><p>行列式某行（列）所有元素乘以$k$，等于用数$k$乘以改行列式。即</p>
-
-$$ \left| \begin{array}{ccc}
+$$ \left| \begin {array}{ccc}
  a_{11} & a_{12} & \cdots & a_{1n}\\
  \vdots & \vdots\ & & \vdots \\
    ka_{i1} & ka_{i2} & \cdots & ka_{in} \\
    \vdots & \vdots\ & & \vdots \\
-   a_{n1} & a_{n2} & \cdots & a_{nn} \end{array} \right| = k\left| \begin{array}{ccc}
+   a_{n1} & a_{n2} & \cdots & a_{nn} \end {array} \right| = k\left| \begin {array}{ccc}
    a_{11} & a_{12} & \cdots & a_{1n}\\
    \vdots & \vdots\ & & \vdots \\
    a_{i1} & a_{i2} & \cdots & a_{in} \\
    \vdots & \vdots\ & & \vdots \\
-   a_{n1} & a_{n2} & \cdots & a_{nn} \end{array} \right| $$
+   a_{n1} & a_{n2} & \cdots & a_{nn} \end {array} \right| $$
 
-
-<h3 id="性质1-4"><a href="#性质1-4" class="headerlink" title="性质1.4"></a>性质1.4</h3><p>行列式可按某一行（列）分解成两个行列式之和。即</p>
+<h3 id="性质-1-4">性质 1.4</h3>
+<p>行列式可按某一行（列）分解成两个行列式之和。即</p>
 
 $$
-\left| \begin{array}{ccc}
+\left| \begin {array}{ccc}
  a_{11} & a_{12} & \cdots & a_{1n}\\
  \vdots & \vdots\ & & \vdots \\
    a_{i1}+a_{i1}' & a_{i2}+a_{i2}' & \cdots & a_{in}+a_{in}' \\
 \vdots & \vdots\ & & \vdots \\
-   a_{n1} & a_{n2} & \cdots & a_{nn} \end{array} \right| =
-   \left| \begin{array}{ccc}
+   a_{n1} & a_{n2} & \cdots & a_{nn} \end {array} \right| =
+   \left| \begin {array}{ccc}
  a_{11} & a_{12} & \cdots & a_{1n}\\
  \vdots & \vdots\ & & \vdots \\
    a_{i1} & a_{i2} & \cdots & a_{in} \\
       \vdots & \vdots\ & & \vdots \\
-   a_{n1} & a_{n2} & \cdots & a_{nn} \end{array} \right|   +
-   \left| \begin{array}{ccc}
+   a_{n1} & a_{n2} & \cdots & a_{nn} \end {array} \right|   +
+   \left| \begin {array}{ccc}
  a_{11} & a_{12} & \cdots & a_{1n}\\
  \vdots & \vdots\ & & \vdots \\
    a_{i1}' & a_{i2}' & \cdots & a_{in}' \\
     \vdots & \vdots\ & & \vdots \\
-   a_{n1} & a_{n2} & \cdots & a_{nn} \end{array} \right|$$
+   a_{n1} & a_{n2} & \cdots & a_{nn} \end {array} \right|$$
 
+<h3 id="性质-1-5">性质 1.5</h3>
+<p>把行列式某一行（列）的各元素乘以同一数 $k$ 后，加到另一行（列）的对应元素上去，行列式的值不变。</p>
+<p>以数 $k$ 乘以行列式第 $j$ 行（列）在加到第 $i$ 行（列）上，记做 $r_i+k c_j ($c_i+k c_j)$。</p>
+<h3 id="性质-1-6">性质 1.6</h3>
 
-<h3 id="性质1-5"><a href="#性质1-5" class="headerlink" title="性质1.5"></a>性质1.5</h3><p>把行列式某一行（列）的各元素乘以同一数$k$后，加到另一行（列）的对应元素上去，行列式的值不变。</p>
-<p>以数$k$乘以行列式第$j$行（列）在加到第$i$行（列）上，记做$r_i+k c_j($c_i+k c_j)$。</p>
-<h3 id="性质1-6"><a href="#性质1-6" class="headerlink" title="性质1.6"></a>性质1.6</h3>
 $$
-D=\left| \begin{array}{ccc}
+D=\left| \begin {array}{ccc}
 a_{11} & \cdots & a_{1k} & & & \\
 \vdots & & \vdots & & \Huge0 & \\
 a_{k1} & \cdots & a_{kk} & & & \\
 c_{11} & \cdots & c_{1k} & b_{11} & \cdots & b_{1n} \\
 \vdots & & \vdots & \vdots & & \vdots \\
-c_{n1} & \cdots & c_{nk} & b_{n1} & \cdots & b_{nn} \end{array} \right|  =
-\left| \begin{array}{ccc}
+c_{n1} & \cdots & c_{nk} & b_{n1} & \cdots & b_{nn} \end {array} \right|  =
+\left| \begin {array}{ccc}
  A_k & O \\
-C & B_n \end{array} \right| = |A_k| |B_n|$$
-
+C & B_n \end {array} \right| = |A_k| |B_n|$$
 
 <p>行列式按行与列展开定理</p>
-<h3 id="定义1-4"><a href="#定义1-4" class="headerlink" title="定义1.4"></a>定义1.4</h3><p>在$n$阶行列式$det(a_{ij})$中，划去$a_{ij}$所在的行和列元素，剩下的元素组成的$n-1$阶行列式成为元素$a_{ij}$的余子式，记做$M_{ij}$，并称$A_{ij}=(-1)^{i+j} M_{i+j}$为元素$a_{ij}$的代数余子式。</p>
-<h3 id="引理1-1"><a href="#引理1-1" class="headerlink" title="引理1.1"></a>引理1.1</h3><p>在行列式$D$中，如果其中第$i$行（列）元素除$a_{ij}$外全部为0，那么$D=a_{ij} A_{ij}$。</p>
-<h3 id="定理1-2"><a href="#定理1-2" class="headerlink" title="定理1.2"></a>定理1.2</h3><p>$n$阶行列式$D=det(a_{ij})$等于它的任一行（列）的各元素与其对应的代数余子式乘积之和，即</p>
+<h3 id="定义-1-4">定义 1.4</h3>
+<p>在 $n$ 阶行列式 $det (a_{ij})$ 中，划去 $a_{ij}$ 所在的行和列元素，剩下的元素组成的 $n-1$ 阶行列式成为元素 $a_{ij}$ 的余子式，记做 $M_{ij}$，并称 $A_{ij}=(-1)^{i+j} M_{i+j}$ 为元素 $a_{ij}$ 的代数余子式。</p>
+<h3 id="引理-1-1">引理 1.1</h3>
+<p>在行列式 $D$ 中，如果其中第 $i$ 行（列）元素除 $a_{ij}$ 外全部为 0，那么 $D=a_{ij} A_{ij}$。</p>
+<h3 id="定理-1-2">定理 1.2</h3>
+<p>$n$ 阶行列式 $D=det (a_{ij})$ 等于它的任一行（列）的各元素与其对应的代数余子式乘积之和，即</p>
 
 $$
 $D=a_{i1} A_{i1} + a_{i2} A_{i2} + \cdots + a_{in} A_{in}, i=1, 2, \cdots, n$$
-
 
 <p>或</p>
 $
 $D=a_{1j} A_{1j} + a_{2j} A_{2j} + \cdots + a_{nj} A_{nj}, j=1, 2, \cdots, n$$
 
+<h3 id="范德蒙德行列式">范德蒙德行列式</h3>
 
-<h3 id="范德蒙德行列式"><a href="#范德蒙德行列式" class="headerlink" title="范德蒙德行列式"></a>范德蒙德行列式</h3>
 $$
-D_n = \left| \begin{array}{ccc}
+D_n = \left| \begin {array}{ccc}
 1 & 1 & cdots & 1 \\
  a_1 & a_2 & cdots & a_n \\
  a_1^2 & a_2^2 \cdots & a_n^2 \\
 \vdots & \vdots & & \ vdots \\
-a_1^{n-1} & a_2^{n-1} & \cdots & a_n^{n-1} \end{array} \right| =
+a_1^{n-1} & a_2^{n-1} & \cdots & a_n^{n-1} \end {array} \right| =
 \prod_{1 \leq i \leq j \leq n} (a_j - a_i)$$
 
-
 <p>推论</p>
-<pre><code>    行列式任一行（列）的元素与另一行（列）对应元素的代数余子式乘积之和等于零，即</code></pre>
+<pre><code>    行列式任一行（列）的元素与另一行（列）对应元素的代数余子式乘积之和等于零，即
+</code></pre>
 $a_{i1} A_{j1} + a_{i2} A_{j2} + \cdots + a_{in} A_{jn} = 0, i \neq j$
-
 <p>或</p>
 $a_{1i} A_{1j} + a_{2i} A_{2j} + \cdots + a_{ni} A_{nj} = 0, i \neq j$
-
-<h3 id="克莱姆法则"><a href="#克莱姆法则" class="headerlink" title="克莱姆法则"></a>克莱姆法则</h3><p>含有$n$个未知数$x_1, x_2, \cdots, x_n$组成的方程组，</p>
+<h3 id="克莱姆法则">克莱姆法则</h3>
+<p>含有 $n$ 个未知数 $x_1, x_2, \cdots, x_n$ 组成的方程组，</p>
 
 $$
-\left\{ \begin{aligned}
+\left\{ \begin {aligned}
 a_{11} x_1+a_{12} x_2+\cdots+a_{1n} x_n=b_1 \\
 a_{21} x_1+a_{22} x_2+\cdots+a_{nn} x_n=b_2 \\
 \cdots  \cdots  \\
-a_{n1} x_1+a_{n2} x_2+\cdots+a_{nn} x_n=b_n\end{aligned} \right.$$
+a_{n1} x_1+a_{n2} x_2+\cdots+a_{nn} x_n=b_n\end {aligned} \right.$$
 
-
-<p>当方程组右端常数项$b_1, b_2, \cdots, b_n$不全为零时，称为非奇次线性方程组。</p>
-<h3 id="定理1-3"><a href="#定理1-3" class="headerlink" title="定理1.3"></a>定理1.3</h3><p>如果线性方程组的系数行列式</p>
+<p>当方程组右端常数项 $b_1, b_2, \cdots, b_n$ 不全为零时，称为非奇次线性方程组。</p>
+<h3 id="定理-1-3">定理 1.3</h3>
+<p>如果线性方程组的系数行列式</p>
 
 $$
-D=\left| \begin{array}{ccc}
+D=\left| \begin {array}{ccc}
 a_{11} & a_{12} & \cdots & a_{1n} \\
 a_{21} & a_{22} & \cdots & a_{2n} \\
 \vdots & \vdots & & \vdots \\
-a_{n1} & a_{n2} & \cdots & a_{nn} \end{array} \right| \neq 0$$
+a_{n1} & a_{n2} & \cdots & a_{nn} \end {array} \right| \neq 0$$
 
-
-<p>则方程组有唯一解，且$x_j = \frac{D_j} {D}, j=1, 2, \cdots, n$</p>
-<p>其中$D_j$是把系数行列式第$j$列用方程组右端常数项替换后所得。</p>
-<h4 id="定理1-3’"><a href="#定理1-3’" class="headerlink" title="定理1.3’"></a>定理1.3’</h4><p>如果线性方程组无解或者有两个不同的解，则其系数行列式必为零。</p>
-<h3 id="定理1-4"><a href="#定理1-4" class="headerlink" title="定理1.4"></a>定理1.4</h3><p>如果奇次线性方程组</p>
+<p>则方程组有唯一解，且 $x_j = \frac {D_j} {D}, j=1, 2, \cdots, n$</p>
+<p>其中 $D_j$ 是把系数行列式第 $j$ 列用方程组右端常数项替换后所得。</p>
+<h4 id="定理-1-3’">定理 1.3’</h4>
+<p>如果线性方程组无解或者有两个不同的解，则其系数行列式必为零。</p>
+<h3 id="定理-1-4">定理 1.4</h3>
+<p>如果奇次线性方程组</p>
 
 $$
-\left\{ \begin{aligned}
+\left\{ \begin {aligned}
 a_{11} x_1+a_{12} x_2+\cdots+a_{1n} x_n=0 \\
 a_{21} x_1+a_{22} x_2+\cdots+a_{nn} x_n=0 \\
 \cdots  \cdots  \\
-a_{n1} x_1+a_{n2} x_2+\cdots+a_{nn} x_n=0\end{aligned} \right.$$
+a_{n1} x_1+a_{n2} x_2+\cdots+a_{nn} x_n=0\end {aligned} \right.$$
 
+<p>的系数行列式 $D \neq 0$，则方程组只有零解。</p>
+<h4 id="定理-1-4’">定理 1.4’</h4>
+<p>如果奇次线性方程组有非零解，则它的系数行列式必为零。</p>
+<h2 id="一些特殊行列式的计算公式">一些特殊行列式的计算公式</h2>
+<h3 id="上（下）三角行列式">上（下）三角行列式</h3>
 
-<p>的系数行列式$D \neq 0$，则方程组只有零解。</p>
-<h4 id="定理1-4’"><a href="#定理1-4’" class="headerlink" title="定理1.4’"></a>定理1.4’</h4><p>如果奇次线性方程组有非零解，则它的系数行列式必为零。</p>
-<h2 id="一些特殊行列式的计算公式"><a href="#一些特殊行列式的计算公式" class="headerlink" title="一些特殊行列式的计算公式"></a>一些特殊行列式的计算公式</h2><h3 id="上（下）三角行列式"><a href="#上（下）三角行列式" class="headerlink" title="上（下）三角行列式"></a>上（下）三角行列式</h3>
 $$
-D=\left| \begin{array}{ccc}
+D=\left| \begin {array}{ccc}
 a_{11} & a_{12} & \cdots & a_{1n} \\
  & a_{22} & \cdots & a_{2n} \\
 & & \ddots & \vdots \\
- &\Huge0 & & a_{nn} \end{array} \right| =
-\left| \begin{array}{ccc}
+ &\Huge0 & & a_{nn} \end {array} \right| =
+\left| \begin {array}{ccc}
 a_{11} & &  \Huge0 & \\
 a_{21} & a_{22} &  &  \\
 \vdots & \vdots & \ddots &  \\
-a_{n1} & a_{n2}& \cdots & a_{nn} \end{array} \right| = a_{11} a_{22} \cdots a_{nn}$$
+a_{n1} & a_{n2}& \cdots & a_{nn} \end {array} \right| = a_{11} a_{22} \cdots a_{nn}$$
 
+<h3 id="副对角下（上）的元素全为-0-的行列式。">副对角下（上）的元素全为 0 的行列式。</h3>
 
-<h3 id="副对角下（上）的元素全为0的行列式。"><a href="#副对角下（上）的元素全为0的行列式。" class="headerlink" title="副对角下（上）的元素全为0的行列式。"></a>副对角下（上）的元素全为0的行列式。</h3>
 $$
-\left| \begin{array}{ccc}
+\left| \begin {array}{ccc}
 a_{11} & a_{12} & \cdots & a_{1n} \\
 a_{21} & \cdots & a_{2, n-1} & \\
 \vdots & \iddots & & \\
- a_{n1} & & \Huge0 & \end{array} \right| =
-(-1)^{\frac{n(n-1)}{2}}  a_{1n} a_{2, n-1} \cdots a_{n1}$$
+ a_{n1} & & \Huge0 & \end {array} \right| =
+(-1)^{\frac {n (n-1)}{2}}  a_{1n} a_{2, n-1} \cdots a_{n1}$$
 
-
-<h2 id="行列式的基本计算方法"><a href="#行列式的基本计算方法" class="headerlink" title="行列式的基本计算方法"></a>行列式的基本计算方法</h2><p>用行列式的定义和性质计算</p>
+<h2 id="行列式的基本计算方法">行列式的基本计算方法</h2>
+<p>用行列式的定义和性质计算</p>
 <p>用行列式的展开定理进行降阶或升阶计算</p>
 <p>化成上（下）三角行列式进行计算</p>
 <p>利用递推关系法或者数学归纳法计算</p>
@@ -408,7 +419,7 @@ a_{21} & \cdots & a_{2, n-1} & \\
    
        <div class="original">
     <ul>
-        <li>本文标题：线性代数复习笔记-行列式</li>
+        <li>本文标题：线性代数复习笔记 - 行列式</li>
         <li>本文字数：1.5k</li>
         <li>本文作者：Netcan</li>
         <li>发布时间：2015年09月24日 - 19时55分</li>
@@ -645,6 +656,6 @@ gitalk.render('gitalk-container')
             all[i].SourceElement().parentNode.className += ' has-jax';
     });
 </script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </body>
 </html>

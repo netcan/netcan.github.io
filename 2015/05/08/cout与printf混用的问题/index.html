@@ -5,9 +5,9 @@
 
 
 <head>
-  <meta charset="utf-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
-  <title>cout与printf混用的问题 | Netcan on Programming</title>
+  <title>cout 与 printf 混用的问题 | Netcan on Programming</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -15,12 +15,12 @@
     <meta name="keywords" content="C/C++," />
   
 
-  <meta name="description" content="前几天做一道题目的时候因为混用了iostream和stdio导致一直WA而查不出来。。 今天看了一下课件发现cout与printf混用会导致输出顺序问题。。 下面做个实验。。 int main() &amp;#123;     cout &lt;&lt; &quot;Net&quot;;     printf(&quot;Can\n&quot;);     return 0; &amp;#125; 输出 NetC">
+  <meta name="description" content="前几天做一道题目的时候因为混用了 iostream 和 stdio 导致一直 WA 而查不出来。。 今天看了一下课件发现 cout 与 printf 混用会导致输出顺序问题。。 下面做个实验。。 int main () &amp;#123; 	cout &lt;&lt; &quot;Net&quot;; 	printf (&quot;Can\n&quot;); 	return 0; &amp;#125;  输出">
 <meta property="og:type" content="article">
-<meta property="og:title" content="cout与printf混用的问题">
+<meta property="og:title" content="cout 与 printf 混用的问题">
 <meta property="og:url" content="https://netcan.github.io/2015/05/08/cout%E4%B8%8Eprintf%E6%B7%B7%E7%94%A8%E7%9A%84%E9%97%AE%E9%A2%98/index.html">
 <meta property="og:site_name" content="Netcan on Programming">
-<meta property="og:description" content="前几天做一道题目的时候因为混用了iostream和stdio导致一直WA而查不出来。。 今天看了一下课件发现cout与printf混用会导致输出顺序问题。。 下面做个实验。。 int main() &amp;#123;     cout &lt;&lt; &quot;Net&quot;;     printf(&quot;Can\n&quot;);     return 0; &amp;#125; 输出 NetC">
+<meta property="og:description" content="前几天做一道题目的时候因为混用了 iostream 和 stdio 导致一直 WA 而查不出来。。 今天看了一下课件发现 cout 与 printf 混用会导致输出顺序问题。。 下面做个实验。。 int main () &amp;#123; 	cout &lt;&lt; &quot;Net&quot;; 	printf (&quot;Can\n&quot;); 	return 0; &amp;#125;  输出">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2015-05-08T05:17:52.000Z">
 <meta property="article:modified_time" content="2015-05-08T05:17:52.000Z">
@@ -93,14 +93,14 @@ ga('send', 'pageview');
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
   
 
-<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body>
 
 
   
-    <span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
   
 
   <link rel="stylesheet" href="/css/prism.css">
@@ -193,7 +193,7 @@ ga('send', 'pageview');
 <div class="content content-post CENTER">
    <article id="post-cout与printf混用的问题" class="article article-type-post" itemprop="blogPost">
   <header class="article-header">
-    <h1 class="post-title">cout与printf混用的问题</h1>
+    <h1 class="post-title">cout 与 printf 混用的问题</h1>
 
     <div class="article-meta">
       <span>
@@ -231,41 +231,45 @@ ga('send', 'pageview');
 
   <div class="article-content">
     
-      <p>前几天做一道题目的时候因为混用了iostream和stdio导致一直WA而查不出来。。</p>
-<p>今天看了一下课件发现cout与printf混用会导致输出顺序问题。。</p>
+      <p>前几天做一道题目的时候因为混用了 iostream 和 stdio 导致一直 WA 而查不出来。。</p>
+<p>今天看了一下课件发现 cout 与 printf 混用会导致输出顺序问题。。</p>
 <p>下面做个实验。。</p>
-<pre><code>int main()
+<pre><code>int main ()
 &#123;
-    cout &lt;&lt; &quot;Net&quot;;
-    printf(&quot;Can\n&quot;);
-    return 0;
-&#125;</code></pre>
+	cout &lt;&lt; &quot;Net&quot;;
+	printf (&quot;Can\n&quot;);
+	return 0;
+&#125;
+</code></pre>
 <p>输出</p>
-<pre><code>NetCan</code></pre>
-<a id="more"></a>
-<p>没问题。我上次为了加快cin/cout速度，关闭了同步stdio导致出错，现在试试</p>
-<pre><code>int main()
+<pre><code>NetCan
+</code></pre>
+<p>没问题。我上次为了加快 cin/cout 速度，关闭了同步 stdio 导致出错，现在试试</p>
+<pre><code>int main ()
 &#123;
-    ios::sync_with_stdio(false); // 关闭同步
-    cout &lt;&lt; &quot;Net&quot;;
-    printf(&quot;Can\n&quot;);
-    return 0;
-&#125;</code></pre>
+	ios::sync_with_stdio (false); // 关闭同步
+	cout &lt;&lt; &quot;Net&quot;;
+	printf (&quot;Can\n&quot;);
+	return 0;
+&#125;
+</code></pre>
 <p>输出</p>
 <pre><code>Can
-Net</code></pre>
+Net
+</code></pre>
 <p>顺序发生了变化。。</p>
-<p>sync_with_stdio()是在<ios_base>中定义的，当其接受true作为参数时，将会同步iostream与stdio中的流操作。默认是true，因此第一个程序的结果是正确的。然而，尽管C++标准中规定stdio sync标志默认是true，不同平台下的不同编译器可能并不完全支持这个标准。</p>
+<p>sync_with_stdio () 是在 &lt; ios_base &gt; 中定义的，当其接受 true 作为参数时，将会同步 iostream 与 stdio 中的流操作。默认是 true，因此第一个程序的结果是正确的。然而，尽管 C++ 标准中规定 stdio sync 标志默认是 true，不同平台下的不同编译器可能并不完全支持这个标准。</p>
 <p>下面改一下，</p>
-<pre><code>int main()
+<pre><code>int main ()
 &#123;
-    ios::sync_with_stdio(false);
-    cout &lt;&lt; &quot;Net&quot; &lt;&lt; flush;
-    printf(&quot;Can\n&quot;);
-    return 0;
-&#125;</code></pre>
+	ios::sync_with_stdio (false);
+	cout &lt;&lt; &quot;Net&quot; &lt;&lt; flush;
+	printf (&quot;Can\n&quot;);
+	return 0;
+&#125;
+</code></pre>
 <p>输出结果正确。</p>
-<p>因为flush强制清空了缓冲区，将其中的内容输出。</p>
+<p>因为 flush 强制清空了缓冲区，将其中的内容输出。</p>
 
     
   </div>
@@ -276,8 +280,8 @@ Net</code></pre>
    
        <div class="original">
     <ul>
-        <li>本文标题：cout与printf混用的问题</li>
-        <li>本文字数：278</li>
+        <li>本文标题：cout 与 printf 混用的问题</li>
+        <li>本文字数：286</li>
         <li>本文作者：Netcan</li>
         <li>发布时间：2015年05月08日 - 13时17分</li>
         <li>最后更新：2015年05月08日 - 13时17分</li>
@@ -513,6 +517,6 @@ gitalk.render('gitalk-container')
             all[i].SourceElement().parentNode.className += ' has-jax';
     });
 </script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </body>
 </html>

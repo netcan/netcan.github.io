@@ -5,7 +5,7 @@
 
 
 <head>
-  <meta charset="utf-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
   <title>从头开始实现一个线性代数库：算法实现篇 | Netcan on Programming</title>
 
@@ -15,15 +15,15 @@
     <meta name="keywords" content="C/C++,数学,线性代数," />
   
 
-  <meta name="description" content="最近重新学习了一下线性代数，读完了《程序猿的数学3 线性代数》，为深刻理解内容，打算实现一个矩阵库，并写Python模块。计划涉及如下部分：  向量内积 矩阵乘法 LU分解 线性方程组求解 行列式计算 逆矩阵 实对称矩阵Jocobi方法（求解特征值） QR分解  目前项目地址：https:&#x2F;&#x2F;github.com&#x2F;netcan&#x2F;LinAlg 关于Python模块的实现，可以参考我的这一篇文章：从头">
+  <meta name="description" content="最近重新学习了一下线性代数，读完了《程序猿的数学 3 线性代数》，为深刻理解内容，打算实现一个矩阵库，并写 Python 模块。计划涉及如下部分：  ~~ 向量内积～～ ~~ 矩阵乘法～～ ~~LU 分解～～ ~~ 线性方程组求解～～ ~~ 行列式计算～～ ~~ 逆矩阵～～ ~~ 实对称矩阵 Jocobi 方法（求解特征值）~~ QR 分解  目前项目地址：https:&#x2F;&#x2F;github.com&#x2F;n">
 <meta property="og:type" content="article">
 <meta property="og:title" content="从头开始实现一个线性代数库：算法实现篇">
 <meta property="og:url" content="https://netcan.github.io/2018/05/27/%E4%BB%8E%E5%A4%B4%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E5%BA%93%EF%BC%9A%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0%E7%AF%87/index.html">
 <meta property="og:site_name" content="Netcan on Programming">
-<meta property="og:description" content="最近重新学习了一下线性代数，读完了《程序猿的数学3 线性代数》，为深刻理解内容，打算实现一个矩阵库，并写Python模块。计划涉及如下部分：  向量内积 矩阵乘法 LU分解 线性方程组求解 行列式计算 逆矩阵 实对称矩阵Jocobi方法（求解特征值） QR分解  目前项目地址：https:&#x2F;&#x2F;github.com&#x2F;netcan&#x2F;LinAlg 关于Python模块的实现，可以参考我的这一篇文章：从头">
+<meta property="og:description" content="最近重新学习了一下线性代数，读完了《程序猿的数学 3 线性代数》，为深刻理解内容，打算实现一个矩阵库，并写 Python 模块。计划涉及如下部分：  ~~ 向量内积～～ ~~ 矩阵乘法～～ ~~LU 分解～～ ~~ 线性方程组求解～～ ~~ 行列式计算～～ ~~ 逆矩阵～～ ~~ 实对称矩阵 Jocobi 方法（求解特征值）~~ QR 分解  目前项目地址：https:&#x2F;&#x2F;github.com&#x2F;n">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2018-05-27T01:51:59.000Z">
-<meta property="article:modified_time" content="2018-05-30T02:58:45.575Z">
+<meta property="article:modified_time" content="2020-08-09T01:01:02.178Z">
 <meta property="article:author" content="Netcan">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="数学">
@@ -95,14 +95,14 @@ ga('send', 'pageview');
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
   
 
-<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body>
 
 
   
-    <span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
   
 
   <link rel="stylesheet" href="/css/prism.css">
@@ -192,7 +192,47 @@ ga('send', 'pageview');
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="toc-text">实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LU%E5%88%86%E8%A7%A3"><span class="toc-text">LU分解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E8%A7%A3%E6%96%B9%E6%B3%95%EF%BC%9A"><span class="toc-text">分解方法：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A1%8C%E5%88%97%E5%BC%8F%E8%AE%A1%E7%AE%97"><span class="toc-text">行列式计算</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B1%82%E8%A7%A3%E7%BA%BF%E6%80%A7%E6%96%B9%E7%A8%8B%E7%BB%84-Ax-y"><span class="toc-text">求解线性方程组$Ax&#x3D;y$</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B1%82%E8%A7%A3%E9%80%86%E7%9F%A9%E9%98%B5"><span class="toc-text">求解逆矩阵</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%94%A8Jacobi%E7%AE%97%E6%B3%95%E6%B1%82%E8%A7%A3%E5%AE%9E%E5%AF%B9%E7%A7%B0%E7%9F%A9%E9%98%B5%E7%89%B9%E5%BE%81%E5%80%BC"><span class="toc-text">利用Jacobi算法求解实对称矩阵特征值</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="toc-text">实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LU-%E5%88%86%E8%A7%A3"><span class="toc-text">LU 分解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E8%A7%A3%E6%96%B9%E6%B3%95%EF%BC%9A"><span class="toc-text">分解方法：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A1%8C%E5%88%97%E5%BC%8F%E8%AE%A1%E7%AE%97"><span class="toc-text">行列式计算</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B1%82%E8%A7%A3%E7%BA%BF%E6%80%A7%E6%96%B9%E7%A8%8B%E7%BB%84-Ax-y"><span class="toc-text">求解线性方程组 $Ax&#x3D;y$</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">对 $A$ 进行 $A&#x3D;PLU$ 分解后，有
+
+$$
+
+Ax &#x3D; LUx &#x3D; L (Ux) &#x3D; Lz &#x3D; y\\
+
+Lz &#x3D; \left (
+
+\begin {matrix}
+
+1 &amp;   &amp;   &amp;  \\
+
+a_{21} &amp; 1 &amp;  &amp; \\
+
+a_{31} &amp; a_{32} &amp; 1 &amp;  \\
+
+a_{41} &amp; a_{42} &amp; a_{43}  &amp; 1\\
+
+\end {matrix}
+
+\right)
+
+\left (\begin {matrix} z_1\\z_2\\z_3\\z_4\end {matrix}\right)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">\left (\begin {matrix} y_1\\y_2\\y_3\\y_4\end {matrix}\right) &#x3D; y\\
+
+Ux &#x3D; \left (
+
+\begin {matrix}
+
+a_{11} &amp; a_{12} &amp; a_{13} &amp; a_{14} \\
+
+&amp; a_{22} &amp; a_{23} &amp; a_{24}\\
+
+&amp;  &amp; a_{33} &amp; a_{34} \\
+
+&amp;  &amp;  &amp;a_{44}\\
+
+\end {matrix}
+
+\right)
+
+\left (\begin {matrix} x_1\\x_2\\x_3\\x_4\end {matrix}\right)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B1%82%E8%A7%A3%E9%80%86%E7%9F%A9%E9%98%B5"><span class="toc-text">求解逆矩阵</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%94%A8-Jacobi-%E7%AE%97%E6%B3%95%E6%B1%82%E8%A7%A3%E5%AE%9E%E5%AF%B9%E7%A7%B0%E7%9F%A9%E9%98%B5%E7%89%B9%E5%BE%81%E5%80%BC"><span class="toc-text">利用 Jacobi 算法求解实对称矩阵特征值</span></a></li></ol>
   </div>
 
 
@@ -238,183 +278,331 @@ ga('send', 'pageview');
 
   <div class="article-content">
     
-      <p>最近重新学习了一下线性代数，读完了《程序猿的数学3 线性代数》，为深刻理解内容，打算实现一个矩阵库，并写Python模块。计划涉及如下部分：</p>
+      <p>最近重新学习了一下线性代数，读完了《程序猿的数学 3 线性代数》，为深刻理解内容，打算实现一个矩阵库，并写 Python 模块。计划涉及如下部分：</p>
 <ul>
-<li><del>向量内积</del></li>
-<li><del>矩阵乘法</del></li>
-<li><del>LU分解</del></li>
-<li><del>线性方程组求解</del></li>
-<li><del>行列式计算</del></li>
-<li><del>逆矩阵</del></li>
-<li><del>实对称矩阵Jocobi方法（求解特征值）</del></li>
-<li>QR分解</li>
+<li>~~ 向量内积～～</li>
+<li>~~ 矩阵乘法～～</li>
+<li>~~LU 分解～～</li>
+<li>~~ 线性方程组求解～～</li>
+<li>~~ 行列式计算～～</li>
+<li>~~ 逆矩阵～～</li>
+<li>~~ 实对称矩阵 Jocobi 方法（求解特征值）~~</li>
+<li>QR 分解</li>
 </ul>
 <p>目前项目地址：<a target="_blank" rel="noopener" href="https://github.com/netcan/LinAlg">https://github.com/netcan/LinAlg</a></p>
-<p>关于Python模块的实现，可以参考我的这一篇文章：<a target="_blank" rel="noopener" href="http://www.netcan666.com/2018/05/29/%E4%BB%8E%E5%A4%B4%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E5%BA%93%EF%BC%9APython%E6%A8%A1%E5%9D%97%E7%AF%87/">从头开始实现一个线性代数库：Python模块篇</a></p>
-<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>内部统一采用double数据类型。</p>
-<h2 id="LU分解"><a href="#LU分解" class="headerlink" title="LU分解"></a>LU分解</h2><p>LU分解将矩阵A分解为两个矩阵的乘积$A=LU$，其中$L$为下三角矩阵，而$U$为上三角矩阵，$LU$的形式如下，实现的时候采用一个矩阵来存储$LU$的结果。<br>$$<br>L = \left(<br>\begin{matrix}<br>1 &amp; 0 &amp; 0\\<br>x &amp; 1 &amp; 0\\<br>x &amp; x &amp; 1\end{matrix}<br>\right)<br>U = \left(<br>\begin{matrix}<br>x &amp; x &amp; x &amp; x\\<br>0 &amp; x &amp; x &amp; x\\<br>0 &amp; 0 &amp; x &amp; x\end{matrix}<br>\right)<br>$$</p>
-<p>LU分解可用来方便的求解线性方程组、行列式的值以及逆矩阵。</p>
-<h3 id="分解方法："><a href="#分解方法：" class="headerlink" title="分解方法："></a>分解方法：</h3><p>将L, U改写成分块矩阵的形式：<br>$$<br>L = (l_1, \cdots, l_s), U = \left(\begin{matrix}u_1^T\\\vdots\\u_s^T\end{matrix}\right)<br>$$<br>有<br>$$<br>A = l_1u_1^t + \cdots + l_su_s^T<br>$$</p>
-<p>对$A\equiv A(1)=(a_{ij}(1))$，令<br>$$<br>l_1 = \dfrac{1}{a_{11}(1)}\left(\begin{matrix}a_{11}(1)\\\vdots\\a_{m1}(1)\end{matrix}\right) \quad<br>u_1^t = (a_{11}(1), \cdots, a_{1n}(1))<br>$$</p>
-<p>则<br>$$<br>A(1) -l_1u_1^T =<br>\left(<br>\begin{array}{c|ccc}<br>0 &amp; 0 &amp; \cdots &amp; 0 \\ \hline<br>0 &amp;  &amp;  &amp;  \\<br>\vdots &amp;  &amp; A(2) &amp;  \\<br>0 &amp;  &amp;  &amp; \\<br>\end{array}<br>\right)<br>$$<br>即<br>$$<br>A(1)  = l_1u_1^T +<br>\left(<br>\begin{array}{c|ccc}<br>0 &amp; 0 &amp; \cdots &amp; 0 \\ \hline<br>0 &amp;  &amp;  &amp;  \\<br>\vdots &amp;  &amp; A(2) &amp;  \\<br>0 &amp;  &amp;  &amp; \\<br>\end{array}<br>\right)<br>$$</p>
-<p>对$A(s), s = 2, 3,\cdots$进行和$A(1)$一样的操作，最终得到零矩阵分解完毕可以得到$L$, $U$。</p>
+<p>关于 Python 模块的实现，可以参考我的这一篇文章：[从头开始实现一个线性代数库：Python 模块篇](<a target="_blank" rel="noopener" href="http://www.netcan666.com/2018/05/29/%25">http://www.netcan666.com/2018/05/29/%</a> E4% BB%8E% E5% A4% B4% E5% BC%80% E5% A7%8B% E5% AE%9E% E7%8E% B0% E4% B8%80% E4% B8% AA% E7% BA% BF% E6%80% A7% E4% BB% A3% E6%95% B0% E5% BA%93% EF% BC%9APython% E6% A8% A1% E5%9D%97% E7% AF%87/)</p>
+<h2 id="实现">实现</h2>
+<p>内部统一采用 double 数据类型。</p>
+<h2 id="LU-分解">LU 分解</h2>
+<p>LU 分解将矩阵 A 分解为两个矩阵的乘积 $A=LU$，其中 $L$ 为下三角矩阵，而 $U$ 为上三角矩阵，$LU$ 的形式如下，实现的时候采用一个矩阵来存储 $LU$ 的结果。<br>
+$$<br>
+L = \left (<br>
+\begin {matrix}<br>
+1 &amp; 0 &amp; 0\\<br>
+x &amp; 1 &amp; 0\\<br>
+x &amp; x &amp; 1\end {matrix}<br>
+\right)<br>
+U = \left (<br>
+\begin {matrix}<br>
+x &amp; x &amp; x &amp; x\\<br>
+0 &amp; x &amp; x &amp; x\\<br>
+0 &amp; 0 &amp; x &amp; x\end {matrix}<br>
+\right)<br>
+$$</p>
+<p>LU 分解可用来方便的求解线性方程组、行列式的值以及逆矩阵。</p>
+<h3 id="分解方法：">分解方法：</h3>
+<p>将 L, U 改写成分块矩阵的形式：<br>
+$$<br>
+L = (l_1, \cdots, l_s), U = \left (\begin {matrix} u_1^T\\\vdots\\u_s^T\end {matrix}\right)<br>
+$$<br>
+有<br>
+$$<br>
+A = l_1u_1^t + \cdots + l_su_s^T<br>
+$$</p>
+<p>对 $A\equiv A (1)=(a_{ij}(1))$，令<br>
+$$<br>
+l_1 = \dfrac {1}{a_{11}(1)}\left (\begin {matrix} a_{11}(1)\\\vdots\\a_{m1}(1)\end {matrix}\right) \quad<br>
+u_1^t = (a_{11}(1), \cdots, a_{1n}(1))<br>
+$$</p>
+<p>则<br>
+$$<br>
+A (1) -l_1u_1^T =<br>
+\left (<br>
+\begin {array}{c|ccc}<br>
+0 &amp; 0 &amp; \cdots &amp; 0 \\ \hline<br>
+0 &amp;  &amp;  &amp;  \\<br>
+\vdots &amp;  &amp; A (2) &amp;  \\<br>
+0 &amp;  &amp;  &amp; \\<br>
+\end {array}<br>
+\right)<br>
+$$<br>
+即<br>
+$$<br>
+A (1)  = l_1u_1^T +<br>
+\left (<br>
+\begin {array}{c|ccc}<br>
+0 &amp; 0 &amp; \cdots &amp; 0 \\ \hline<br>
+0 &amp;  &amp;  &amp;  \\<br>
+\vdots &amp;  &amp; A (2) &amp;  \\<br>
+0 &amp;  &amp;  &amp; \\<br>
+\end {array}<br>
+\right)<br>
+$$</p>
+<p>对 $A (s), s = 2, 3,\cdots$ 进行和 $A (1)$ 一样的操作，最终得到零矩阵分解完毕可以得到 $L$, $U$。</p>
 <p>核心代码如下：</p>
 <pre class="language-cpp" data-language="cpp"><code class="language-cpp">Matrix <span class="token class-name">Matrix</span><span class="token operator">::</span><span class="token function">LUdecomp</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">const</span> <span class="token punctuation">&#123;</span>
-    Matrix <span class="token function">LU</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 最终结果存放到一个矩阵中</span>
-    size_t s <span class="token operator">=</span> std<span class="token operator">::</span><span class="token function">min</span><span class="token punctuation">(</span><span class="token function">getRowSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">getColSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">for</span><span class="token punctuation">(</span>size_t k <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> k <span class="token operator">&lt;</span> s<span class="token punctuation">;</span> <span class="token operator">++</span>k<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">double</span> x <span class="token operator">=</span> <span class="token number">1.0</span> <span class="token operator">/</span> LU<span class="token punctuation">.</span>data<span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token punctuation">;</span>
-        <span class="token comment">// l1 = 1/a_&#123;11&#125; * ...</span>
-        <span class="token keyword">for</span><span class="token punctuation">(</span>size_t i <span class="token operator">=</span> k <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token function">getRowSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span>
-            LU<span class="token punctuation">.</span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>k<span class="token punctuation">]</span> <span class="token operator">*=</span> x<span class="token punctuation">;</span>
-        <span class="token comment">// A -= lu^t,</span>
-        <span class="token keyword">for</span><span class="token punctuation">(</span>size_t i <span class="token operator">=</span> k <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token function">getRowSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span>
-            <span class="token keyword">for</span><span class="token punctuation">(</span>size_t j <span class="token operator">=</span> k <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span> j <span class="token operator">&lt;</span> <span class="token function">getColSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">++</span>j<span class="token punctuation">)</span>
-                LU<span class="token punctuation">.</span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">-=</span> LU<span class="token punctuation">.</span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>k<span class="token punctuation">]</span> <span class="token operator">*</span> LU<span class="token punctuation">.</span>data<span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-    <span class="token keyword">return</span> LU<span class="token punctuation">;</span>
+	Matrix <span class="token function">LU</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 最终结果存放到一个矩阵中 </span>
+	size_t s <span class="token operator">=</span> std<span class="token operator">::</span><span class="token function">min</span><span class="token punctuation">(</span><span class="token function">getRowSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">getColSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">for</span><span class="token punctuation">(</span>size_t k <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> k <span class="token operator">&lt;</span> s<span class="token punctuation">;</span> <span class="token operator">++</span>k<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token keyword">double</span> x <span class="token operator">=</span> <span class="token number">1.0</span> <span class="token operator">/</span> LU<span class="token punctuation">.</span>data<span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token punctuation">;</span>
+		<span class="token comment">//l1 = 1/a_&#123;11&#125; * ...</span>
+		<span class="token keyword">for</span><span class="token punctuation">(</span>size_t i <span class="token operator">=</span> k <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token function">getRowSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span>
+			LU<span class="token punctuation">.</span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>k<span class="token punctuation">]</span> <span class="token operator">*=</span> x<span class="token punctuation">;</span>
+		<span class="token comment">// A -= lu^t,</span>
+		<span class="token keyword">for</span><span class="token punctuation">(</span>size_t i <span class="token operator">=</span> k <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token function">getRowSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span>
+			<span class="token keyword">for</span><span class="token punctuation">(</span>size_t j <span class="token operator">=</span> k <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span> j <span class="token operator">&lt;</span> <span class="token function">getColSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">++</span>j<span class="token punctuation">)</span>
+				LU<span class="token punctuation">.</span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">-=</span> LU<span class="token punctuation">.</span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>k<span class="token punctuation">]</span> <span class="token operator">*</span> LU<span class="token punctuation">.</span>data<span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token keyword">return</span> LU<span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span></code></pre>
-
-<p>若分解过程中出现除数为零，这需要添加一个置换矩阵$P$，分解得到$A = PLU$的形式，详见<code>Matrix::PLUdecomp()</code>。</p>
-<h2 id="行列式计算"><a href="#行列式计算" class="headerlink" title="行列式计算"></a>行列式计算</h2><p>对$A$进行$A=PLU$分解后，有<br>$$<br>det(A) = det(PLU) = det(P)det(L)det(U) = det(P)det(U)<br>$$</p>
-<p>值即为$U$对角线上元素的乘积。 核心代码如下：</p>
+<p>若分解过程中出现除数为零，这需要添加一个置换矩阵 $P$，分解得到 $A = PLU$ 的形式，详见 <code>Matrix::PLUdecomp ()</code>。</p>
+<h2 id="行列式计算">行列式计算</h2>
+<p>对 $A$ 进行 $A=PLU$ 分解后，有<br>
+$$<br>
+det (A) = det (PLU) = det § det (L) det (U) = det § det (U)<br>
+$$</p>
+<p>值即为 $U$ 对角线上元素的乘积。 核心代码如下：</p>
 <pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">double</span> <span class="token class-name">Matrix</span><span class="token operator">::</span><span class="token function">det</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">const</span> <span class="token punctuation">&#123;</span>
-    <span class="token function">assert</span><span class="token punctuation">(</span><span class="token function">getRowSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token function">getColSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">auto</span> PLU <span class="token operator">=</span> <span class="token function">PLUdecomp</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">const</span> <span class="token keyword">auto</span> <span class="token operator">&amp;</span>P <span class="token operator">=</span> PLU<span class="token punctuation">.</span>first<span class="token punctuation">;</span>
-    <span class="token keyword">const</span> <span class="token keyword">auto</span> <span class="token operator">&amp;</span>LU <span class="token operator">=</span> PLU<span class="token punctuation">.</span>second<span class="token punctuation">;</span>
+	<span class="token function">assert</span><span class="token punctuation">(</span><span class="token function">getRowSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token function">getColSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">auto</span> PLU <span class="token operator">=</span> <span class="token function">PLUdecomp</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">const</span> <span class="token keyword">auto</span> <span class="token operator">&amp;</span>P <span class="token operator">=</span> PLU<span class="token punctuation">.</span>first<span class="token punctuation">;</span>
+	<span class="token keyword">const</span> <span class="token keyword">auto</span> <span class="token operator">&amp;</span>LU <span class="token operator">=</span> PLU<span class="token punctuation">.</span>second<span class="token punctuation">;</span>
 
-    <span class="token keyword">bool</span> sign <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span> <span class="token comment">// 负号</span>
-    <span class="token keyword">for</span><span class="token punctuation">(</span>size_t i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> PLU<span class="token punctuation">.</span>first<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span>
-        <span class="token keyword">for</span><span class="token punctuation">(</span>size_t j <span class="token operator">=</span> i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span> j <span class="token operator">&lt;</span> PLU<span class="token punctuation">.</span>first<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">++</span>j<span class="token punctuation">)</span>
-            <span class="token keyword">if</span><span class="token punctuation">(</span>PLU<span class="token punctuation">.</span>first<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">></span> PLU<span class="token punctuation">.</span>first<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">)</span> sign <span class="token operator">=</span> <span class="token operator">!</span>sign<span class="token punctuation">;</span>
-    <span class="token keyword">double</span> ret <span class="token operator">=</span> sign<span class="token operator">?</span><span class="token operator">-</span><span class="token number">1.0</span><span class="token operator">:</span><span class="token number">1.0</span><span class="token punctuation">;</span>
-    <span class="token comment">// det(A) = det(PLU) = det(P)det(L)det(U) = det(P)det(U)</span>
-    <span class="token keyword">for</span><span class="token punctuation">(</span>size_t i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> LU<span class="token punctuation">.</span>data<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span>
-        ret <span class="token operator">*=</span> LU<span class="token punctuation">.</span>data<span class="token punctuation">[</span>P<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
-    <span class="token keyword">return</span> ret<span class="token punctuation">;</span>
+	<span class="token keyword">bool</span> sign <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span> <span class="token comment">// 负号 </span>
+	<span class="token keyword">for</span><span class="token punctuation">(</span>size_t i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> PLU<span class="token punctuation">.</span>first<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span>
+		<span class="token keyword">for</span><span class="token punctuation">(</span>size_t j <span class="token operator">=</span> i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span> j <span class="token operator">&lt;</span> PLU<span class="token punctuation">.</span>first<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">++</span>j<span class="token punctuation">)</span>
+			<span class="token keyword">if</span><span class="token punctuation">(</span>PLU<span class="token punctuation">.</span>first<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">></span> PLU<span class="token punctuation">.</span>first<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">)</span> sign <span class="token operator">=</span> <span class="token operator">!</span>sign<span class="token punctuation">;</span>
+	<span class="token keyword">double</span> ret <span class="token operator">=</span> sign<span class="token operator">?</span><span class="token operator">-</span><span class="token number">1.0</span><span class="token operator">:</span><span class="token number">1.0</span><span class="token punctuation">;</span>
+	<span class="token comment">//det (A) = det (PLU) = det (P) det (L) det (U) = det (P) det (U)</span>
+	<span class="token keyword">for</span><span class="token punctuation">(</span>size_t i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> LU<span class="token punctuation">.</span>data<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span>
+		ret <span class="token operator">*=</span> LU<span class="token punctuation">.</span>data<span class="token punctuation">[</span>P<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+	<span class="token keyword">return</span> ret<span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span></code></pre>
-
-<h2 id="求解线性方程组-Ax-y"><a href="#求解线性方程组-Ax-y" class="headerlink" title="求解线性方程组$Ax=y$"></a>求解线性方程组$Ax=y$</h2><p>对$A$进行$A=PLU$分解后，有<br>$$<br>Ax = LUx = L(Ux) = Lz = y\\<br>Lz = \left(<br>\begin{matrix}<br>1 &amp;   &amp;   &amp;  \\<br>a_{21} &amp; 1 &amp;  &amp; \\<br>a_{31} &amp; a_{32} &amp; 1 &amp;  \\<br>a_{41} &amp; a_{42} &amp; a_{43}  &amp; 1\\<br>\end{matrix}<br>\right)<br>\left(\begin{matrix}z_1\\z_2\\z_3\\z_4\end{matrix}\right)<br>=<br>\left(\begin{matrix}y_1\\y_2\\y_3\\y_4\end{matrix}\right) = y\\<br>Ux = \left(<br>\begin{matrix}<br>a_{11} &amp; a_{12} &amp; a_{13} &amp; a_{14} \\<br> &amp; a_{22} &amp; a_{23} &amp; a_{24}\\<br> &amp;  &amp; a_{33} &amp; a_{34} \\<br> &amp;  &amp;  &amp;a_{44}\\<br>\end{matrix}<br>\right)<br>\left(\begin{matrix}x_1\\x_2\\x_3\\x_4\end{matrix}\right)<br>=<br>\left(\begin{matrix}z_1\\z_2\\z_3\\z_4\end{matrix}\right) = z\\<br>$$</p>
-<p>先用$y$解出$z$，在用$z$解出$x$。在解$Lz=y$时，从头开始计算；而在解$Ux = z$时，从尾开始计算。 核心代码如下：</p>
+<h2 id="求解线性方程组-Ax-y">求解线性方程组 $Ax=y$</h2>
+<h1>对 $A$ 进行 $A=PLU$ 分解后，有<br>
+$$<br>
+Ax = LUx = L (Ux) = Lz = y\\<br>
+Lz = \left (<br>
+\begin {matrix}<br>
+1 &amp;   &amp;   &amp;  \\<br>
+a_{21} &amp; 1 &amp;  &amp; \\<br>
+a_{31} &amp; a_{32} &amp; 1 &amp;  \\<br>
+a_{41} &amp; a_{42} &amp; a_{43}  &amp; 1\\<br>
+\end {matrix}<br>
+\right)<br>
+\left (\begin {matrix} z_1\\z_2\\z_3\\z_4\end {matrix}\right)</h1>
+<h1>\left (\begin {matrix} y_1\\y_2\\y_3\\y_4\end {matrix}\right) = y\\<br>
+Ux = \left (<br>
+\begin {matrix}<br>
+a_{11} &amp; a_{12} &amp; a_{13} &amp; a_{14} \\<br>
+&amp; a_{22} &amp; a_{23} &amp; a_{24}\\<br>
+&amp;  &amp; a_{33} &amp; a_{34} \\<br>
+&amp;  &amp;  &amp;a_{44}\\<br>
+\end {matrix}<br>
+\right)<br>
+\left (\begin {matrix} x_1\\x_2\\x_3\\x_4\end {matrix}\right)</h1>
+<p>\left (\begin {matrix} z_1\\z_2\\z_3\\z_4\end {matrix}\right) = z\\<br>
+$$</p>
+<p>先用 $y$ 解出 $z$，在用 $z$ 解出 $x$。在解 $Lz=y$ 时，从头开始计算；而在解 $Ux = z$ 时，从尾开始计算。 核心代码如下：</p>
 <pre class="language-cpp" data-language="cpp"><code class="language-cpp">Vector <span class="token class-name">Matrix</span><span class="token operator">::</span><span class="token function">LUsolve_L</span><span class="token punctuation">(</span><span class="token keyword">const</span> Matrix <span class="token operator">&amp;</span>LU<span class="token punctuation">,</span> <span class="token keyword">const</span> Vector <span class="token operator">&amp;</span>y<span class="token punctuation">)</span> <span class="token keyword">const</span> <span class="token punctuation">&#123;</span>
-    <span class="token comment">// 求出Lz = y的z</span>
-    Vector <span class="token function">z</span><span class="token punctuation">(</span>y<span class="token punctuation">.</span><span class="token function">getSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">for</span><span class="token punctuation">(</span>size_t i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> z<span class="token punctuation">.</span><span class="token function">getSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        z<span class="token punctuation">.</span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> y<span class="token punctuation">.</span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span>size_t j <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> j <span class="token operator">&lt;</span> i<span class="token punctuation">;</span> <span class="token operator">++</span>j<span class="token punctuation">)</span>
-            z<span class="token punctuation">.</span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">-=</span> LU<span class="token punctuation">.</span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">*</span> z<span class="token punctuation">.</span>data<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-    <span class="token keyword">return</span> z<span class="token punctuation">;</span>
+	<span class="token comment">// 求出 Lz = y 的 z</span>
+	Vector <span class="token function">z</span><span class="token punctuation">(</span>y<span class="token punctuation">.</span><span class="token function">getSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">for</span><span class="token punctuation">(</span>size_t i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> z<span class="token punctuation">.</span><span class="token function">getSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		z<span class="token punctuation">.</span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> y<span class="token punctuation">.</span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+		<span class="token keyword">for</span> <span class="token punctuation">(</span>size_t j <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> j <span class="token operator">&lt;</span> i<span class="token punctuation">;</span> <span class="token operator">++</span>j<span class="token punctuation">)</span>
+			z<span class="token punctuation">.</span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">-=</span> LU<span class="token punctuation">.</span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">*</span> z<span class="token punctuation">.</span>data<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token keyword">return</span> z<span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span>
 
 Vector <span class="token class-name">Matrix</span><span class="token operator">::</span><span class="token function">LUsolve_U</span><span class="token punctuation">(</span><span class="token keyword">const</span> Matrix <span class="token operator">&amp;</span>LU<span class="token punctuation">,</span> <span class="token keyword">const</span> Vector <span class="token operator">&amp;</span>z<span class="token punctuation">)</span> <span class="token keyword">const</span> <span class="token punctuation">&#123;</span>
-    <span class="token comment">// 求出Ux = z的x</span>
-    Vector <span class="token function">x</span><span class="token punctuation">(</span>z<span class="token punctuation">.</span><span class="token function">getSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> z<span class="token punctuation">.</span><span class="token function">getSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">>=</span><span class="token number">0</span><span class="token punctuation">;</span> <span class="token operator">--</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        x<span class="token punctuation">.</span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> z<span class="token punctuation">.</span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
-        <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> j <span class="token operator">=</span> i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span> j <span class="token operator">&lt;</span> z<span class="token punctuation">.</span><span class="token function">getSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">++</span>j<span class="token punctuation">)</span>
-            x<span class="token punctuation">.</span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">-=</span> LU<span class="token punctuation">.</span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">*</span> x<span class="token punctuation">.</span>data<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">;</span>
-        x<span class="token punctuation">.</span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">/=</span> LU<span class="token punctuation">.</span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-    <span class="token keyword">return</span> x<span class="token punctuation">;</span>
+	<span class="token comment">// 求出 Ux = z 的 x</span>
+	Vector <span class="token function">x</span><span class="token punctuation">(</span>z<span class="token punctuation">.</span><span class="token function">getSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> z<span class="token punctuation">.</span><span class="token function">getSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">>=</span><span class="token number">0</span><span class="token punctuation">;</span> <span class="token operator">--</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		x<span class="token punctuation">.</span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> z<span class="token punctuation">.</span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+		<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> j <span class="token operator">=</span> i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span> j <span class="token operator">&lt;</span> z<span class="token punctuation">.</span><span class="token function">getSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">++</span>j<span class="token punctuation">)</span>
+			x<span class="token punctuation">.</span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">-=</span> LU<span class="token punctuation">.</span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">*</span> x<span class="token punctuation">.</span>data<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">;</span>
+		x<span class="token punctuation">.</span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">/=</span> LU<span class="token punctuation">.</span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token keyword">return</span> x<span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span>
 
 Vector <span class="token class-name">Matrix</span><span class="token operator">::</span><span class="token function">LUsolve</span><span class="token punctuation">(</span><span class="token keyword">const</span> Vector <span class="token operator">&amp;</span>y<span class="token punctuation">)</span> <span class="token keyword">const</span> <span class="token punctuation">&#123;</span>
-    <span class="token comment">// Ax = y</span>
-    <span class="token function">assert</span><span class="token punctuation">(</span>y<span class="token punctuation">.</span><span class="token function">getSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token function">getRowSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token function">assert</span><span class="token punctuation">(</span><span class="token operator">!</span> <span class="token function">isZero</span><span class="token punctuation">(</span><span class="token function">det</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token string">"det is equal 0"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    Matrix LU <span class="token operator">=</span> std<span class="token operator">::</span><span class="token function">move</span><span class="token punctuation">(</span><span class="token function">LUdecomp</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    Vector <span class="token function">x</span><span class="token punctuation">(</span>y<span class="token punctuation">.</span><span class="token function">getSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    x <span class="token operator">=</span> std<span class="token operator">::</span><span class="token function">move</span><span class="token punctuation">(</span><span class="token function">LUsolve_L</span><span class="token punctuation">(</span>LU<span class="token punctuation">,</span> y<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    x <span class="token operator">=</span> std<span class="token operator">::</span><span class="token function">move</span><span class="token punctuation">(</span><span class="token function">LUsolve_U</span><span class="token punctuation">(</span>LU<span class="token punctuation">,</span> x<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">return</span> x<span class="token punctuation">;</span>
+	<span class="token comment">// Ax = y</span>
+	<span class="token function">assert</span><span class="token punctuation">(</span>y<span class="token punctuation">.</span><span class="token function">getSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token function">getRowSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token function">assert</span><span class="token punctuation">(</span><span class="token operator">!</span> <span class="token function">isZero</span><span class="token punctuation">(</span><span class="token function">det</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token string">"det is equal 0"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	Matrix LU <span class="token operator">=</span> std<span class="token operator">::</span><span class="token function">move</span><span class="token punctuation">(</span><span class="token function">LUdecomp</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	Vector <span class="token function">x</span><span class="token punctuation">(</span>y<span class="token punctuation">.</span><span class="token function">getSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	x <span class="token operator">=</span> std<span class="token operator">::</span><span class="token function">move</span><span class="token punctuation">(</span><span class="token function">LUsolve_L</span><span class="token punctuation">(</span>LU<span class="token punctuation">,</span> y<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	x <span class="token operator">=</span> std<span class="token operator">::</span><span class="token function">move</span><span class="token punctuation">(</span><span class="token function">LUsolve_U</span><span class="token punctuation">(</span>LU<span class="token punctuation">,</span> x<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">return</span> x<span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span></code></pre>
-
-<h2 id="求解逆矩阵"><a href="#求解逆矩阵" class="headerlink" title="求解逆矩阵"></a>求解逆矩阵</h2><p>对于$AX=AA^{-1}=I$，有<br>$$<br>A(x_1, \cdots, x_n) = (e_1, \cdots, e_n)展开得\\<br>Ax_1 = e_1, \cdots, Ax_n = e_n<br>$$</p>
-<p>利用前面求解线性方程组的方法，得到$X=A^{-1}$。核心代码如下：</p>
+<h2 id="求解逆矩阵">求解逆矩阵</h2>
+<p>对于 $AX=AA^{-1}=I$，有<br>
+$$<br>
+A (x_1, \cdots, x_n) = (e_1, \cdots, e_n) 展开得 \\<br>
+Ax_1 = e_1, \cdots, Ax_n = e_n<br>
+$$</p>
+<p>利用前面求解线性方程组的方法，得到 $X=A^{-1}$。核心代码如下：</p>
 <pre class="language-cpp" data-language="cpp"><code class="language-cpp">Matrix <span class="token class-name">Matrix</span><span class="token operator">::</span><span class="token function">inv</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">const</span> <span class="token punctuation">&#123;</span>
-    <span class="token comment">// A(x_1, ..., x_n) = (e_1, ..., e_n)</span>
-    <span class="token function">assert</span><span class="token punctuation">(</span><span class="token operator">!</span> <span class="token function">isZero</span><span class="token punctuation">(</span><span class="token function">det</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token string">"matrix is not invertible"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    size_t n <span class="token operator">=</span> <span class="token function">getRowSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    Matrix LU <span class="token operator">=</span> std<span class="token operator">::</span><span class="token function">move</span><span class="token punctuation">(</span><span class="token function">LUdecomp</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    Matrix <span class="token function">ret</span><span class="token punctuation">(</span>n<span class="token punctuation">,</span> n<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    Vector <span class="token function">e</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">x</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    e<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1.0</span><span class="token punctuation">;</span>
-    <span class="token keyword">for</span><span class="token punctuation">(</span>size_t j <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> j <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> <span class="token operator">++</span>j<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">if</span><span class="token punctuation">(</span>j <span class="token operator">>=</span> <span class="token number">1</span><span class="token punctuation">)</span> std<span class="token operator">::</span><span class="token function">swap</span><span class="token punctuation">(</span>e<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">,</span> e<span class="token punctuation">[</span>j<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token comment">// 解出Ax = e</span>
-        x <span class="token operator">=</span> std<span class="token operator">::</span><span class="token function">move</span><span class="token punctuation">(</span><span class="token function">LUsolve_L</span><span class="token punctuation">(</span>LU<span class="token punctuation">,</span> e<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        x <span class="token operator">=</span> std<span class="token operator">::</span><span class="token function">move</span><span class="token punctuation">(</span><span class="token function">LUsolve_U</span><span class="token punctuation">(</span>LU<span class="token punctuation">,</span> x<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">for</span><span class="token punctuation">(</span>size_t i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span>
-            ret<span class="token punctuation">.</span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> x<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-    <span class="token keyword">return</span> ret<span class="token punctuation">;</span>
+	<span class="token comment">// A (x_1, ..., x_n) = (e_1, ..., e_n)</span>
+	<span class="token function">assert</span><span class="token punctuation">(</span><span class="token operator">!</span> <span class="token function">isZero</span><span class="token punctuation">(</span><span class="token function">det</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token string">"matrix is not invertible"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	size_t n <span class="token operator">=</span> <span class="token function">getRowSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	Matrix LU <span class="token operator">=</span> std<span class="token operator">::</span><span class="token function">move</span><span class="token punctuation">(</span><span class="token function">LUdecomp</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	Matrix <span class="token function">ret</span><span class="token punctuation">(</span>n<span class="token punctuation">,</span> n<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	Vector <span class="token function">e</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">x</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	e<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1.0</span><span class="token punctuation">;</span>
+	<span class="token keyword">for</span><span class="token punctuation">(</span>size_t j <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> j <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> <span class="token operator">++</span>j<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token keyword">if</span><span class="token punctuation">(</span>j <span class="token operator">>=</span> <span class="token number">1</span><span class="token punctuation">)</span> std<span class="token operator">::</span><span class="token function">swap</span><span class="token punctuation">(</span>e<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">,</span> e<span class="token punctuation">[</span>j<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token comment">// 解出 Ax = e</span>
+		x <span class="token operator">=</span> std<span class="token operator">::</span><span class="token function">move</span><span class="token punctuation">(</span><span class="token function">LUsolve_L</span><span class="token punctuation">(</span>LU<span class="token punctuation">,</span> e<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		x <span class="token operator">=</span> std<span class="token operator">::</span><span class="token function">move</span><span class="token punctuation">(</span><span class="token function">LUsolve_U</span><span class="token punctuation">(</span>LU<span class="token punctuation">,</span> x<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token keyword">for</span><span class="token punctuation">(</span>size_t i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span>
+			ret<span class="token punctuation">.</span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> x<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token keyword">return</span> ret<span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span></code></pre>
-
-<h2 id="利用Jacobi算法求解实对称矩阵特征值"><a href="#利用Jacobi算法求解实对称矩阵特征值" class="headerlink" title="利用Jacobi算法求解实对称矩阵特征值"></a>利用Jacobi算法求解实对称矩阵特征值</h2><p>对于<strong>实对称</strong>矩阵$A$，将其对角化，有$P^{-1}AP=D$，这里的$D$为对角矩阵，对角线上的值即为特征值，$P$为特征向量组成的矩阵。</p>
-<p>而解实对角矩阵的特征值算法有Jacobi，主要通过不断平面旋转变化，使得矩阵$A$朝着$D$的方向变换。</p>
-<p>定义如下平面旋转矩阵（正交矩阵）$R(\theta, p, q)$：<br>$$<br>R(\theta, p, q) =<br>\begin{array}{cc}<br>&amp; \begin{array}{ccccccccccc}<br>&amp; &amp; &amp; 第p列 &amp;  &amp; &amp; &amp; 第q列 &amp; &amp; &amp; &amp;<br>\end{array}\\<br>\begin{array}{c}<br>\\<br>\\<br>\\<br>第p行\\<br>\\<br>\\<br>\\<br>第q行\\<br>\\<br>\\<br>\\<br>\end{array}<br>&amp; \left(<br>    \begin{array}{ccccccccccc}<br>    1 &amp; &amp; &amp; &amp; &amp; &amp; &amp; &amp; &amp; &amp; \\<br>    &amp; \ddots &amp; &amp; &amp; &amp; &amp; &amp; &amp; &amp; &amp; \\<br>    &amp;  &amp; 1 &amp; &amp; &amp; &amp; &amp; &amp; &amp; &amp; \\<br>    &amp; &amp; &amp;\cos\theta  &amp; &amp; &amp; -\sin\theta &amp; &amp; &amp; &amp; \\<br>    &amp; &amp; &amp; &amp; 1  &amp; &amp;  &amp; &amp; &amp; &amp; \\<br>    &amp; &amp;  &amp;  &amp;  &amp;\ddots  &amp;  &amp; &amp; &amp; &amp; \\<br>    &amp; &amp;  &amp;  &amp;  &amp; &amp; 1   &amp; &amp; &amp; &amp; \\<br>    &amp; &amp; &amp; \sin\theta  &amp; &amp; &amp; \cos\theta &amp; &amp; &amp; &amp; \\<br>    &amp; &amp; &amp;  &amp; &amp; &amp; &amp;  &amp; 1  &amp; &amp; \\<br>    &amp; &amp;  &amp; &amp; &amp; &amp;  &amp;  &amp;  &amp; \ddots  &amp; \\<br>    &amp; &amp;  &amp; &amp; &amp; &amp;  &amp;  &amp;  &amp; &amp; 1 \\<br>    \end{array}<br>\right) \\<br>\end{array}<br>$$</p>
-<p>易知$R^T R = I$，所以有$R^{-1} = R^T$。通过正交矩阵将对称矩阵$A$不断旋转变换进行对角化，$D = R(\theta, p, q)^{-1}AR(\theta, p, q) = R(\theta, p, q)^TAR(\theta, p, q)$。对$A$左乘$R^T$后，$p, q$两行将发生变化，而右乘$R$后，$p,q$两列发生变化。</p>
-<p>$$<br>R(\theta, p, q)^T<br>\left(\begin{matrix}a_{1j}\\\vdots\\a_{pj}\\\vdots\\a_{qj}\\\vdots\\a_{nj}\end{matrix}\right)<br>= \left(\begin{matrix}a_{1j}\\\vdots\\a_{pj}\cos\theta + a_{qj}\sin\theta \\\vdots\\ -a_{pj}\sin\theta + a_{qj}\cos\theta \\\vdots\\a_{nj}\end{matrix}\right) =<br>\left(\begin{matrix}a_{1j}\\\vdots\\a_{pj}’\\\vdots\\a_{qj}’\\\vdots\\a_{nj}\end{matrix}\right) \\<br>\begin{array}{ccc}<br>(a_{i1}, \cdots, a_{ip}, \cdots, a_{iq}, \cdots, a_{in}) R(\theta, p, q) &amp;=&amp; (a_{i1},&amp; \cdots,&amp; a_{ip} \cos\theta + a_{iq} \sin\theta,&amp; \cdots,&amp; -a_{ip}\sin\theta + a_{iq}\cos\theta,&amp; \cdots,&amp; a_{in})\\<br>&amp; &amp; (a_{i1},&amp; \cdots,&amp; a_{ip}’,&amp; \cdots,&amp; a_{iq}’,&amp; \cdots,&amp; a_{in})<br>\end{array}<br>$$</p>
-<p>将p, q两行两列的将四个交叉点的结果写出来，由于只有这四个交叉点同时受到行列影响，所以它们的公式略有不同（由于$A$是对称矩阵有$a_{pq} = a_{qp}$）：<br>$$<br>\begin{array}{ccl}<br>a_{pp}’ &amp;=&amp; (a_{pp}\cos\theta + a_{qp}\sin\theta)\cos\theta + (a_{pq}cos\theta + a_{qq}\sin\theta)\sin\theta\\<br>&amp; = &amp; a_{pp}\cos^2\theta + a_{qq}\sin^2\theta + 2a_{pq}\sin\theta\cos\theta\\<br>a_{pq}’ &amp;=&amp; -(a_{pp}\cos\theta + a_{qp}\sin\theta)\sin\theta + (a_{pq}cos\theta + a_{qq}\sin\theta)\cos\theta\\<br>&amp; = &amp; a_{pq}(\cos^2\theta - \sin^2\theta) + (a_{qq} - a_{pp})\sin\theta\cos\theta\\<br>a_{qp}’ &amp;=&amp; (-a_{pp}\cos\theta + a_{qp}\sin\theta)\cos\theta + (-a_{pq}cos\theta + a_{qq}\sin\theta)\sin\theta\\<br>&amp; = &amp; a_{pq}(\cos^2\theta - \sin^2\theta) + (a_{qq} - a_{pp})\sin\theta\cos\theta\\<br>a_{qq}’ &amp;=&amp; -(-a_{pp}\cos\theta + a_{qp}\sin\theta)\sin\theta + (-a_{pq}cos\theta + a_{qq}\sin\theta)\cos\theta\\<br>&amp; = &amp; a_{pp}\sin^2\theta + a_{qq}\cos^2\theta - 2a_{pq}\sin\theta\cos\theta\\<br>\end{array}<br>$$</p>
-<p>经过反复旋转变换后，矩阵$A$依旧保持着对称性$a_{pq} = a_{qp}$，依次选择$a_{pq}$，令$a_{pq}$旋转变化为$0$得到$\theta$，在这个$\theta$作用下更新其他$p, q$的行、列值。简而言之，每次将两行两列相交的四个交叉点中的斜对角交叉点变为0，最终趋向于对角矩阵。<br>$$<br>a_{pq}’ = a_{qp}’ = a_{pq}(\cos^2\theta - \sin^2\theta) + (a_{qq} - a_{pp})\sin\theta\cos\theta = 0\\<br>\Rightarrow \dfrac{a_{pq}}{a_{pp} - a_{qq}} = \dfrac{\sin\theta\cos\theta}{\cos^2\theta - \sin^2\theta} = \dfrac{1}{2}\tan2\theta<br>$$</p>
-<p>通过$\tan2\theta$得到$\cos\theta$的值，有：<br>$$<br>1+\tan^{2}2\theta = \dfrac{\cos^{2}2\theta + \sin^{2}2\theta}{\cos^{2}2\theta} = \dfrac{1}{\cos^{2}{2\theta}}\\<br>\Rightarrow \cos2\theta = \dfrac{1}{\sqrt{1+\tan^{2}{2\theta}}} = \cos^2\theta - \sin^2\theta = 2\cos^2\theta - 1(0\leq \theta \leq \dfrac{\pi}{4})\\<br>\Rightarrow \cos\theta = \sqrt{\dfrac{1}{2}(1+\dfrac{1}{\sqrt{1+\tan^{2}2\theta}})}\\<br>\Rightarrow \sin\theta = \sqrt{1-\cos^2\theta}<br>$$</p>
-<p>设$g(A) = \sum_{i}^na_{ii}^2$，当$g(A)$不在增大时，可视为$A$近似于对角矩阵$D$。核心代码如下：</p>
+<h2 id="利用-Jacobi-算法求解实对称矩阵特征值">利用 Jacobi 算法求解实对称矩阵特征值</h2>
+<p>对于 ** 实对称 ** 矩阵 $A$，将其对角化，有 $P^{-1} AP=D$，这里的 $D$ 为对角矩阵，对角线上的值即为特征值，$P$ 为特征向量组成的矩阵。</p>
+<p>而解实对角矩阵的特征值算法有 Jacobi，主要通过不断平面旋转变化，使得矩阵 $A$ 朝着 $D$ 的方向变换。</p>
+<p>定义如下平面旋转矩阵（正交矩阵）$R (\theta, p, q)$：<br>
+$$<br>
+R (\theta, p, q) =<br>
+\begin {array}{cc}<br>
+&amp; \begin {array}{ccccccccccc}<br>
+&amp; &amp; &amp; 第 p 列 &amp;  &amp; &amp; &amp; 第 q 列 &amp; &amp; &amp; &amp;<br>
+\end {array}\\<br>
+\begin {array}{c}<br>
+\\<br>
+\\<br>
+\\<br>
+第 p 行 \\<br>
+\\<br>
+\\<br>
+\\<br>
+第 q 行 \\<br>
+\\<br>
+\\<br>
+\\<br>
+\end {array}<br>
+&amp; \left (<br>
+\begin {array}{ccccccccccc}<br>
+1 &amp; &amp; &amp; &amp; &amp; &amp; &amp; &amp; &amp; &amp; \\<br>
+&amp; \ddots &amp; &amp; &amp; &amp; &amp; &amp; &amp; &amp; &amp; \\<br>
+&amp;  &amp; 1 &amp; &amp; &amp; &amp; &amp; &amp; &amp; &amp; \\<br>
+&amp; &amp; &amp;\cos\theta  &amp; &amp; &amp; -\sin\theta &amp; &amp; &amp; &amp; \\<br>
+&amp; &amp; &amp; &amp; 1  &amp; &amp;  &amp; &amp; &amp; &amp; \\<br>
+&amp; &amp;  &amp;  &amp;  &amp;\ddots  &amp;  &amp; &amp; &amp; &amp; \\<br>
+&amp; &amp;  &amp;  &amp;  &amp; &amp; 1   &amp; &amp; &amp; &amp; \\<br>
+&amp; &amp; &amp; \sin\theta  &amp; &amp; &amp; \cos\theta &amp; &amp; &amp; &amp; \\<br>
+&amp; &amp; &amp;  &amp; &amp; &amp; &amp;  &amp; 1  &amp; &amp; \\<br>
+&amp; &amp;  &amp; &amp; &amp; &amp;  &amp;  &amp;  &amp; \ddots  &amp; \\<br>
+&amp; &amp;  &amp; &amp; &amp; &amp;  &amp;  &amp;  &amp; &amp; 1 \\<br>
+\end {array}<br>
+\right) \\<br>
+\end {array}<br>
+$$</p>
+<p>易知 $R^T R = I$，所以有 $R^{-1} = R^T$。通过正交矩阵将对称矩阵 $A$ 不断旋转变换进行对角化，$D = R (\theta, p, q)^{-1} AR (\theta, p, q) = R (\theta, p, q)^TAR (\theta, p, q)$。对 $A$ 左乘 $R^T$ 后，$p, q$ 两行将发生变化，而右乘 $R$ 后，$p,q$ 两列发生变化。</p>
+<p>$$<br>
+R (\theta, p, q)^T<br>
+\left (\begin {matrix} a_{1j}\\\vdots\\a_{pj}\\\vdots\\a_{qj}\\\vdots\\a_{nj}\end {matrix}\right)<br>
+= \left (\begin {matrix} a_{1j}\\\vdots\\a_{pj}\cos\theta + a_{qj}\sin\theta \\\vdots\\ -a_{pj}\sin\theta + a_{qj}\cos\theta \\\vdots\\a_{nj}\end {matrix}\right) =<br>
+\left (\begin {matrix} a_{1j}\\\vdots\\a_{pj}’\\\vdots\\a_{qj}’\\\vdots\\a_{nj}\end {matrix}\right) \\<br>
+\begin {array}{ccc}<br>
+(a_{i1}, \cdots, a_{ip}, \cdots, a_{iq}, \cdots, a_{in}) R (\theta, p, q) &amp;=&amp; (a_{i1},&amp; \cdots,&amp; a_{ip} \cos\theta + a_{iq} \sin\theta,&amp; \cdots,&amp; -a_{ip}\sin\theta + a_{iq}\cos\theta,&amp; \cdots,&amp; a_{in})\\<br>
+&amp; &amp; (a_{i1},&amp; \cdots,&amp; a_{ip}’,&amp; \cdots,&amp; a_{iq}’,&amp; \cdots,&amp; a_{in})<br>
+\end {array}<br>
+$$</p>
+<p>将 p, q 两行两列的将四个交叉点的结果写出来，由于只有这四个交叉点同时受到行列影响，所以它们的公式略有不同（由于 $A$ 是对称矩阵有 $a_{pq} = a_{qp}$）：<br>
+$$<br>
+\begin {array}{ccl}<br>
+a_{pp}’ &amp;=&amp; (a_{pp}\cos\theta + a_{qp}\sin\theta)\cos\theta + (a_{pq} cos\theta + a_{qq}\sin\theta)\sin\theta\\<br>
+&amp; = &amp; a_{pp}\cos^2\theta + a_{qq}\sin^2\theta + 2a_{pq}\sin\theta\cos\theta\\<br>
+a_{pq}’ &amp;=&amp; -(a_{pp}\cos\theta + a_{qp}\sin\theta)\sin\theta + (a_{pq} cos\theta + a_{qq}\sin\theta)\cos\theta\\<br>
+&amp; = &amp; a_{pq}(\cos^2\theta - \sin^2\theta) + (a_{qq} - a_{pp})\sin\theta\cos\theta\\<br>
+a_{qp}’ &amp;=&amp; (-a_{pp}\cos\theta + a_{qp}\sin\theta)\cos\theta + (-a_{pq} cos\theta + a_{qq}\sin\theta)\sin\theta\\<br>
+&amp; = &amp; a_{pq}(\cos^2\theta - \sin^2\theta) + (a_{qq} - a_{pp})\sin\theta\cos\theta\\<br>
+a_{qq}’ &amp;=&amp; -(-a_{pp}\cos\theta + a_{qp}\sin\theta)\sin\theta + (-a_{pq} cos\theta + a_{qq}\sin\theta)\cos\theta\\<br>
+&amp; = &amp; a_{pp}\sin^2\theta + a_{qq}\cos^2\theta - 2a_{pq}\sin\theta\cos\theta\\<br>
+\end {array}<br>
+$$</p>
+<p>经过反复旋转变换后，矩阵 $A$ 依旧保持着对称性 $a_{pq} = a_{qp}$，依次选择 $a_{pq}$，令 $a_{pq}$ 旋转变化为 $0$ 得到 $\theta$，在这个 $\theta$ 作用下更新其他 $p, q$ 的行、列值。简而言之，每次将两行两列相交的四个交叉点中的斜对角交叉点变为 0，最终趋向于对角矩阵。<br>
+$$<br>
+a_{pq}’ = a_{qp}’ = a_{pq}(\cos^2\theta - \sin^2\theta) + (a_{qq} - a_{pp})\sin\theta\cos\theta = 0\\<br>
+\Rightarrow \dfrac {a_{pq}}{a_{pp} - a_{qq}} = \dfrac {\sin\theta\cos\theta}{\cos^2\theta - \sin^2\theta} = \dfrac {1}{2}\tan2\theta<br>
+$$</p>
+<p>通过 $\tan2\theta$ 得到 $\cos\theta$ 的值，有：<br>
+$$<br>
+1+\tan^{2} 2\theta = \dfrac {\cos^{2} 2\theta + \sin^{2} 2\theta}{\cos^{2} 2\theta} = \dfrac {1}{\cos^{2}{2\theta}}\\<br>
+\Rightarrow \cos2\theta = \dfrac {1}{\sqrt {1+\tan^{2}{2\theta}}} = \cos^2\theta - \sin^2\theta = 2\cos^2\theta - 1 (0\leq \theta \leq \dfrac {\pi}{4})\\<br>
+\Rightarrow \cos\theta = \sqrt {\dfrac {1}{2}(1+\dfrac {1}{\sqrt {1+\tan^{2} 2\theta}})}\\<br>
+\Rightarrow \sin\theta = \sqrt {1-\cos^2\theta}<br>
+$$</p>
+<p>设 $g (A) = \sum_{i}^na_{ii}^2$，当 $g (A)$ 不在增大时，可视为 $A$ 近似于对角矩阵 $D$。核心代码如下：</p>
 <pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">void</span> <span class="token class-name">Matrix</span><span class="token operator">::</span><span class="token function">R</span><span class="token punctuation">(</span><span class="token keyword">double</span> cosphi<span class="token punctuation">,</span> size_t p<span class="token punctuation">,</span> size_t q<span class="token punctuation">,</span> <span class="token keyword">bool</span> T<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token comment">// 通过平面旋转进行相似变换</span>
-    <span class="token keyword">double</span> sinphi <span class="token operator">=</span> <span class="token function">sqrt</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">-</span> cosphi <span class="token operator">*</span> cosphi<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    size_t n <span class="token operator">=</span> <span class="token function">getRowSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">for</span><span class="token punctuation">(</span>size_t k <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> k <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> <span class="token operator">++</span>k<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">double</span>  ap <span class="token operator">=</span>  data<span class="token punctuation">[</span>T<span class="token operator">?</span>p<span class="token operator">:</span>k<span class="token punctuation">]</span><span class="token punctuation">[</span>T<span class="token operator">?</span>k<span class="token operator">:</span>p<span class="token punctuation">]</span> <span class="token operator">*</span> cosphi <span class="token operator">+</span> data<span class="token punctuation">[</span>T<span class="token operator">?</span>q<span class="token operator">:</span>k<span class="token punctuation">]</span><span class="token punctuation">[</span>T<span class="token operator">?</span>k<span class="token operator">:</span>q<span class="token punctuation">]</span> <span class="token operator">*</span> sinphi<span class="token punctuation">,</span>
-                aq <span class="token operator">=</span> <span class="token operator">-</span>data<span class="token punctuation">[</span>T<span class="token operator">?</span>p<span class="token operator">:</span>k<span class="token punctuation">]</span><span class="token punctuation">[</span>T<span class="token operator">?</span>k<span class="token operator">:</span>p<span class="token punctuation">]</span> <span class="token operator">*</span> sinphi <span class="token operator">+</span> data<span class="token punctuation">[</span>T<span class="token operator">?</span>q<span class="token operator">:</span>k<span class="token punctuation">]</span><span class="token punctuation">[</span>T<span class="token operator">?</span>k<span class="token operator">:</span>q<span class="token punctuation">]</span> <span class="token operator">*</span> cosphi<span class="token punctuation">;</span>
-        data<span class="token punctuation">[</span>T<span class="token operator">?</span>p<span class="token operator">:</span>k<span class="token punctuation">]</span><span class="token punctuation">[</span>T<span class="token operator">?</span>k<span class="token operator">:</span>p<span class="token punctuation">]</span> <span class="token operator">=</span> ap<span class="token punctuation">;</span> data<span class="token punctuation">[</span>T<span class="token operator">?</span>q<span class="token operator">:</span>k<span class="token punctuation">]</span><span class="token punctuation">[</span>T<span class="token operator">?</span>k<span class="token operator">:</span>q<span class="token punctuation">]</span> <span class="token operator">=</span> aq<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-    <span class="token keyword">return</span><span class="token punctuation">;</span>
+	<span class="token comment">// 通过平面旋转进行相似变换 </span>
+	<span class="token keyword">double</span> sinphi <span class="token operator">=</span> <span class="token function">sqrt</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">-</span> cosphi <span class="token operator">*</span> cosphi<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	size_t n <span class="token operator">=</span> <span class="token function">getRowSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">for</span><span class="token punctuation">(</span>size_t k <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> k <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> <span class="token operator">++</span>k<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token keyword">double</span>  ap <span class="token operator">=</span>  data<span class="token punctuation">[</span>T<span class="token operator">?</span>p<span class="token operator">:</span>k<span class="token punctuation">]</span><span class="token punctuation">[</span>T<span class="token operator">?</span>k<span class="token operator">:</span>p<span class="token punctuation">]</span> <span class="token operator">*</span> cosphi <span class="token operator">+</span> data<span class="token punctuation">[</span>T<span class="token operator">?</span>q<span class="token operator">:</span>k<span class="token punctuation">]</span><span class="token punctuation">[</span>T<span class="token operator">?</span>k<span class="token operator">:</span>q<span class="token punctuation">]</span> <span class="token operator">*</span> sinphi<span class="token punctuation">,</span>
+				aq <span class="token operator">=</span> <span class="token operator">-</span>data<span class="token punctuation">[</span>T<span class="token operator">?</span>p<span class="token operator">:</span>k<span class="token punctuation">]</span><span class="token punctuation">[</span>T<span class="token operator">?</span>k<span class="token operator">:</span>p<span class="token punctuation">]</span> <span class="token operator">*</span> sinphi <span class="token operator">+</span> data<span class="token punctuation">[</span>T<span class="token operator">?</span>q<span class="token operator">:</span>k<span class="token punctuation">]</span><span class="token punctuation">[</span>T<span class="token operator">?</span>k<span class="token operator">:</span>q<span class="token punctuation">]</span> <span class="token operator">*</span> cosphi<span class="token punctuation">;</span>
+		data<span class="token punctuation">[</span>T<span class="token operator">?</span>p<span class="token operator">:</span>k<span class="token punctuation">]</span><span class="token punctuation">[</span>T<span class="token operator">?</span>k<span class="token operator">:</span>p<span class="token punctuation">]</span> <span class="token operator">=</span> ap<span class="token punctuation">;</span> data<span class="token punctuation">[</span>T<span class="token operator">?</span>q<span class="token operator">:</span>k<span class="token punctuation">]</span><span class="token punctuation">[</span>T<span class="token operator">?</span>k<span class="token operator">:</span>q<span class="token punctuation">]</span> <span class="token operator">=</span> aq<span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token keyword">return</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span>
 vector<span class="token operator">&lt;</span><span class="token keyword">double</span><span class="token operator">></span> <span class="token class-name">Matrix</span><span class="token operator">::</span><span class="token function">Jacobi</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">const</span> <span class="token punctuation">&#123;</span>
-    <span class="token function">assert</span><span class="token punctuation">(</span><span class="token function">getRowSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token function">getColSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    size_t n <span class="token operator">=</span> <span class="token function">getRowSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment">// 判断是否对称</span>
-    <span class="token keyword">for</span><span class="token punctuation">(</span>size_t i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span>
-        <span class="token keyword">for</span><span class="token punctuation">(</span>size_t j <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> j <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> <span class="token operator">++</span>j<span class="token punctuation">)</span>
-            <span class="token function">assert</span><span class="token punctuation">(</span><span class="token function">Eq</span><span class="token punctuation">(</span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">,</span> data<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    vector<span class="token operator">&lt;</span><span class="token keyword">double</span><span class="token operator">></span> <span class="token function">eigenvals</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    Matrix <span class="token function">D</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 对角化</span>
-    <span class="token comment">// g(A) = \sum a[i][i]^2</span>
-    <span class="token keyword">auto</span> g <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token keyword">const</span> Matrix <span class="token operator">&amp;</span>A<span class="token punctuation">)</span><span class="token operator">-></span><span class="token keyword">double</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">double</span> ret <span class="token operator">=</span> <span class="token number">0.0</span><span class="token punctuation">;</span>
-        <span class="token keyword">for</span><span class="token punctuation">(</span>size_t i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> A<span class="token punctuation">.</span><span class="token function">getRowSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span>
-            ret <span class="token operator">+=</span> A<span class="token punctuation">.</span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">*</span> A<span class="token punctuation">.</span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> ret<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
-    <span class="token comment">// f(A) -> 0表明近似于对角化矩阵</span>
-    <span class="token keyword">auto</span> f <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token keyword">const</span> Matrix <span class="token operator">&amp;</span>A<span class="token punctuation">)</span><span class="token operator">-></span><span class="token keyword">double</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">double</span> ret <span class="token operator">=</span> <span class="token number">0.0</span><span class="token punctuation">;</span>
-        <span class="token keyword">for</span><span class="token punctuation">(</span>size_t i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> A<span class="token punctuation">.</span><span class="token function">getRowSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span>
-            <span class="token keyword">for</span><span class="token punctuation">(</span>size_t j <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> j <span class="token operator">&lt;</span> A<span class="token punctuation">.</span><span class="token function">getRowSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">++</span>j<span class="token punctuation">)</span>
-                <span class="token keyword">if</span><span class="token punctuation">(</span>i<span class="token operator">!=</span>j<span class="token punctuation">)</span> ret <span class="token operator">+=</span> A<span class="token punctuation">.</span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">*</span> A<span class="token punctuation">.</span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> ret<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+	<span class="token function">assert</span><span class="token punctuation">(</span><span class="token function">getRowSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token function">getColSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	size_t n <span class="token operator">=</span> <span class="token function">getRowSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token comment">// 判断是否对称 </span>
+	<span class="token keyword">for</span><span class="token punctuation">(</span>size_t i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span>
+		<span class="token keyword">for</span><span class="token punctuation">(</span>size_t j <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> j <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> <span class="token operator">++</span>j<span class="token punctuation">)</span>
+			<span class="token function">assert</span><span class="token punctuation">(</span><span class="token function">Eq</span><span class="token punctuation">(</span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">,</span> data<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	vector<span class="token operator">&lt;</span><span class="token keyword">double</span><span class="token operator">></span> <span class="token function">eigenvals</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	Matrix <span class="token function">D</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 对角化 </span>
+	<span class="token comment">//g (A) = \sum a [i][i]^2</span>
+	<span class="token keyword">auto</span> g <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token keyword">const</span> Matrix <span class="token operator">&amp;</span>A<span class="token punctuation">)</span><span class="token operator">-></span><span class="token keyword">double</span> <span class="token punctuation">&#123;</span>
+		<span class="token keyword">double</span> ret <span class="token operator">=</span> <span class="token number">0.0</span><span class="token punctuation">;</span>
+		<span class="token keyword">for</span><span class="token punctuation">(</span>size_t i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> A<span class="token punctuation">.</span><span class="token function">getRowSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span>
+			ret <span class="token operator">+=</span> A<span class="token punctuation">.</span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">*</span> A<span class="token punctuation">.</span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+		<span class="token keyword">return</span> ret<span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+	<span class="token comment">//f (A) -> 0 表明近似于对角化矩阵 </span>
+	<span class="token keyword">auto</span> f <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token keyword">const</span> Matrix <span class="token operator">&amp;</span>A<span class="token punctuation">)</span><span class="token operator">-></span><span class="token keyword">double</span> <span class="token punctuation">&#123;</span>
+		<span class="token keyword">double</span> ret <span class="token operator">=</span> <span class="token number">0.0</span><span class="token punctuation">;</span>
+		<span class="token keyword">for</span><span class="token punctuation">(</span>size_t i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> A<span class="token punctuation">.</span><span class="token function">getRowSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span>
+			<span class="token keyword">for</span><span class="token punctuation">(</span>size_t j <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> j <span class="token operator">&lt;</span> A<span class="token punctuation">.</span><span class="token function">getRowSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">++</span>j<span class="token punctuation">)</span>
+				<span class="token keyword">if</span><span class="token punctuation">(</span>i<span class="token operator">!=</span>j<span class="token punctuation">)</span> ret <span class="token operator">+=</span> A<span class="token punctuation">.</span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">*</span> A<span class="token punctuation">.</span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">;</span>
+		<span class="token keyword">return</span> ret<span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
 
-    <span class="token keyword">double</span> cur_g <span class="token operator">=</span> <span class="token function">g</span><span class="token punctuation">(</span>D<span class="token punctuation">)</span><span class="token punctuation">,</span> last_g <span class="token operator">=</span> <span class="token number">0.0</span><span class="token punctuation">;</span>
+	<span class="token keyword">double</span> cur_g <span class="token operator">=</span> <span class="token function">g</span><span class="token punctuation">(</span>D<span class="token punctuation">)</span><span class="token punctuation">,</span> last_g <span class="token operator">=</span> <span class="token number">0.0</span><span class="token punctuation">;</span>
 
-    <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token operator">!</span> <span class="token function">Eq</span><span class="token punctuation">(</span>cur_g<span class="token punctuation">,</span> last_g<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 当g(D)不变时，对角化完成</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span>size_t p <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> p <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> <span class="token operator">++</span>p<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 逐个处理a_&#123;pq&#125;</span>
-            <span class="token keyword">for</span> <span class="token punctuation">(</span>size_t q <span class="token operator">=</span> p <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span> q <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> <span class="token operator">++</span>q<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-                <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isZero</span><span class="token punctuation">(</span>D<span class="token punctuation">.</span>data<span class="token punctuation">[</span>p<span class="token punctuation">]</span><span class="token punctuation">[</span>q<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">continue</span><span class="token punctuation">;</span>
-                <span class="token keyword">double</span>  tan2phi <span class="token operator">=</span> <span class="token number">2</span> <span class="token operator">*</span> D<span class="token punctuation">.</span>data<span class="token punctuation">[</span>p<span class="token punctuation">]</span><span class="token punctuation">[</span>q<span class="token punctuation">]</span> <span class="token operator">/</span> <span class="token punctuation">(</span>D<span class="token punctuation">.</span>data<span class="token punctuation">[</span>p<span class="token punctuation">]</span><span class="token punctuation">[</span>p<span class="token punctuation">]</span> <span class="token operator">-</span> D<span class="token punctuation">.</span>data<span class="token punctuation">[</span>q<span class="token punctuation">]</span><span class="token punctuation">[</span>q<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-                        cosphi <span class="token operator">=</span> <span class="token function">sqrt</span><span class="token punctuation">(</span><span class="token number">0.5</span> <span class="token operator">*</span> <span class="token punctuation">(</span><span class="token number">1.0</span> <span class="token operator">+</span> <span class="token number">1.0</span><span class="token operator">/</span><span class="token function">sqrt</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token operator">+</span>tan2phi <span class="token operator">*</span> tan2phi<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token comment">// D = R^T A R，旋转变换</span>
-                D<span class="token punctuation">.</span><span class="token function">R</span><span class="token punctuation">(</span>cosphi<span class="token punctuation">,</span> p<span class="token punctuation">,</span> q<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                D<span class="token punctuation">.</span><span class="token function">R</span><span class="token punctuation">(</span>cosphi<span class="token punctuation">,</span> p<span class="token punctuation">,</span> q<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span>
-        last_g <span class="token operator">=</span> cur_g<span class="token punctuation">;</span>
-        cur_g <span class="token operator">=</span> <span class="token function">g</span><span class="token punctuation">(</span>D<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-    <span class="token keyword">for</span><span class="token punctuation">(</span>size_t i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> eigenvals<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> D<span class="token punctuation">.</span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
-    <span class="token keyword">return</span> eigenvals<span class="token punctuation">;</span>
+	<span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token operator">!</span> <span class="token function">Eq</span><span class="token punctuation">(</span>cur_g<span class="token punctuation">,</span> last_g<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 当 g (D) 不变时，对角化完成 </span>
+		<span class="token keyword">for</span> <span class="token punctuation">(</span>size_t p <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> p <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> <span class="token operator">++</span>p<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 逐个处理 a_&#123;pq&#125;</span>
+			<span class="token keyword">for</span> <span class="token punctuation">(</span>size_t q <span class="token operator">=</span> p <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span> q <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> <span class="token operator">++</span>q<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+				<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isZero</span><span class="token punctuation">(</span>D<span class="token punctuation">.</span>data<span class="token punctuation">[</span>p<span class="token punctuation">]</span><span class="token punctuation">[</span>q<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">continue</span><span class="token punctuation">;</span>
+				<span class="token keyword">double</span>  tan2phi <span class="token operator">=</span> <span class="token number">2</span> <span class="token operator">*</span> D<span class="token punctuation">.</span>data<span class="token punctuation">[</span>p<span class="token punctuation">]</span><span class="token punctuation">[</span>q<span class="token punctuation">]</span> <span class="token operator">/</span> <span class="token punctuation">(</span>D<span class="token punctuation">.</span>data<span class="token punctuation">[</span>p<span class="token punctuation">]</span><span class="token punctuation">[</span>p<span class="token punctuation">]</span> <span class="token operator">-</span> D<span class="token punctuation">.</span>data<span class="token punctuation">[</span>q<span class="token punctuation">]</span><span class="token punctuation">[</span>q<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+						cosphi <span class="token operator">=</span> <span class="token function">sqrt</span><span class="token punctuation">(</span><span class="token number">0.5</span> <span class="token operator">*</span> <span class="token punctuation">(</span><span class="token number">1.0</span> <span class="token operator">+</span> <span class="token number">1.0</span><span class="token operator">/</span><span class="token function">sqrt</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token operator">+</span>tan2phi <span class="token operator">*</span> tan2phi<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+				<span class="token comment">// D = R^T A R，旋转变换 </span>
+				D<span class="token punctuation">.</span><span class="token function">R</span><span class="token punctuation">(</span>cosphi<span class="token punctuation">,</span> p<span class="token punctuation">,</span> q<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+				D<span class="token punctuation">.</span><span class="token function">R</span><span class="token punctuation">(</span>cosphi<span class="token punctuation">,</span> p<span class="token punctuation">,</span> q<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+			<span class="token punctuation">&#125;</span>
+		<span class="token punctuation">&#125;</span>
+		last_g <span class="token operator">=</span> cur_g<span class="token punctuation">;</span>
+		cur_g <span class="token operator">=</span> <span class="token function">g</span><span class="token punctuation">(</span>D<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token keyword">for</span><span class="token punctuation">(</span>size_t i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> eigenvals<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> D<span class="token punctuation">.</span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+	<span class="token keyword">return</span> eigenvals<span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span></code></pre>
 
     
@@ -430,7 +618,7 @@ vector<span class="token operator">&lt;</span><span class="token keyword">double
         <li>本文字数：2.7k</li>
         <li>本文作者：Netcan</li>
         <li>发布时间：2018年05月27日 - 09时51分</li>
-        <li>最后更新：2018年05月30日 - 10时58分</li>
+        <li>最后更新：2020年08月09日 - 09时01分</li>
         <li>原始链接：<a href="https://netcan.github.io/2018/05/27/%E4%BB%8E%E5%A4%B4%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E5%BA%93%EF%BC%9A%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0%E7%AF%87/">https://netcan.github.io/2018/05/27/从头开始实现一个线性代数库：算法实现篇/</a></li>
         <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
     </ul>
@@ -663,6 +851,6 @@ gitalk.render('gitalk-container')
             all[i].SourceElement().parentNode.className += ' has-jax';
     });
 </script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </body>
 </html>
