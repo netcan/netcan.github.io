@@ -55,3 +55,7 @@ code {
     font-size: 14px;
     list-style: none;
 }
+
+.article-content {
+    font-family: 'cascadia_coderegular';
+};

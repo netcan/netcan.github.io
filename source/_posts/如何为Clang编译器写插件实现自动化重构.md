@@ -35,7 +35,7 @@ DEFINE_ROLE(IFoo) {
 
 还有后续需要将项目中的**数据表**重构成**结构体**，那么原来的`db.GetData(KEYID)`就需要重构成`tbl.key`形式。
 
-由于我用过`clang-tidy`做过多次自动化重构，很自然地想到可以对`clang`编译器打补丁，定义规则让编译器自动帮我完成重构，而程序员的乐趣就是将此类**重复工作**转换成更有趣的方式，既能增长知识，又不失效率：）
+由于我用过`clang-tidy`做过多次自动化重构，很自然地想到可以对`clang`编译器打补丁，定义规则让编译器自动帮我完成重构，而程序员的乐趣就是将此类**重复易错工作**转换成更有趣的方式，既能增长知识，又不失效率：）
 
 考虑到这个任务比较简单，而量比较大，若用脚本匹配，得考虑各种情况：
 
@@ -57,10 +57,7 @@ DEFINE_ROLE(IFoo) {
 核心思想就是用`Clang AST DSL`匹配需要的部分，然后通过`MatchCallBack`对匹配部分利用`Rewriter`进行修改。
 
 ## Clang AST
-`Clang AST`主要有这几种结点：`Decl`，`Stmt`和`Type`，进而衍生出很多其他类型的节点，有意思的是`AST`节点并没有公共基类，遍历`AST`相当于遍历图而不是简单的树。而`clang`提供的`DSL`更能很好融入到`cpp`中。更多信息可以参考：
-
-- [https://clang.llvm.org/docs/IntroductionToTheClangAST.html](https://clang.llvm.org/docs/IntroductionToTheClangAST.html)
-- [https://clang.llvm.org/docs/LibASTMatchersReference.html#narrowing-matchers](https://clang.llvm.org/docs/LibASTMatchersReference.html#narrowing-matchers)
+`Clang AST`主要有这几种结点：`Decl`，`Stmt`和`Type`，进而衍生出很多其他类型的节点，有意思的是`AST`节点并没有公共基类，遍历`AST`相当于遍历图而不是简单的树。而`clang`提供的`DSL`更能很好融入到`cpp`中。更多信息可以参考[参考资料](#参考资料)：
 
 通过`clang-check`工具可以把语法树`dump`出来：
 ```cpp
@@ -239,6 +236,8 @@ if (!F->isImplicit() && (dyn_cast<CXXDestructorDecl>(F) || dyn_cast<CXXConstruct
 ```cpp
 if (F->isPure()) {
     const TypeSourceInfo* TSI = F->getTypeSourceInfo();
+    if (auto Proto = TSI->getType()->getAs<FunctionProtoType>();
+            Proto && Proto->hasTrailingReturn()) { continue; }
     auto FTL = TSI->getTypeLoc().getAs<FunctionTypeLoc>();
     auto TrailingPos = Lexer::getLocForEndOfToken(FTL.getRParenLoc(), 0, SM, Ctx->getLangOpts());
     SourceRange EqualZero;
@@ -307,9 +306,43 @@ struct RewriteDecl: PluginASTAction {
 private:
     Rewriter RewriteDeclWriter;
 };
+
+static FrontendPluginRegistry::Add<RewriteDecl> X
+("RewriteDecl", "Refactor Interface by DEFINE_ROLE");
+```
+
+## 工程构建
+新建一个CMakeLists.txt用于构建这项工程，更多细节请参考：[https://github.com/netcan/Practice/tree/master/cpp/clang-plugin](https://github.com/netcan/Practice/tree/master/cpp/clang-plugin)
+
+```cmake
+find_package(LLVM REQUIRED CONFIG)
+find_package(Clang REQUIRED CONFIG)
+
+message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION}")
+message(STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}")
+
+include_directories(${LLVM_INCLUDE_DIRS})
+add_definitions(${LLVM_DEFINITIONS})
+
+add_library(
+    RefactorDecl
+    SHARED
+    RefactorDecl.cpp)
+
+target_link_libraries(RefactorDecl
+    "$<$<PLATFORM_ID:Darwin>:-undefined dynamic_lookup>")
+
+add_executable(
+    RefactorDeclMain
+    RefactorDeclMain.cpp)
+
+target_link_libraries(RefactorDeclMain
+    PRIVATE
+    clangTooling)
 ```
 
 ## 执行自动化重构
+插件方式：
 ```cpp
 $ clang++ -Xclang -load -Xclang libRewriteDecl.so -Xclang -plugin -Xclang RewriteDecl testdecl.cpp
 DEFINE_ROLE(IFoo) {
@@ -319,3 +352,20 @@ DEFINE_ROLE(IFoo) {
     ABSTRACT(foo5() const -> int);
 };
 ```
+
+二进制执行方式：
+```cpp
+$ ./bin/RefactorDeclMain testdecl.cpp
+DEFINE_ROLE(IFoo) {
+    ABSTRACT(foo(int, int, char) const volatile noexcept -> const void*);
+    ABSTRACT(foo3(int, int, char) && -> const int*);
+    ABSTRACT(foo4(int, int = 0) const -> int);
+    ABSTRACT(foo5() const -> int);
+};
+```
+
+## 参考资料
+- [https://s3.amazonaws.com/connect.linaro.org/yvr18/presentations/yvr18-223.pdf](https://s3.amazonaws.com/connect.linaro.org/yvr18/presentations/yvr18-223.pdf)
+- [https://clang.llvm.org/docs/IntroductionToTheClangAST.html](https://clang.llvm.org/docs/IntroductionToTheClangAST.html)
+- [https://clang.llvm.org/docs/LibASTMatchersReference.html#narrowing-matchers](https://clang.llvm.org/docs/LibASTMatchersReference.html#narrowing-matchers)
+
