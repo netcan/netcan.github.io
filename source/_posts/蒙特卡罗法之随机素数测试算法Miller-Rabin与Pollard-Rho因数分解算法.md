@@ -3,17 +3,15 @@ toc: true
 original: true
 tags:
   - 数学
-  - 数论
 categories:
   - 学习笔记
 date: 2015-12-06 14:50:53
+mathjax: true
 ---
 昨天刷到[POJ 2429](http://poj.org/problem?id=2429)，没刷出来= =，难度太大，翻*Discuss*翻到了一题[POJ 1811](http://poj.org/problem?id=1811)，了解了两个算法：`Miller_Rabin`$O(log n)$素数判定与`Pollard_Rho`$O(\sqrt[4] n)$分解质因数算法。
 
-<!--~~看室友打垃圾游戏`LOL`毫不考虑他人的份上，若能争取换宿舍，迟早会一个人住的，远离室友保平安，废物一个。~~-->
-
 ## Miller_Rabin算法
-这是我从**《算法导论》**和Google搜刮的资料上面整理出来的笔记，若有错误，请指出，谢谢。
+这是我从 **《算法导论》** 和Google搜刮的资料上面整理出来的笔记，若有错误，请指出，谢谢。
 
 ### 素数定理：
 素数分布函数$\pi(n)$描述了小于等于n的素数数量。
@@ -55,8 +53,8 @@ $$ i a = k_1 n+m, j a = k_2 n + m，做差得(j-i)a = (k_2 - k_1)n$$
 
 那么有
 {% raw %}
-$$ (n-1)! \equiv a 2a 3a \cdots (n-1)a = (n-1)! a^{n-1}\pmod n即\\
-a^{n-1} \equiv 1\pmod n$$
+$$ (n-1)! \equiv a 2a 3a \cdots (n-1)a = (n-1)! a^{n-1}\pmod n即$$
+$$a^{n-1} \equiv 1\pmod n$$
 {% endraw %}
 
 ### 伪素数测试过程
@@ -81,7 +79,7 @@ else return PRIME; // 可能错误，如果基于a的伪素数
 Miller_Rabin测试方法对上述测试过程做了改进，克服其存在的问题。
 
 测试方法引进`witness`，当且仅当$a$为合数$n$的证据时，返回`TRUE`，`witness`取$a=2$测试的扩展：
-$$a^{n-1} \not \equiv 1\pmod n$$
+$$a^{n-1} \neq 1\pmod n$$
 
 来介绍下`witness`的构造过程，令$n-1=2^t u$，其中$t\geq 1$且$u$是奇数，即$n-1$的二进制表示是奇数$u$的二进制后面接$t$个$0$。
 
@@ -152,8 +150,6 @@ $$ x=<23, 529, 463, 67, 1>$$
 如果`Miller_Rabin`返回`true`(即`PRIME`)，则它还是有一种很小的可能性出错。然而概率非常低，仅取决于`s`的大小和选取`a`值的运气。。而且每次都需要经过`witness`的严格判断，出错率应该极小，出错概率最多为$(1/2)^s$，然而对于一个长度为`1024`位的数字，大概需要$s=9$次，对于64位数，长度不超过20，计算得$s=1.14$，取$s=9$出错率可忽略不计。
 
 ## Pollard_Rho分解质因数算法
-~~实验报告抄死人，实验累死人，退化学保平安，待续。。。~~
-
 首先用`Miller_Rabin`判断一个数是否是质数，若不是质数则对其分解质因数。
 
 ### 试除法分解合数
@@ -187,12 +183,9 @@ $$ x=<23, 529, 463, 67, 1>$$
 同时我们可以优化检测手段：我们不检测$n|j-i$，而是检测$p,q=GCD(j - i, n) > 1$
 
 因为只有$p,q$整除$n$，令$x=j-i$，则
-{% raw %}
-$$
-x = p, = 2p, = 3p \cdots = (q - 1) \times p\\
-x = q, = 2q, = 3q \cdots = (p - 1) \times q\\
-(p \times q不再内，因为i \leq j < n)$$
-{% endraw %}
+$$x = p, = 2p, = 3p \cdots = (q - 1) \times p$$
+$$x = q, = 2q, = 3q \cdots = (p - 1) \times q$$
+$$(p \times q不再内，因为i \leq j < n)$$
 
 共有$p+q-2$个。
 

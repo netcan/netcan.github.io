@@ -9,6 +9,7 @@ tags:
 - C/C++
 categories:
 - 学习笔记
+mathjax: true
 ---
 
 编译原理第二个实验是LL(1)语法分析，这里我来写一下关于LL(1)的内容，虽然书上都有，但是总结一遍，应该印象更加深刻的，也有助于写代码。目前LL(1)实验已全部完成，项目地址：[http://115.159.147.250:666/LL1/](http://115.159.147.250:666/LL1/)，代码地址：[https://github.com/netcan/compilingTheory](https://github.com/netcan/compilingTheory)，效果图：
@@ -21,32 +22,22 @@ LL(1)文法主要是求$first$集和$follow$集，个人觉得$follow$集比较�
 
 ## $first$集
 $first$集就是求文法符号串$\alpha$的开始符号集合$first(\alpha)$，例如有以下文法$G(E)$：
-{% raw %}
-$$ 
-E\to TE' \\
-E'\to +TE'|\varepsilon\\
-T\to FT'\\
-T'\to *FT'|\varepsilon\\
-F\to (E)|\bf{id}
-$$
-{% endraw %}
+$$E\to TE' $$
+$$E'\to +TE'|\varepsilon$$
+$$T\to FT'$$
+$$T'\to *FT'|\varepsilon$$
+$$F\to (E)|\bf{id}$$
 
 用例子还是比较好说明的，很容易求出各非终结符的$first$集。
-{% raw %}
-$$
-first(E) = first(T) = first(F) = \{(, \bf{id}\}\\
-first(E') = \{+, \varepsilon\}\\
-first(T') = \{*, \varepsilon\}
-$$
-{% endraw %}
+$$first(E) = first(T) = first(F) = \{(, \bf{id}\}$$
+$$first(E') = \{+, \varepsilon\}$$
+$$first(T') = \{*, \varepsilon\}$$
 
 这里给出$first$集的一般描述。
 
-{% raw %}
 $$
 FIRST(\alpha) =\{t|(t\ is\ a\ terminal\ and\ \alpha\Rightarrow^∗ t\beta)or(t=\varepsilon\ and\ \alpha \Rightarrow^* \varepsilon)\}
 $$
-{% endraw %}
 
 也就是说，如果非终结符$E$有产生式$T\beta$，那么它们$first(E)=first(T)$，这个不难理解，因为我（$E$）能推出你（$T$），你又能推出它（开始符号，终结符），那我们都能推出它。
 
@@ -56,21 +47,13 @@ $first$集的作用是，当用来匹配开头为$a$的文本时，有产生式$
 
 ## $follow$集
 $follow$集比较抽象，它用来解决这个问题的，如果非终结符$E'$的$first(E')$含有$\varepsilon$，那么选择会不确定，比如说$G(E)$，
-{% raw %}
-$$
-E\to Tb|F\\
-T\to a|\varepsilon\\
-F\to c
-$$
-{% endraw %}
+$$E\to Tb|F$$
+$$T\to a|\varepsilon$$
+$$F\to c$$
 
 很容易求得
-{% raw %}
-$$
-first(Tb) = \{a, \varepsilon\} \\
-first(F) = {c}
-$$
-{% endraw %}
+$$first(Tb) = \{a, \varepsilon\}$$
+$$first(F) = {c}$$
 
 匹配开头为$a$，因为$a\in first(Tb)$，选择$E\to Tb$产生式，匹配开头为$c$，因为$c\in first(F)$，选择$E\to F$产生式。然而当我匹配$b$时，因为$b\not \in first(Tb)\land \not \in first(F)$，这时候就不知道选择哪个产生式了，但是因为$\varepsilon\in first(Tb)$，且$E\to Tb|F\Rightarrow (a|\varepsilon)b|F\Rightarrow ab|b|F$，应该选择$E\to Tb$的，这说明了$first$集的不足，从而引进$follow$集。
 
@@ -81,7 +64,7 @@ $$
 连续使用下面的规则，直至每个$follow$不再增大为止。
 * 对于文法的开始符号$S$，置#于$follow(S)$中。
 * 若$A\to \alpha B\beta$是一个产生式，则把$first(\beta)\backslash \{\varepsilon \}$加至$follow(B)$中；
-* 若$A\to \alpha B$是一个产生式，或$A\to \alpha B\beta $是一个产生式而$\varepsilon\in FIRST(\beta)$，则把$follow(A)$加至$follow(B)$中。 
+* 若$A\to \alpha B$是一个产生式，或$A\to \alpha B\beta $是一个产生式而$\varepsilon\in FIRST(\beta)$，则把$follow(A)$加至$follow(B)$中。
 
 第三条规则可以这么理解，因为$B$后面啥都没，$A$又能推出$B$，所以应该把$A$后面的符号（$follow(A)$）加入$follow(B)$中。需要注意的是，$follow$集不含$\varepsilon$。
 
@@ -105,14 +88,10 @@ $$
 接着设计一个叫`LL1`的类，也就是核心部分了，它提供了求`first`、`follow`、分析表等方法。因为`first`集和`follow`集可能会求未知表达式的`first`集和`follow`集，比如说`A->B，B->C`，欲求`first(A)`，需求`first(B)`，欲求`first(B)`，需求`first(C)`，从而确定了这两种集合求法只能用递归来求，这也是我所能想到的最简单求法，可以参考我代码。
 
 然而现在（2016/10/21）补充下，经过反复调教，`first`集都重写了5次，而`follow`集是**不能用递归**来求的，因为有可能出现这种情况：
-{% raw %}
-$$
-A\to bAS\\
-S\to aA\\
-S\to d\\
-A\to \varepsilon
-$$
-{% endraw %}
+$$A\to bAS$$
+$$S\to aA$$
+$$S\to d$$
+$$A\to \varepsilon$$
 
 求`follow(A)`需要`first(S)`和`follow(S)`，递归求`follow(S)`需要`follow(A)`，然而这样就进入了死递归。所以最后我改写成5个循环搞定。
 

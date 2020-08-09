@@ -9,6 +9,7 @@ tags:
 - C/C++
 categories:
 - 学习笔记
+mathjax: true
 ---
 
 终于做完第三个实验了，代码地址：[https://github.com/netcan/compilingTheory](https://github.com/netcan/compilingTheory)，项目地址：[http://115.159.147.250:666/LR/](http://115.159.147.250:666/LR/)，**第一次进入需要加载库，比较耗时，请耐心等待**，效果图：

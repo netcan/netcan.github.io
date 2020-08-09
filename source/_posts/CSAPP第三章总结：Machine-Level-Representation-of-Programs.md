@@ -8,6 +8,7 @@ tags:
 - 操作系统
 categories:
 - 学习笔记
+mathjax: true
 ---
 
 以下为自用笔记，具体可看[Computer Systems A Programmer's Perspective](https://doc.lagout.org/programmation/Computer%20Systems%20-%20A%20Programmers%20Perspective.pdf)。

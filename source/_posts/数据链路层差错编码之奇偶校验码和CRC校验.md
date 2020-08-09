@@ -6,6 +6,7 @@ tags:
 - 计算机网络
 categories:
 - 学习笔记
+mathjax: true
 ---
 
 刚刚到操场完成了大学第一个5公里慢跑，现在神清气爽。
@@ -95,7 +96,6 @@ $$
 $D=101110$，$G=x^3+1(1001)$，
 {% raw %}
 $$
-\require{enclose}
 \begin{array}{rl}
     101011 & \hbox{(模二除法)}\\[-3pt]
    1001 \enclose{longdiv}{101110\color{red}{000}}\kern-.2ex \\[-3pt]
@@ -118,7 +118,6 @@ $$
 
 {% raw %}
 $$
-\require{enclose}
 \begin{array}{rl}
     101011\\[-3pt]
    1001 \enclose{longdiv}{101110\color{red}{011}}\kern-.2ex \\[-3pt]
