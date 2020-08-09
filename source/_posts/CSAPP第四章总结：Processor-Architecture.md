@@ -128,6 +128,7 @@ pushtest:
 *HCL*表达式的逻辑运算和C语言差不多，用`&&`代表与，`||`代表或，`!`代表非。但是有点不同，C语言的单位操作是用`&`, `|`, `~`等，而*HCL*都是用前面说的那3个符号。
 
 比如一个与门有3个输入端*A*, *B*, *C*，那么输出端可以写成`out = a && b && c`。
+
 ### Combinational Circuits and HCL Boolean Expressions
 组合逻辑电路就是将一些逻辑门连接在一起，以实现某些功能。有2个约束：
 - 多个输入端不能连在一起，否则会出现冲突。。
@@ -217,6 +218,7 @@ pushtest:
 
 ##  Sequential Y86 Implementations
 这一部分讲了下关于串行*Y86*指令的*HCL*实现和硬件实现，也就是说每一个时钟周期执行一条指令，后面会接着实现*pipelined*。
+
 ###  Organizing Processing into Stages
 处理一条指令分为好几个阶段，设计的时候应该保证每条指令的每个阶段**相似**，如下：
 

@@ -26,7 +26,6 @@ Laravel development server started on http://localhost:8000/
 ```
 
 问题来了，2个端口一样，按理说应该会冲突啊，可是没有，打开浏览器，输入`127.0.0.1:8000`，看到的是`django`的项目。那么`laravel`项目哪去了，难道没启动成功，可是又没报错？
-<!--more-->
 
 仔细看`laravel`的输出信息，于是浏览器输入`localhost:8000`，果然，是`laravel`的项目，也就是说，127.0.0.1 != localhost？这不可能吧。
 

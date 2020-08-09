@@ -11,6 +11,7 @@ tags:
 categories:
 - 编程
 ---
+
 ### 介绍
 这段时间在写一个考试系统[ChemLab](https://github.com/netcan/HFUT_ChemLab)，期间用到了`AJAX`实现增删查改（`CRUD`）页面，现在写一个`Laravel`入门教程吧，一步步实现最基本的`CRUD`页面。
 
@@ -22,7 +23,6 @@ categories:
 先来看看效果图：
 ![http://7xibui.com1.z0.glb.clouddn.com/crud.gif](http://7xibui.com1.z0.glb.clouddn.com/crud.gif)
 
-<!-- more -->
 这个教程需要安装`homestead`环境，关于`homestead`可以参考我的另一篇博文：[windows下安装Homestead开发环境](http://www.netcan666.com/2016/06/24/windows%E4%B8%8B%E5%AE%89%E8%A3%85Homestead%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/)
 
 ### 创建项目
@@ -32,6 +32,7 @@ vagrant@homestead:~/Code$ cd AJAX_CRUD/
 ```
 
 ### 修改配置
+
 #### 修改数据库
 打开`.env`，主要是修改数据库方面的，我们选择`task`数据库，如下：
 ```bash
@@ -170,6 +171,7 @@ Migrated: 2016_08_17_033029_create_tasks_table
 到数据库中查看，你会发现`task`数据库中多了一些表和记录。
 
 ### 构建页面
+
 #### 创建控制器
 ```bash
 vagrant@homestead:~/Code/AJAX_CRUD$ php artisan make:controller TaskController
@@ -461,6 +463,7 @@ $(document).ready(function () {
 
 ### 问题记录
 写这个教程遇到的问题也蛮大的，记录下来。
+
 #### 路由问题
 之前路由是这样的：
 ```php
@@ -475,6 +478,7 @@ Route::get('/', function () {
 
 Route::resource('/task', 'TaskController');
 ```
+
 #### 新元素事件绑定问题
 之前是这样绑定事件的：
 ```javascript

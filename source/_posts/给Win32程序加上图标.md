@@ -15,7 +15,7 @@ categories:
 ![http://7xibui.com1.z0.glb.clouddn.com//2016/04/24/QQ%E6%88%AA%E5%9B%BE20160424123454.png](http://7xibui.com1.z0.glb.clouddn.com//2016/04/24/QQ%E6%88%AA%E5%9B%BE20160424123454.png)
 
 下面说下具体步骤：
-<!--more-->
+
 ### 创建rc文件
 首先创建`.rc`文件，添加如下内容：
 
@@ -48,6 +48,7 @@ END
 ```
 
 根据相关字段进行修改即可，`ICON`指定了图标。
+
 ### 导出.res文件
 	windres my.rc -O coff -o my.res
 

@@ -14,7 +14,6 @@ categories:
 编译原理第二个实验是LL(1)语法分析，这里我来写一下关于LL(1)的内容，虽然书上都有，但是总结一遍，应该印象更加深刻的，也有助于写代码。目前LL(1)实验已全部完成，项目地址：[http://115.159.147.250:666/LL1/](http://115.159.147.250:666/LL1/)，代码地址：[https://github.com/netcan/compilingTheory](https://github.com/netcan/compilingTheory)，效果图：
 ![https://raw.githubusercontent.com/netcan/compilingTheory/master/ll1.gif](https://raw.githubusercontent.com/netcan/compilingTheory/master/ll1.gif)
 
-<!--more-->
 
 我写这篇博文写了好几天了，描述比较凌乱，建议大家还是看书吧，或者直接看我[程序设计部分](#程序设计)。一定要搞懂$first$集和$follow$集的求法，不然写程序也会遇到困难的，这里有篇不错的关于求$first$和$follow$集的论文，推荐看看：[https://www.cs.virginia.edu/~weimer/2008-415/reading/FirstFollowLL.pdf](https://www.cs.virginia.edu/~weimer/2008-415/reading/FirstFollowLL.pdf)
 

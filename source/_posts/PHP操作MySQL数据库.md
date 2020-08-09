@@ -17,6 +17,7 @@ updated: 2015-03-21 22:34:23
 Example:
 
 	$db=mysqli_connect('localhost','root','password','test');
+
 ### 使用`mysqli_select_db()`函数选择数据库文件
 
     mysqli_select_db(数据库服务器连接对象,目标数据库名);
@@ -25,13 +26,14 @@ Example:
 
 	$db=mysqli_connect('localhost','root','password');
 	mysqli_select_db($db,'test');
+
 ### 使用`mysqli_query()`函数执行SQL语句
-<!--more-->
 
     mysqli_query(数据库服务器连接对象,SQL语句);
 Example:
 
 	$fruits=mysqli_query($db,"SELECT * FROM fruits");
+
 #### 使用`mysqli_fetch_assoc()`函数从查询结果集中获取一行信息最为关联数组
 
     mysqli_fetch_assoc(SQL请求返回的对象)，将返回一个关联数组。
@@ -39,6 +41,7 @@ Example:
 
 	$fruit = mysqli_fetch_assoc($fruits);
 	echo $fruit['f_name'];
+
 #### 使用`mysqli_fetch_object()`函数从查询结果集中获取一行信息作为对象
 
     mysqli_fetch_object(SQL请求返回的对象)，将返回一个对象。
@@ -46,24 +49,28 @@ Example:
 
 	$fruit = mysqli_fetch_assoc($fruits);
 	echo $fruit->f_name;
+
 ### 使用`mysqli_num_rows()`函数获取查询结果集中的记录数
 
     mysqli_num_rows(SQL请求返回的对象)，返回记录数目。
 Example:
 
 	fruit_nums = mysqli_num_rows($fruits);
+
 ### 使用`mysqli_free_result()`函数释放资源，
 
     mysqli_free_result(SQL请求返回的对象),释放查询结果资源。
 Example:
 
 	mysqli_free_result($fruits);
+
 ### 使用`mysqli_close()`函数关闭连接
 
     mysqli_close(需要关闭的数据库连接对象);
 Example:
 
 	mysqli_close($db);
+
 ### 简单的注册，查询实例
 先上register_mysql.html页面文件，
 ```html

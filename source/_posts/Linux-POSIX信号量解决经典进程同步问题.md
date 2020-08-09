@@ -16,7 +16,6 @@ categories:
 在Unix/Linux上，信号量有2种标准：`System V`和`Posix`。我选择了`Posix`，因为它的接口很简单，功能又和`System V`相近。
 
 不过有些情况可以用**互斥体**来实现，信号量有时候称为并发式编程的`goto`，因为它能在一个进程中唤醒另一个进程，很容易产生出糟糕的同步设计。
-<!-- more -->
 
 ### 信号量介绍
 信号量是同步进程的一个机制，由内核维护的整数（限制>=0），通常用来表示一个共享资源的数量。在一个信号量上可以执行以下操作：
@@ -359,6 +358,7 @@ deavxtfyttcubphnqfvkhxokjvgihkdkqgfnzkmudqohfvuycrimoyyawfkdrpok
 ======读者3======
 deavxtfyttcubphnqfvkhxokjvgihkdkqgfnzkmudqohfvuycrimoyyawfkdrpok
 ```
+
 ### 参考资料
 * 《计算机操作系统（第四版）》
 * 《Linux/Unix系统编程手册》第53章

@@ -177,6 +177,7 @@ auto resetV = [&v](const auto& newValue) { v = newValue; };
 
 resetV({1, 2, 3}); // 编译错误！理由同上
 ```
+
 ### Things to Remember
 - auto类型推导通常和模板类型推导规则一样，但是auto类型推导将花括号初始化看做`std::initializer_list`，而模板类型推导不会
 - auto用在函数返回值或者lambdas的param中，用的是模板推导的规则而不是auto类型推导规则。
@@ -264,6 +265,7 @@ decltype(auto) f2() {
 	return (x); // 返回值为int&，因为decltype((x))为int&，返回一个局部变量的引用，非常危险
 }
 ```
+
 ### Things to Remember
 - decltype大多数时候返回的类型和变量或者表达式的类型一致
 - 左值表达式(x)返回的是它的引用类型
@@ -276,6 +278,7 @@ decltype(auto) f2() {
 这个方法比较简单，需要IDE支持（IDE从编译器那里取得相关信息），比如将鼠标放到变量上，就会显示出该变量的类型了。
 
 但是也有缺点，就是当涉及到比较复杂的类型，那么给出来的信息就没什么用了。
+
 ### 编译器诊断
 更好的办法是用编译器编译的时候给出类型信息，就是让编译器报错，从而给出相关信息。
 

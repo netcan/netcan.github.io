@@ -25,7 +25,6 @@ categories:
 
 	NetCan
 
-<!-- more -->
 没问题。我上次为了加快cin/cout速度，关闭了同步stdio导致出错，现在试试
 
 	int main()

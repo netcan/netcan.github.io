@@ -26,7 +26,7 @@ updated: 2015-03-11 22:59:13
 输出：
 
 	1426083407
-<!--more-->
+
 #### `date()`函数返回日期，`date(format, timestamp)`，若无`timestamp`参数则返回当前日期。
 
 format:
@@ -62,6 +62,7 @@ z - 一年中的第几天; 如: "0" 至 "365"
 
 	2015-03-11 22:16:47
 	2015-03-11 22:26:26
+
 #### `getdate(timestamp)` 返回一个包含日期时间各个部分的数组，若无参数则返回当前时间日期的数组。
 
 	$t = getdate();
@@ -131,6 +132,7 @@ format:
 
 	2015-Mar-11 22:16:47
 	2015-Mar-11 22:41:22
+
 #### `setlocale(constant,location)`函数改变PHP本地化默认值，
 constant:
 LC_ALL - 包括下面的所有选项
@@ -155,6 +157,7 @@ LC_TIME - 日期
 输出：
 
 	1426085600
+
 #### `microtime(true)`可返回微秒级时间戳。
 
 	echo microtime(true);

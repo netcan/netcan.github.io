@@ -10,6 +10,7 @@ tags:
 categories:
 - 学习笔记
 ---
+
 # 前言
 自用笔记，目前在看《Learning Data Mining with python 2nd Edition》。
 
@@ -18,6 +19,7 @@ categories:
 然后通过书上给的源代码链接，发现这本书今年4月份出了第二版，就下了电子版来研究了。
 
 # Getting Started with Data Mining
+
 ## affinity analysis
 第一个例子是关于*affinity analysis*，给出历史订单，当X和Y同时购买时，可以找出如下规则：
 
@@ -42,6 +44,7 @@ categories:
 - 使用错误个数最少的特征来分类
 
 ```python
+
 # X样本, y_true样本对应的类别，feature选择的特征，value特征的值
 def train_feature_value(X, y_true, feature, value):
     class_count = defaultdict(int)
@@ -261,6 +264,7 @@ Out[733]: array([ 0.75213675,  0.64957265,  0.74358974])
 ```
 
 所以如果将所有特征缩小到0-1范围内的值，就能很好解决这个问题。
+
 ### 标准预处理
 将特征正规化，可以用`scikit-learn`的`MinMaxScaler`类。
 ```python
@@ -308,6 +312,7 @@ Out[776]: array([ 0.82905983,  0.77777778,  0.86324786])
 这一章介绍用决策树来预测NBA比赛的结果，首先使用pandas读取、操作数据集，然后使用决策树来分类，再用随机森林优化决策树效果，挖掘现实中的数据，最后创建一个robust模型。
 
 ## 读取数据集
+
 ### 获取数据集
 首先获取数据集，2015-2016年各月的比赛数据可以到这个网址中获取：[https://www.basketball-reference.com/leagues/NBA_2016_games.html](https://www.basketball-reference.com/leagues/NBA_2016_games.html)，我已经下载好了，一共1316场比赛：[basketball.csv](basketball.csv)
 
@@ -558,10 +563,12 @@ Out[479]: 0.62158877759401987
 ```python
 from sklearn.preprocessing import LabelEncoder
 encoding = LabelEncoder()
+
 # 为所有参赛队（名）设置编号
 encoding.fit(ds["Home Team"].values)
 home_teams = encoding.transform(dataset["Home Team"].values)
 visitor_teams = encoding.transform(dataset["Visitor Team"].values)
+
 # X_teams的每一行表示两个参赛队（名）的编号
 X_teams = np.vstack((home_teams, visitor_teams)).T
 ```

@@ -123,3 +123,10 @@ feed:
   icon: icon.png
   autodiscovery: true
   template:
+
+pandoc:
+  filters:
+  extra:
+  template:
+  meta:
+  mathEngine:

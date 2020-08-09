@@ -11,8 +11,8 @@ categories:
 看来我已经全部掌握这些快捷键了。。
 
 ![http://7xibui.com1.z0.glb.clouddn.com/@/2015/12/vi-vim-cheat-sheet-sch.gif](http://7xibui.com1.z0.glb.clouddn.com/@/2015/12/vi-vim-cheat-sheet-sch.gif)
+
 ## 光标移动
-<!-- more -->
 快捷键|说明
 :-:|:-:
 h|	左移

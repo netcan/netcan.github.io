@@ -20,37 +20,47 @@ categories:
 	译：yangyangwithgnu@yeah.net
 
 ## 学习笔记
+
 ### 打印信息
 打印信息有`echo`和`echom`两个，但是使用`echom`会把打印的消息存到历史记录，用`message`可查看。
+
 ### 注释
 在编写vimscript脚本(`~/.vimrc`)的时候，可用`"`来注释，但是不一定有效，例如
 
 	echo "Hello World!" "hellowrld
+
 ### 设置选项
-<!--more-->  
+
 #### 布尔选项
+
 ##### 打开关闭布尔选项
 可用`set`来打开布尔选项，例如`set number`, `set nonumber`，所有布尔选项都可以用`set <name>`打开，`set no<name>`关闭。
+
 ##### 切换布尔选项开关
 `set <name>!`可切换开关状态，例如`set number!`，若当前显示（隐藏）行号可关闭（打开）。
+
 ##### 查看当前值
 `set <name>?`可显示当前值，例如`set number?`，若行号已打开则输出`number`，否则输出`nonumber`。
+
 #### 键值选项
 有些选项不只有`on`和`off`两种选项，需要一个值，可通过`set <name>=<value>`，例如`set numberwidth=2`。
 
 同样可用`set <name>?`来查看值。
+
 ### 基本映射
 用`map KEY CMD`可以映射按键到指定功能，例如`map - dd`，这时在`normal`模式下按下`-`即可删除一行。
 
 需要注意`map`在`normal`和`visual`模式下有用，在`insert`模式下无用。
 
 `<keyname>`可告诉vim一些特殊的按键，比如`<space>`代表空格键。例如`map <c-d> dd`表示按下`ctrl+d`删除一行。
+
 ### 模式映射
 前面提到`map`在`normal`和`visual`模式下有用，在`insert`模式下无用。
 
 这时可以使用`nmap`, `vmap`, `imap`分别指定仅在`normal`,`visual`,`insert`模式下生效。
 
 这里举个例子，`imap <c-d> <esc>ddi`可在`insert`模式下，按下`ctrl+d`即可删除一行。
+
 ### 删除映射
 用`*unmap KEY`能删除映射，例如
 
@@ -81,6 +91,7 @@ categories:
 	nnoremap <leader>d dd
 
 这样可以通过按`,d`来删除一行。
+
 ### Local Leader
 `vim`还可以设置`<localleader>`来针对于某些文件设置映射，使用方法和`<leader>`一样。
 
@@ -119,6 +130,7 @@ categories:
 `<nop>`即`no operation`，这样在`insert`模式下`<esc>`即无效了。可强迫自己使用自定义快捷键`jk`。
 
 ### 本地缓冲区的映射和选项设置
+
 #### 映射
 当设置一个映射后，开一个`buffer`你会发现会继承之前定义的映射，比如说
 
@@ -141,6 +153,7 @@ categories:
 	iabbrev <buffer> --- &mdash;
 
 这里的`---`缩写将在当前`<buffer>`中生效。
+
 #### 选项设置
 同样的，在当前`buffer`设置选项可以用`setlocal OPTION`。
 
@@ -171,6 +184,7 @@ categories:
 	:autocmd BufNewFile,BufRead *.html setlocal nowrap
 
 这样打开或者创建`html`文件将设置`nowrap`选项。
+
 ### FileType事件
 这个可以为不同文件类型创建不同的映射，例如
 
@@ -178,6 +192,7 @@ categories:
 	:autocmd FileType python     nnoremap <buffer> <localleader>c I#<esc>
 
 在`buffer`打开`*.js`文件，可按`<leader>c`注释`//`一行，而在`buffer`新开`*.py`文件，可用`#`注释一行。
+
 ### 自动命令缩写
 
 	autocmd FileType python     :iabbrev <buffer> iff if:<left>
@@ -275,6 +290,7 @@ yt,  |  复制   |    到逗号
 这里的`normal`可以看做模拟按键操作（加个`!`是为了不使用映射），即按了四下`llll`。
 
 `<c-u>`原文并没指出具体作用，Google了一下好像可以清除命令行，不用理会这个。
+
 #### 改变开始位置
 只要移动到指定位置，在`visual`模式下选中，即可操作选中的文本。
 

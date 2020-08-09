@@ -8,6 +8,7 @@ categories:
 date: 2015-04-08 00:00:47
 updated: 2015-04-08 00:00:47
 ---
+
 ### 超级链接特效
 
 #### 改变超级链接的基本样式
@@ -25,7 +26,6 @@ a:visited|定义a对象在其链接被访问过时的样式
 
 	a:hover { color: #545454; }
 
-<!--more-->
 #### 超级链接背景图设置
 
 通常使用([background-image](http://www.w3school.com.cn/cssref/pr_background-image.asp))属性来完成。例如

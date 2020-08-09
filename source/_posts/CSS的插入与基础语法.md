@@ -16,9 +16,9 @@ updated: 2015-03-24 15:15:22
 直接在html标记中使用style属性，属性的内容就是css的属性和值。
 
 	<p style="color:red">段落样式</p>
+
 #### 内嵌样式
 添加css样式代码到<head></head>之间，用<style></style>标记声明。
-<!--more-->
 
 	<!DOCTYPE HTML>
 	<html>
@@ -46,12 +46,14 @@ updated: 2015-03-24 15:15:22
 在<head></head>标记中采用<link>标签，
 
 	<link rel="stylesheet" type="text/css" href="file.css" />
+
 #### 导入样式
 在<style></style>标记中，使用@import导入一个外部样式表
 
 	<style type="text/css">
 		@import "file.css"
 	</style>
+
 ### 优先级问题
 浏览器在显示网页是这样处理的，先检查有没有行内样式，有就执行，针对本句的其他css就不去管了，其次检查内嵌样式，有就执行，若前两者都没有的情况下再检查链接样式的css。综上所述，3种css的执行优先级是：行内样式、内嵌样式、链接样式。
 
@@ -69,6 +71,7 @@ updated: 2015-03-24 15:15:22
 		font-size: 1em;
 		color:  #000000;
 		}
+
 #### 类选择器
 语法格式如下所示
 
@@ -92,6 +95,7 @@ ID选择器定义的是某一个特定的html元素，一个网页文件只能�
 
 	h1.red {color:red}
 	<h1 class="red">h1</h1>
+
 #### 继承选择器
 规则是，子标记在没有定义的情况下所有的样式都是继承父标记的，当子标记重复定义了父标记定义过的声明时，子标记就执行后面的声明；与父标记不冲突的地方仍然沿用父标记的声明。
 
@@ -175,6 +179,7 @@ ID选择器定义的是某一个特定的html元素，一个网页文件只能�
 	</html>
 
 {% iframe http://7xibui.com1.z0.glb.clouddn.com//uploads/web_dev/css_study/1_3_8.html %}
+
 ### 选择器声明
 
 #### 集体声明
@@ -202,6 +207,7 @@ ID选择器定义的是某一个特定的html元素，一个网页文件只能�
 	</html>
 
 {% iframe http://7xibui.com1.z0.glb.clouddn.com//uploads/web_dev/css_study/1_4_1.html %}
+
 #### 多重嵌套声明
 在通过css控制html样式时，还可以使用层层递进的方式，即嵌套方式，例如当`<p>`和`</p>`标记之间包含`<a></a>`标记时，就可以使用这种方式对html标记进行修饰。具体案例看[3.6](#继承选择器 "继承选择器")。
 

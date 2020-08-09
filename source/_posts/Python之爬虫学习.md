@@ -39,6 +39,7 @@ categories:
 - `robots.txt`，这个文件主要定义了一些规则，例如哪些页面不能被爬取，需要注意，违反可能会被Blocked
 
 ## 爬取网站
+
 ### sitemap.xml方法
 这个方法比较简单，提取`sitemap.xml`中的链接，然后依次下载/提取即可。
 

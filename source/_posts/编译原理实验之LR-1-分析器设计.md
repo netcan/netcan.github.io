@@ -14,7 +14,6 @@ categories:
 终于做完第三个实验了，代码地址：[https://github.com/netcan/compilingTheory](https://github.com/netcan/compilingTheory)，项目地址：[http://115.159.147.250:666/LR/](http://115.159.147.250:666/LR/)，**第一次进入需要加载库，比较耗时，请耐心等待**，效果图：
 ![https://raw.githubusercontent.com/netcan/compilingTheory/master/LR.gif](https://raw.githubusercontent.com/netcan/compilingTheory/master/LR.gif)
 
-<!--more-->
 先来吐槽下，据说这个实验是最难的一个实验，当然也是最后的一个实验了。在我们实验室上一届学长只有一个人写出来，可见其难度。
 
 ![http://7xqytu.com1.z0.glb.clouddn.com//2016/10/QQ%E6%88%AA%E5%9B%BE20161021212712.png](http://7xqytu.com1.z0.glb.clouddn.com//2016/10/QQ%E6%88%AA%E5%9B%BE20161021212712.png)

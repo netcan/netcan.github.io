@@ -7,6 +7,7 @@ categories:
   - 编程
 date: 2015-03-10 12:03:54
 ---
+
 ## 乘法运算 
 <script language="JavaScript">function mult() {document.multi.r.value = document.multi.a.value*document.multi.b.value;}</script>
 <form name="multi"><input type="text" name="a" size="5" maxLength="5" value="1"/> * <input type="text" name="b" size="5" maxLength="5" value="1"/>= <input type="text" name="r" size="10" value="1" readonly/> <input type="button" value="计算" onClick="mult()"/> </form>
@@ -15,7 +16,6 @@ date: 2015-03-10 12:03:54
 <script language="JavaScript">function ad() {document.add.r.value = parseFloat(document.add.a.value) + parseFloat(document.add.b.value);}</script>
 <form name="add"><input type="text" name="a" size="5" maxLength="5" value="1"/> + <input type="text" name="b" size="5" maxLength="5" value="1"/>= <input type="text" name="r" size="10" value="1" readonly/> <input type="button" value="计算" onClick="ad()"/> </form>
 
-<!-- more --> 
 
 ## 网页源代码(乘法)
 

@@ -24,7 +24,6 @@ C++的STL有很多与线性表相关的容器，如向量vector，列表list等�
 	#include <vector>
 	using std::vector;
 需要注意的是vector是一个类模板，而非数据类型，在定义时必须要说明vector保存的数据对象类型．
-<!-- more -->
 
 	vector<int> ivec;    //定义向量对象ivec
 	vector<int> ivec1(ivec);    //定义向量对象ivec1，并用ivec初始化
@@ -100,6 +99,7 @@ int main() {
 	size: 10 capacity: 16
 	size: 100 capacity: 128
 	size: 100 capacity: 200
+
 ### 列表
 
 列表是STL中线性表的链式储存方式，STL标准库中一般采用双向循环链表实现列表。因此list容器使用不连续的空间区域，允许向前和向后逐个遍历元素，但不支持随即访问，查找某个元素时往往需要遍历相邻的若干元素。作为其优点，在任何时刻可以快速的插入和删除，并且不需要移动其他元素。

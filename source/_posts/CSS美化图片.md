@@ -20,7 +20,7 @@ updated: 2015-04-05 16:49:07
 
 	{ border-style: dotted|dashed|solid|double; }
 	{ border-top-style|border-right-style|border-bottom-style|border-left-style: dotted|dashed|solid|double; }
-<!--more-->
+
 #### 图片缩放
 
 使用([max-width](http://www.w3school.com.cn/cssref/pr_dim_max-width.asp))和([max-height](http://www.w3school.com.cn/cssref/pr_dim_min-height.asp))，分别用来设置图片的宽度最大值和高度最大值。例如
@@ -40,12 +40,15 @@ updated: 2015-04-05 16:49:07
 使用(vertical-align)属性来定义图片纵向的对齐方式。
 
 	{vertical-align: baseline|sub|super|top|text-top|middle|bottom|text-bottom|length|%;}
+
 ### 图文混排
+
 #### 文字环绕
 
 使用([float](http://www.w3school.com.cn/cssref/pr_class_float.asp))属性来定义该效果，该属性主要定义元素在哪个方向浮动，一般情况下该属性总应用于图像，使文本环绕在图像四周，有时候也可以定义其他浮动元素。
 
 	{float: none|left|right; }
+
 #### 设置图片与文字间距
 
 可以使用([padding](http://www.w3school.com.cn/cssref/pr_padding.asp))来设置。
