@@ -130,3 +130,14 @@ pandoc:
   template:
   meta:
   mathEngine:
+
+uglify:
+  mangle: true
+  output:
+  compress:
+  exclude:
+    - "*.min.js"
+
+clean_css:
+  exclude:
+    - "*.min.css"
