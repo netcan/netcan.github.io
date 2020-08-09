@@ -16,9 +16,9 @@ home_nav:
   - name: Blog
     url: /archives
     target_blank: false #不在新页面打开
-  # - name: Project
-    # url: /project/
-    # target_blank: true #在新页面打开
+  - name: Project
+    url: /project/
+    target_blank: true #在新页面打开
   - name: Github
     url: https://github.com/netcan
     target_blank: true
@@ -110,11 +110,7 @@ personal_style: /css/site.css
 # 这个值取决于你得背景图片是深色还是浅色，深色用dark，浅色用light
 home_background_scheme: light # dark、light
 
-# custom font-family 暂时只支持这3种英文字体，你可以完全自定义字体(看文档)
 blog_name_font_familiy: calligraffittiregular
-# blog_name_font_familiy: Lobster-Regular
-# blog_name_font_familiy: PoiretOne-Regular
-
 init_page_content: HOME_NAV  # HOME_NAV | POST
 
 
@@ -190,7 +186,7 @@ about:
     icon: icon-user
     text_value:
     - "Netcan, 1996, Summer."
-    - "喜欢设计，擅长Coding"
+    - "喜欢设计，爱好Coding"
     - "软件工程师，擅长C/C++/Rust/Lisp"
   - type: Github
     icon: icon-github
@@ -203,7 +199,9 @@ about:
     text_value: "netcan1996@gmail.com"
   - type: location
     icon: icon-location
-    text_value: Shanghai
+    text_value:
+    - 上海华为研究所. 2018.7 ~ Today
+    - 合肥工业大学. 2014.7 ~ 2018.6
 
 link:
   # - name:
@@ -211,8 +209,80 @@ link:
     # url:
     # avatar:
 
-# project:
-  # - type: personal/company
-    # name:
-    # url:
-    # intro:
+project:
+  - type: personal
+    name: netcan.github.io
+    url: https://github.com/netcan/netcan.github.io
+    intro: My blog for something about programming.
+  - type: personal
+    name: AnimalChess
+    url: https://github.com/netcan/AnimalChess
+    intro: Animal Fight Chess Game（斗兽棋） written in rust.
+  - type: personal
+    name: NetcanOS
+    url: https://github.com/netcan/NetcanOS
+    intro: Netcan OS is an operation system for x86 PCs, for learning how os works.
+  - type: personal
+    name: HFUT_Thesis
+    url: https://github.com/netcan/HFUT_Thesis
+    intro: 合肥工业大学毕业设计（论文）模板
+  - type: personal
+    name: libnetcan-soft.so
+    url: https://github.com/netcan/libnetcan-soft.so
+    intro: A utility library written in junior high school. on birthday 2012-05-23.
+  - type: personal
+    name: FCEmulator
+    url: https://github.com/netcan/FCEmulator
+    intro: 毕业设计项目，FC模拟器。
+  - type: personal
+    name: LinAlg
+    url: https://github.com/netcan/LinAlg
+    intro: 实现一个线性代数库，为Python写扩展。《程序猿的数学3 线性代数》读后笔记。
+  - type: personal
+    name: compilingTheory
+    url: https://github.com/netcan/compilingTheory
+    intro: My course design for compiler theory (Visualization).
+  - type: personal
+    name: LoveCalendar
+    url: https://github.com/netcan/LoveCalendar
+    intro: A calendar to mark something.
+  - type: personal
+    name: HFUT_Market
+    url: https://github.com/netcan/HFUT_Market
+    intro: A databases course design, using python.
+  - type: personal
+    name: Talk
+    url: https://github.com/netcan/Talk
+    intro: A simple Java talk software.
+  - type: personal
+    name: HFUT_Live
+    url: https://github.com/netcan/HFUT_Live
+    intro: 校内直播平台。
+  - type: personal
+    name: baike_contest
+    url: https://github.com/netcan/baike_contest
+    intro: 合工大宣百科竞赛平台
+  - type: personal
+    name: SlidePuzzle
+    url: https://github.com/netcan/SlidePuzzle
+    intro: Slide puzzle game written by Netcan. using the SDL engine and use of A* algorithm.
+  - type: personal
+    name: 2017-HUAWEI-Codecraft
+    url: https://github.com/netcan/2017-HUAWEI-Codecraft
+    intro: 2017华为软件精英挑战赛，上合赛区，围墙编队
+  - type: personal
+    name: 2018-HUAWEI-Codecraft
+    url: https://github.com/netcan/2018-HUAWEI-Codecraft
+    intro: 2017华为软件精英挑战赛，上合赛区，围墙编队
+  - type: personal
+    name: Laravel_AJAX_CRUD
+    url: https://github.com/netcan/Laravel_AJAX_CRUD
+    intro: A Laravel application for AJAX CRUD page.
+  - type: personal
+    name: HFUT_ChemLab
+    url: https://github.com/netcan/HFUT_ChemLab
+    intro: A Laravel application for HFUT Chemistry lab learning and exam system.
+  - type: personal
+    name: gameOfLife
+    url: https://github.com/netcan/gameOfLife
+    intro: game of life using Javascript and canvas.
