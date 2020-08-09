@@ -15,12 +15,12 @@
     <meta name="keywords" content="MySQL,数据库," />
   
 
-  <meta name="description" content="在创建数据表时，需要USE &lt;database_name&gt;;来选中数据库， mysql&gt; create database test_db; Query OK, 1 row affected (0.02 sec)  mysql&gt; use test_db; Database changed  创建数据表语法规则： CREATE TABLE &lt;表名&gt; ( 字段名1 数">
+  <meta name="description" content="在创建数据表时，需要 USE &lt;database_name&gt;; 来选中数据库， mysql&gt; create database test_db; Query OK, 1 row affected (0.02 sec)  mysql&gt; use test_db; Database changed  创建数据表语法规则： CREATE TABLE &lt; 表名 &gt; (字段名">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据表的基本操作">
 <meta property="og:url" content="https://netcan.github.io/2015/03/17/%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/index.html">
 <meta property="og:site_name" content="Netcan on Programming">
-<meta property="og:description" content="在创建数据表时，需要USE &lt;database_name&gt;;来选中数据库， mysql&gt; create database test_db; Query OK, 1 row affected (0.02 sec)  mysql&gt; use test_db; Database changed  创建数据表语法规则： CREATE TABLE &lt;表名&gt; ( 字段名1 数">
+<meta property="og:description" content="在创建数据表时，需要 USE &lt;database_name&gt;; 来选中数据库， mysql&gt; create database test_db; Query OK, 1 row affected (0.02 sec)  mysql&gt; use test_db; Database changed  创建数据表语法规则： CREATE TABLE &lt; 表名 &gt; (字段名">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2015-03-17T08:40:45.000Z">
 <meta property="article:modified_time" content="2015-03-17T08:40:45.000Z">
@@ -308,7 +308,7 @@ mjx-container[display="true"] + br {
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9C%A8%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E8%A1%A8%E6%97%B6%EF%BC%8C%E9%9C%80%E8%A6%81USE-database-name-%E6%9D%A5%E9%80%89%E4%B8%AD%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%8C"><span class="toc-text">在创建数据表时，需要USE &lt;database_name&gt;;来选中数据库，</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E8%A1%A8%E8%AF%AD%E6%B3%95%E8%A7%84%E5%88%99%EF%BC%9A"><span class="toc-text">创建数据表语法规则：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E6%95%B0%E6%8D%AE%E8%A1%A8%E6%98%AF%E5%90%A6%E5%88%9B%E5%BB%BA%E6%88%90%E5%8A%9F"><span class="toc-text">查看数据表是否创建成功:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8D%95%E5%AD%97%E6%AE%B5%E4%B8%BB%E9%94%AE%EF%BC%8C%E5%9C%A8%E5%AE%9A%E4%B9%89%E8%A1%A8%E7%9A%84%E6%97%B6%E5%80%99%E5%90%8C%E6%97%B6%E6%8C%87%E5%AE%9A%E4%B8%BB%E9%94%AE%EF%BC%9A"><span class="toc-text">单字段主键，在定义表的时候同时指定主键：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%9A%E5%AD%97%E6%AE%B5%E8%81%94%E5%90%88%E4%B8%BB%E9%94%AE%EF%BC%8C"><span class="toc-text">多字段联合主键，</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%A4%96%E9%94%AE%E7%BA%A6%E6%9D%9F%E8%AF%AD%E6%B3%95%EF%BC%9A"><span class="toc-text">创建外键约束语法：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9D%9E%E7%A9%BA%E7%BA%A6%E6%9D%9F%EF%BC%9A"><span class="toc-text">非空约束：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%94%AF%E4%B8%80%E6%80%A7%E7%BA%A6%E6%9D%9F%EF%BC%9A"><span class="toc-text">唯一性约束：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%BB%98%E8%AE%A4%E7%BA%A6%E6%9D%9F%EF%BC%9A"><span class="toc-text">默认约束：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E5%B1%9E%E6%80%A7%E5%80%BC%E8%87%AA%E5%8A%A8%E5%A2%9E%E5%8A%A0"><span class="toc-text">设置属性值自动增加</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E8%A1%A8%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84%EF%BC%9A"><span class="toc-text">查看表的基本结构：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E8%A1%A8%E7%9A%84%E8%AF%A6%E7%BB%86%E7%BB%93%E6%9E%84%EF%BC%9A"><span class="toc-text">查看表的详细结构：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E8%A1%A8%E5%90%8D%EF%BC%9A"><span class="toc-text">修改表名：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E5%AD%97%E6%AE%B5%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%EF%BC%9A"><span class="toc-text">修改字段的数据类型：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E5%AD%97%E6%AE%B5%E5%90%8D%EF%BC%9A"><span class="toc-text">修改字段名：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E5%AD%97%E6%AE%B5%EF%BC%9A"><span class="toc-text">添加字段：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E5%AD%97%E6%AE%B5%EF%BC%9A"><span class="toc-text">删除字段：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E5%AD%97%E6%AE%B5%E6%8E%92%E5%88%97%E4%BD%8D%E7%BD%AE%EF%BC%9A"><span class="toc-text">修改字段排列位置：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E8%A1%A8%E7%9A%84%E5%82%A8%E5%AD%98%E5%BC%95%E6%93%8E%EF%BC%9A"><span class="toc-text">修改表的储存引擎：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E8%A1%A8%E7%9A%84%E5%A4%96%E9%94%AE%E7%BA%A6%E6%9D%9F%EF%BC%9A"><span class="toc-text">删除表的外键约束：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E6%9C%AA%E8%A2%AB%E5%85%B3%E8%81%94%E7%9A%84%E6%95%B0%E6%8D%AE%E8%A1%A8%EF%BC%9A"><span class="toc-text">删除未被关联的数据表：</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9C%A8%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E8%A1%A8%E6%97%B6%EF%BC%8C%E9%9C%80%E8%A6%81%20USE-database-name-%20%E6%9D%A5%E9%80%89%E4%B8%AD%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%8C"><span class="toc-text">在创建数据表时，需要 USE &lt;database_name&gt;; 来选中数据库，</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E8%A1%A8%E8%AF%AD%E6%B3%95%E8%A7%84%E5%88%99%EF%BC%9A"><span class="toc-text">创建数据表语法规则：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E6%95%B0%E6%8D%AE%E8%A1%A8%E6%98%AF%E5%90%A6%E5%88%9B%E5%BB%BA%E6%88%90%E5%8A%9F"><span class="toc-text">查看数据表是否创建成功:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8D%95%E5%AD%97%E6%AE%B5%E4%B8%BB%E9%94%AE%EF%BC%8C%E5%9C%A8%E5%AE%9A%E4%B9%89%E8%A1%A8%E7%9A%84%E6%97%B6%E5%80%99%E5%90%8C%E6%97%B6%E6%8C%87%E5%AE%9A%E4%B8%BB%E9%94%AE%EF%BC%9A"><span class="toc-text">单字段主键，在定义表的时候同时指定主键：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%9A%E5%AD%97%E6%AE%B5%E8%81%94%E5%90%88%E4%B8%BB%E9%94%AE%EF%BC%8C"><span class="toc-text">多字段联合主键，</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%A4%96%E9%94%AE%E7%BA%A6%E6%9D%9F%E8%AF%AD%E6%B3%95%EF%BC%9A"><span class="toc-text">创建外键约束语法：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9D%9E%E7%A9%BA%E7%BA%A6%E6%9D%9F%EF%BC%9A"><span class="toc-text">非空约束：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%94%AF%E4%B8%80%E6%80%A7%E7%BA%A6%E6%9D%9F%EF%BC%9A"><span class="toc-text">唯一性约束：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%BB%98%E8%AE%A4%E7%BA%A6%E6%9D%9F%EF%BC%9A"><span class="toc-text">默认约束：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E5%B1%9E%E6%80%A7%E5%80%BC%E8%87%AA%E5%8A%A8%E5%A2%9E%E5%8A%A0"><span class="toc-text">设置属性值自动增加</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E8%A1%A8%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84%EF%BC%9A"><span class="toc-text">查看表的基本结构：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E8%A1%A8%E7%9A%84%E8%AF%A6%E7%BB%86%E7%BB%93%E6%9E%84%EF%BC%9A"><span class="toc-text">查看表的详细结构：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E8%A1%A8%E5%90%8D%EF%BC%9A"><span class="toc-text">修改表名：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E5%AD%97%E6%AE%B5%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%EF%BC%9A"><span class="toc-text">修改字段的数据类型：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E5%AD%97%E6%AE%B5%E5%90%8D%EF%BC%9A"><span class="toc-text">修改字段名：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E5%AD%97%E6%AE%B5%EF%BC%9A"><span class="toc-text">添加字段：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E5%AD%97%E6%AE%B5%EF%BC%9A"><span class="toc-text">删除字段：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E5%AD%97%E6%AE%B5%E6%8E%92%E5%88%97%E4%BD%8D%E7%BD%AE%EF%BC%9A"><span class="toc-text">修改字段排列位置：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E8%A1%A8%E7%9A%84%E5%82%A8%E5%AD%98%E5%BC%95%E6%93%8E%EF%BC%9A"><span class="toc-text">修改表的储存引擎：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E8%A1%A8%E7%9A%84%E5%A4%96%E9%94%AE%E7%BA%A6%E6%9D%9F%EF%BC%9A"><span class="toc-text">删除表的外键约束：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E6%9C%AA%E8%A2%AB%E5%85%B3%E8%81%94%E7%9A%84%E6%95%B0%E6%8D%AE%E8%A1%A8%EF%BC%9A"><span class="toc-text">删除未被关联的数据表：</span></a></li></ol>
   </div>
 
 
@@ -354,7 +354,7 @@ mjx-container[display="true"] + br {
 
   <div class="article-content">
     
-      <h4 id="在创建数据表时，需要USE-database-name-来选中数据库，">在创建数据表时，需要<code>USE &lt;database_name&gt;;</code>来选中数据库，</h4>
+      <h4 id="在创建数据表时，需要 USE-database-name- 来选中数据库，">在创建数据表时，需要 <code>USE &lt;database_name&gt;;</code> 来选中数据库，</h4>
 <pre><code>mysql&gt; create database test_db;
 Query OK, 1 row affected (0.02 sec)
 
@@ -362,10 +362,9 @@ mysql&gt; use test_db;
 Database changed
 </code></pre>
 <h4 id="创建数据表语法规则：">创建数据表语法规则：</h4>
-<pre><code>CREATE TABLE &lt;表名&gt;
-(
-字段名1 数据类型 [列级别的约束条件][默认值],
-字段名2 数据类型 [列级别的约束条件][默认值],
+<pre><code>CREATE TABLE &lt; 表名 &gt;
+(字段名 1 数据类型 [列级别的约束条件][默认值],
+字段名 2 数据类型 [列级别的约束条件][默认值],
 ......
 [表级别的约束规则]
 );
@@ -377,8 +376,7 @@ Query OK, 1 row affected (0.02 sec)
 mysql&gt; use test_db;
 Database changed
 mysql&gt; create table tb_emp1
--&gt; (
--&gt; id int(11),
+-&gt; (-&gt; id int(11),
 -&gt; name varchar(25),
 -&gt; deptId int(11),
 -&gt; salary float
@@ -400,10 +398,9 @@ Query OK, 0 rows affected (0.13 sec)
 <h4 id="单字段主键，在定义表的时候同时指定主键：">单字段主键，在定义表的时候同时指定主键：</h4>
 <pre><code>字段名 数据类型 PRIMARY KEY
 </code></pre>
-<p>如下定义数据表tb_emp2，其主键为id，</p>
+<p>如下定义数据表 tb_emp2，其主键为 id，</p>
 <pre><code>mysql&gt; create table tb_emp2
-	-&gt; (
-	-&gt; id int(11) primary key,
+	-&gt; (-&gt; id int(11) primary key,
 	-&gt; name varchar(25),
 	-&gt; deptId int(11),
 	-&gt; salary float
@@ -411,11 +408,10 @@ Query OK, 0 rows affected (0.13 sec)
 Query OK, 0 rows affected (0.11 sec)
 </code></pre>
 <p>或者在定义完之后在指定主键，</p>
-<pre><code>[CONSTRAIN &lt;约束名&gt;] PRIMARY KEY [字段名]
+<pre><code>[CONSTRAIN &lt; 约束名 &gt;] PRIMARY KEY [字段名]
 
 mysql&gt; create table tb_emp3
-	-&gt; (
-	-&gt; id int(11),
+	-&gt; (-&gt; id int(11),
 	-&gt; name varchar(25),
 	-&gt; deptId int(11),
 	-&gt; salary float,
@@ -424,12 +420,11 @@ mysql&gt; create table tb_emp3
 Query OK, 0 rows affected (0.11 sec)
 </code></pre>
 <h4 id="多字段联合主键，">多字段联合主键，</h4>
-<pre><code>PRIMARY KEY[字段1,字段2,...,字段n]
+<pre><code>PRIMARY KEY[字段 1, 字段 2,..., 字段 n]
 </code></pre>
 <p>Example:</p>
 <pre><code>mysql&gt; create table tb_emp4
-	-&gt; (
-	-&gt; name varchar(25),
+	-&gt; (-&gt; name varchar(25),
 	-&gt; deptId int(11),
 	-&gt; salary float,
 	-&gt; primary key(name,deptId)
@@ -437,20 +432,18 @@ Query OK, 0 rows affected (0.11 sec)
 Query OK, 0 rows affected (0.09 sec)
 </code></pre>
 <h4 id="创建外键约束语法：">创建外键约束语法：</h4>
-<pre><code>[CONSTRAINT &lt;外键名&gt;] FOREIGN KEY 字段名1[,字段名2,...] REFERENCES &lt;主键名&gt; 主键列1[,主键列2,...]
+<pre><code>[CONSTRAINT &lt; 外键名 &gt;] FOREIGN KEY 字段名 1[, 字段名 2,...] REFERENCES &lt; 主键名 &gt; 主键列 1[, 主键列 2,...]
 </code></pre>
-<p>定义数据表tb_dept1，tb_emp5，并在tb_emp5表上的deptId创建外键约束到tb_dept1的id。</p>
+<p>定义数据表 tb_dept1，tb_emp5，并在 tb_emp5 表上的 deptId 创建外键约束到 tb_dept1 的 id。</p>
 <pre><code>mysql&gt; create table tb_dept1
-	-&gt; (
-	-&gt; id int(11) primary key,
+	-&gt; (-&gt; id int(11) primary key,
 	-&gt; name varchar(22) not null,
 	-&gt; location varchar(50)
 	-&gt; );
 Query OK, 0 rows affected (0.09 sec)
 
 mysql&gt; create table tb_emp5
-	-&gt; (
-	-&gt; id int(11) primary key,
+	-&gt; (-&gt; id int(11) primary key,
 	-&gt; name varchar(25),
 	-&gt; deptId int(11),
 	-&gt; salary float,
@@ -463,8 +456,7 @@ Query OK, 0 rows affected (0.09 sec)
 </code></pre>
 <p>Example:</p>
 <pre><code>mysql&gt; create table tb_emp6
-	-&gt; (
-	-&gt; id int(11) primary key,
+	-&gt; (-&gt; id int(11) primary key,
 	-&gt; name varchar(25) not null
 	-&gt; );
 Query OK, 0 rows affected (0.14 sec)
@@ -474,8 +466,7 @@ Query OK, 0 rows affected (0.14 sec)
 </code></pre>
 <p>Example:</p>
 <pre><code>mysql&gt; create table tb_dept2
-	-&gt; (
-	-&gt; id int(11) primary key,
+	-&gt; (-&gt; id int(11) primary key,
 	-&gt; name varchar(22) unique,
 	-&gt; location varchar(50)
 	-&gt; );
@@ -486,8 +477,7 @@ Query OK, 0 rows affected (0.11 sec)
 </code></pre>
 <p>Example:</p>
 <pre><code>mysql&gt; create table tb_emp7
-	-&gt; (
-	-&gt; id int(11) primary key,
+	-&gt; (-&gt; id int(11) primary key,
 	-&gt; name varchar(25) not null,
 	-&gt; deptId int(11) default 1111
 	-&gt; );
@@ -498,8 +488,7 @@ Query OK, 0 rows affected (0.08 sec)
 </code></pre>
 <p>Example:</p>
 <pre><code>mysql&gt; create table tb_emp8
-	-&gt; (
-	-&gt; id int(11) primary key auto_increment
+	-&gt; (-&gt; id int(11) primary key auto_increment
 	-&gt; );
 Query OK, 0 rows affected (0.09 sec)
 </code></pre>
@@ -528,14 +517,13 @@ mysql&gt; desc tb_emp1;
 4 rows in set (0.02 sec)
 </code></pre>
 <h4 id="查看表的详细结构：">查看表的详细结构：</h4>
-<pre><code>SHOW CREATE TABLE &lt;表名\G&gt;;
+<pre><code>SHOW CREATE TABLE &lt; 表名 \G&gt;;
 </code></pre>
 <p>Example:</p>
 <pre><code>mysql&gt; show create table tb_emp1\G;
 *************************** 1. row ***************************
 	Table: tb_emp1
-Create Table: CREATE TABLE `tb_emp1` (
-`id` int(11) DEFAULT NULL,
+Create Table: CREATE TABLE `tb_emp1` (`id` int(11) DEFAULT NULL,
 `name` varchar(25) DEFAULT NULL,
 `deptId` int(11) DEFAULT NULL,
 `salary` float DEFAULT NULL
@@ -543,7 +531,7 @@ Create Table: CREATE TABLE `tb_emp1` (
 1 row in set (0.00 sec)
 </code></pre>
 <h4 id="修改表名：">修改表名：</h4>
-<pre><code>ALTER TABLE &lt;旧表名&gt; RANAME [TO] &lt;新表名&gt;;
+<pre><code>ALTER TABLE &lt; 旧表名 &gt; RANAME [TO] &lt; 新表名 &gt;;
 </code></pre>
 <p>Example:</p>
 <pre><code>mysql&gt; show tables;
@@ -584,7 +572,7 @@ mysql&gt; show tables;
 10 rows in set (0.00 sec)
 </code></pre>
 <h4 id="修改字段的数据类型：">修改字段的数据类型：</h4>
-<pre><code>ALTER TABLE &lt;表名&gt; MODIFY &lt;字段名&gt; &lt;数据类型&gt;;
+<pre><code>ALTER TABLE &lt; 表名 &gt; MODIFY &lt; 字段名 &gt; &lt; 数据类型 &gt;;
 </code></pre>
 <p>Example:</p>
 <pre><code>mysql&gt; desc tb_dept2;
@@ -612,7 +600,7 @@ mysql&gt; desc tb_dept2;
 3 rows in set (0.00 sec)
 </code></pre>
 <h4 id="修改字段名：">修改字段名：</h4>
-<pre><code>ALTER TABLE &lt;表名&gt; CHANGE &lt;旧字段名&gt; &lt;新字段名&gt; &lt;新数据类型&gt;;
+<pre><code>ALTER TABLE &lt; 表名 &gt; CHANGE &lt; 旧字段名 &gt; &lt; 新字段名 &gt; &lt; 新数据类型 &gt;;
 </code></pre>
 <p>Example:</p>
 <pre><code>mysql&gt; desc tb_dept2;
@@ -640,7 +628,7 @@ mysql&gt; desc tb_dept2;
 3 rows in set (0.02 sec)
 </code></pre>
 <h4 id="添加字段：">添加字段：</h4>
-<pre><code>ALTER TABLE &lt;表名&gt; ADD &lt;新字段名&gt; &lt;数据类型&gt; [约束条件][FIRST|AFTER 已存在字段名];
+<pre><code>ALTER TABLE &lt; 表名 &gt; ADD &lt; 新字段名 &gt; &lt; 数据类型 &gt; [约束条件][FIRST|AFTER 已存在字段名];
 </code></pre>
 <p>Example:</p>
 <pre><code>mysql&gt; alter table tb_dept2 add managerId int(10);
@@ -674,7 +662,7 @@ mysql&gt; desc tb_dept2;
 5 rows in set (0.00 sec)
 </code></pre>
 <h4 id="删除字段：">删除字段：</h4>
-<pre><code>ALTER TABLE &lt;表名&gt; DROP &lt;字段名&gt;;
+<pre><code>ALTER TABLE &lt; 表名 &gt; DROP &lt; 字段名 &gt;;
 </code></pre>
 <p>Example:</p>
 <pre><code>mysql&gt; alter table tb_dept2 drop manager;
@@ -693,7 +681,7 @@ mysql&gt; desc tb_dept2;
 4 rows in set (0.01 sec)
 </code></pre>
 <h4 id="修改字段排列位置：">修改字段排列位置：</h4>
-<pre><code>ALTER TABLE &lt;表名&gt; MODIFY &lt;字段1&gt; &lt;数据类型&gt; FIRST|AFTER &lt;字段2&gt;;
+<pre><code>ALTER TABLE &lt; 表名 &gt; MODIFY &lt; 字段 1&gt; &lt; 数据类型 &gt; FIRST|AFTER &lt; 字段 2&gt;;
 </code></pre>
 <p>Example:</p>
 <pre><code>mysql&gt; alter table tb_dept2 modify managerId int(10) after id;
@@ -712,14 +700,13 @@ mysql&gt; desc tb_dept2;
 4 rows in set (0.02 sec)
 </code></pre>
 <h4 id="修改表的储存引擎：">修改表的储存引擎：</h4>
-<pre><code>ALTER TABLE &lt;表名&gt; ENGINE=&lt;更改后的引擎名&gt;
+<pre><code>ALTER TABLE &lt; 表名 &gt; ENGINE=&lt; 更改后的引擎名 &gt;
 </code></pre>
 <p>Example:</p>
 <pre><code>mysql&gt; show create table tb_dept2\G;
 *************************** 1. row ***************************
 	Table: tb_dept2
-Create Table: CREATE TABLE `tb_dept2` (
-`id` int(11) NOT NULL,
+Create Table: CREATE TABLE `tb_dept2` (`id` int(11) NOT NULL,
 `managerId` int(10) DEFAULT NULL,
 `name` varchar(30) DEFAULT NULL,
 `loc` varchar(50) DEFAULT NULL,
@@ -735,8 +722,7 @@ Records: 0  Duplicates: 0  Warnings: 0
 mysql&gt; show create table tb_dept2\G;
 *************************** 1. row ***************************
 	Table: tb_dept2
-Create Table: CREATE TABLE `tb_dept2` (
-`id` int(11) NOT NULL,
+Create Table: CREATE TABLE `tb_dept2` (`id` int(11) NOT NULL,
 `managerId` int(10) DEFAULT NULL,
 `name` varchar(30) DEFAULT NULL,
 `loc` varchar(50) DEFAULT NULL,
@@ -746,14 +732,13 @@ UNIQUE KEY `name` (`name`)
 1 row in set (0.00 sec)
 </code></pre>
 <h4 id="删除表的外键约束：">删除表的外键约束：</h4>
-<pre><code>ALTER TABLE &lt;表名&gt; DROP FOREIGN KEY &lt;外键约束名&gt;
+<pre><code>ALTER TABLE &lt; 表名 &gt; DROP FOREIGN KEY &lt; 外键约束名 &gt;
 </code></pre>
 <p>Example:</p>
 <pre><code>mysql&gt; show create table tb_emp5\G;
 *************************** 1. row ***************************
 	Table: tb_emp5
-Create Table: CREATE TABLE `tb_emp5` (
-`id` int(11) NOT NULL,
+Create Table: CREATE TABLE `tb_emp5` (`id` int(11) NOT NULL,
 `name` varchar(25) DEFAULT NULL,
 `deptId` int(11) DEFAULT NULL,
 `salary` float DEFAULT NULL,
@@ -770,8 +755,7 @@ Records: 0  Duplicates: 0  Warnings: 0
 mysql&gt; show create table tb_emp5\G;
 *************************** 1. row ***************************
 	Table: tb_emp5
-Create Table: CREATE TABLE `tb_emp5` (
-`id` int(11) NOT NULL,
+Create Table: CREATE TABLE `tb_emp5` (`id` int(11) NOT NULL,
 `name` varchar(25) DEFAULT NULL,
 `deptId` int(11) DEFAULT NULL,
 `salary` float DEFAULT NULL,
@@ -781,7 +765,7 @@ KEY `fk_emp_dept1` (`deptId`)
 1 row in set (0.00 sec)
 </code></pre>
 <h4 id="删除未被关联的数据表：">删除未被关联的数据表：</h4>
-<pre><code>DROP TABLE [IF EXISTS] 表1, 表2, ..., 表n;
+<pre><code>DROP TABLE [IF EXISTS] 表 1, 表 2, ..., 表 n;
 </code></pre>
 <p>Example:</p>
 <pre><code>mysql&gt; show tables;

@@ -15,12 +15,12 @@
     <meta name="keywords" content="C/C++,算法," />
   
 
-  <meta name="description" content="昨晚在知乎看到一个问题，（可以帮忙破译一个密码吗？VRPHWLPHV L ZDQW WR FKDW ZLWK BRX） 看了一下各位答案，是凯撒密码，我百科了一下，发现蛮简单的，今天早上来实现了。 凯撒加密方法就是将字符串的每个字母按字母表顺序进行偏移。 知道原理后，就可以很容易写出来了。 &#x2F;*****************************************************">
+  <meta name="description" content="昨晚在知乎看到一个问题，（ 可以帮忙破译一个密码吗？VRPHWLPHV L ZDQW WR FKDW ZLWK BRX）  看了一下各位答案，是凯撒密码，我百科了一下，发现蛮简单的，今天早上来实现了。  凯撒加密方法就是将字符串的每个字母按字母表顺序进行偏移。  知道原理后，就可以很容易写出来了。 &#x2F;************************************************">
 <meta property="og:type" content="article">
 <meta property="og:title" content="凯撒密码">
 <meta property="og:url" content="https://netcan.github.io/2015/03/08/%E5%87%AF%E6%92%92%E5%AF%86%E7%A0%81/index.html">
 <meta property="og:site_name" content="Netcan on Programming">
-<meta property="og:description" content="昨晚在知乎看到一个问题，（可以帮忙破译一个密码吗？VRPHWLPHV L ZDQW WR FKDW ZLWK BRX） 看了一下各位答案，是凯撒密码，我百科了一下，发现蛮简单的，今天早上来实现了。 凯撒加密方法就是将字符串的每个字母按字母表顺序进行偏移。 知道原理后，就可以很容易写出来了。 &#x2F;*****************************************************">
+<meta property="og:description" content="昨晚在知乎看到一个问题，（ 可以帮忙破译一个密码吗？VRPHWLPHV L ZDQW WR FKDW ZLWK BRX）  看了一下各位答案，是凯撒密码，我百科了一下，发现蛮简单的，今天早上来实现了。  凯撒加密方法就是将字符串的每个字母按字母表顺序进行偏移。  知道原理后，就可以很容易写出来了。 &#x2F;************************************************">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2015-03-08T03:14:35.000Z">
 <meta property="article:modified_time" content="2015-03-08T03:14:35.000Z">
@@ -349,10 +349,10 @@ mjx-container[display="true"] + br {
 
   <div class="article-content">
     
-      <p>昨晚在知乎看到一个问题，（<a target="_blank" rel="noopener" href="http://www.zhihu.com/question/28324597">可以帮忙破译一个密码吗？VRPHWLPHV L ZDQW WR FKDW ZLWK BRX</a>）</p>
-<p>看了一下各位答案，是凯撒密码，我百科了一下，发现蛮简单的，今天早上来实现了。</p>
-<p>凯撒加密方法就是将字符串的每个字母按字母表顺序进行偏移。</p>
-<p>知道原理后，就可以很容易写出来了。</p>
+      <p> 昨晚在知乎看到一个问题，（<a target="_blank" rel="noopener" href="http://www.zhihu.com/question/28324597"> 可以帮忙破译一个密码吗？VRPHWLPHV L ZDQW WR FKDW ZLWK BRX</a>）</p>
+<p> 看了一下各位答案，是凯撒密码，我百科了一下，发现蛮简单的，今天早上来实现了。</p>
+<p> 凯撒加密方法就是将字符串的每个字母按字母表顺序进行偏移。</p>
+<p> 知道原理后，就可以很容易写出来了。</p>
 <pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">/*************************************************************************
     > File Name: caesar.c
     > Author: Netcan
@@ -385,21 +385,21 @@ mjx-container[display="true"] + br {
 				<span class="token keyword">else</span>
 					<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%c"</span><span class="token punctuation">,</span> <span class="token operator">*</span>c<span class="token punctuation">)</span><span class="token punctuation">;</span>
 			<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">strcmp</span><span class="token punctuation">(</span>argv<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token string">"-decode"</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> 
-				<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"	offset=%d\n"</span><span class="token punctuation">,</span>offset<span class="token punctuation">)</span><span class="token punctuation">;</span>
+				<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"offset=%d\n"</span><span class="token punctuation">,</span>offset<span class="token punctuation">)</span><span class="token punctuation">;</span>
 			<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">strcmp</span><span class="token punctuation">(</span>argv<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token string">"-code"</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> 
-				<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"	offset=%d\n"</span><span class="token punctuation">,</span><span class="token number">27</span><span class="token operator">-</span>offset<span class="token punctuation">)</span><span class="token punctuation">;</span>
+				<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"offset=%d\n"</span><span class="token punctuation">,</span><span class="token number">27</span><span class="token operator">-</span>offset<span class="token punctuation">)</span><span class="token punctuation">;</span>
 		<span class="token punctuation">&#125;</span>
 	<span class="token punctuation">&#125;</span>
 	<span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span></code></pre>
-<p>程序运行也很简单，</p>
+<p> 程序运行也很简单，</p>
 <pre><code>caesar.exe -code &quot;string&quot;  #加密
 caesar.exe -decode &quot;STRING&quot; #解密
 </code></pre>
-<p>所以这个答案也很容易得出：</p>
+<p> 所以这个答案也很容易得出：</p>
 <pre><code>caesar.exe -decode &quot;VRPHWLPHV L ZDQW WR FKDW ZLWK BRX, EXW L KDYH QR UHDVRQ WRFKDW ZLWK BRX.&quot;
 </code></pre>
-<p>解密的结果：</p>
+<p> 解密的结果：</p>
 <pre class="language-cpp" data-language="cpp"><code class="language-cpp">wsqixmqiw m aerx xs glex amxl csy<span class="token punctuation">,</span> fyx m lezi rs viewsr xs glex amxl csy<span class="token punctuation">.</span>       offset<span class="token operator">=</span><span class="token number">1</span>
 xtrjynrjx n bfsy yt hmfy bnym dtz<span class="token punctuation">,</span> gzy n mfaj st wjfxts yt hmfy bnym dtz<span class="token punctuation">.</span>       offset<span class="token operator">=</span><span class="token number">2</span>
 yuskzosky o cgtz zu ingz cozn eua<span class="token punctuation">,</span> haz o ngbk tu xkgyut zu ingz cozn eua<span class="token punctuation">.</span>       offset<span class="token operator">=</span><span class="token number">3</span>
@@ -426,7 +426,7 @@ sometimes i want to chat with you<span class="token punctuation">,</span> but i 
 tpnfujnft j xbou up dibu xjui zpv<span class="token punctuation">,</span> cvu j ibwf op sfbtpo up dibu xjui zpv<span class="token punctuation">.</span>       offset<span class="token operator">=</span><span class="token number">24</span>
 uqogvkogu k ycpv vq ejcv ykvj aqw<span class="token punctuation">,</span> dwv k jcxg pq tgcuqp vq ejcv ykvj aqw<span class="token punctuation">.</span>       offset<span class="token operator">=</span><span class="token number">25</span>
 vrphwlphv l zdqw wr fkdw zlwk brx<span class="token punctuation">,</span> exw l kdyh qr uhdvrq wr fkdw zlwk brx<span class="token punctuation">.</span>       offset<span class="token operator">=</span><span class="token number">26</span></code></pre>
-<p>只有第23行的&quot;<em>sometimes i want to chat with you, but i have no reason to chat with you.</em>“有意义，所以，明文出来了，是&quot;<em>有时我想和你聊天，但是我没有理由和你聊天。</em>”</p>
+<p> 只有第 23 行的 &quot;<em>sometimes i want to chat with you, but i have no reason to chat with you.</em>“有意义，所以，明文出来了，是 &quot;<em> 有时我想和你聊天，但是我没有理由和你聊天。</em>”</p>
 
     
   </div>

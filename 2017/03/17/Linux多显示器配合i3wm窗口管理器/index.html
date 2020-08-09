@@ -7,7 +7,7 @@
 <head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
-  <title>Linux多显示器配合i3wm窗口管理器 | Netcan on Programming</title>
+  <title>Linux 多显示器配合 i3wm 窗口管理器 | Netcan on Programming</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -15,12 +15,12 @@
     <meta name="keywords" content="Linux," />
   
 
-  <meta name="description" content="很久没写博客了，来更新下关于Linux方面的问题。 已知问题 在Linux桌面环境下，使用多显示器会遇到很多bug，例如窗口菜单栏无法下拉，Chrome浏览器表单下拉框无法显示等等，头疼死了。 可能是由于多显示器的虚拟显示器过大，导致一些组件溢出无法显示。举个例子，我的外接显示器分辨率为1080x1920（竖屏），主显示的分辨率为1366x768（横屏），而两块屏幕拼接起来后的虚拟显示器分辨率却为">
+  <meta name="description" content="很久没写博客了，来更新下关于 Linux 方面的问题。 已知问题 在 Linux 桌面环境下，使用多显示器会遇到很多 bug，例如窗口菜单栏无法下拉，Chrome 浏览器表单下拉框无法显示等等，头疼死了。 可能是由于多显示器的虚拟显示器过大，导致一些组件溢出无法显示。举个例子，我的外接显示器分辨率为1080x1920（竖屏），主显示的分辨率为1366x768（横屏），而两块屏幕拼接起来后的虚拟显示">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Linux多显示器配合i3wm窗口管理器">
+<meta property="og:title" content="Linux 多显示器配合 i3wm 窗口管理器">
 <meta property="og:url" content="https://netcan.github.io/2017/03/17/Linux%E5%A4%9A%E6%98%BE%E7%A4%BA%E5%99%A8%E9%85%8D%E5%90%88i3wm%E7%AA%97%E5%8F%A3%E7%AE%A1%E7%90%86%E5%99%A8/index.html">
 <meta property="og:site_name" content="Netcan on Programming">
-<meta property="og:description" content="很久没写博客了，来更新下关于Linux方面的问题。 已知问题 在Linux桌面环境下，使用多显示器会遇到很多bug，例如窗口菜单栏无法下拉，Chrome浏览器表单下拉框无法显示等等，头疼死了。 可能是由于多显示器的虚拟显示器过大，导致一些组件溢出无法显示。举个例子，我的外接显示器分辨率为1080x1920（竖屏），主显示的分辨率为1366x768（横屏），而两块屏幕拼接起来后的虚拟显示器分辨率却为">
+<meta property="og:description" content="很久没写博客了，来更新下关于 Linux 方面的问题。 已知问题 在 Linux 桌面环境下，使用多显示器会遇到很多 bug，例如窗口菜单栏无法下拉，Chrome 浏览器表单下拉框无法显示等等，头疼死了。 可能是由于多显示器的虚拟显示器过大，导致一些组件溢出无法显示。举个例子，我的外接显示器分辨率为1080x1920（竖屏），主显示的分辨率为1366x768（横屏），而两块屏幕拼接起来后的虚拟显示">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2017-03-17T02:23:00.000Z">
 <meta property="article:modified_time" content="2020-08-09T01:01:02.127Z">
@@ -307,7 +307,7 @@ mjx-container[display="true"] + br {
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%B2%E7%9F%A5%E9%97%AE%E9%A2%98"><span class="toc-text">已知问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85i3wm"><span class="toc-text">安装i3wm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E5%8F%8C%E6%98%BE%E7%A4%BA%E5%99%A8"><span class="toc-text">配置双显示器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#i3wm%E9%85%8D%E7%BD%AE"><span class="toc-text">i3wm配置</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%B2%E7%9F%A5%E9%97%AE%E9%A2%98"><span class="toc-text">已知问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%20i3wm"><span class="toc-text">安装 i3wm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E5%8F%8C%E6%98%BE%E7%A4%BA%E5%99%A8"><span class="toc-text">配置双显示器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#i3wm%20%E9%85%8D%E7%BD%AE"><span class="toc-text">i3wm 配置</span></a></li></ol>
   </div>
 
 
@@ -315,7 +315,7 @@ mjx-container[display="true"] + br {
 <div class="content content-post CENTER">
    <article id="post-Linux多显示器配合i3wm窗口管理器" class="article article-type-post" itemprop="blogPost">
   <header class="article-header">
-    <h1 class="post-title">Linux多显示器配合i3wm窗口管理器</h1>
+    <h1 class="post-title">Linux 多显示器配合 i3wm 窗口管理器</h1>
 
     <div class="article-meta">
       <span>
@@ -353,11 +353,11 @@ mjx-container[display="true"] + br {
 
   <div class="article-content">
     
-      <p>很久没写博客了，来更新下关于Linux方面的问题。</p>
+      <p>很久没写博客了，来更新下关于 Linux 方面的问题。</p>
 <h3 id="已知问题">已知问题</h3>
-<p>在Linux桌面环境下，使用多显示器会遇到很多bug，例如窗口菜单栏无法下拉，Chrome浏览器表单下拉框无法显示等等，头疼死了。</p>
-<p>可能是由于多显示器的虚拟显示器过大，导致一些组件溢出无法显示。举个例子，我的外接显示器分辨率为<code>1080x1920</code>（竖屏），主显示的分辨率为<code>1366x768</code>（横屏），而两块屏幕拼接起来后的虚拟显示器分辨率却为<code>2446x1920</code>，也就是宽相加，1080+1366=2446，高取最大1920，所以会导致组件溢出无法正常显示的现象。</p>
-<p>最近了解到一个窗口管理器<a target="_blank" rel="noopener" href="http://i3wm.org/">i3wm</a>，可以完美解决由于多显示器导致的bug，先来上图。图为2块显示器的效果，黑色部分不存在。</p>
+<p>在 Linux 桌面环境下，使用多显示器会遇到很多 bug，例如窗口菜单栏无法下拉，Chrome 浏览器表单下拉框无法显示等等，头疼死了。</p>
+<p>可能是由于多显示器的虚拟显示器过大，导致一些组件溢出无法显示。举个例子，我的外接显示器分辨率为<code>1080x1920</code>（竖屏），主显示的分辨率为<code>1366x768</code>（横屏），而两块屏幕拼接起来后的虚拟显示器分辨率却为<code>2446x1920</code>，也就是宽相加，1080+1366=2446，高取最大 1920，所以会导致组件溢出无法正常显示的现象。</p>
+<p>最近了解到一个窗口管理器<a target="_blank" rel="noopener" href="http://i3wm.org/">i3wm</a>，可以完美解决由于多显示器导致的 bug，先来上图。图为 2 块显示器的效果，黑色部分不存在。</p>
 <p>![Screenshot from 2017-03-17 10-35-32.png](Screenshot from 2017-03-17 10-35-32.png)</p>
 <p>官方视频：</p>
 
@@ -365,8 +365,8 @@ mjx-container[display="true"] + br {
 	<source src="http://i3wm.org/screenshots/screencast-4.1.mp4">
 </video>
 
-<h3 id="安装i3wm">安装i3wm</h3>
-<p>因为debian源中有，可以直接安装，之后选择窗口管理器为i3：</p>
+<h3 id="安装 i3wm">安装 i3wm</h3>
+<p>因为 debian 源中有，可以直接安装，之后选择窗口管理器为 i3：</p>
 <pre class="language-none"><code class="language-none">$ sudo apt-get install i3 i3status
 $ sudo update-alternatives --config x-window-manager
 There are 3 choices for the alternative x-window-manager (providing &#x2F;usr&#x2F;bin&#x2F;x-window-manager).
@@ -379,8 +379,8 @@ There are 3 choices for the alternative x-window-manager (providing &#x2F;usr&#x
   3            &#x2F;usr&#x2F;bin&#x2F;mutter     60        manual mode
 
 Press &lt;enter&gt; to keep the current choice[*], or type selection number: 1</code></pre>
-<p>运行<code>i3-config-wizard</code>，将默认为i3wm配置，配置文件在<code>~/.config/i3/config</code>。</p>
-<p>然后重启，若没效果，就注销登录，然后选择<code>i3</code>作为默认的窗口管理器。</p>
+<p>运行<code>i3-config-wizard</code>，将默认为 i3wm 配置，配置文件在<code>~/.config/i3/config</code>。</p>
+<p>然后重启，若没效果，就注销登录，然后选择 <code>i3</code> 作为默认的窗口管理器。</p>
 <h3 id="配置双显示器">配置双显示器</h3>
 <p>我的显示器布局如图：</p>
 <pre class="language-none"><code class="language-none">     0                  1080                       1080+1366
@@ -402,20 +402,20 @@ Press &lt;enter&gt; to keep the current choice[*], or type selection number: 1</
      |                   |                            |
      |                   |                            |
 1920 --------------------------------------------------</code></pre>
-<p>首先要确定的是2个显示器的位置（屏幕左上角坐标来确定）关系，HDMI显示器在左边，eDP显示器在右边，左屏做扩展屏。</p>
-<p>注意左上角的坐标为(0, 0)，也就是说HDMI显示器的坐标为(0, 0)。然后是B点的坐标为(1080, 1920-768=1152)，也就是eDP显示器的坐标。</p>
-<p>最后利用<code>xrandr</code>命令，如下：</p>
+<p>首先要确定的是 2 个显示器的位置（屏幕左上角坐标来确定）关系，HDMI 显示器在左边，eDP 显示器在右边，左屏做扩展屏。</p>
+<p>注意左上角的坐标为(0, 0)，也就是说 HDMI 显示器的坐标为(0, 0)。然后是 B 点的坐标为(1080, 1920-768=1152)，也就是 eDP 显示器的坐标。</p>
+<p>最后利用 <code>xrandr</code> 命令，如下：</p>
 <pre><code>$ xrandr --output HDMI-1 --auto --rotate left --pos 0x0 --output eDP-1 --pos 1080x1152
 </code></pre>
-<p>写进<code>i3wm</code>配置文件中：</p>
+<p>写进 <code>i3wm</code> 配置文件中：</p>
 <pre><code>$ exec xrandr --output HDMI-1 --auto --rotate left --pos 0x0 --output eDP-1 --pos 1080x1152
 </code></pre>
-<p>也可以使用<strong>工具</strong>来配置：</p>
+<p>也可以使用 <strong> 工具 </strong> 来配置：</p>
 <pre><code>$ sudo apt-get install arandr
 $ arandr
 </code></pre>
-<h3 id="i3wm配置">i3wm配置</h3>
-<p>配置壁纸，将壁纸放到~/Pictures/wallpapers中，然后编辑i3wm配置文件：</p>
+<h3 id="i3wm 配置">i3wm 配置</h3>
+<p>配置壁纸，将壁纸放到~/Pictures/wallpapers 中，然后编辑 i3wm 配置文件：</p>
 <pre><code>$ sudo apt-get install feh
 $ vim ~/.config/i3/config
 	exec feh --randomize --bg-fill ~/Pictures/wallpapers/*
@@ -431,7 +431,7 @@ bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle # mute s
 bindsym --release Shift+Print exec gnome-screenshot -a
 bindsym --release $mod+Print exec gnome-screenshot -w
 </code></pre>
-<p>剩下的就是看i3wm的官方文档了。</p>
+<p>剩下的就是看 i3wm 的官方文档了。</p>
 
     
   </div>
@@ -442,7 +442,7 @@ bindsym --release $mod+Print exec gnome-screenshot -w
    
        <div class="original">
     <ul>
-        <li>本文标题：Linux多显示器配合i3wm窗口管理器</li>
+        <li>本文标题：Linux 多显示器配合 i3wm 窗口管理器</li>
         <li>本文字数：739</li>
         <li>本文作者：Netcan</li>
         <li>发布时间：2017年03月17日 - 10时23分</li>

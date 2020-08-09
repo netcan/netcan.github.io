@@ -7,7 +7,7 @@
 <head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
-  <title>PHP日期和时间 | Netcan on Programming</title>
+  <title>PHP 日期和时间 | Netcan on Programming</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -17,7 +17,7 @@
 
   <meta name="description" content="系统时区设置 date_default_timezone_set()设置时区，例如 &lt;?php date_default_timezone_set(&quot;Asiz&#x2F;Hong_Kong&quot;); &#x2F;&#x2F; 香港时区 date_default_timezone_set(&quot;RPC&quot;); &#x2F;&#x2F; 北京时区 ?&gt;  日期和时间函数 time()函数返回当前时间戳 ech">
 <meta property="og:type" content="article">
-<meta property="og:title" content="PHP日期和时间">
+<meta property="og:title" content="PHP 日期和时间">
 <meta property="og:url" content="https://netcan.github.io/2015/03/11/PHP%E6%97%A5%E6%9C%9F%E5%92%8C%E6%97%B6%E9%97%B4/index.html">
 <meta property="og:site_name" content="Netcan on Programming">
 <meta property="og:description" content="系统时区设置 date_default_timezone_set()设置时区，例如 &lt;?php date_default_timezone_set(&quot;Asiz&#x2F;Hong_Kong&quot;); &#x2F;&#x2F; 香港时区 date_default_timezone_set(&quot;RPC&quot;); &#x2F;&#x2F; 北京时区 ?&gt;  日期和时间函数 time()函数返回当前时间戳 ech">
@@ -307,7 +307,7 @@ mjx-container[display="true"] + br {
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E6%97%B6%E5%8C%BA%E8%AE%BE%E7%BD%AE"><span class="toc-text">系统时区设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A5%E6%9C%9F%E5%92%8C%E6%97%B6%E9%97%B4%E5%87%BD%E6%95%B0"><span class="toc-text">日期和时间函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#time-%E5%87%BD%E6%95%B0%E8%BF%94%E5%9B%9E%E5%BD%93%E5%89%8D%E6%97%B6%E9%97%B4%E6%88%B3"><span class="toc-text">time()函数返回当前时间戳</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#date-%E5%87%BD%E6%95%B0%E8%BF%94%E5%9B%9E%E6%97%A5%E6%9C%9F%EF%BC%8Cdate-format-timestamp-%EF%BC%8C%E8%8B%A5%E6%97%A0timestamp%E5%8F%82%E6%95%B0%E5%88%99%E8%BF%94%E5%9B%9E%E5%BD%93%E5%89%8D%E6%97%A5%E6%9C%9F%E3%80%82"><span class="toc-text">date()函数返回日期，date(format, timestamp)，若无timestamp参数则返回当前日期。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#getdate-timestamp-%E8%BF%94%E5%9B%9E%E4%B8%80%E4%B8%AA%E5%8C%85%E5%90%AB%E6%97%A5%E6%9C%9F%E6%97%B6%E9%97%B4%E5%90%84%E4%B8%AA%E9%83%A8%E5%88%86%E7%9A%84%E6%95%B0%E7%BB%84%EF%BC%8C%E8%8B%A5%E6%97%A0%E5%8F%82%E6%95%B0%E5%88%99%E8%BF%94%E5%9B%9E%E5%BD%93%E5%89%8D%E6%97%B6%E9%97%B4%E6%97%A5%E6%9C%9F%E7%9A%84%E6%95%B0%E7%BB%84%E3%80%82"><span class="toc-text">getdate(timestamp) 返回一个包含日期时间各个部分的数组，若无参数则返回当前时间日期的数组。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#checkdate-month-day-year-%E6%A3%80%E9%AA%8C%E6%97%A5%E6%9C%9F%E7%9A%84%E6%9C%89%E6%95%88%E6%80%A7"><span class="toc-text">checkdate(month, day, year)检验日期的有效性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#strftime-format-timestamp-%E5%B0%86%E6%97%B6%E9%97%B4%E6%88%B3%E8%BD%AC%E5%8C%96%E4%B8%BA%E6%97%A5%E6%9C%9F%E5%92%8C%E6%97%B6%E9%97%B4%EF%BC%8C%E8%8B%A5%E6%97%A0timestamp%E5%8F%82%E6%95%B0%E5%88%99%E4%BB%A5%E5%BD%93%E5%89%8D%E7%9A%84%E6%97%B6%E9%97%B4%E6%88%B3%E4%B8%BA%E5%87%86"><span class="toc-text">strftime(format, timestamp)将时间戳转化为日期和时间，若无timestamp参数则以当前的时间戳为准</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#setlocale-constant-location-%E5%87%BD%E6%95%B0%E6%94%B9%E5%8F%98PHP%E6%9C%AC%E5%9C%B0%E5%8C%96%E9%BB%98%E8%AE%A4%E5%80%BC%EF%BC%8C"><span class="toc-text">setlocale(constant,location)函数改变PHP本地化默认值，</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#mktime-hours-minutes-seconds-month-day-year-%E8%BF%94%E5%9B%9E%E5%AF%B9%E5%BA%94%E7%9A%84%E6%97%B6%E9%97%B4%E6%88%B3"><span class="toc-text">mktime(hours, minutes, seconds, month, day, year)返回对应的时间戳</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#microtime-true-%E5%8F%AF%E8%BF%94%E5%9B%9E%E5%BE%AE%E7%A7%92%E7%BA%A7%E6%97%B6%E9%97%B4%E6%88%B3%E3%80%82"><span class="toc-text">microtime(true)可返回微秒级时间戳。</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E6%97%B6%E5%8C%BA%E8%AE%BE%E7%BD%AE"><span class="toc-text">系统时区设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A5%E6%9C%9F%E5%92%8C%E6%97%B6%E9%97%B4%E5%87%BD%E6%95%B0"><span class="toc-text">日期和时间函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#time-%20%E5%87%BD%E6%95%B0%E8%BF%94%E5%9B%9E%E5%BD%93%E5%89%8D%E6%97%B6%E9%97%B4%E6%88%B3"><span class="toc-text">time()函数返回当前时间戳</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#date-%20%E5%87%BD%E6%95%B0%E8%BF%94%E5%9B%9E%E6%97%A5%E6%9C%9F%EF%BC%8Cdate-format-timestamp-%EF%BC%8C%E8%8B%A5%E6%97%A0%20timestamp%20%E5%8F%82%E6%95%B0%E5%88%99%E8%BF%94%E5%9B%9E%E5%BD%93%E5%89%8D%E6%97%A5%E6%9C%9F%E3%80%82"><span class="toc-text">date()函数返回日期，date(format, timestamp)，若无 timestamp 参数则返回当前日期。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#getdate-timestamp-%20%E8%BF%94%E5%9B%9E%E4%B8%80%E4%B8%AA%E5%8C%85%E5%90%AB%E6%97%A5%E6%9C%9F%E6%97%B6%E9%97%B4%E5%90%84%E4%B8%AA%E9%83%A8%E5%88%86%E7%9A%84%E6%95%B0%E7%BB%84%EF%BC%8C%E8%8B%A5%E6%97%A0%E5%8F%82%E6%95%B0%E5%88%99%E8%BF%94%E5%9B%9E%E5%BD%93%E5%89%8D%E6%97%B6%E9%97%B4%E6%97%A5%E6%9C%9F%E7%9A%84%E6%95%B0%E7%BB%84%E3%80%82"><span class="toc-text">getdate(timestamp) 返回一个包含日期时间各个部分的数组，若无参数则返回当前时间日期的数组。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#checkdate-month-day-year-%20%E6%A3%80%E9%AA%8C%E6%97%A5%E6%9C%9F%E7%9A%84%E6%9C%89%E6%95%88%E6%80%A7"><span class="toc-text">checkdate(month, day, year)检验日期的有效性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#strftime-format-timestamp-%20%E5%B0%86%E6%97%B6%E9%97%B4%E6%88%B3%E8%BD%AC%E5%8C%96%E4%B8%BA%E6%97%A5%E6%9C%9F%E5%92%8C%E6%97%B6%E9%97%B4%EF%BC%8C%E8%8B%A5%E6%97%A0%20timestamp%20%E5%8F%82%E6%95%B0%E5%88%99%E4%BB%A5%E5%BD%93%E5%89%8D%E7%9A%84%E6%97%B6%E9%97%B4%E6%88%B3%E4%B8%BA%E5%87%86"><span class="toc-text">strftime(format, timestamp)将时间戳转化为日期和时间，若无 timestamp 参数则以当前的时间戳为准</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#setlocale-constant-location-%20%E5%87%BD%E6%95%B0%E6%94%B9%E5%8F%98%20PHP%20%E6%9C%AC%E5%9C%B0%E5%8C%96%E9%BB%98%E8%AE%A4%E5%80%BC%EF%BC%8C"><span class="toc-text">setlocale(constant,location)函数改变 PHP 本地化默认值，</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#mktime-hours-minutes-seconds-month-day-year-%20%E8%BF%94%E5%9B%9E%E5%AF%B9%E5%BA%94%E7%9A%84%E6%97%B6%E9%97%B4%E6%88%B3"><span class="toc-text">mktime(hours, minutes, seconds, month, day, year)返回对应的时间戳</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#microtime-true-%20%E5%8F%AF%E8%BF%94%E5%9B%9E%E5%BE%AE%E7%A7%92%E7%BA%A7%E6%97%B6%E9%97%B4%E6%88%B3%E3%80%82"><span class="toc-text">microtime(true)可返回微秒级时间戳。</span></a></li></ol></li></ol>
   </div>
 
 
@@ -315,7 +315,7 @@ mjx-container[display="true"] + br {
 <div class="content content-post CENTER">
    <article id="post-PHP日期和时间" class="article article-type-post" itemprop="blogPost">
   <header class="article-header">
-    <h1 class="post-title">PHP日期和时间</h1>
+    <h1 class="post-title">PHP 日期和时间</h1>
 
     <div class="article-meta">
       <span>
@@ -361,13 +361,13 @@ date_default_timezone_set(&quot;RPC&quot;); // 北京时区
 ?&gt;
 </code></pre>
 <h3 id="日期和时间函数">日期和时间函数</h3>
-<h4 id="time-函数返回当前时间戳"><code>time()</code>函数返回当前时间戳</h4>
+<h4 id="time- 函数返回当前时间戳"><code>time()</code>函数返回当前时间戳</h4>
 <pre><code>echo time(); // 输出当前时间戳
 </code></pre>
 <p>输出：</p>
 <pre><code>1426083407
 </code></pre>
-<h4 id="date-函数返回日期，date-format-timestamp-，若无timestamp参数则返回当前日期。"><code>date()</code>函数返回日期，<code>date(format, timestamp)</code>，若无<code>timestamp</code>参数则返回当前日期。</h4>
+<h4 id="date- 函数返回日期，date-format-timestamp-，若无 timestamp 参数则返回当前日期。"><code>date()</code>函数返回日期，<code>date(format, timestamp)</code>，若无 <code>timestamp</code> 参数则返回当前日期。</h4>
 <p>format:<br>
 a - “am” 或是 “pm”<br>
 A - “AM” 或是 “PM”<br>
@@ -400,24 +400,24 @@ echo date(&quot;Y-m-d H:i:s&quot;); // 输出当前日期
 <pre><code>2015-03-11 22:16:47
 2015-03-11 22:26:26
 </code></pre>
-<h4 id="getdate-timestamp-返回一个包含日期时间各个部分的数组，若无参数则返回当前时间日期的数组。"><code>getdate(timestamp)</code> 返回一个包含日期时间各个部分的数组，若无参数则返回当前时间日期的数组。</h4>
+<h4 id="getdate-timestamp- 返回一个包含日期时间各个部分的数组，若无参数则返回当前时间日期的数组。"><code>getdate(timestamp)</code> 返回一个包含日期时间各个部分的数组，若无参数则返回当前时间日期的数组。</h4>
 <pre><code>$t = getdate();
-echo $t['year'] . &quot;年&quot; . $t['mon'] . &quot;月&quot; . $t['mday'] . &quot;日&quot;;
-echo $t['hours'] . &quot;时&quot; . $t['minutes'] . &quot;分&quot; . $t['seconds'] . &quot;秒&quot;;
+echo $t['year'] . &quot; 年 &quot; . $t['mon'] . &quot; 月 &quot; . $t['mday'] . &quot; 日 &quot;;
+echo $t['hours'] . &quot; 时 &quot; . $t['minutes'] . &quot; 分 &quot; . $t['seconds'] . &quot; 秒 &quot;;
 </code></pre>
 <p>输出：</p>
-<pre><code>2015年3月11日22时31分58秒
+<pre><code>2015 年 3 月 11 日 22 时 31 分 58 秒
 </code></pre>
-<h4 id="checkdate-month-day-year-检验日期的有效性"><code>checkdate(month, day, year)</code>检验日期的有效性</h4>
+<h4 id="checkdate-month-day-year- 检验日期的有效性"><code>checkdate(month, day, year)</code>检验日期的有效性</h4>
 <pre><code>if(checkdate(2, 31, 2015))
-	echo &quot;2月有31号&quot;;
+	echo &quot;2 月有 31 号 &quot;;
 else
-	echo &quot;2月无31号&quot;;
+	echo &quot;2 月无 31 号 &quot;;
 </code></pre>
 <p>输出：</p>
-<pre><code>2月无31号
+<pre><code>2 月无 31 号
 </code></pre>
-<h4 id="strftime-format-timestamp-将时间戳转化为日期和时间，若无timestamp参数则以当前的时间戳为准"><code>strftime(format, timestamp)</code>将时间戳转化为日期和时间，若无<code>timestamp</code>参数则以当前的时间戳为准</h4>
+<h4 id="strftime-format-timestamp- 将时间戳转化为日期和时间，若无 timestamp 参数则以当前的时间戳为准"><code>strftime(format, timestamp)</code>将时间戳转化为日期和时间，若无 <code>timestamp</code> 参数则以当前的时间戳为准</h4>
 <p>format:<br>
 %a - 当前区域星期几的简写<br>
 %A - 当前区域星期几的全称<br>
@@ -463,10 +463,10 @@ echo strftime(&quot;%Y-%b-%d %H:%M:%S&quot;);
 <pre><code>2015-Mar-11 22:16:47
 2015-Mar-11 22:41:22
 </code></pre>
-<h4 id="setlocale-constant-location-函数改变PHP本地化默认值，"><code>setlocale(constant,location)</code>函数改变PHP本地化默认值，</h4>
+<h4 id="setlocale-constant-location- 函数改变 PHP 本地化默认值，"><code>setlocale(constant,location)</code>函数改变 PHP 本地化默认值，</h4>
 <p>constant:<br>
 LC_ALL - 包括下面的所有选项<br>
-LC_COLLATE -排序次序<br>
+LC_COLLATE - 排序次序<br>
 LC_CTYPE - 字符类别及转换（例如所有字符大写或小写）<br>
 LC_MESSAGES - 系统消息格式<br>
 LC_MONETARY - 货币格式<br>
@@ -479,13 +479,13 @@ echo strftime(&quot;%z&quot;);
 <p>输出：</p>
 <pre><code>中国标准时间
 </code></pre>
-<h4 id="mktime-hours-minutes-seconds-month-day-year-返回对应的时间戳"><code>mktime(hours, minutes, seconds, month, day, year)</code>返回对应的时间戳</h4>
+<h4 id="mktime-hours-minutes-seconds-month-day-year- 返回对应的时间戳"><code>mktime(hours, minutes, seconds, month, day, year)</code>返回对应的时间戳</h4>
 <pre><code>echo mktime(22, 53, 20, 3, 11, 2015);
 </code></pre>
 <p>输出：</p>
 <pre><code>1426085600
 </code></pre>
-<h4 id="microtime-true-可返回微秒级时间戳。"><code>microtime(true)</code>可返回微秒级时间戳。</h4>
+<h4 id="microtime-true- 可返回微秒级时间戳。"><code>microtime(true)</code>可返回微秒级时间戳。</h4>
 <pre><code>echo microtime(true);
 </code></pre>
 <p>输出：</p>
@@ -501,7 +501,7 @@ echo strftime(&quot;%z&quot;);
    
        <div class="original">
     <ul>
-        <li>本文标题：PHP日期和时间</li>
+        <li>本文标题：PHP 日期和时间</li>
         <li>本文字数：1.4k</li>
         <li>本文作者：Netcan</li>
         <li>发布时间：2015年03月11日 - 22时59分</li>

@@ -7,7 +7,7 @@
 <head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
-  <title>PHP操作MySQL数据库 | Netcan on Programming</title>
+  <title>PHP 操作 MySQL 数据库 | Netcan on Programming</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -15,12 +15,12 @@
     <meta name="keywords" content="PHP,MySQL,数据库," />
   
 
-  <meta name="description" content="使用mysqli_connect()函数连接到MySQL数据库 mysqli_connect(&#39;MySQL服务器地址&#39;,&#39;用户名&#39;,&#39;密码&#39;,&#39;要连接的数据库&#39;);  Example: $db&#x3D;mysqli_connect(&#39;localhost&#39;,&#39;root&#39;,&#39;password&#39;,&#39;test&#39;);  使用mysqli_select_db()函数选择数据库文件 mysqli_select_db(数">
+  <meta name="description" content="使用 mysqli_connect() 函数连接到 MySQL 数据库 mysqli_connect(&#39;MySQL 服务器地址&#39;,&#39;用户名&#39;,&#39;密码&#39;,&#39;要连接的数据库&#39;);  Example: $db&#x3D;mysqli_connect(&#39;localhost&#39;,&#39;root&#39;,&#39;password&#39;,&#39;test&#39;);  使用 mysqli_select_db() 函数选择数据库文件 mysqli_sele">
 <meta property="og:type" content="article">
-<meta property="og:title" content="PHP操作MySQL数据库">
+<meta property="og:title" content="PHP 操作 MySQL 数据库">
 <meta property="og:url" content="https://netcan.github.io/2015/03/21/PHP%E6%93%8D%E4%BD%9CMySQL%E6%95%B0%E6%8D%AE%E5%BA%93/index.html">
 <meta property="og:site_name" content="Netcan on Programming">
-<meta property="og:description" content="使用mysqli_connect()函数连接到MySQL数据库 mysqli_connect(&#39;MySQL服务器地址&#39;,&#39;用户名&#39;,&#39;密码&#39;,&#39;要连接的数据库&#39;);  Example: $db&#x3D;mysqli_connect(&#39;localhost&#39;,&#39;root&#39;,&#39;password&#39;,&#39;test&#39;);  使用mysqli_select_db()函数选择数据库文件 mysqli_select_db(数">
+<meta property="og:description" content="使用 mysqli_connect() 函数连接到 MySQL 数据库 mysqli_connect(&#39;MySQL 服务器地址&#39;,&#39;用户名&#39;,&#39;密码&#39;,&#39;要连接的数据库&#39;);  Example: $db&#x3D;mysqli_connect(&#39;localhost&#39;,&#39;root&#39;,&#39;password&#39;,&#39;test&#39;);  使用 mysqli_select_db() 函数选择数据库文件 mysqli_sele">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://7xibui.com1.z0.glb.clouddn.com/2015/03/blob10.png">
 <meta property="og:image" content="http://7xibui.com1.z0.glb.clouddn.com/2015/03/blob11.png">
@@ -313,7 +313,7 @@ mjx-container[display="true"] + br {
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8mysqli-connect-%E5%87%BD%E6%95%B0%E8%BF%9E%E6%8E%A5%E5%88%B0MySQL%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-text">使用mysqli_connect()函数连接到MySQL数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8mysqli-select-db-%E5%87%BD%E6%95%B0%E9%80%89%E6%8B%A9%E6%95%B0%E6%8D%AE%E5%BA%93%E6%96%87%E4%BB%B6"><span class="toc-text">使用mysqli_select_db()函数选择数据库文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8mysqli-query-%E5%87%BD%E6%95%B0%E6%89%A7%E8%A1%8CSQL%E8%AF%AD%E5%8F%A5"><span class="toc-text">使用mysqli_query()函数执行SQL语句</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8mysqli-fetch-assoc-%E5%87%BD%E6%95%B0%E4%BB%8E%E6%9F%A5%E8%AF%A2%E7%BB%93%E6%9E%9C%E9%9B%86%E4%B8%AD%E8%8E%B7%E5%8F%96%E4%B8%80%E8%A1%8C%E4%BF%A1%E6%81%AF%E6%9C%80%E4%B8%BA%E5%85%B3%E8%81%94%E6%95%B0%E7%BB%84"><span class="toc-text">使用mysqli_fetch_assoc()函数从查询结果集中获取一行信息最为关联数组</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8mysqli-fetch-object-%E5%87%BD%E6%95%B0%E4%BB%8E%E6%9F%A5%E8%AF%A2%E7%BB%93%E6%9E%9C%E9%9B%86%E4%B8%AD%E8%8E%B7%E5%8F%96%E4%B8%80%E8%A1%8C%E4%BF%A1%E6%81%AF%E4%BD%9C%E4%B8%BA%E5%AF%B9%E8%B1%A1"><span class="toc-text">使用mysqli_fetch_object()函数从查询结果集中获取一行信息作为对象</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8mysqli-num-rows-%E5%87%BD%E6%95%B0%E8%8E%B7%E5%8F%96%E6%9F%A5%E8%AF%A2%E7%BB%93%E6%9E%9C%E9%9B%86%E4%B8%AD%E7%9A%84%E8%AE%B0%E5%BD%95%E6%95%B0"><span class="toc-text">使用mysqli_num_rows()函数获取查询结果集中的记录数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8mysqli-free-result-%E5%87%BD%E6%95%B0%E9%87%8A%E6%94%BE%E8%B5%84%E6%BA%90%EF%BC%8C"><span class="toc-text">使用mysqli_free_result()函数释放资源，</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8mysqli-close-%E5%87%BD%E6%95%B0%E5%85%B3%E9%97%AD%E8%BF%9E%E6%8E%A5"><span class="toc-text">使用mysqli_close()函数关闭连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E7%9A%84%E6%B3%A8%E5%86%8C%EF%BC%8C%E6%9F%A5%E8%AF%A2%E5%AE%9E%E4%BE%8B"><span class="toc-text">简单的注册，查询实例</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%20mysqli-connect-%20%E5%87%BD%E6%95%B0%E8%BF%9E%E6%8E%A5%E5%88%B0%20MySQL%20%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-text">使用 mysqli_connect() 函数连接到 MySQL 数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%20mysqli-select-db-%20%E5%87%BD%E6%95%B0%E9%80%89%E6%8B%A9%E6%95%B0%E6%8D%AE%E5%BA%93%E6%96%87%E4%BB%B6"><span class="toc-text">使用 mysqli_select_db() 函数选择数据库文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%20mysqli-query-%20%E5%87%BD%E6%95%B0%E6%89%A7%E8%A1%8C%20SQL%20%E8%AF%AD%E5%8F%A5"><span class="toc-text">使用 mysqli_query() 函数执行 SQL 语句</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%20mysqli-fetch-assoc-%20%E5%87%BD%E6%95%B0%E4%BB%8E%E6%9F%A5%E8%AF%A2%E7%BB%93%E6%9E%9C%E9%9B%86%E4%B8%AD%E8%8E%B7%E5%8F%96%E4%B8%80%E8%A1%8C%E4%BF%A1%E6%81%AF%E6%9C%80%E4%B8%BA%E5%85%B3%E8%81%94%E6%95%B0%E7%BB%84"><span class="toc-text">使用 mysqli_fetch_assoc() 函数从查询结果集中获取一行信息最为关联数组</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%20mysqli-fetch-object-%20%E5%87%BD%E6%95%B0%E4%BB%8E%E6%9F%A5%E8%AF%A2%E7%BB%93%E6%9E%9C%E9%9B%86%E4%B8%AD%E8%8E%B7%E5%8F%96%E4%B8%80%E8%A1%8C%E4%BF%A1%E6%81%AF%E4%BD%9C%E4%B8%BA%E5%AF%B9%E8%B1%A1"><span class="toc-text">使用 mysqli_fetch_object() 函数从查询结果集中获取一行信息作为对象</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%20mysqli-num-rows-%20%E5%87%BD%E6%95%B0%E8%8E%B7%E5%8F%96%E6%9F%A5%E8%AF%A2%E7%BB%93%E6%9E%9C%E9%9B%86%E4%B8%AD%E7%9A%84%E8%AE%B0%E5%BD%95%E6%95%B0"><span class="toc-text">使用 mysqli_num_rows() 函数获取查询结果集中的记录数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%20mysqli-free-result-%20%E5%87%BD%E6%95%B0%E9%87%8A%E6%94%BE%E8%B5%84%E6%BA%90%EF%BC%8C"><span class="toc-text">使用 mysqli_free_result() 函数释放资源，</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%20mysqli-close-%20%E5%87%BD%E6%95%B0%E5%85%B3%E9%97%AD%E8%BF%9E%E6%8E%A5"><span class="toc-text">使用 mysqli_close() 函数关闭连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E7%9A%84%E6%B3%A8%E5%86%8C%EF%BC%8C%E6%9F%A5%E8%AF%A2%E5%AE%9E%E4%BE%8B"><span class="toc-text">简单的注册，查询实例</span></a></li></ol>
   </div>
 
 
@@ -321,7 +321,7 @@ mjx-container[display="true"] + br {
 <div class="content content-post CENTER">
    <article id="post-PHP操作MySQL数据库" class="article article-type-post" itemprop="blogPost">
   <header class="article-header">
-    <h1 class="post-title">PHP操作MySQL数据库</h1>
+    <h1 class="post-title">PHP 操作 MySQL 数据库</h1>
 
     <div class="article-meta">
       <span>
@@ -359,74 +359,74 @@ mjx-container[display="true"] + br {
 
   <div class="article-content">
     
-      <h3 id="使用mysqli-connect-函数连接到MySQL数据库">使用<code>mysqli_connect()</code>函数连接到MySQL数据库</h3>
-<pre><code>mysqli_connect('MySQL服务器地址','用户名','密码','要连接的数据库');
+      <h3 id="使用 mysqli-connect- 函数连接到 MySQL 数据库">使用 <code>mysqli_connect()</code> 函数连接到 MySQL 数据库</h3>
+<pre><code>mysqli_connect('MySQL 服务器地址','用户名','密码','要连接的数据库');
 </code></pre>
 <p>Example:</p>
 <pre><code>$db=mysqli_connect('localhost','root','password','test');
 </code></pre>
-<h3 id="使用mysqli-select-db-函数选择数据库文件">使用<code>mysqli_select_db()</code>函数选择数据库文件</h3>
-<pre><code>mysqli_select_db(数据库服务器连接对象,目标数据库名);
+<h3 id="使用 mysqli-select-db- 函数选择数据库文件">使用 <code>mysqli_select_db()</code> 函数选择数据库文件</h3>
+<pre><code>mysqli_select_db(数据库服务器连接对象, 目标数据库名);
 </code></pre>
 <p>Example:</p>
 <pre><code>$db=mysqli_connect('localhost','root','password');
 mysqli_select_db($db,'test');
 </code></pre>
-<h3 id="使用mysqli-query-函数执行SQL语句">使用<code>mysqli_query()</code>函数执行SQL语句</h3>
-<pre><code>mysqli_query(数据库服务器连接对象,SQL语句);
+<h3 id="使用 mysqli-query- 函数执行 SQL 语句">使用 <code>mysqli_query()</code> 函数执行 SQL 语句</h3>
+<pre><code>mysqli_query(数据库服务器连接对象,SQL 语句);
 </code></pre>
 <p>Example:</p>
 <pre><code>$fruits=mysqli_query($db,&quot;SELECT * FROM fruits&quot;);
 </code></pre>
-<h4 id="使用mysqli-fetch-assoc-函数从查询结果集中获取一行信息最为关联数组">使用<code>mysqli_fetch_assoc()</code>函数从查询结果集中获取一行信息最为关联数组</h4>
-<pre><code>mysqli_fetch_assoc(SQL请求返回的对象)，将返回一个关联数组。
+<h4 id="使用 mysqli-fetch-assoc- 函数从查询结果集中获取一行信息最为关联数组">使用 <code>mysqli_fetch_assoc()</code> 函数从查询结果集中获取一行信息最为关联数组</h4>
+<pre><code>mysqli_fetch_assoc(SQL 请求返回的对象)，将返回一个关联数组。
 </code></pre>
 <p>Example:</p>
 <pre><code>$fruit = mysqli_fetch_assoc($fruits);
 echo $fruit['f_name'];
 </code></pre>
-<h4 id="使用mysqli-fetch-object-函数从查询结果集中获取一行信息作为对象">使用<code>mysqli_fetch_object()</code>函数从查询结果集中获取一行信息作为对象</h4>
-<pre><code>mysqli_fetch_object(SQL请求返回的对象)，将返回一个对象。
+<h4 id="使用 mysqli-fetch-object- 函数从查询结果集中获取一行信息作为对象">使用 <code>mysqli_fetch_object()</code> 函数从查询结果集中获取一行信息作为对象</h4>
+<pre><code>mysqli_fetch_object(SQL 请求返回的对象)，将返回一个对象。
 </code></pre>
 <p>Example:</p>
 <pre><code>$fruit = mysqli_fetch_assoc($fruits);
 echo $fruit-&gt;f_name;
 </code></pre>
-<h3 id="使用mysqli-num-rows-函数获取查询结果集中的记录数">使用<code>mysqli_num_rows()</code>函数获取查询结果集中的记录数</h3>
-<pre><code>mysqli_num_rows(SQL请求返回的对象)，返回记录数目。
+<h3 id="使用 mysqli-num-rows- 函数获取查询结果集中的记录数">使用 <code>mysqli_num_rows()</code> 函数获取查询结果集中的记录数</h3>
+<pre><code>mysqli_num_rows(SQL 请求返回的对象)，返回记录数目。
 </code></pre>
 <p>Example:</p>
 <pre><code>fruit_nums = mysqli_num_rows($fruits);
 </code></pre>
-<h3 id="使用mysqli-free-result-函数释放资源，">使用<code>mysqli_free_result()</code>函数释放资源，</h3>
-<pre><code>mysqli_free_result(SQL请求返回的对象),释放查询结果资源。
+<h3 id="使用 mysqli-free-result- 函数释放资源，">使用 <code>mysqli_free_result()</code> 函数释放资源，</h3>
+<pre><code>mysqli_free_result(SQL 请求返回的对象), 释放查询结果资源。
 </code></pre>
 <p>Example:</p>
 <pre><code>mysqli_free_result($fruits);
 </code></pre>
-<h3 id="使用mysqli-close-函数关闭连接">使用<code>mysqli_close()</code>函数关闭连接</h3>
+<h3 id="使用 mysqli-close- 函数关闭连接">使用 <code>mysqli_close()</code> 函数关闭连接</h3>
 <pre><code>mysqli_close(需要关闭的数据库连接对象);
 </code></pre>
 <p>Example:</p>
 <pre><code>mysqli_close($db);
 </code></pre>
 <h3 id="简单的注册，查询实例">简单的注册，查询实例</h3>
-<p>先上register_mysql.html页面文件，</p>
+<p>先上 register_mysql.html 页面文件，</p>
 <pre class="language-html" data-language="html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span>
 	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">charset</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>utf-8<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
-	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span>PHP操作MySQL数据库<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span>PHP 操作 MySQL 数据库<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>center</span><span class="token punctuation">></span></span>
-	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h2</span><span class="token punctuation">></span></span>PHP操作MySQL数据库<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h2</span><span class="token punctuation">></span></span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h2</span><span class="token punctuation">></span></span>PHP 操作 MySQL 数据库<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h2</span><span class="token punctuation">></span></span>
 	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>form</span> <span class="token attr-name">action</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>register_mysql.php<span class="token punctuation">"</span></span> <span class="token attr-name">method</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>post<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
 		<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>table</span><span class="token punctuation">></span></span>
 			<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>tr</span> <span class="token attr-name">bgcolor</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>#3399ff<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
 				<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span><span class="token punctuation">></span></span>用户名:<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>text<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>name<span class="token punctuation">"</span></span> <span class="token attr-name">size</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>20<span class="token punctuation">"</span></span> <span class="token attr-name">maxLength</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>20<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span>
 			<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>tr</span><span class="token punctuation">></span></span>
 			<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>tr</span> <span class="token attr-name">bgcolor</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>#CCCCCC<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
-				<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span><span class="token punctuation">></span></span>性别:<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>center</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>radio<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sex<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>1<span class="token punctuation">"</span></span> <span class="token attr-name">checked</span><span class="token punctuation">/></span></span>男<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>radio<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sex<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>2<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>女<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>center</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span>
+				<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span><span class="token punctuation">></span></span>性别:<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>center</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>radio<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sex<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>1<span class="token punctuation">"</span></span> <span class="token attr-name">checked</span><span class="token punctuation">/></span></span>男 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>radio<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sex<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>2<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span> 女<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>center</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span>
 			<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>tr</span><span class="token punctuation">></span></span>
 			<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>tr</span> <span class="token attr-name">bgcolor</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>#4ADDFF<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
 				<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span><span class="token punctuation">></span></span>擅长:<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span>
@@ -459,7 +459,7 @@ echo $fruit-&gt;f_name;
 			<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>tr</span><span class="token punctuation">></span></span>
 		<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>table</span><span class="token punctuation">></span></span>
 	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>form</span><span class="token punctuation">></span></span>
-	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h2</span><span class="token punctuation">></span></span>MySQL数据库查询<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h2</span><span class="token punctuation">></span></span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h2</span><span class="token punctuation">></span></span>MySQL 数据库查询<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h2</span><span class="token punctuation">></span></span>
 	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>form</span> <span class="token attr-name">action</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>register_query.php<span class="token punctuation">"</span></span> <span class="token attr-name">method</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>post<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
 		<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>table</span><span class="token punctuation">></span></span>
 			<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>tr</span> <span class="token attr-name">bgcolor</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>#FF0DFF<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
@@ -477,10 +477,10 @@ echo $fruit-&gt;f_name;
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span></code></pre>
 <p>页面图：<br>
 <img src="http://7xibui.com1.z0.glb.clouddn.com/2015/03/blob10.png" alt="http://7xibui.com1.z0.glb.clouddn.com/2015/03/blob10.png"></p>
-<p>其次是输入数据至数据库的register_mysql.php文件，</p>
+<p>其次是输入数据至数据库的 register_mysql.php 文件，</p>
 <pre class="language-php" data-language="php"><code class="language-php"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">charset</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>utf-8<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
 <span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
-   <span class="token keyword">echo</span> <span class="token double-quoted-string string">"&lt;h2>PHP操作MySQL数据库&lt;/h2>"</span><span class="token punctuation">;</span>
+   <span class="token keyword">echo</span> <span class="token double-quoted-string string">"&lt;h2>PHP 操作 MySQL 数据库 &lt;/h2>"</span><span class="token punctuation">;</span>
 
    <span class="token variable">$name</span> <span class="token operator">=</span> <span class="token function">trim</span><span class="token punctuation">(</span><span class="token variable">$_POST</span><span class="token punctuation">[</span><span class="token single-quoted-string string">'name'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
    <span class="token variable">$sex</span> <span class="token operator">=</span> <span class="token function">trim</span><span class="token punctuation">(</span><span class="token variable">$_POST</span><span class="token punctuation">[</span><span class="token single-quoted-string string">'sex'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -489,26 +489,26 @@ echo $fruit-&gt;f_name;
    <span class="token variable">$repasswd</span> <span class="token operator">=</span> <span class="token function">trim</span><span class="token punctuation">(</span><span class="token variable">$_POST</span><span class="token punctuation">[</span><span class="token single-quoted-string string">'repasswd'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
    <span class="token variable">$info</span> <span class="token operator">=</span> <span class="token function">trim</span><span class="token punctuation">(</span><span class="token variable">$_POST</span><span class="token punctuation">[</span><span class="token single-quoted-string string">'info'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
    <span class="token variable">$sexa</span> <span class="token operator">=</span> <span class="token keyword">array</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token double-quoted-string string">"男"</span><span class="token punctuation">,</span><span class="token double-quoted-string string">"女"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-   <span class="token variable">$fava</span> <span class="token operator">=</span> <span class="token keyword">array</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token double-quoted-string string">"C/C++语言"</span><span class="token punctuation">,</span><span class="token double-quoted-string string">"Java语言"</span><span class="token punctuation">,</span><span class="token double-quoted-string string">"PHP语言"</span><span class="token punctuation">,</span><span class="token double-quoted-string string">"Python语言"</span><span class="token punctuation">,</span><span class="token double-quoted-string string">"HTML5/CSS"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token variable">$fava</span> <span class="token operator">=</span> <span class="token keyword">array</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token double-quoted-string string">"C/C++ 语言"</span><span class="token punctuation">,</span><span class="token double-quoted-string string">"Java 语言"</span><span class="token punctuation">,</span><span class="token double-quoted-string string">"PHP 语言"</span><span class="token punctuation">,</span><span class="token double-quoted-string string">"Python 语言"</span><span class="token punctuation">,</span><span class="token double-quoted-string string">"HTML5/CSS"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
    <span class="token variable">$sex</span> <span class="token operator">=</span> <span class="token variable">$sexa</span><span class="token punctuation">[</span><span class="token variable">$sex</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
    <span class="token variable">$fav</span> <span class="token operator">=</span> <span class="token variable">$fava</span><span class="token punctuation">[</span><span class="token variable">$fav</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
 
    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token variable">$passwd</span> <span class="token operator">!=</span> <span class="token variable">$repasswd</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-      <span class="token keyword">echo</span> <span class="token double-quoted-string string">"&lt;script>alert(\"密码不一致!\");history.go(-1);&lt;/script>"</span><span class="token punctuation">;</span>
+      <span class="token keyword">echo</span> <span class="token double-quoted-string string">"&lt;script>alert(\" 密码不一致!\");history.go(-1);&lt;/script>"</span><span class="token punctuation">;</span>
 	  <span class="token keyword">exit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
    <span class="token punctuation">&#125;</span>
    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span><span class="token variable">$name</span> <span class="token operator">||</span> <span class="token operator">!</span><span class="token variable">$sex</span> <span class="token operator">||</span> <span class="token operator">!</span><span class="token variable">$fav</span> <span class="token operator">||</span> <span class="token operator">!</span><span class="token variable">$passwd</span> <span class="token operator">||</span> <span class="token operator">!</span><span class="token variable">$repasswd</span> <span class="token operator">||</span> <span class="token operator">!</span><span class="token variable">$info</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-	  <span class="token keyword">echo</span> <span class="token double-quoted-string string">"&lt;script>alert(\"请填满数据!\");history.go(-1);&lt;/script>"</span><span class="token punctuation">;</span>
+	  <span class="token keyword">echo</span> <span class="token double-quoted-string string">"&lt;script>alert(\" 请填满数据!\");history.go(-1);&lt;/script>"</span><span class="token punctuation">;</span>
 	  <span class="token keyword">exit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
    <span class="token punctuation">&#125;</span>
    <span class="token variable">$user</span> <span class="token operator">=</span> <span class="token function">mysqli_connect</span><span class="token punctuation">(</span><span class="token single-quoted-string string">'localhost'</span><span class="token punctuation">,</span><span class="token single-quoted-string string">'root'</span><span class="token punctuation">,</span><span class="token single-quoted-string string">''</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
    <span class="token function">mysqli_select_db</span><span class="token punctuation">(</span><span class="token variable">$user</span><span class="token punctuation">,</span><span class="token single-quoted-string string">'test'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">mysqli_connect_errno</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-	  <span class="token keyword">echo</span> <span class="token double-quoted-string string">"&lt;h3>MySQL数据库连接失败！&lt;/h3>"</span><span class="token punctuation">;</span>
+	  <span class="token keyword">echo</span> <span class="token double-quoted-string string">"&lt;h3>MySQL 数据库连接失败！&lt;/h3>"</span><span class="token punctuation">;</span>
 	  <span class="token keyword">exit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
    <span class="token punctuation">&#125;</span>
    <span class="token keyword">else</span>
-   <span class="token keyword">echo</span> <span class="token double-quoted-string string">"&lt;h3>MySQL数据库连接成功！&lt;/h3>"</span><span class="token punctuation">;</span>
+   <span class="token keyword">echo</span> <span class="token double-quoted-string string">"&lt;h3>MySQL 数据库连接成功！&lt;/h3>"</span><span class="token punctuation">;</span>
 
 
    <span class="token variable">$insert</span> <span class="token operator">=</span> <span class="token double-quoted-string string">"INSERT INTO user(name,sex,fav,passwd,info) value('<span class="token interpolation"><span class="token variable">$name</span></span>','<span class="token interpolation"><span class="token variable">$sex</span></span>','<span class="token interpolation"><span class="token variable">$fav</span></span>','<span class="token interpolation"><span class="token variable">$passwd</span></span>','<span class="token interpolation"><span class="token variable">$info</span></span>')"</span><span class="token punctuation">;</span>
@@ -518,29 +518,29 @@ echo $fruit-&gt;f_name;
    <span class="token keyword">else</span>
    <span class="token keyword">echo</span> <span class="token double-quoted-string string">"&lt;h3>数据添加失败！&lt;/h3>"</span><span class="token punctuation">;</span>
    <span class="token function">mysqli_close</span><span class="token punctuation">(</span><span class="token variable">$user</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-   <span class="token keyword">echo</span> <span class="token double-quoted-string string">"&lt;input type=button onClick=\"javascript:history.go(-1)\" value=\"返回上一页\">"</span><span class="token punctuation">;</span>
+   <span class="token keyword">echo</span> <span class="token double-quoted-string string">"&lt;input type=button onClick=\"javascript:history.go(-1)\"value=\" 返回上一页 \">"</span><span class="token punctuation">;</span>
 
 
 
 <span class="token delimiter important">?></span></span></code></pre>
-<p>最后是查询数据的register_query.php。</p>
+<p>最后是查询数据的 register_query.php。</p>
 <pre class="language-php" data-language="php"><code class="language-php"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">charset</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>utf-8<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
 <span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
    <span class="token variable">$user</span> <span class="token operator">=</span> <span class="token function">mysqli_connect</span><span class="token punctuation">(</span><span class="token single-quoted-string string">'localhost'</span><span class="token punctuation">,</span><span class="token single-quoted-string string">'root'</span><span class="token punctuation">,</span><span class="token single-quoted-string string">''</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
    <span class="token function">mysqli_select_db</span><span class="token punctuation">(</span><span class="token variable">$user</span><span class="token punctuation">,</span><span class="token single-quoted-string string">'test'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">mysqli_connect_errno</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-	  <span class="token keyword">echo</span> <span class="token double-quoted-string string">"&lt;center>&lt;h3>MySQL数据库连接失败！&lt;/h3>&lt;/center>"</span><span class="token punctuation">;</span>
+	  <span class="token keyword">echo</span> <span class="token double-quoted-string string">"&lt;center>&lt;h3>MySQL 数据库连接失败！&lt;/h3>&lt;/center>"</span><span class="token punctuation">;</span>
 	  <span class="token keyword">exit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
    <span class="token punctuation">&#125;</span>
    <span class="token keyword">else</span>
-   <span class="token keyword">echo</span> <span class="token double-quoted-string string">"&lt;center>&lt;h3>MySQL数据库连接成功！&lt;/h3>&lt;/center>"</span><span class="token punctuation">;</span>
+   <span class="token keyword">echo</span> <span class="token double-quoted-string string">"&lt;center>&lt;h3>MySQL 数据库连接成功！&lt;/h3>&lt;/center>"</span><span class="token punctuation">;</span>
    <span class="token function">mysqli_query</span><span class="token punctuation">(</span><span class="token variable">$user</span><span class="token punctuation">,</span><span class="token double-quoted-string string">"set names utf8"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
    <span class="token variable">$query_name</span> <span class="token operator">=</span> <span class="token function">trim</span><span class="token punctuation">(</span><span class="token variable">$_POST</span><span class="token punctuation">[</span><span class="token single-quoted-string string">'query_name'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-   <span class="token variable">$query_users</span> <span class="token operator">=</span> <span class="token function">mysqli_query</span><span class="token punctuation">(</span><span class="token variable">$user</span><span class="token punctuation">,</span><span class="token double-quoted-string string">"SELECT * FROM user WHERE name LIKE '%<span class="token interpolation"><span class="token variable">$query_name</span></span>%'"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token variable">$query_users</span> <span class="token operator">=</span> <span class="token function">mysqli_query</span><span class="token punctuation">(</span><span class="token variable">$user</span><span class="token punctuation">,</span><span class="token double-quoted-string string">"SELECT * FROM user WHERE name LIKE'%<span class="token interpolation"><span class="token variable">$query_name</span></span>%'"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
    <span class="token variable">$query_users_num</span> <span class="token operator">=</span> <span class="token function">mysqli_num_rows</span><span class="token punctuation">(</span><span class="token variable">$query_users</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
    <span class="token keyword">echo</span> <span class="token double-quoted-string string">"&lt;center>&lt;table border=1>
 		 &lt;tr bgcolor=#4dffc4>
-		 &lt;td>&lt;center>ID&lt;/center>&lt;/td>&lt;td>&lt;center>昵称&lt;/center>&lt;/td>&lt;td>&lt;center>性别&lt;/center>&lt;/td>&lt;td>&lt;center>擅长&lt;/center>&lt;/td>&lt;td>&lt;center>密码&lt;/center>&lt;/td>&lt;td>&lt;center>备注&lt;/center>&lt;/td>
+		 &lt;td>&lt;center>ID&lt;/center>&lt;/td>&lt;td>&lt;center>昵称 &lt;/center>&lt;/td>&lt;td>&lt;center>性别 &lt;/center>&lt;/td>&lt;td>&lt;center>擅长 &lt;/center>&lt;/td>&lt;td>&lt;center>密码 &lt;/center>&lt;/td>&lt;td>&lt;center>备注 &lt;/center>&lt;/td>
 	  &lt;/tr>
 	  "</span><span class="token punctuation">;</span>
    <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token variable">$i</span><span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> <span class="token variable">$i</span><span class="token operator">&lt;</span><span class="token variable">$query_users_num</span><span class="token punctuation">;</span> <span class="token operator">++</span><span class="token variable">$i</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
@@ -551,7 +551,7 @@ echo $fruit-&gt;f_name;
 		 "</span><span class="token punctuation">;</span>
    <span class="token punctuation">&#125;</span>
    <span class="token keyword">echo</span> <span class="token double-quoted-string string">"&lt;/table>记录条数：<span class="token interpolation"><span class="token variable">$query_users_num</span></span>
-&lt;input type=button onClick=\"javascript:history.go(-1)\" value=\"返回上一页\">"</span><span class="token punctuation">;</span>
+&lt;input type=button onClick=\"javascript:history.go(-1)\" value=\"返回上一页 \">"</span><span class="token punctuation">;</span>
 
 <span class="token delimiter important">?></span></span></code></pre>
 <p>最终效果图，</p>
@@ -569,7 +569,7 @@ echo $fruit-&gt;f_name;
    
        <div class="original">
     <ul>
-        <li>本文标题：PHP操作MySQL数据库</li>
+        <li>本文标题：PHP 操作 MySQL 数据库</li>
         <li>本文字数：1.2k</li>
         <li>本文作者：Netcan</li>
         <li>发布时间：2015年03月21日 - 22时34分</li>

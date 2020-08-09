@@ -349,21 +349,21 @@ mjx-container[display="true"] + br {
 
   <div class="article-content">
     
-      <p>前几天在<code>LeetCode</code>上面遇到这么一个题目：<a target="_blank" rel="noopener" href="https://leetcode.com/problems/game-of-life/">Game of Life</a>，给定一个初始<code>pattern</code>，求其下一个状态。</p>
-<p>然后今天闲的蛋疼又用<code>Javascript</code>和<code>canvas</code>实现了一下，项目地址：<a target="_blank" rel="noopener" href="https://github.com/netcan/gameOfLife">https://github.com/netcan/gameOfLife</a>，最后搞到博客上了，具体可看左栏。</p>
+      <p>前几天在 <code>LeetCode</code> 上面遇到这么一个题目：<a target="_blank" rel="noopener" href="https://leetcode.com/problems/game-of-life/">Game of Life</a>，给定一个初始<code>pattern</code>，求其下一个状态。</p>
+<p>然后今天闲的蛋疼又用 <code>Javascript</code> 和<code>canvas</code>实现了一下，项目地址：<a target="_blank" rel="noopener" href="https://github.com/netcan/gameOfLife">https://github.com/netcan/gameOfLife</a>，最后搞到博客上了，具体可看左栏。</p>
 <p>操作方法：</p>
 <ul>
-<li>鼠标右键<strong>暂停</strong></li>
-<li>鼠标中键<strong>清除</strong>所有细胞</li>
-<li>鼠标左键<strong>添加</strong>细胞，最好在暂停状态下添加。</li>
+<li>鼠标右键 <strong> 暂停</strong></li>
+<li>鼠标中键 <strong> 清除 </strong> 所有细胞</li>
+<li>鼠标左键 <strong> 添加 </strong> 细胞，最好在暂停状态下添加。</li>
 </ul>
 <a id="more"></a>
-<p>生命游戏规则很简单，在一个棋盘上面格子有细胞，细胞只有2种状态：生(1)或死(0)。每个细胞周围最多有8个空位，有以下4条规则：</p>
+<p>生命游戏规则很简单，在一个棋盘上面格子有细胞，细胞只有 2 种状态：生 (1) 或死(0)。每个细胞周围最多有 8 个空位，有以下 4 条规则：</p>
 <ul>
-<li>“人口过少”：任何活细胞如果活邻居少于2个，则死掉。</li>
-<li>“正常”：任何活细胞如果活邻居为2个或3个，则继续活。</li>
-<li>“人口过多”：任何活细胞如果活邻居大于3个，则死掉。</li>
-<li>“繁殖”：任何<strong>死细胞</strong>如果活邻居正好是3个，则活过来。</li>
+<li>“人口过少”：任何活细胞如果活邻居少于 2 个，则死掉。</li>
+<li>“正常”：任何活细胞如果活邻居为 2 个或 3 个，则继续活。</li>
+<li>“人口过多”：任何活细胞如果活邻居大于 3 个，则死掉。</li>
+<li>“繁殖”：任何 <strong> 死细胞 </strong> 如果活邻居正好是 3 个，则活过来。</li>
 </ul>
 <p>这里我随机生成一个初始棋盘，然后运行一遍生命游戏，将其绘制出来，以此循环。考虑到节省空间，我把下一个状态存到棋盘的第二比特位上面，然后右移得到下一个状态。</p>
 <p>最终代码如下：</p>
@@ -416,7 +416,7 @@ mjx-container[display="true"] + br {
 	<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">var</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> m<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span>
 		<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">var</span> j <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> j <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> <span class="token operator">++</span>j<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
 			<span class="token keyword">var</span> nebs <span class="token operator">=</span> <span class="token function">getNeighbors</span><span class="token punctuation">(</span>board<span class="token punctuation">,</span> i<span class="token punctuation">,</span> j<span class="token punctuation">,</span> m<span class="token punctuation">,</span> n<span class="token punctuation">)</span><span class="token punctuation">;</span>
-			<span class="token comment">// console.log("("+i+", "+j + "): " + nebs);</span>
+			<span class="token comment">// console.log("("+i+","+j + "):" + nebs);</span>
 			<span class="token keyword">if</span><span class="token punctuation">(</span>nebs <span class="token operator">==</span> <span class="token number">2</span><span class="token punctuation">)</span> board<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">|=</span> <span class="token punctuation">(</span>board<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">&amp;</span> <span class="token number">0x1</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> <span class="token number">1</span><span class="token punctuation">;</span> <span class="token comment">// 保持不变</span>
 			<span class="token keyword">else</span> <span class="token keyword">if</span><span class="token punctuation">(</span>nebs <span class="token operator">==</span> <span class="token number">3</span><span class="token punctuation">)</span> board<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">|=</span> <span class="token number">0x2</span><span class="token punctuation">;</span> <span class="token comment">// 增生</span>
 			<span class="token keyword">else</span> board<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">&amp;=</span> <span class="token number">0x1</span><span class="token punctuation">;</span> <span class="token comment">// 死亡</span>
@@ -460,7 +460,7 @@ mjx-container[display="true"] + br {
        <div class="original">
     <ul>
         <li>本文标题：实现一个生命游戏</li>
-        <li>本文字数：697</li>
+        <li>本文字数：699</li>
         <li>本文作者：Netcan</li>
         <li>发布时间：2017年01月29日 - 19时55分</li>
         <li>最后更新：2020年08月09日 - 09时01分</li>

@@ -15,12 +15,12 @@
     <meta name="keywords" content="MySQL,数据库," />
   
 
-  <meta name="description" content="插入数据： 插入一条数据 INSERT INTO table_name(column_list) VALUES(value_list);  先创建一张数据表： mysql&gt; create table person 	-&gt; ( 	-&gt; id int unsigned not null auto_increment, 	-&gt; name char(40) not null def">
+  <meta name="description" content="插入数据：  插入一条数据  INSERT INTO table_name(column_list) VALUES(value_list);   先创建一张数据表： mysql&gt; create table person 	-&gt; ( 	-&gt; id int unsigned not null auto_increment, 	-&gt; name char(40) not null">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据的基本操作">
 <meta property="og:url" content="https://netcan.github.io/2015/03/20/%E6%95%B0%E6%8D%AE%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/index.html">
 <meta property="og:site_name" content="Netcan on Programming">
-<meta property="og:description" content="插入数据： 插入一条数据 INSERT INTO table_name(column_list) VALUES(value_list);  先创建一张数据表： mysql&gt; create table person 	-&gt; ( 	-&gt; id int unsigned not null auto_increment, 	-&gt; name char(40) not null def">
+<meta property="og:description" content="插入数据：  插入一条数据  INSERT INTO table_name(column_list) VALUES(value_list);   先创建一张数据表： mysql&gt; create table person 	-&gt; ( 	-&gt; id int unsigned not null auto_increment, 	-&gt; name char(40) not null">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2015-03-20T06:45:24.000Z">
 <meta property="article:modified_time" content="2015-03-20T06:45:24.000Z">
@@ -308,7 +308,7 @@ mjx-container[display="true"] + br {
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E6%95%B0%E6%8D%AE%EF%BC%9A"><span class="toc-text">插入数据：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E4%B8%80%E6%9D%A1%E6%95%B0%E6%8D%AE"><span class="toc-text">插入一条数据</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E5%A4%9A%E6%9D%A1%E6%95%B0%E6%8D%AE%EF%BC%9A"><span class="toc-text">插入多条数据：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0%E6%95%B0%E6%8D%AE"><span class="toc-text">更新数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E6%95%B0%E6%8D%AE"><span class="toc-text">删除数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2"><span class="toc-text">查询</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E6%95%B0%E6%8D%AE"><span class="toc-text">查询数据</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%A6IN%E5%85%B3%E9%94%AE%E5%AD%97%E6%9F%A5%E8%AF%A2"><span class="toc-text">带IN关键字查询</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%A6BETWEEN-AND%E7%9A%84%E8%8C%83%E5%9B%B4%E6%9F%A5%E8%AF%A2"><span class="toc-text">带BETWEEN AND的范围查询</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%A6LIKE%E7%9A%84%E5%AD%97%E7%AC%A6%E5%8C%B9%E9%85%8D%E6%9F%A5%E8%AF%A2"><span class="toc-text">带LIKE的字符匹配查询</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E7%A9%BA%E5%80%BC"><span class="toc-text">查询空值</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%A6AND%E7%9A%84%E5%A4%9A%E6%9D%A1%E4%BB%B6%E6%9F%A5%E8%AF%A2"><span class="toc-text">带AND的多条件查询</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%A6OR%E7%9A%84%E5%A4%9A%E6%9D%A1%E4%BB%B6%E6%9F%A5%E8%AF%A2"><span class="toc-text">带OR的多条件查询</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E7%BB%93%E6%9E%9C%E4%B8%8D%E9%87%8D%E5%A4%8D"><span class="toc-text">查询结果不重复</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AF%B9%E6%9F%A5%E8%AF%A2%E7%BB%93%E6%9E%9C%E6%8E%92%E5%BA%8F"><span class="toc-text">对查询结果排序</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E6%95%B0%E6%8D%AE%EF%BC%9A"><span class="toc-text"> 插入数据：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E4%B8%80%E6%9D%A1%E6%95%B0%E6%8D%AE"><span class="toc-text"> 插入一条数据 </span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E5%A4%9A%E6%9D%A1%E6%95%B0%E6%8D%AE%EF%BC%9A"><span class="toc-text"> 插入多条数据：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0%E6%95%B0%E6%8D%AE"><span class="toc-text"> 更新数据 </span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E6%95%B0%E6%8D%AE"><span class="toc-text"> 删除数据 </span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2"><span class="toc-text"> 查询 </span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E6%95%B0%E6%8D%AE"><span class="toc-text"> 查询数据 </span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%A6%20IN%20%E5%85%B3%E9%94%AE%E5%AD%97%E6%9F%A5%E8%AF%A2"><span class="toc-text"> 带 IN 关键字查询 </span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%A6%20BETWEEN-AND%20%E7%9A%84%E8%8C%83%E5%9B%B4%E6%9F%A5%E8%AF%A2"><span class="toc-text"> 带 BETWEEN AND 的范围查询 </span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%A6%20LIKE%20%E7%9A%84%E5%AD%97%E7%AC%A6%E5%8C%B9%E9%85%8D%E6%9F%A5%E8%AF%A2"><span class="toc-text"> 带 LIKE 的字符匹配查询 </span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E7%A9%BA%E5%80%BC"><span class="toc-text"> 查询空值 </span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%A6%20AND%20%E7%9A%84%E5%A4%9A%E6%9D%A1%E4%BB%B6%E6%9F%A5%E8%AF%A2"><span class="toc-text"> 带 AND 的多条件查询 </span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%A6%20OR%20%E7%9A%84%E5%A4%9A%E6%9D%A1%E4%BB%B6%E6%9F%A5%E8%AF%A2"><span class="toc-text"> 带 OR 的多条件查询 </span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E7%BB%93%E6%9E%9C%E4%B8%8D%E9%87%8D%E5%A4%8D"><span class="toc-text"> 查询结果不重复 </span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AF%B9%E6%9F%A5%E8%AF%A2%E7%BB%93%E6%9E%9C%E6%8E%92%E5%BA%8F"><span class="toc-text"> 对查询结果排序 </span></a></li></ol></li></ol>
   </div>
 
 
@@ -354,11 +354,11 @@ mjx-container[display="true"] + br {
 
   <div class="article-content">
     
-      <h3 id="插入数据：">插入数据：</h3>
-<h4 id="插入一条数据">插入一条数据</h4>
+      <h3 id="插入数据："> 插入数据：</h3>
+<h4 id="插入一条数据"> 插入一条数据 </h4>
 <pre><code>INSERT INTO table_name(column_list) VALUES(value_list);
 </code></pre>
-<p>先创建一张数据表：</p>
+<p> 先创建一张数据表：</p>
 <pre><code>mysql&gt; create table person
 	-&gt; (
 	-&gt; id int unsigned not null auto_increment,
@@ -369,7 +369,7 @@ mjx-container[display="true"] + br {
 	-&gt; );
 Query OK, 0 rows affected (0.13 sec)
 </code></pre>
-<p>然后插入数据：</p>
+<p> 然后插入数据：</p>
 <pre><code>mysql&gt; insert into person(id,name,age,info)
 	-&gt; values(1,'Green',21,'Lawyer');
 Query OK, 1 row affected (0.08 sec)
@@ -390,7 +390,7 @@ mysql&gt; insert into person(name,age)
 	-&gt; values('Laura',25);
 Query OK, 1 row affected (0.10 sec)
 </code></pre>
-<p>最后查看已插入的数据：</p>
+<p> 最后查看已插入的数据：</p>
 <pre><code>mysql&gt; select * from person;
 +----+--------+-----+------------+
 | id | name   | age | info       |
@@ -403,10 +403,10 @@ Query OK, 1 row affected (0.10 sec)
 +----+--------+-----+------------+
 5 rows in set (0.00 sec)
 </code></pre>
-<h4 id="插入多条数据：">插入多条数据：</h4>
+<h4 id="插入多条数据："> 插入多条数据：</h4>
 <pre><code>INSERT INTO table_name(column_list) VALUES(value_list1),(value_list2),...,(value_listn);
 </code></pre>
-<p>插入如下多条数据：</p>
+<p> 插入如下多条数据：</p>
 <pre><code>mysql&gt; insert into person(name,age,info)
 	-&gt; values('Evans',27,'secretary'),
 	-&gt; ('Dale',22,'cook'),
@@ -420,7 +420,7 @@ mysql&gt; insert into person
 Query OK, 2 rows affected (0.06 sec)
 Records: 2  Duplicates: 0  Warnings: 0
 </code></pre>
-<p>最后查看已插入数据：</p>
+<p> 最后查看已插入数据：</p>
 <pre><code>mysql&gt; select * from person;
 +----+---------+-----+------------+
 | id | name    | age | info       |
@@ -438,10 +438,10 @@ Records: 2  Duplicates: 0  Warnings: 0
 +----+---------+-----+------------+
 10 rows in set (0.00 sec)
 </code></pre>
-<h3 id="更新数据">更新数据</h3>
+<h3 id="更新数据"> 更新数据 </h3>
 <pre><code>UPDATE table_name SET column_name1=value1,column_name2=value2,...,column_namen=valuen WHERE(condition);
 </code></pre>
-<p>比如id=10的数据，</p>
+<p> 比如 id=10 的数据，</p>
 <pre><code>mysql&gt; select * from person where id=10;
 +----+---------+-----+---------+
 | id | name    | age | info    |
@@ -450,12 +450,12 @@ Records: 2  Duplicates: 0  Warnings: 0
 +----+---------+-----+---------+
 1 row in set (0.09 sec)
 </code></pre>
-<p>更新该数据，</p>
+<p> 更新该数据，</p>
 <pre><code>mysql&gt; update person set age=15,name='LiMing' where id=10;
 Query OK, 1 row affected (0.06 sec)
 Rows matched: 1  Changed: 1  Warnings: 0
 </code></pre>
-<p>检查更新后，</p>
+<p> 检查更新后，</p>
 <pre><code>mysql&gt; select * from person where id=10;
 +----+--------+-----+---------+
 | id | name   | age | info    |
@@ -464,12 +464,12 @@ Rows matched: 1  Changed: 1  Warnings: 0
 +----+--------+-----+---------+
 1 row in set (0.00 sec)
 </code></pre>
-<p>比如将age值为19到22的数据将info字段值改为student，</p>
+<p> 比如将 age 值为 19 到 22 的数据将 info 字段值改为 student，</p>
 <pre><code>mysql&gt; update person set info='student' where age between 19 and 22;
 Query OK, 5 rows affected (0.03 sec)
 Rows matched: 5  Changed: 5  Warnings: 0
 </code></pre>
-<p>最后检查，</p>
+<p> 最后检查，</p>
 <pre><code>mysql&gt; select * from person where age between 19 and 22;
 +----+--------+-----+---------+
 | id | name   | age | info    |
@@ -482,18 +482,18 @@ Rows matched: 5  Changed: 5  Warnings: 0
 +----+--------+-----+---------+
 5 rows in set (0.00 sec)
 </code></pre>
-<h3 id="删除数据">删除数据</h3>
+<h3 id="删除数据"> 删除数据 </h3>
 <pre><code>DELETE FROM table_name [WHERE &lt;condition&gt;];
 </code></pre>
-<p>删除id=10的记录。</p>
+<p> 删除 id=10 的记录。</p>
 <pre><code>mysql&gt; delete from person where id=10;
 Query OK, 1 row affected (0.08 sec)
 </code></pre>
-<p>删除age在19到22之间的数据。</p>
+<p> 删除 age 在 19 到 22 之间的数据。</p>
 <pre><code>mysql&gt; delete from person where age between 19 and 22;
 Query OK, 5 rows affected (0.09 sec)
 </code></pre>
-<p>看看剩余数据：</p>
+<p> 看看剩余数据：</p>
 <pre><code>mysql&gt; select * from person;
 +----+--------+-----+-----------+
 | id | name   | age | info      |
@@ -505,30 +505,29 @@ Query OK, 5 rows affected (0.09 sec)
 +----+--------+-----+-----------+
 4 rows in set (0.00 sec)
 </code></pre>
-<p>删除全部数据，</p>
+<p> 删除全部数据，</p>
 <pre><code>mysql&gt; delete from person;
 Query OK, 4 rows affected (0.06 sec)
 </code></pre>
-<p>最后数据为空。</p>
+<p> 最后数据为空。</p>
 <pre><code>mysql&gt; select * from person;
 Empty set (0.00 sec)
 </code></pre>
-<h3 id="查询">查询</h3>
-<h4 id="查询数据">查询数据</h4>
-<pre><code>SELECT &#123;*|字段列表&#125;
+<h3 id="查询"> 查询 </h3>
+<h4 id="查询数据"> 查询数据 </h4>
+<pre><code>SELECT &#123;*| 字段列表 &#125;
 [
-        FROM &lt;表1&gt;,&lt;表2&gt;,...
-        [WHERE &lt;表达式&gt;]
+        FROM &lt; 表 1&gt;,&lt; 表 2&gt;,...
+        [WHERE &lt; 表达式 &gt;]
         [GROUP BY &lt;group by definition&gt;]
         [HAVING &lt;expression&gt;[&#123;&lt;operator&gt;&lt;expression&gt;&#125;...]]
-        [ORDER BY &lt;order by definition&gt;]    （ASC升序（可省），DESC降序）
+        [ORDER BY &lt;order by definition&gt;]    （ASC 升序（可省），DESC 降序）
         [LIMIT [&lt;offest&gt;,]&lt;row count&gt;]
 ];
 </code></pre>
-<p>重新创建个数据表，</p>
+<p> 重新创建个数据表，</p>
 <pre><code>mysql&gt; create table fruits
-	-&gt; (
-	-&gt; f_id char(10) not null,
+	-&gt; (-&gt; f_id char(10) not null,
 	-&gt; s_id int not null,
 	-&gt; f_name char(255) not null,
 	-&gt; f_price decimal(8,2) not null,
@@ -536,7 +535,7 @@ Empty set (0.00 sec)
 	-&gt; );
 Query OK, 0 rows affected (0.13 sec)
 </code></pre>
-<p>插入一些数据，</p>
+<p> 插入一些数据，</p>
 <pre><code>mysql&gt; insert into fruits(f_id,s_id,f_name,f_price)
 	-&gt; values('a1',101,'apple',5.2),
 	-&gt; ('b1',101,'blackberry',10.2),
@@ -557,7 +556,7 @@ Query OK, 0 rows affected (0.13 sec)
 Query OK, 16 rows affected (0.06 sec)
 Records: 16  Duplicates: 0  Warnings: 0
 </code></pre>
-<p>查询f_id和f_name字段的数据，</p>
+<p> 查询 f_id 和 f_name 字段的数据，</p>
 <pre><code>mysql&gt; select f_id,f_name from fruits;
 +------+------------+
 | f_id | f_name     |
@@ -581,7 +580,7 @@ Records: 16  Duplicates: 0  Warnings: 0
 +------+------------+
 16 rows in set (0.00 sec)
 </code></pre>
-<p>查询价格小于10元的水果的名称和价格，</p>
+<p> 查询价格小于 10 元的水果的名称和价格，</p>
 <pre><code>mysql&gt; select f_name,f_price from fruits where f_price &lt; 10;
 +---------+---------+
 | f_name  | f_price |
@@ -600,9 +599,9 @@ Records: 16  Duplicates: 0  Warnings: 0
 +---------+---------+
 11 rows in set (0.00 sec)
 </code></pre>
-<h4 id="带IN关键字查询">带IN关键字查询</h4>
-<p>在where子句中，IN关键字用来查询满足指定条件范围内的记录。</p>
-<p>查询s_id为101和103的记录，</p>
+<h4 id="带 IN 关键字查询"> 带 IN 关键字查询 </h4>
+<p> 在 where 子句中，IN 关键字用来查询满足指定条件范围内的记录。</p>
+<p> 查询 s_id 为 101 和 103 的记录，</p>
 <pre><code>mysql&gt; select s_id,f_name,f_price from fruits where s_id in(101,103);
 +------+------------+---------+
 | s_id | f_name     | f_price |
@@ -615,8 +614,8 @@ Records: 16  Duplicates: 0  Warnings: 0
 +------+------------+---------+
 5 rows in set (0.00 sec)
 </code></pre>
-<p>可以用NOT来检索不在范围内的记录。</p>
-<p>查询所有s_id不等于101和105的记录。</p>
+<p> 可以用 NOT 来检索不在范围内的记录。</p>
+<p> 查询所有 s_id 不等于 101 和 105 的记录。</p>
 <pre><code>mysql&gt; select s_id,f_name,f_price from fruits where s_id not in(101,105);
 +------+---------+---------+
 | s_id | f_name  | f_price |
@@ -634,9 +633,9 @@ Records: 16  Duplicates: 0  Warnings: 0
 +------+---------+---------+
 10 rows in set (0.00 sec)
 </code></pre>
-<h4 id="带BETWEEN-AND的范围查询">带BETWEEN AND的范围查询</h4>
-<p>在where子句中，BETWEEN AND可以查询某个区间的值，需要两个端点值。</p>
-<p>查询价格在2.00元到10.5元之间的水果名称和价格，</p>
+<h4 id="带 BETWEEN-AND 的范围查询"> 带 BETWEEN AND 的范围查询 </h4>
+<p> 在 where 子句中，BETWEEN AND 可以查询某个区间的值，需要两个端点值。</p>
+<p> 查询价格在 2.00 元到 10.5 元之间的水果名称和价格，</p>
 <pre><code>mysql&gt; select f_name,f_price from fruits where f_price between 2.00 and 10.5;
 +------------+---------+
 | f_name     | f_price |
@@ -657,9 +656,9 @@ Records: 16  Duplicates: 0  Warnings: 0
 +------------+---------+
 13 rows in set (0.00 sec)
 </code></pre>
-<h4 id="带LIKE的字符匹配查询">带LIKE的字符匹配查询</h4>
-<p>在where子句中，LIKE的字符匹配查询，%通配符，匹配任意长度字符，_匹配单个任意字符</p>
-<p>查找所有以b开头，以y结尾的水果名称。</p>
+<h4 id="带 LIKE 的字符匹配查询"> 带 LIKE 的字符匹配查询 </h4>
+<p> 在 where 子句中，LIKE 的字符匹配查询，% 通配符，匹配任意长度字符，_匹配单个任意字符 </p>
+<p> 查找所有以 b 开头，以 y 结尾的水果名称。</p>
 <pre><code>mysql&gt; select f_name from fruits where f_name like 'b%y';
 +------------+
 | f_name     |
@@ -669,9 +668,9 @@ Records: 16  Duplicates: 0  Warnings: 0
 +------------+
 2 rows in set (0.00 sec)
 </code></pre>
-<h4 id="查询空值">查询空值</h4>
-<p>在where子句中，IS NULL语句可以查询空值，IS NOT NULL 查询非空值。</p>
-<p>例如查询水果名称不为空的值。</p>
+<h4 id="查询空值"> 查询空值 </h4>
+<p> 在 where 子句中，IS NULL 语句可以查询空值，IS NOT NULL 查询非空值。</p>
+<p> 例如查询水果名称不为空的值。</p>
 <pre><code>mysql&gt; select f_name from fruits where f_name is not null;
 +------------+
 | f_name     |
@@ -695,9 +694,9 @@ Records: 16  Duplicates: 0  Warnings: 0
 +------------+
 16 rows in set (0.00 sec)
 </code></pre>
-<h4 id="带AND的多条件查询">带AND的多条件查询</h4>
-<p>在where子句中，可以用AND连接多个条件，当全部满足条件的值才输出。</p>
-<p>查询s_id=101并且水果价格大于5的记录价格和名称，</p>
+<h4 id="带 AND 的多条件查询"> 带 AND 的多条件查询 </h4>
+<p> 在 where 子句中，可以用 AND 连接多个条件，当全部满足条件的值才输出。</p>
+<p> 查询 s_id=101 并且水果价格大于 5 的记录价格和名称，</p>
 <pre><code>mysql&gt; select f_name,f_price from fruits where s_id=101 and f_price&gt;5;
 +------------+---------+
 | f_name     | f_price |
@@ -707,9 +706,9 @@ Records: 16  Duplicates: 0  Warnings: 0
 +------------+---------+
 2 rows in set (0.00 sec)
 </code></pre>
-<h4 id="带OR的多条件查询">带OR的多条件查询</h4>
-<p>在where子句中，可以用OR连接多个条件，当满足其中某个条件的值都输出。</p>
-<p>查询s_id=101或者s_id=103的水果名称和价格，</p>
+<h4 id="带 OR 的多条件查询"> 带 OR 的多条件查询 </h4>
+<p> 在 where 子句中，可以用 OR 连接多个条件，当满足其中某个条件的值都输出。</p>
+<p> 查询 s_id=101 或者 s_id=103 的水果名称和价格，</p>
 <pre><code>mysql&gt; select s_id,f_name,f_price from fruits where s_id=101 or s_id=103;
 +------+------------+---------+
 | s_id | f_name     | f_price |
@@ -722,9 +721,9 @@ Records: 16  Duplicates: 0  Warnings: 0
 +------+------------+---------+
 5 rows in set (0.00 sec)
 </code></pre>
-<h4 id="查询结果不重复">查询结果不重复</h4>
-<p>在SELECT语句中使用SELECT DISTINCT可以达到效果。</p>
-<p>在fruits中查询s_id的值，</p>
+<h4 id="查询结果不重复"> 查询结果不重复 </h4>
+<p> 在 SELECT 语句中使用 SELECT DISTINCT 可以达到效果。</p>
+<p> 在 fruits 中查询 s_id 的值，</p>
 <pre><code>mysql&gt; select s_id from fruits;
 +------+
 | s_id |
@@ -748,7 +747,7 @@ Records: 16  Duplicates: 0  Warnings: 0
 +------+
 16 rows in set (0.00 sec)
 </code></pre>
-<p>不重复，</p>
+<p> 不重复，</p>
 <pre><code>mysql&gt; select distinct s_id from fruits;
 +------+
 | s_id |
@@ -763,8 +762,8 @@ Records: 16  Duplicates: 0  Warnings: 0
 +------+
 7 rows in set (0.00 sec)
 </code></pre>
-<h4 id="对查询结果排序">对查询结果排序</h4>
-<p>查询fruits中的s_id和f_name和f_price字段，s_id升序，f_price降序。</p>
+<h4 id="对查询结果排序"> 对查询结果排序 </h4>
+<p> 查询 fruits 中的 s_id 和 f_name 和 f_price 字段，s_id 升序，f_price 降序。</p>
 <pre><code>mysql&gt; select s_id,f_name,f_price from fruits order by s_id,f_price desc;
 +------+------------+---------+
 | s_id | f_name     | f_price |

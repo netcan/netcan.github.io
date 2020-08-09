@@ -7,7 +7,7 @@
 <head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
-  <title>用Rust写一个斗兽棋游戏 | Netcan on Programming</title>
+  <title>用 Rust 写一个斗兽棋游戏 | Netcan on Programming</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -15,12 +15,12 @@
     <meta name="keywords" content="Rust," />
   
 
-  <meta name="description" content="项目地址：  Github: https:&#x2F;&#x2F;github.com&#x2F;netcan&#x2F;AnimalChess Crate.io: https:&#x2F;&#x2F;crates.io&#x2F;crates&#x2F;animal_chess lib.rs: https:&#x2F;&#x2F;lib.rs&#x2F;crates&#x2F;animal_chess  好久没更新blog了，主要技术文章都是在公司内部写，后面看看有没有机会同步到blog上。 现在利用业余时间写了">
+  <meta name="description" content="项目地址：  Github: https:&#x2F;&#x2F;github.com&#x2F;netcan&#x2F;AnimalChess Crate.io: https:&#x2F;&#x2F;crates.io&#x2F;crates&#x2F;animal_chess lib.rs: https:&#x2F;&#x2F;lib.rs&#x2F;crates&#x2F;animal_chess  好久没更新 blog 了，主要技术文章都是在公司内部写，后面看看有没有机会同步到 blog 上。 现在利用业余">
 <meta property="og:type" content="article">
-<meta property="og:title" content="用Rust写一个斗兽棋游戏">
+<meta property="og:title" content="用 Rust 写一个斗兽棋游戏">
 <meta property="og:url" content="https://netcan.github.io/2020/06/07/%E7%94%A8Rust%E5%86%99%E4%B8%80%E4%B8%AA%E6%96%97%E5%85%BD%E6%A3%8B%E6%B8%B8%E6%88%8F/index.html">
 <meta property="og:site_name" content="Netcan on Programming">
-<meta property="og:description" content="项目地址：  Github: https:&#x2F;&#x2F;github.com&#x2F;netcan&#x2F;AnimalChess Crate.io: https:&#x2F;&#x2F;crates.io&#x2F;crates&#x2F;animal_chess lib.rs: https:&#x2F;&#x2F;lib.rs&#x2F;crates&#x2F;animal_chess  好久没更新blog了，主要技术文章都是在公司内部写，后面看看有没有机会同步到blog上。 现在利用业余时间写了">
+<meta property="og:description" content="项目地址：  Github: https:&#x2F;&#x2F;github.com&#x2F;netcan&#x2F;AnimalChess Crate.io: https:&#x2F;&#x2F;crates.io&#x2F;crates&#x2F;animal_chess lib.rs: https:&#x2F;&#x2F;lib.rs&#x2F;crates&#x2F;animal_chess  好久没更新 blog 了，主要技术文章都是在公司内部写，后面看看有没有机会同步到 blog 上。 现在利用业余">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://netcan.github.io/2020/06/07/%E7%94%A8Rust%E5%86%99%E4%B8%80%E4%B8%AA%E6%96%97%E5%85%BD%E6%A3%8B%E6%B8%B8%E6%88%8F/ChineseChess.png">
 <meta property="og:image" content="https://netcan.github.io/2020/06/07/%E7%94%A8Rust%E5%86%99%E4%B8%80%E4%B8%AA%E6%96%97%E5%85%BD%E6%A3%8B%E6%B8%B8%E6%88%8F/animal_chess.png">
@@ -310,7 +310,7 @@ mjx-container[display="true"] + br {
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%9D%97%E5%88%92%E5%88%86"><span class="toc-text">模块划分</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B1%BB%E5%9E%8B%E5%88%AB%E5%90%8D"><span class="toc-text">类型别名</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86"><span class="toc-text">异常处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E6%9E%84%E4%BD%93%E5%AE%9A%E4%B9%89"><span class="toc-text">结构体定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#if-let%E8%A1%A8%E8%BE%BE%E5%BC%8F%EF%BC%8C%E7%BB%93%E6%9E%84%E5%8C%96%E7%BB%91%E5%AE%9A"><span class="toc-text">if-let表达式，结构化绑定</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#match%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-text">match表达式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-text">lambda表达式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%AD%E4%BB%A3%E5%99%A8"><span class="toc-text">迭代器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Borrow-Checker"><span class="toc-text">Borrow Checker</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%90%E6%A7%BD"><span class="toc-text">吐槽</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E7%BB%AD"><span class="toc-text">后续</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%9D%97%E5%88%92%E5%88%86"><span class="toc-text">模块划分</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B1%BB%E5%9E%8B%E5%88%AB%E5%90%8D"><span class="toc-text">类型别名</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86"><span class="toc-text">异常处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E6%9E%84%E4%BD%93%E5%AE%9A%E4%B9%89"><span class="toc-text">结构体定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#if-let%20%E8%A1%A8%E8%BE%BE%E5%BC%8F%EF%BC%8C%E7%BB%93%E6%9E%84%E5%8C%96%E7%BB%91%E5%AE%9A"><span class="toc-text">if-let表达式，结构化绑定</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#match%20%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-text">match 表达式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#lambda%20%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-text">lambda 表达式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%AD%E4%BB%A3%E5%99%A8"><span class="toc-text">迭代器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Borrow-Checker"><span class="toc-text">Borrow Checker</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%90%E6%A7%BD"><span class="toc-text">吐槽</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E7%BB%AD"><span class="toc-text">后续</span></a></li></ol>
   </div>
 
 
@@ -318,7 +318,7 @@ mjx-container[display="true"] + br {
 <div class="content content-post CENTER">
    <article id="post-用Rust写一个斗兽棋游戏" class="article article-type-post" itemprop="blogPost">
   <header class="article-header">
-    <h1 class="post-title">用Rust写一个斗兽棋游戏</h1>
+    <h1 class="post-title">用 Rust 写一个斗兽棋游戏</h1>
 
     <div class="article-meta">
       <span>
@@ -362,32 +362,32 @@ mjx-container[display="true"] + br {
 <li><a target="_blank" rel="noopener" href="http://Crate.io">Crate.io</a>: <a target="_blank" rel="noopener" href="https://crates.io/crates/animal_chess">https://crates.io/crates/animal_chess</a></li>
 <li><a target="_blank" rel="noopener" href="http://lib.rs">lib.rs</a>: <a target="_blank" rel="noopener" href="https://lib.rs/crates/animal_chess">https://lib.rs/crates/animal_chess</a></li>
 </ul>
-<p>好久没更新blog了，主要技术文章都是在公司内部写，后面看看有没有机会同步到blog上。</p>
-<p>现在利用业余时间写了棋类游戏，起初是因为部门最近举行编程大赛，主题是写一个中国象棋AI，这期间偷偷参加了比赛，参考了国际、中国象棋的相关算法，最后利用<code>alpha beta</code>剪枝算法，取得了总决赛季军名次，这个名次对我们来说还可以，因为八强中有七强是直接拿开源代码稍微改改就比赛了的，我们全靠自己写，拿到这个名次还算可以。</p>
-<p>还是要吐槽这次比赛的，毕竟海思部门是第一次举办软件大赛，选了这种网上代码一大堆的题目实在没意思。还是无线的软件大赛有意思，题目比较偏门，比如18年那次比赛是写一个RTS对抗游戏的ai，网上没有现成的代码可利用，全靠手写，就这样拿了冠军。</p>
-<p>编码是我的爱好，业余时间想写点什么来消遣一下，正好最近这个象棋游戏给了我启发，不如直接也从头写一个玩玩，既然写就需要考虑用什么语言写了，<code>C/C++</code>是我的强项，写了对我来说没任何编码技巧上的提升，就用<code>Rust</code>来试试手，看看<strong>编码体验</strong>如何吧，于是有了下面的项目：</p>
+<p>好久没更新 blog 了，主要技术文章都是在公司内部写，后面看看有没有机会同步到 blog 上。</p>
+<p>现在利用业余时间写了棋类游戏，起初是因为部门最近举行编程大赛，主题是写一个中国象棋 AI，这期间偷偷参加了比赛，参考了国际、中国象棋的相关算法，最后利用 <code>alpha beta</code> 剪枝算法，取得了总决赛季军名次，这个名次对我们来说还可以，因为八强中有七强是直接拿开源代码稍微改改就比赛了的，我们全靠自己写，拿到这个名次还算可以。</p>
+<p>还是要吐槽这次比赛的，毕竟海思部门是第一次举办软件大赛，选了这种网上代码一大堆的题目实在没意思。还是无线的软件大赛有意思，题目比较偏门，比如 18 年那次比赛是写一个 RTS 对抗游戏的 ai，网上没有现成的代码可利用，全靠手写，就这样拿了冠军。</p>
+<p>编码是我的爱好，业余时间想写点什么来消遣一下，正好最近这个象棋游戏给了我启发，不如直接也从头写一个玩玩，既然写就需要考虑用什么语言写了，<code>C/C++</code>是我的强项，写了对我来说没任何编码技巧上的提升，就用 <code>Rust</code> 来试试手，看看 <strong> 编码体验 </strong> 如何吧，于是有了下面的项目：</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://github.com/netcan/ChineseChess">https://github.com/netcan/ChineseChess</a></li>
 </ul>
-<p>把GUI写完后，发现在写下去没意思，因为在比赛的时候已经用<code>C++</code>把AI写过一编，于是就先搁置了。</p>
+<p>把 GUI 写完后，发现在写下去没意思，因为在比赛的时候已经用 <code>C++</code> 把 AI 写过一编，于是就先搁置了。</p>
 <p><img src="ChineseChess.png" alt="ChineseChess.png"></p>
-<p>后来想起了小学爱玩的斗兽棋，心血来潮，规则比较简单，分支因子也小，相对象棋来说简单多了，然后就收集素材，很快把象棋的GUI改成了斗兽棋的，并添加了AI。虽然目前的AI比较弱智，但是我目前已经很难赢了😂。</p>
+<p>后来想起了小学爱玩的斗兽棋，心血来潮，规则比较简单，分支因子也小，相对象棋来说简单多了，然后就收集素材，很快把象棋的 GUI 改成了斗兽棋的，并添加了 AI。虽然目前的 AI 比较弱智，但是我目前已经很难赢了😂。</p>
 <p><img src="animal_chess.png" alt="animal_chess.png"></p>
 <h2 id="模块划分">模块划分</h2>
 <p>接下来讲讲实现部分。目前项目由四部分实现：</p>
 <pre class="language-none"><code class="language-none">src
-├── ai.rs    # AI实现
+├── ai.rs    # AI 实现
 ├── chess.rs # 棋子的定义
 ├── game.rs  # 核心框架、图像渲染
 └── main.rs  # 程序主入口</code></pre>
-<p>首先需要GUI来交互，我考虑了<code>SDL</code>框架，因为上手简单，很快仿着<code>rust-sdl2</code>例子写了个gui出来：<a target="_blank" rel="noopener" href="https://docs.rs/sdl2/0.34.0/sdl2/#getting-started">https://docs.rs/sdl2/0.34.0/sdl2/#getting-started</a>。</p>
+<p>首先需要 GUI 来交互，我考虑了 <code>SDL</code> 框架，因为上手简单，很快仿着 <code>rust-sdl2</code> 例子写了个 gui 出来：<a target="_blank" rel="noopener" href="https://docs.rs/sdl2/0.34.0/sdl2/#getting-started">https://docs.rs/sdl2/0.34.0/sdl2/#getting-started</a>。</p>
 <h2 id="类型别名">类型别名</h2>
-<p>和C的<code>typedef</code>，C++的<code>using</code>类似，Rust也支持别名：</p>
+<p>和 C 的 <code>typedef</code>，C++ 的<code>using</code> 类似，Rust 也支持别名：</p>
 <pre class="language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">pub</span> <span class="token keyword">type</span> <span class="token constant">POS</span> <span class="token operator">=</span> <span class="token keyword">u8</span><span class="token punctuation">;</span>
 <span class="token keyword">pub</span> <span class="token keyword">type</span> <span class="token constant">MOVE</span> <span class="token operator">=</span> <span class="token keyword">u16</span><span class="token punctuation">;</span>
 <span class="token keyword">pub</span> <span class="token keyword">type</span> <span class="token class-name">ScoreType</span> <span class="token operator">=</span> <span class="token keyword">i32</span><span class="token punctuation">;</span></code></pre>
 <h2 id="异常处理">异常处理</h2>
-<p>来看看异常处理，Rust有个语法糖<code>?</code>可以很简单的处理异常：</p>
+<p>来看看异常处理，Rust 有个语法糖 <code>?</code> 可以很简单的处理异常：</p>
 <pre class="language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">fn</span> <span class="token function-definition function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">-></span> <span class="token class-name">Result</span><span class="token operator">&lt;</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token class-name">String</span><span class="token operator">></span> <span class="token punctuation">&#123;</span>
     <span class="token keyword">let</span> sdl_ctx <span class="token operator">=</span> <span class="token namespace">sdl2<span class="token punctuation">::</span></span><span class="token function">init</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">?</span><span class="token punctuation">;</span>
     <span class="token keyword">let</span> video_sys <span class="token operator">=</span> sdl_ctx<span class="token punctuation">.</span><span class="token function">video</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">?</span><span class="token punctuation">;</span>
@@ -404,9 +404,9 @@ mjx-container[display="true"] + br {
 
     <span class="token class-name">Ok</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span class="token punctuation">&#125;</span></code></pre>
-<p>其中<code>sdl2::init()?</code>表达了<code>init</code>可能失败导致<code>panic</code>，我也不处理这个异常，直接通过<code>?</code>扔出去。</p>
+<p>其中 <code>sdl2::init()?</code> 表达了 <code>init</code> 可能失败导致 <code>panic</code>，我也不处理这个异常，直接通过<code>?</code> 扔出去。</p>
 <h2 id="结构体定义">结构体定义</h2>
-<p>然后把GUI部分从<code>main</code>提取出来，封装到<code>Game</code>类中：</p>
+<p>然后把 GUI 部分从 <code>main</code> 提取出来，封装到 <code>Game</code> 类中：</p>
 <pre class="language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">pub</span> <span class="token keyword">struct</span> <span class="token type-definition class-name">Game</span> <span class="token punctuation">&#123;</span>
     <span class="token keyword">pub</span> chesses<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token class-name">ChessId</span><span class="token punctuation">;</span> <span class="token constant">COL_NUM</span><span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token constant">ROW_NUM</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
     chesses_textures<span class="token punctuation">:</span> <span class="token class-name">Vec</span><span class="token operator">&lt;</span><span class="token class-name">Texture</span><span class="token operator">></span><span class="token punctuation">,</span>
@@ -422,8 +422,8 @@ mjx-container[display="true"] + br {
     ctx<span class="token punctuation">:</span> <span class="token class-name">VecDeque</span><span class="token operator">&lt;</span><span class="token class-name">Context</span><span class="token operator">></span><span class="token punctuation">,</span>
     <span class="token keyword">pub</span> history_table<span class="token punctuation">:</span> <span class="token class-name">HisTblType</span><span class="token punctuation">,</span>
 <span class="token punctuation">&#125;</span></code></pre>
-<h2 id="if-let表达式，结构化绑定"><code>if-let</code>表达式，结构化绑定</h2>
-<p>其中棋子、棋盘的素材存到了<code>chesses_textures</code>, <code>board</code>成员中，并用<code>chesses</code>存放了棋盘内容。<code>selected_chess</code>存的是当前用户点击的棋子，<code>movable_pos</code>存放的是当前选中棋子可走的格子，当用户点击棋盘的时候，可能是选中棋子，也可能是移动棋子，如下实现：</p>
+<h2 id="if-let 表达式，结构化绑定"><code>if-let</code>表达式，结构化绑定</h2>
+<p>其中棋子、棋盘的素材存到了 <code>chesses_textures</code>, <code>board</code> 成员中，并用 <code>chesses</code> 存放了棋盘内容。<code>selected_chess</code>存的是当前用户点击的棋子，<code>movable_pos</code>存放的是当前选中棋子可走的格子，当用户点击棋盘的时候，可能是选中棋子，也可能是移动棋子，如下实现：</p>
 <pre class="language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">fn</span> <span class="token function-definition function">process_click</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token keyword">mut</span> <span class="token keyword">self</span><span class="token punctuation">,</span> pos<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token keyword">i32</span><span class="token punctuation">,</span> <span class="token keyword">i32</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
     <span class="token keyword">if</span> <span class="token keyword">let</span> <span class="token class-name">Some</span><span class="token punctuation">(</span>dst<span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token keyword">self</span><span class="token punctuation">.</span><span class="token function">get_click_rect</span><span class="token punctuation">(</span>pos<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
         <span class="token keyword">if</span> <span class="token function">get_chess_role</span><span class="token punctuation">(</span><span class="token keyword">self</span><span class="token punctuation">.</span>chesses<span class="token punctuation">[</span>dst<span class="token number">.0</span><span class="token punctuation">]</span><span class="token punctuation">[</span>dst<span class="token number">.1</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token keyword">self</span><span class="token punctuation">.</span>role <span class="token punctuation">&#123;</span>
@@ -441,7 +441,7 @@ mjx-container[display="true"] + br {
         <span class="token keyword">self</span><span class="token punctuation">.</span>movable_pos<span class="token punctuation">.</span><span class="token function">clear</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span></code></pre>
-<p>这时候看到结构绑定的好处了，<code>get_click_rect</code>返回一个<code>Option&lt;(usize, usize)&gt;</code>值，将用户的鼠标位置转换成棋盘的行列位置。通过<code>if let</code>语句来获得<code>Some</code>里面的值并取出，接着进行判断。若用户没有选中棋子，这可能是移动棋子，这时候通过查找<code>movable_pos</code>来判断是否移动。</p>
+<p>这时候看到结构绑定的好处了，<code>get_click_rect</code>返回一个 <code>Option&lt;(usize, usize)&gt;</code> 值，将用户的鼠标位置转换成棋盘的行列位置。通过 <code>if let</code> 语句来获得 <code>Some</code> 里面的值并取出，接着进行判断。若用户没有选中棋子，这可能是移动棋子，这时候通过查找 <code>movable_pos</code> 来判断是否移动。</p>
 <p>再来看一个例子：</p>
 <pre class="language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">for</span> event <span class="token keyword">in</span> <span class="token keyword">self</span><span class="token punctuation">.</span>event_pump<span class="token punctuation">.</span><span class="token function">poll_iter</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
     <span class="token keyword">match</span> event <span class="token punctuation">&#123;</span>
@@ -457,10 +457,10 @@ mjx-container[display="true"] + br {
         _ <span class="token operator">=></span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
     <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span></code></pre>
-<p>结构化绑定，可以分别取出结构体<code>Event::KeyDown</code>, <code>Event::MouseButtonDown</code>对象里的成员变量：<code>keycode</code>, <code>x, y</code>。</p>
-<p>通过结构化绑定，写起来很爽。目前C++ 17也有了结构化绑定，但是没有Rust那么强大。对于<code>Option</code>这个表达可有的概念，C++17也有了<code>std::optional</code>。</p>
-<h2 id="match表达式">match表达式</h2>
-<p>Rust还有一个强大的语句，那就是<code>match</code>，前面例子已经介绍过了，写起来是这样的。判断棋子是否进入了对方的兽穴：</p>
+<p>结构化绑定，可以分别取出结构体 <code>Event::KeyDown</code>, <code>Event::MouseButtonDown</code> 对象里的成员变量：<code>keycode</code>, <code>x, y</code>。</p>
+<p>通过结构化绑定，写起来很爽。目前 C++ 17 也有了结构化绑定，但是没有 Rust 那么强大。对于 <code>Option</code> 这个表达可有的概念，C++17 也有了<code>std::optional</code>。</p>
+<h2 id="match 表达式">match 表达式</h2>
+<p>Rust 还有一个强大的语句，那就是<code>match</code>，前面例子已经介绍过了，写起来是这样的。判断棋子是否进入了对方的兽穴：</p>
 <pre class="language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">pub</span> <span class="token keyword">fn</span> <span class="token function-definition function">check_in_den</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token keyword">self</span><span class="token punctuation">,</span> pos<span class="token punctuation">:</span> <span class="token constant">POS</span><span class="token punctuation">)</span> <span class="token punctuation">-></span> <span class="token keyword">bool</span> <span class="token punctuation">&#123;</span>
     <span class="token keyword">let</span> pos_ <span class="token operator">=</span> <span class="token function">get_pos</span><span class="token punctuation">(</span>pos<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token keyword">match</span> <span class="token punctuation">(</span><span class="token function">get_chess_role</span><span class="token punctuation">(</span><span class="token keyword">self</span><span class="token punctuation">.</span>chesses<span class="token punctuation">[</span>pos_<span class="token number">.0</span><span class="token punctuation">]</span><span class="token punctuation">[</span>pos_<span class="token number">.1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span> pos<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
@@ -468,8 +468,8 @@ mjx-container[display="true"] + br {
         _ <span class="token operator">=></span> <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> <span class="token boolean">false</span> <span class="token punctuation">&#125;</span>
     <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span></code></pre>
-<p>其中<code>(RED, BLACK_DEN) | (BLACK, RED_DEN) =&gt; return true</code>语义很清晰，如果红色棋子进了黑色兽穴，或者黑色棋子进了红色兽穴，则为真；其他情况为假。如果换成<code>if-else</code>语句，写出来就很丑了。</p>
-<p>还有<code>check_movable</code>里的判断吃子代码也很简洁：</p>
+<p>其中 <code>(RED, BLACK_DEN) | (BLACK, RED_DEN) =&gt; return true</code> 语义很清晰，如果红色棋子进了黑色兽穴，或者黑色棋子进了红色兽穴，则为真；其他情况为假。如果换成 <code>if-else</code> 语句，写出来就很丑了。</p>
+<p>还有 <code>check_movable</code> 里的判断吃子代码也很简洁：</p>
 <pre class="language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">match</span> <span class="token punctuation">(</span>src_chess_type<span class="token punctuation">,</span> dst_chess_type<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
     <span class="token punctuation">(</span><span class="token constant">RAT</span><span class="token punctuation">,</span> <span class="token constant">ELEPHANT</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token operator">!</span> <span class="token keyword">Self</span><span class="token punctuation">::</span><span class="token function">check_in_water</span><span class="token punctuation">(</span>src<span class="token punctuation">)</span><span class="token punctuation">,</span>
     <span class="token punctuation">(</span><span class="token constant">ELEPHANT</span><span class="token punctuation">,</span> <span class="token constant">RAT</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token boolean">false</span><span class="token punctuation">,</span>
@@ -480,8 +480,8 @@ mjx-container[display="true"] + br {
 <li>大象在任何情况下都不能吃老鼠：<code>(ELEPHANT, RAT) =&gt; false</code></li>
 <li>其他场景按照大子吃小子规则，若对方在陷阱里，无视这个规则：<code>(s, d)          =&gt; s &lt;= d || self.check_in_traps(dst)</code></li>
 </ul>
-<p>再来看看一个例子，就是根据fen串来初始化棋盘。fen串是用字符串记录了棋子在棋盘中的位置，例如初始化的fen串是这样的：<code>l5t/1d3c1/r1p1w1e/7/7/7/E1W1P1R/1C3D1/T5L</code>，小写表示黑方，大写表示红方。一个字母表示一个棋子，如果没有棋子，则用数字表示出相邻连续的空位数。斗兽棋共有九行，每行都用一个字符串表示，行间使用正斜杠分割。</p>
-<p>解析<code>fen</code>串的代码是这样的，很清爽：</p>
+<p>再来看看一个例子，就是根据 fen 串来初始化棋盘。fen 串是用字符串记录了棋子在棋盘中的位置，例如初始化的 fen 串是这样的：<code>l5t/1d3c1/r1p1w1e/7/7/7/E1W1P1R/1C3D1/T5L</code>，小写表示黑方，大写表示红方。一个字母表示一个棋子，如果没有棋子，则用数字表示出相邻连续的空位数。斗兽棋共有九行，每行都用一个字符串表示，行间使用正斜杠分割。</p>
+<p>解析 <code>fen</code> 串的代码是这样的，很清爽：</p>
 <pre class="language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">fn</span> <span class="token function-definition function">load_fen</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token keyword">mut</span> <span class="token keyword">self</span><span class="token punctuation">,</span> fen<span class="token punctuation">:</span> <span class="token operator">&amp;</span><span class="token keyword">str</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
     <span class="token keyword">let</span> fen_u8 <span class="token operator">=</span> fen<span class="token punctuation">.</span><span class="token function">as_bytes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token keyword">let</span> <span class="token keyword">mut</span> fen_idx <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
@@ -505,7 +505,7 @@ mjx-container[display="true"] + br {
             c <span class="token operator">@</span> <span class="token char string">b'r'</span> <span class="token operator">|</span> c <span class="token operator">@</span> <span class="token char string">b'R'</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span> chess_id <span class="token operator">=</span> <span class="token function">get_chess_id</span><span class="token punctuation">(</span><span class="token function">get_role</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token constant">RAT</span><span class="token punctuation">)</span><span class="token punctuation">;</span>      <span class="token punctuation">&#125;</span>
             n <span class="token operator">@</span> <span class="token char string">b'1'</span> <span class="token punctuation">..=</span> <span class="token char string">b'9'</span>   <span class="token operator">=></span> <span class="token punctuation">&#123;</span> pos <span class="token operator">+=</span> <span class="token punctuation">(</span>n <span class="token operator">-</span> <span class="token char string">b'0'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> <span class="token keyword">usize</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
             <span class="token char string">b'/'</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span> <span class="token punctuation">&#125;</span>
-            <span class="token char string">b' '</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span> <span class="token keyword">break</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+            <span class="token char string">b''</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span> <span class="token keyword">break</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
             _    <span class="token operator">=></span> <span class="token punctuation">&#123;</span> <span class="token macro property">unreachable!</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#125;</span>
         <span class="token punctuation">&#125;</span>
 
@@ -520,15 +520,15 @@ mjx-container[display="true"] + br {
                 <span class="token keyword">else</span> <span class="token punctuation">&#123;</span> <span class="token constant">BLACK</span> <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
 
 <span class="token punctuation">&#125;</span></code></pre>
-<p><code>c @ b'e' | c @ b'E' =&gt; &#123; chess_id = get_chess_id(get_role(c), ELEPHANT); &#125;</code>这句表达了若为<code>e</code>或者<code>E</code>，则通过颜色来得到对应的棋子id。可惜Rust目前还不支持这种写法：<code>c @ (b'e' | b'E')</code>，目前or-patterns syntax is experimental，暂时这么写了。</p>
-<h2 id="lambda表达式">lambda表达式</h2>
+<p><code>c @ b'e' | c @ b'E' =&gt; &#123; chess_id = get_chess_id(get_role(c), ELEPHANT); &#125;</code>这句表达了若为 <code>e</code> 或者<code>E</code>，则通过颜色来得到对应的棋子 id。可惜 Rust 目前还不支持这种写法：<code>c @ (b'e' | b'E')</code>，目前 or-patterns syntax is experimental，暂时这么写了。</p>
+<h2 id="lambda 表达式">lambda 表达式</h2>
 <pre class="language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">let</span> get_role <span class="token operator">=</span> <span class="token closure-params"><span class="token closure-punctuation punctuation">|</span>c<span class="token punctuation">:</span> <span class="token keyword">u8</span><span class="token closure-punctuation punctuation">|</span></span> <span class="token punctuation">-></span> <span class="token class-name">Role</span> <span class="token punctuation">&#123;</span>
 	<span class="token keyword">if</span> <span class="token punctuation">(</span>c <span class="token keyword">as</span> <span class="token keyword">char</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">is_lowercase</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token constant">BLACK</span> <span class="token punctuation">&#125;</span>
 	<span class="token keyword">else</span> <span class="token punctuation">&#123;</span> <span class="token constant">RED</span> <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
-<p>用<code>lambda</code>表达式封装<code>get_role</code>来通过字符大小写判断红黑色，避免重复代码，因为这个函数只有内部使用，没必要封装成一个单独函数。</p>
+<p>用 <code>lambda</code> 表达式封装 <code>get_role</code> 来通过字符大小写判断红黑色，避免重复代码，因为这个函数只有内部使用，没必要封装成一个单独函数。</p>
 <h2 id="迭代器">迭代器</h2>
-<p>Rust的迭代器也很爽，目前C++ 20的<code>std::views</code>也简化了这种操作，看看例子。</p>
+<p>Rust 的迭代器也很爽，目前 C++ 20 的 <code>std::views</code> 也简化了这种操作，看看例子。</p>
 <p>来看看基本走法的生成，也就是只能走十字，每次只能走一格，老鼠可以进河。</p>
 <pre class="language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">fn</span> <span class="token function-definition function">generate_basic_steps</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token keyword">self</span><span class="token punctuation">,</span> src<span class="token punctuation">:</span> <span class="token constant">POS</span><span class="token punctuation">,</span> to_water<span class="token punctuation">:</span> <span class="token keyword">bool</span><span class="token punctuation">)</span> <span class="token punctuation">-></span> <span class="token class-name">Vec</span><span class="token operator">&lt;</span><span class="token constant">MOVE</span><span class="token operator">></span> <span class="token punctuation">&#123;</span>
     <span class="token keyword">const</span> <span class="token constant">DX</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token keyword">i32</span><span class="token punctuation">;</span> <span class="token number">4</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
@@ -545,8 +545,8 @@ mjx-container[display="true"] + br {
         <span class="token punctuation">(</span><span class="token operator">!</span> <span class="token keyword">Self</span><span class="token punctuation">::</span><span class="token function">check_in_water</span><span class="token punctuation">(</span><span class="token function">to_pos</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>dst<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">||</span> to_water<span class="token punctuation">)</span>
     <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">collect</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 <span class="token punctuation">&#125;</span></code></pre>
-<p><code>(0..4).into_iter()</code>生成<code>[0,4)</code>的range，然后基于range做计算。</p>
-<p>通过<code>idx</code>得到四个方向的坐标，生成(src, dst)移动向量。</p>
+<p><code>(0..4).into_iter()</code>生成 <code>[0,4)</code> 的 range，然后基于 range 做计算。</p>
+<p>通过 <code>idx</code> 得到四个方向的坐标，生成 (src, dst) 移动向量。</p>
 <pre class="language-rust" data-language="rust"><code class="language-rust"><span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token closure-params"><span class="token closure-punctuation punctuation">|</span>idx<span class="token closure-punctuation punctuation">|</span></span> <span class="token punctuation">&#123;</span>
     <span class="token function">to_move</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token punctuation">(</span><span class="token function">get_pos</span><span class="token punctuation">(</span>src<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>x <span class="token operator">+</span> <span class="token constant">DX</span><span class="token punctuation">[</span>idx<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token keyword">as</span> <span class="token keyword">usize</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>y <span class="token operator">+</span> <span class="token constant">DY</span><span class="token punctuation">[</span>idx<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token keyword">as</span> <span class="token keyword">usize</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">)</span></code></pre>
@@ -581,12 +581,12 @@ mjx-container[display="true"] + br {
     <span class="token punctuation">&#125;</span>
     basic_steps
 <span class="token punctuation">&#125;</span></code></pre>
-<p>首先得到基本走法，然后生成跳河走法。最后的<code>filter</code>过滤无效的移动，例如狮子老虎跳河的时候中间不能有老鼠，对岸的棋子比自己小时。</p>
+<p>首先得到基本走法，然后生成跳河走法。最后的 <code>filter</code> 过滤无效的移动，例如狮子老虎跳河的时候中间不能有老鼠，对岸的棋子比自己小时。</p>
 <pre class="language-rust" data-language="rust"><code class="language-rust">basic_steps<span class="token punctuation">.</span><span class="token function">into_iter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span><span class="token closure-params"><span class="token closure-punctuation punctuation">|</span><span class="token operator">&amp;</span>mv<span class="token closure-punctuation punctuation">|</span></span> <span class="token punctuation">&#123;</span>
     <span class="token keyword">let</span> <span class="token punctuation">(</span>src<span class="token punctuation">,</span> dst<span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token function">get_src_pos</span><span class="token punctuation">(</span>mv<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">get_dst_pos</span><span class="token punctuation">(</span>mv<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token keyword">self</span><span class="token punctuation">.</span><span class="token function">check_movable</span><span class="token punctuation">(</span>src<span class="token punctuation">,</span> dst<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span><span class="token keyword">self</span><span class="token punctuation">.</span><span class="token function">check_rat</span><span class="token punctuation">(</span>src<span class="token punctuation">,</span> dst<span class="token punctuation">)</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">collect</span><span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
-<p>通过迭代器的<code>map</code>可以做类型转换，从而传参给指定类型的接口。例如<code>fn draw_frame(&amp;mut self, tgt_pos: &amp;Vec&lt;POS&gt;)</code>接口，需要的参数类型为<code>Vec&lt;POS&gt;</code>，可实际参数是<code>Vec&lt;MOVE&gt;</code>，通过如下转换：</p>
+<p>通过迭代器的 <code>map</code> 可以做类型转换，从而传参给指定类型的接口。例如 <code>fn draw_frame(&amp;mut self, tgt_pos: &amp;Vec&lt;POS&gt;)</code> 接口，需要的参数类型为<code>Vec&lt;POS&gt;</code>，可实际参数是<code>Vec&lt;MOVE&gt;</code>，通过如下转换：</p>
 <pre class="language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">fn</span> <span class="token function-definition function">process_selected_chess</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token keyword">mut</span> <span class="token keyword">self</span><span class="token punctuation">)</span> <span class="token punctuation">-></span> <span class="token class-name">Result</span><span class="token operator">&lt;</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token class-name">String</span><span class="token operator">></span> <span class="token punctuation">&#123;</span>
     <span class="token keyword">if</span> <span class="token keyword">let</span> <span class="token class-name">Some</span><span class="token punctuation">(</span>pos<span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token keyword">self</span><span class="token punctuation">.</span>selected_chess <span class="token punctuation">&#123;</span>
         <span class="token keyword">self</span><span class="token punctuation">.</span><span class="token function">draw_frame</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token macro property">vec!</span><span class="token punctuation">[</span>pos<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">?</span><span class="token punctuation">;</span>
@@ -596,12 +596,12 @@ mjx-container[display="true"] + br {
     <span class="token punctuation">&#125;</span>
     <span class="token class-name">Ok</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span class="token punctuation">&#125;</span></code></pre>
-<p>这个接口绘制选中的棋子、以及可移动的格子的框框，<code>self.movable_pos.iter().map(|&amp;mv| &#123; get_dst_pos(mv) &#125;).collect()</code>进行类型转换，只保留<code>dst</code>的坐标。</p>
+<p>这个接口绘制选中的棋子、以及可移动的格子的框框，<code>self.movable_pos.iter().map(|&amp;mv| &#123; get_dst_pos(mv) &#125;).collect()</code>进行类型转换，只保留 <code>dst</code> 的坐标。</p>
 <h2 id="Borrow-Checker">Borrow Checker</h2>
-<p>Rust通过借用检查来避免写出不安全的代码：</p>
+<p>Rust 通过借用检查来避免写出不安全的代码：</p>
 <ul>
 <li>第一，任何借用必须位于比拥有者更小的作用域</li>
-<li>第二，对于同一个资源（resource）的借用，即同一个作用域下，要么只有一个对资源 A 的可变引用（<code>&amp;mut T</code>），要么有N个不可变引用（<code>&amp;T</code>），但不能同时存在可变和不可变的引用</li>
+<li>第二，对于同一个资源（resource）的借用，即同一个作用域下，要么只有一个对资源 A 的可变引用（<code>&amp;mut T</code>），要么有 N 个不可变引用（<code>&amp;T</code>），但不能同时存在可变和不可变的引用</li>
 </ul>
 <p>所以如下代码：</p>
 <pre class="language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">let</span> <span class="token keyword">mut</span> undo <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
@@ -637,7 +637,7 @@ mjx-container[display="true"] + br {
         _ <span class="token operator">=></span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
     <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span></code></pre>
-<p>因为<code>self.event_pump.poll_iter()</code>拿到了<code>&amp;mut self</code>，而<code>self.undo_move()</code>也拿到了<code>&amp;mut self</code>，这在Rust是绝对不允许的。</p>
+<p>因为 <code>self.event_pump.poll_iter()</code> 拿到了 <code>&amp;mut self</code>，而<code>self.undo_move()</code> 也拿到了<code>&amp;mut self</code>，这在 Rust 是绝对不允许的。</p>
 <pre class="language-none"><code class="language-none">error[E0499]: cannot borrow &#96;*self&#96; as mutable more than once at a time
    --&gt; src&#x2F;game.rs:440:33
     |
@@ -663,28 +663,28 @@ error[E0499]: cannot borrow &#96;*self&#96; as mutable more than once at a time
     |                                                         ^^^^ second mutable borrow occurs here</code></pre>
 <h2 id="吐槽">吐槽</h2>
 <p>开发过程还是很爽的，但是也有一些小问题，记录在这。</p>
-<p><code>cargo publish</code>发布包的时候，没考虑<code>assets</code>的情况，所以<code>cargo install</code>后图片资源没法定位，目前没什么好的方案，所以最好通过下载源代码<code>cargo run</code>的形式来运行。</p>
-<p>相对C++来说标准库不够完善，很多基本接口都没有，例如<code>std::collections::LinkedList</code>连排序接口都没有，导致只能使用<code>Vec</code>这种简单的数据类型。估计是鼓励用第三方库吧，毕竟Rust对依赖处理的很好。</p>
-<p>标准库里的容器没有统一的<code>Trait</code>，导致写不出泛型参数，比如C++会通过<code>begin()/end()</code>接口来统一类型，C++ 20有<code>Concepts</code>来约束类型，而Rust的链表迭代器<code>Trait</code>都是链表自有的。</p>
-<p>C++代码是这样：</p>
+<p><code>cargo publish</code>发布包的时候，没考虑 <code>assets</code> 的情况，所以 <code>cargo install</code> 后图片资源没法定位，目前没什么好的方案，所以最好通过下载源代码 <code>cargo run</code> 的形式来运行。</p>
+<p>相对 C++ 来说标准库不够完善，很多基本接口都没有，例如 <code>std::collections::LinkedList</code> 连排序接口都没有，导致只能使用 <code>Vec</code> 这种简单的数据类型。估计是鼓励用第三方库吧，毕竟 Rust 对依赖处理的很好。</p>
+<p>标准库里的容器没有统一的 <code>Trait</code>，导致写不出泛型参数，比如 C++ 会通过<code>begin()/end()</code> 接口来统一类型，C++ 20 有 <code>Concepts</code> 来约束类型，而 Rust 的链表迭代器 <code>Trait</code> 都是链表自有的。</p>
+<p>C++ 代码是这样：</p>
 <pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span><span class="token operator">&lt;</span>T<span class="token operator">></span>
 <span class="token keyword">void</span> <span class="token function">process</span><span class="token punctuation">(</span>T<span class="token operator">&amp;</span> container<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
     <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">auto</span> iter <span class="token operator">=</span> container<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> iter <span class="token operator">!=</span> container<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> iter <span class="token operator">+=</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
         <span class="token comment">// ...</span>
     <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span></code></pre>
-<p>Rust写不出来：</p>
+<p>Rust 写不出来：</p>
 <pre class="language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">fn</span> <span class="token function-definition function">process</span><span class="token operator">&lt;</span><span class="token class-name">T</span><span class="token operator">></span><span class="token punctuation">(</span>container<span class="token punctuation">:</span> <span class="token operator">&amp;</span><span class="token class-name">T</span><span class="token punctuation">)</span>
     <span class="token keyword">where</span> <span class="token class-name">T</span><span class="token punctuation">:</span> <span class="token operator">?</span><span class="token operator">?</span>
 <span class="token punctuation">&#123;</span>
     <span class="token keyword">for</span> data <span class="token keyword">in</span> container <span class="token punctuation">&#123;</span>
     <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span></code></pre>
-<p>关于内存安全性，例如开发过程中数组越界访问了，会导致<code>panic</code>然后挂掉，这应该是最好结果。如果是C语言的话，数组越界访问是不会直接挂掉，这就留下了隐患让别有用心的人利用了。</p>
+<p>关于内存安全性，例如开发过程中数组越界访问了，会导致 <code>panic</code> 然后挂掉，这应该是最好结果。如果是 C 语言的话，数组越界访问是不会直接挂掉，这就留下了隐患让别有用心的人利用了。</p>
 <h2 id="后续">后续</h2>
-<p>接下来要做的是继续优化AI，可以考虑将AI模块分离出来，抽象<code>Trait</code>接口，实现类似于C++的<code>pImpl</code>模式，也就是策略模式吧。也不知道好不好做，毕竟这两个模块存在相互依赖的关系。</p>
-<p>总的来说用Rust写起来很舒服，结合了很多语言的优点，从而有足够的表达力，期待今后发展会越来越好吧。</p>
-<p>通过这个项目也认识到了封装的重要性，哪怕再小的数据结构，封装也有利于维护与演进。例如最初的坐标是<code>(usize, usize)</code>，移动向量是<code>((usize, usize), (usize, usize))</code>，通过类型别名<code>POS</code>和<code>MOVE</code>，后来分别压缩成<code>u8</code>和<code>u16</code>，重构后也没出现过问题。</p>
+<p>接下来要做的是继续优化 AI，可以考虑将 AI 模块分离出来，抽象 <code>Trait</code> 接口，实现类似于 C++ 的 <code>pImpl</code> 模式，也就是策略模式吧。也不知道好不好做，毕竟这两个模块存在相互依赖的关系。</p>
+<p>总的来说用 Rust 写起来很舒服，结合了很多语言的优点，从而有足够的表达力，期待今后发展会越来越好吧。</p>
+<p>通过这个项目也认识到了封装的重要性，哪怕再小的数据结构，封装也有利于维护与演进。例如最初的坐标是 <code>(usize, usize)</code>，移动向量是<code>((usize, usize), (usize, usize))</code>，通过类型别名<code>POS</code> 和<code>MOVE</code>，后来分别压缩成 <code>u8</code> 和<code>u16</code>，重构后也没出现过问题。</p>
 
     
   </div>
@@ -695,7 +695,7 @@ error[E0499]: cannot borrow &#96;*self&#96; as mutable more than once at a time
    
        <div class="original">
     <ul>
-        <li>本文标题：用Rust写一个斗兽棋游戏</li>
+        <li>本文标题：用 Rust 写一个斗兽棋游戏</li>
         <li>本文字数：3.6k</li>
         <li>本文作者：Netcan</li>
         <li>发布时间：2020年06月07日 - 10时56分</li>

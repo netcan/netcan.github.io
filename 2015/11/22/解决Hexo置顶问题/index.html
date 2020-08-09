@@ -7,7 +7,7 @@
 <head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
-  <title>解决Hexo置顶问题 | Netcan on Programming</title>
+  <title>解决 Hexo 置顶问题 | Netcan on Programming</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -15,12 +15,12 @@
     <meta name="keywords" content="Hexo,Nodejs," />
   
 
-  <meta name="description" content="2017-10-25 15:44更新，为了防止每次更新、安装都要修改代码，现在可以直接从仓库里安装了： $ npm uninstall hexo-generator-index --save $ npm install hexo-generator-index-pin-top --save 然后在需要置顶的文章的Front-matter中加上top: true即可。 Github: https:&#x2F;">
+  <meta name="description" content="2017-10-25 15:44 更新，为了防止每次更新、安装都要修改代码，现在可以直接从仓库里安装了： $ npm uninstall hexo-generator-index --save $ npm install hexo-generator-index-pin-top --save 然后在需要置顶的文章的 Front-matter 中加上 top: true 即可。 Github: ht">
 <meta property="og:type" content="article">
-<meta property="og:title" content="解决Hexo置顶问题">
+<meta property="og:title" content="解决 Hexo 置顶问题">
 <meta property="og:url" content="https://netcan.github.io/2015/11/22/%E8%A7%A3%E5%86%B3Hexo%E7%BD%AE%E9%A1%B6%E9%97%AE%E9%A2%98/index.html">
 <meta property="og:site_name" content="Netcan on Programming">
-<meta property="og:description" content="2017-10-25 15:44更新，为了防止每次更新、安装都要修改代码，现在可以直接从仓库里安装了： $ npm uninstall hexo-generator-index --save $ npm install hexo-generator-index-pin-top --save 然后在需要置顶的文章的Front-matter中加上top: true即可。 Github: https:&#x2F;">
+<meta property="og:description" content="2017-10-25 15:44 更新，为了防止每次更新、安装都要修改代码，现在可以直接从仓库里安装了： $ npm uninstall hexo-generator-index --save $ npm install hexo-generator-index-pin-top --save 然后在需要置顶的文章的 Front-matter 中加上 top: true 即可。 Github: ht">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2015-11-22T07:54:30.000Z">
 <meta property="article:modified_time" content="2020-08-09T01:01:02.143Z">
@@ -311,7 +311,7 @@ mjx-container[display="true"] + br {
 <div class="content content-post CENTER">
    <article id="post-解决Hexo置顶问题" class="article article-type-post" itemprop="blogPost">
   <header class="article-header">
-    <h1 class="post-title">解决Hexo置顶问题</h1>
+    <h1 class="post-title">解决 Hexo 置顶问题</h1>
 
     <div class="article-meta">
       <span>
@@ -349,27 +349,27 @@ mjx-container[display="true"] + br {
 
   <div class="article-content">
     
-      <p>2017-10-25 15:44更新，为了防止每次更新、安装都要修改代码，现在可以直接从仓库里安装了：</p>
+      <p>2017-10-25 15:44 更新，为了防止每次更新、安装都要修改代码，现在可以直接从仓库里安装了：</p>
 <pre class="language-none"><code class="language-none">$ npm uninstall hexo-generator-index --save
 $ npm install hexo-generator-index-pin-top --save</code></pre>
-<p>然后在需要置顶的文章的<code>Front-matter</code>中加上<code>top: true</code>即可。</p>
+<p>然后在需要置顶的文章的 <code>Front-matter</code> 中加上 <code>top: true</code> 即可。</p>
 <p>Github: <a target="_blank" rel="noopener" href="https://github.com/netcan/hexo-generator-index-pin-top">https://github.com/netcan/hexo-generator-index-pin-top</a></p>
 <hr>
 <p>考虑到之前的博客有置顶文章，所以需要置顶功能。</p>
-<p><code>Google</code>了一下解决方案，发现了本博客主题是支持置顶功能的，在需要置顶的<code>Front-matter</code>中加上<code>top: true</code>即可。试了一下，能置顶。。只是文章置顶在某一页而不是首页。。</p>
-<p>期间看到了<code>Pacman</code>主题支持置顶，需要在<code>_config.yml</code>中配置好需要置顶的文章，略麻烦。</p>
-<p>然后看到了<code>next</code>主题支持置顶，在博文<code>front-matter</code>中加上<code>sticky: Sticky</code>即可置顶，根据<code>Sticky</code>的大小来决定置顶顺序。</p>
-<p>想实现<code>next</code>主题那样的功能，参考了一篇博文<a target="_blank" rel="noopener" href="http://ziorix.com/2015/09/09/%E6%B7%BB%E5%8A%A0Hexo%E7%BD%AE%E9%A1%B6%E5%8A%9F%E8%83%BD%E7%9A%84%E6%93%8D%E8%9B%8B3%E5%B0%8F%E6%97%B6/">添加Hexo置顶功能的操蛋3小时</a>，在<code>hexo-generator-index</code>中增加比较函数比较<code>top</code>值，我试了一下<code>Bug</code>还是有的，置顶文章后文章日期有些会乱掉（比较函数条件比较少）。</p>
-<p>我自己写了一个比较函数，也有问题，后来查了一下<code>Javascript</code>的<code>sort</code>函数，其比较函数和<code>C++</code>的完全不同= =</p>
+<p><code>Google</code>了一下解决方案，发现了本博客主题是支持置顶功能的，在需要置顶的 <code>Front-matter</code> 中加上 <code>top: true</code> 即可。试了一下，能置顶。。只是文章置顶在某一页而不是首页。。</p>
+<p>期间看到了 <code>Pacman</code> 主题支持置顶，需要在 <code>_config.yml</code> 中配置好需要置顶的文章，略麻烦。</p>
+<p>然后看到了 <code>next</code> 主题支持置顶，在博文 <code>front-matter</code> 中加上 <code>sticky: Sticky</code> 即可置顶，根据 <code>Sticky</code> 的大小来决定置顶顺序。</p>
+<p>想实现 <code>next</code> 主题那样的功能，参考了一篇博文 <a target="_blank" rel="noopener" href="http://ziorix.com/2015/09/09/%E6%B7%BB%E5%8A%A0Hexo%E7%BD%AE%E9%A1%B6%E5%8A%9F%E8%83%BD%E7%9A%84%E6%93%8D%E8%9B%8B3%E5%B0%8F%E6%97%B6/"> 添加 Hexo 置顶功能的操蛋 3 小时 </a>，在<code>hexo-generator-index</code> 中增加比较函数比较 <code>top</code> 值，我试了一下 <code>Bug</code> 还是有的，置顶文章后文章日期有些会乱掉（比较函数条件比较少）。</p>
+<p>我自己写了一个比较函数，也有问题，后来查了一下 <code>Javascript</code> 的<code>sort</code>函数，其比较函数和 <code>C++</code> 的完全不同 = =</p>
 <p><code>C++</code>的比较函数：</p>
 <pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">class</span> <span class="token class-name">T</span><span class="token operator">></span><span class="token keyword">bool</span> <span class="token function">cmp</span><span class="token punctuation">(</span>T a<span class="token punctuation">,</span> T b<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
 	<span class="token keyword">return</span>  a <span class="token operator">&lt;</span> b<span class="token punctuation">;</span> <span class="token comment">// 升序，降序的话就 b > a</span>
 <span class="token punctuation">&#125;</span></code></pre>
-<p>而<code>Javascript</code>的比较函数：</p>
+<p>而 <code>Javascript</code> 的比较函数：</p>
 <pre class="language-javascript" data-language="javascript"><code class="language-javascript"><span class="token function">cmp</span><span class="token punctuation">(</span><span class="token parameter"><span class="token keyword">var</span> a<span class="token punctuation">,</span> <span class="token keyword">var</span> b</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
 	<span class="token keyword">return</span>  a <span class="token operator">-</span> b<span class="token punctuation">;</span> <span class="token comment">// 升序，降序的话就 b - a</span>
 <span class="token punctuation">&#125;</span></code></pre>
-<p>用了<code>C++</code>的比较函数，结果当然会出问题，期间都想重写<code>js</code>的排序函数了。。经过修改，已经能完美置顶了，只需要在<code>front-matter</code>中设置需要置顶文章的<code>top</code>值，将会根据<code>top</code>值大小来选择置顶顺序。（大的在前面）</p>
+<p>用了 <code>C++</code> 的比较函数，结果当然会出问题，期间都想重写 <code>js</code> 的排序函数了。。经过修改，已经能完美置顶了，只需要在 <code>front-matter</code> 中设置需要置顶文章的 <code>top</code> 值，将会根据 <code>top</code> 值大小来选择置顶顺序。（大的在前面）</p>
 <p>以下是最终的<code>node_modules/hexo-generator-index/lib/generator.js</code></p>
 <pre class="language-javascript" data-language="javascript"><code class="language-javascript"><span class="token string">'use strict'</span><span class="token punctuation">;</span>
 
@@ -380,11 +380,11 @@ module<span class="token punctuation">.</span><span class="token function-variab
   <span class="token keyword">var</span> posts <span class="token operator">=</span> locals<span class="token punctuation">.</span>posts<span class="token punctuation">;</span>
 
 	posts<span class="token punctuation">.</span>data <span class="token operator">=</span> posts<span class="token punctuation">.</span>data<span class="token punctuation">.</span><span class="token function">sort</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">a<span class="token punctuation">,</span> b</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-		<span class="token keyword">if</span><span class="token punctuation">(</span>a<span class="token punctuation">.</span>top <span class="token operator">&amp;&amp;</span> b<span class="token punctuation">.</span>top<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 两篇文章top都有定义</span>
-			<span class="token keyword">if</span><span class="token punctuation">(</span>a<span class="token punctuation">.</span>top <span class="token operator">==</span> b<span class="token punctuation">.</span>top<span class="token punctuation">)</span> <span class="token keyword">return</span> b<span class="token punctuation">.</span>date <span class="token operator">-</span> a<span class="token punctuation">.</span>date<span class="token punctuation">;</span> <span class="token comment">// 若top值一样则按照文章日期降序排</span>
-			<span class="token keyword">else</span> <span class="token keyword">return</span> b<span class="token punctuation">.</span>top <span class="token operator">-</span> a<span class="token punctuation">.</span>top<span class="token punctuation">;</span> <span class="token comment">// 否则按照top值降序排</span>
+		<span class="token keyword">if</span><span class="token punctuation">(</span>a<span class="token punctuation">.</span>top <span class="token operator">&amp;&amp;</span> b<span class="token punctuation">.</span>top<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 两篇文章 top 都有定义</span>
+			<span class="token keyword">if</span><span class="token punctuation">(</span>a<span class="token punctuation">.</span>top <span class="token operator">==</span> b<span class="token punctuation">.</span>top<span class="token punctuation">)</span> <span class="token keyword">return</span> b<span class="token punctuation">.</span>date <span class="token operator">-</span> a<span class="token punctuation">.</span>date<span class="token punctuation">;</span> <span class="token comment">// 若 top 值一样则按照文章日期降序排</span>
+			<span class="token keyword">else</span> <span class="token keyword">return</span> b<span class="token punctuation">.</span>top <span class="token operator">-</span> a<span class="token punctuation">.</span>top<span class="token punctuation">;</span> <span class="token comment">// 否则按照 top 值降序排</span>
 		<span class="token punctuation">&#125;</span>
-		<span class="token keyword">else</span> <span class="token keyword">if</span><span class="token punctuation">(</span>a<span class="token punctuation">.</span>top <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span>b<span class="token punctuation">.</span>top<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 以下是只有一篇文章top有定义，那么将有top的排在前面（这里用异或操作居然不行233）</span>
+		<span class="token keyword">else</span> <span class="token keyword">if</span><span class="token punctuation">(</span>a<span class="token punctuation">.</span>top <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span>b<span class="token punctuation">.</span>top<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 以下是只有一篇文章 top 有定义，那么将有 top 的排在前面（这里用异或操作居然不行 233）</span>
 			<span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
 		<span class="token punctuation">&#125;</span>
 		<span class="token keyword">else</span> <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span>a<span class="token punctuation">.</span>top <span class="token operator">&amp;&amp;</span> b<span class="token punctuation">.</span>top<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
@@ -415,8 +415,8 @@ module<span class="token punctuation">.</span><span class="token function-variab
    
        <div class="original">
     <ul>
-        <li>本文标题：解决Hexo置顶问题</li>
-        <li>本文字数：683</li>
+        <li>本文标题：解决 Hexo 置顶问题</li>
+        <li>本文字数：690</li>
         <li>本文作者：Netcan</li>
         <li>发布时间：2015年11月22日 - 15时54分</li>
         <li>最后更新：2020年08月09日 - 09时01分</li>
