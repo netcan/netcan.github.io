@@ -94,8 +94,125 @@ ga('send', 'pageview');
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
   
 
-<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"] > svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
 <body>
 
@@ -261,23 +378,23 @@ ga('send', 'pageview');
 			<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">char</span> <span class="token operator">*</span>c<span class="token operator">=</span>code<span class="token punctuation">;</span> <span class="token operator">*</span>c<span class="token operator">!=</span><span class="token string">'\0'</span><span class="token punctuation">;</span> <span class="token operator">++</span>c<span class="token punctuation">)</span> 
 				<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">*</span>c <span class="token operator">>=</span> <span class="token number">0</span> <span class="token operator">&amp;&amp;</span> <span class="token operator">*</span>c <span class="token operator">&lt;=</span> <span class="token number">25</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
 					<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">strcmp</span><span class="token punctuation">(</span>argv<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token string">"-decode"</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> 
-						<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"% c"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token operator">*</span>c <span class="token operator">+</span> offset<span class="token punctuation">)</span><span class="token operator">%</span><span class="token number">26</span> <span class="token operator">+</span> <span class="token string">'a'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+						<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%c"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token operator">*</span>c <span class="token operator">+</span> offset<span class="token punctuation">)</span><span class="token operator">%</span><span class="token number">26</span> <span class="token operator">+</span> <span class="token string">'a'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 					<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">strcmp</span><span class="token punctuation">(</span>argv<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token string">"-code"</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> 
-						<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"% c"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token operator">*</span>c <span class="token operator">+</span> offset<span class="token punctuation">)</span><span class="token operator">%</span><span class="token number">26</span> <span class="token operator">+</span> <span class="token string">'A'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+						<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%c"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token operator">*</span>c <span class="token operator">+</span> offset<span class="token punctuation">)</span><span class="token operator">%</span><span class="token number">26</span> <span class="token operator">+</span> <span class="token string">'A'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 				<span class="token punctuation">&#125;</span>
 				<span class="token keyword">else</span>
-					<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"% c"</span><span class="token punctuation">,</span> <span class="token operator">*</span>c<span class="token punctuation">)</span><span class="token punctuation">;</span>
+					<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%c"</span><span class="token punctuation">,</span> <span class="token operator">*</span>c<span class="token punctuation">)</span><span class="token punctuation">;</span>
 			<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">strcmp</span><span class="token punctuation">(</span>argv<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token string">"-decode"</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> 
-				<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"	offset=% d\n"</span><span class="token punctuation">,</span>offset<span class="token punctuation">)</span><span class="token punctuation">;</span>
+				<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"	offset=%d\n"</span><span class="token punctuation">,</span>offset<span class="token punctuation">)</span><span class="token punctuation">;</span>
 			<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">strcmp</span><span class="token punctuation">(</span>argv<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token string">"-code"</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> 
-				<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"	offset=% d\n"</span><span class="token punctuation">,</span><span class="token number">27</span><span class="token operator">-</span>offset<span class="token punctuation">)</span><span class="token punctuation">;</span>
+				<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"	offset=%d\n"</span><span class="token punctuation">,</span><span class="token number">27</span><span class="token operator">-</span>offset<span class="token punctuation">)</span><span class="token punctuation">;</span>
 		<span class="token punctuation">&#125;</span>
 	<span class="token punctuation">&#125;</span>
 	<span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span></code></pre>
 <p>程序运行也很简单，</p>
-<pre><code>caesar.exe -code &quot;string&quot;  # 加密
-caesar.exe -decode &quot;STRING&quot; # 解密
+<pre><code>caesar.exe -code &quot;string&quot;  #加密
+caesar.exe -decode &quot;STRING&quot; #解密
 </code></pre>
 <p>所以这个答案也很容易得出：</p>
 <pre><code>caesar.exe -decode &quot;VRPHWLPHV L ZDQW WR FKDW ZLWK BRX, EXW L KDYH QR UHDVRQ WRFKDW ZLWK BRX.&quot;
@@ -309,7 +426,7 @@ sometimes i want to chat with you<span class="token punctuation">,</span> but i 
 tpnfujnft j xbou up dibu xjui zpv<span class="token punctuation">,</span> cvu j ibwf op sfbtpo up dibu xjui zpv<span class="token punctuation">.</span>       offset<span class="token operator">=</span><span class="token number">24</span>
 uqogvkogu k ycpv vq ejcv ykvj aqw<span class="token punctuation">,</span> dwv k jcxg pq tgcuqp vq ejcv ykvj aqw<span class="token punctuation">.</span>       offset<span class="token operator">=</span><span class="token number">25</span>
 vrphwlphv l zdqw wr fkdw zlwk brx<span class="token punctuation">,</span> exw l kdyh qr uhdvrq wr fkdw zlwk brx<span class="token punctuation">.</span>       offset<span class="token operator">=</span><span class="token number">26</span></code></pre>
-<p>只有第 23 行的 “<em>sometimes i want to chat with you, but i have no reason to chat with you.</em>” 有意义，所以，明文出来了，是 “* 有时我想和你聊天，但是我没有理由和你聊天。*”</p>
+<p>只有第23行的&quot;<em>sometimes i want to chat with you, but i have no reason to chat with you.</em>“有意义，所以，明文出来了，是&quot;<em>有时我想和你聊天，但是我没有理由和你聊天。</em>”</p>
 
     
   </div>
@@ -321,7 +438,7 @@ vrphwlphv l zdqw wr fkdw zlwk brx<span class="token punctuation">,</span> exw l 
        <div class="original">
     <ul>
         <li>本文标题：凯撒密码</li>
-        <li>本文字数：854</li>
+        <li>本文字数：856</li>
         <li>本文作者：Netcan</li>
         <li>发布时间：2015年03月08日 - 11时14分</li>
         <li>最后更新：2015年03月08日 - 11时14分</li>
@@ -541,22 +658,7 @@ gitalk.render('gitalk-container')
       // load success
     });
   }
-</script>
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </body>
 </html>

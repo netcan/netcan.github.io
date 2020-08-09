@@ -7,7 +7,7 @@
 <head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
-  <title>STL 模板类 vector 与 list | Netcan on Programming</title>
+  <title>STL模板类vector与list | Netcan on Programming</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -15,12 +15,12 @@
     <meta name="keywords" content="C/C++,算法,数据结构," />
   
 
-  <meta name="description" content="在学校借了本＜数据结构＞感觉蛮好的，想买一本可是看了差不多了，那还是做好笔记吧． C++ 的 STL 有很多与线性表相关的容器，如向量 vector，列表 list 等顺序容器． 向量 向量是最常用的容器，STL 中向量是使用数组来实现的，因此向量具有顺序表的所有特点，可以快速随机访问存取任意元素．向量是同一种数据类型的对象的集合，每个对象根据其位置有一个整数索引与其对应，类似数组． 在使用向量前">
+  <meta name="description" content="在学校借了本＜数据结构＞感觉蛮好的，想买一本可是看了差不多了，那还是做好笔记吧． C++的STL有很多与线性表相关的容器，如向量vector，列表list等顺序容器． 向量 向量是最常用的容器，STL中向量是使用数组来实现的，因此向量具有顺序表的所有特点，可以快速随机访问存取任意元素．向量是同一种数据类型的对象的集合，每个对象根据其位置有一个整数索引与其对应，类似数组． 在使用向量前，必须包含对应">
 <meta property="og:type" content="article">
-<meta property="og:title" content="STL 模板类 vector 与 list">
+<meta property="og:title" content="STL模板类vector与list">
 <meta property="og:url" content="https://netcan.github.io/2015/04/23/STL%E6%A8%A1%E6%9D%BF%E7%B1%BBvector%E4%B8%8Elist/index.html">
 <meta property="og:site_name" content="Netcan on Programming">
-<meta property="og:description" content="在学校借了本＜数据结构＞感觉蛮好的，想买一本可是看了差不多了，那还是做好笔记吧． C++ 的 STL 有很多与线性表相关的容器，如向量 vector，列表 list 等顺序容器． 向量 向量是最常用的容器，STL 中向量是使用数组来实现的，因此向量具有顺序表的所有特点，可以快速随机访问存取任意元素．向量是同一种数据类型的对象的集合，每个对象根据其位置有一个整数索引与其对应，类似数组． 在使用向量前">
+<meta property="og:description" content="在学校借了本＜数据结构＞感觉蛮好的，想买一本可是看了差不多了，那还是做好笔记吧． C++的STL有很多与线性表相关的容器，如向量vector，列表list等顺序容器． 向量 向量是最常用的容器，STL中向量是使用数组来实现的，因此向量具有顺序表的所有特点，可以快速随机访问存取任意元素．向量是同一种数据类型的对象的集合，每个对象根据其位置有一个整数索引与其对应，类似数组． 在使用向量前，必须包含对应">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2015-04-23T10:36:44.000Z">
 <meta property="article:modified_time" content="2015-04-23T10:36:44.000Z">
@@ -95,8 +95,125 @@ ga('send', 'pageview');
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
   
 
-<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"] > svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
 <body>
 
@@ -200,7 +317,7 @@ ga('send', 'pageview');
 <div class="content content-post CENTER">
    <article id="post-STL模板类vector与list" class="article article-type-post" itemprop="blogPost">
   <header class="article-header">
-    <h1 class="post-title">STL 模板类 vector 与 list</h1>
+    <h1 class="post-title">STL模板类vector与list</h1>
 
     <div class="article-meta">
       <span>
@@ -239,20 +356,20 @@ ga('send', 'pageview');
   <div class="article-content">
     
       <p>在学校借了本＜数据结构＞感觉蛮好的，想买一本可是看了差不多了，那还是做好笔记吧．</p>
-<p>C++ 的 STL 有很多与线性表相关的容器，如向量 vector，列表 list 等顺序容器．</p>
+<p>C++的STL有很多与线性表相关的容器，如向量vector，列表list等顺序容器．</p>
 <h3 id="向量">向量</h3>
-<p>向量是最常用的容器，STL 中向量是使用数组来实现的，因此向量具有顺序表的所有特点，可以快速随机访问存取任意元素．向量是同一种数据类型的对象的集合，每个对象根据其位置有一个整数索引与其对应，类似数组．</p>
+<p>向量是最常用的容器，STL中向量是使用数组来实现的，因此向量具有顺序表的所有特点，可以快速随机访问存取任意元素．向量是同一种数据类型的对象的集合，每个对象根据其位置有一个整数索引与其对应，类似数组．</p>
 <p>在使用向量前，必须包含对应的头文件：</p>
 <pre><code>#include &lt;vector&gt;
 using std::vector;
 </code></pre>
-<p>需要注意的是 vector 是一个类模板，而非数据类型，在定义时必须要说明 vector 保存的数据对象类型．</p>
-<pre><code>vector&lt;int&gt; ivec;    // 定义向量对象 ivec
-vector&lt;int&gt; ivec1 (ivec);    // 定义向量对象 ivec1，并用 ivec 初始化
-vector&lt;int&gt; ivec2 (n,2);     // 定义向量对象 ivec２，包含了 n 个值为 i 的元素
-vector&lt;int&gt; ivec3 (n);       // 定义向量对象 ivec３，包含了 n 个值为０的元素
+<p>需要注意的是vector是一个类模板，而非数据类型，在定义时必须要说明vector保存的数据对象类型．</p>
+<pre><code>vector&lt;int&gt; ivec;    //定义向量对象ivec
+vector&lt;int&gt; ivec1(ivec);    //定义向量对象ivec1，并用ivec初始化
+vector&lt;int&gt; ivec2(n,2);     //定义向量对象ivec２，包含了n个值为i的元素
+vector&lt;int&gt; ivec3(n);       //定义向量对象ivec３，包含了n个值为０的元素
 </code></pre>
-<p>与数组不同的是，vector 不需要声明长度．标准库负责管理与储存元素的内存，用户不需要担心长度不够．这也是其重要属性，在运行时可以高效的添加元素．</p>
+<p>与数组不同的是，vector不需要声明长度．标准库负责管理与储存元素的内存，用户不需要担心长度不够．这也是其重要属性，在运行时可以高效的添加元素．</p>
 <p>下面给段例子．</p>
 <pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">/*************************************************************************
     > File Name: vector.cpp
@@ -268,11 +385,11 @@ vector&lt;int&gt; ivec3 (n);       // 定义向量对象 ivec３，包含了 n �
 <span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
     vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> <span class="token function">ivec</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">&lt;</span>ivec<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span>
-        cout <span class="token operator">&lt;&lt;</span> ivec<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment">// 是用下标访问元素 </span>
+        cout <span class="token operator">&lt;&lt;</span> ivec<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment">// 是用下标访问元素</span>
     cout <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
-    ivec<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 尾部插入元素 3</span>
-    ivec<span class="token punctuation">.</span><span class="token function">insert</span><span class="token punctuation">(</span>ivec<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 头部插入元素 1</span>
-    <span class="token keyword">for</span><span class="token punctuation">(</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span><span class="token operator">::</span>iterator i<span class="token operator">=</span>ivec<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> i<span class="token operator">!=</span>ivec<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token comment">// 是用迭代器访问 </span>
+    ivec<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 尾部插入元素3</span>
+    ivec<span class="token punctuation">.</span><span class="token function">insert</span><span class="token punctuation">(</span>ivec<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 头部插入元素1</span>
+    <span class="token keyword">for</span><span class="token punctuation">(</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span><span class="token operator">::</span>iterator i<span class="token operator">=</span>ivec<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> i<span class="token operator">!=</span>ivec<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token comment">// 是用迭代器访问</span>
         cout <span class="token operator">&lt;&lt;</span> <span class="token operator">*</span>i<span class="token punctuation">;</span>
     cout <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
     <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
@@ -281,7 +398,7 @@ vector&lt;int&gt; ivec3 (n);       // 定义向量对象 ivec３，包含了 n �
 <pre><code>22222
 1222223
 </code></pre>
-<p>vector 提供了几个重要的接口来查看或设置分配空间和实际储存元素的数目，这些接口包括 size (), capacity (), reserve () 等等。</p>
+<p>vector提供了几个重要的接口来查看或设置分配空间和实际储存元素的数目，这些接口包括size(), capacity(), reserve()等等。</p>
 <p>下面给个例子来说明向量的储存状态：</p>
 <pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">/*************************************************************************
     > File Name: vector_stor.cpp
@@ -296,15 +413,15 @@ vector&lt;int&gt; ivec3 (n);       // 定义向量对象 ivec３，包含了 n �
 
 <span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
     vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> ivec<span class="token punctuation">;</span>
-    cout <span class="token operator">&lt;&lt;</span> <span class="token string">"size:"</span> <span class="token operator">&lt;&lt;</span> ivec<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> <span class="token string">"capacity:"</span> <span class="token operator">&lt;&lt;</span> ivec<span class="token punctuation">.</span><span class="token function">capacity</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+    cout <span class="token operator">&lt;&lt;</span> <span class="token string">"size: "</span> <span class="token operator">&lt;&lt;</span> ivec<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> <span class="token string">" capacity: "</span> <span class="token operator">&lt;&lt;</span> ivec<span class="token punctuation">.</span><span class="token function">capacity</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
     <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">&lt;</span><span class="token number">10</span><span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span>
         ivec<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    cout <span class="token operator">&lt;&lt;</span> <span class="token string">"size:"</span> <span class="token operator">&lt;&lt;</span> ivec<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> <span class="token string">"capacity:"</span> <span class="token operator">&lt;&lt;</span> ivec<span class="token punctuation">.</span><span class="token function">capacity</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+    cout <span class="token operator">&lt;&lt;</span> <span class="token string">"size: "</span> <span class="token operator">&lt;&lt;</span> ivec<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> <span class="token string">" capacity: "</span> <span class="token operator">&lt;&lt;</span> ivec<span class="token punctuation">.</span><span class="token function">capacity</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
     <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">&lt;</span><span class="token number">90</span><span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span>
         ivec<span class="token punctuation">.</span><span class="token function">insert</span><span class="token punctuation">(</span>ivec<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> i<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    cout <span class="token operator">&lt;&lt;</span> <span class="token string">"size:"</span> <span class="token operator">&lt;&lt;</span> ivec<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> <span class="token string">"capacity:"</span> <span class="token operator">&lt;&lt;</span> ivec<span class="token punctuation">.</span><span class="token function">capacity</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
-    ivec<span class="token punctuation">.</span><span class="token function">reserve</span><span class="token punctuation">(</span><span class="token number">200</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 设置对象实际占用空间 </span>
-    cout <span class="token operator">&lt;&lt;</span> <span class="token string">"size:"</span> <span class="token operator">&lt;&lt;</span> ivec<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> <span class="token string">"capacity:"</span> <span class="token operator">&lt;&lt;</span> ivec<span class="token punctuation">.</span><span class="token function">capacity</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+    cout <span class="token operator">&lt;&lt;</span> <span class="token string">"size: "</span> <span class="token operator">&lt;&lt;</span> ivec<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> <span class="token string">" capacity: "</span> <span class="token operator">&lt;&lt;</span> ivec<span class="token punctuation">.</span><span class="token function">capacity</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+    ivec<span class="token punctuation">.</span><span class="token function">reserve</span><span class="token punctuation">(</span><span class="token number">200</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 设置对象实际占用空间</span>
+    cout <span class="token operator">&lt;&lt;</span> <span class="token string">"size: "</span> <span class="token operator">&lt;&lt;</span> ivec<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> <span class="token string">" capacity: "</span> <span class="token operator">&lt;&lt;</span> ivec<span class="token punctuation">.</span><span class="token function">capacity</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
 
 <span class="token punctuation">&#125;</span></code></pre>
 <p>执行结果：</p>
@@ -314,13 +431,13 @@ size: 100 capacity: 128
 size: 100 capacity: 200
 </code></pre>
 <h3 id="列表">列表</h3>
-<p>列表是 STL 中线性表的链式储存方式，STL 标准库中一般采用双向循环链表实现列表。因此 list 容器使用不连续的空间区域，允许向前和向后逐个遍历元素，但不支持随即访问，查找某个元素时往往需要遍历相邻的若干元素。作为其优点，在任何时刻可以快速的插入和删除，并且不需要移动其他元素。</p>
-<p>在使用 list 之前，需要包含相应的头文件。</p>
+<p>列表是STL中线性表的链式储存方式，STL标准库中一般采用双向循环链表实现列表。因此list容器使用不连续的空间区域，允许向前和向后逐个遍历元素，但不支持随即访问，查找某个元素时往往需要遍历相邻的若干元素。作为其优点，在任何时刻可以快速的插入和删除，并且不需要移动其他元素。</p>
+<p>在使用list之前，需要包含相应的头文件。</p>
 <pre><code>#include &lt;list&gt;
 using std::list;
 </code></pre>
-<p>list 容器有很多与 vector 容器相同的接口。</p>
-<p>下面给出 C++STL 参考网址：</p>
+<p>list容器有很多与vector容器相同的接口。</p>
+<p>下面给出C++STL参考网址：</p>
 <p><a target="_blank" rel="noopener" href="http://en.cppreference.com/w/cpp/container">http://en.cppreference.com/w/cpp/container</a></p>
 
     
@@ -332,8 +449,8 @@ using std::list;
    
        <div class="original">
     <ul>
-        <li>本文标题：STL 模板类 vector 与 list</li>
-        <li>本文字数：888</li>
+        <li>本文标题：STL模板类vector与list</li>
+        <li>本文字数：886</li>
         <li>本文作者：Netcan</li>
         <li>发布时间：2015年04月23日 - 18时36分</li>
         <li>最后更新：2015年04月23日 - 18时36分</li>
@@ -553,22 +670,7 @@ gitalk.render('gitalk-container')
       // load success
     });
   }
-</script>
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </body>
 </html>

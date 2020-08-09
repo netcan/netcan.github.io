@@ -15,12 +15,12 @@
     <meta name="keywords" content="MySQL,数据库," />
   
 
-  <meta name="description" content="数据的备份 (mysqldump) 使用 mysqldump 命令备份 mysqldump -h host -u user -p [password] dbname [tbname [tbname...]] &gt; filename.sql  先来看看 test 数据库下有哪些表， mysql&gt; use test; Database changed mysql&gt; show table">
+  <meta name="description" content="数据的备份(mysqldump) 使用mysqldump命令备份 mysqldump -h host -u user -p[password] dbname [tbname [tbname...]] &gt; filename.sql  先来看看test数据库下有哪些表， mysql&gt; use test; Database changed mysql&gt; show tables; +--">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据库的备份和还原">
 <meta property="og:url" content="https://netcan.github.io/2015/03/21/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%A4%87%E4%BB%BD%E5%92%8C%E8%BF%98%E5%8E%9F/index.html">
 <meta property="og:site_name" content="Netcan on Programming">
-<meta property="og:description" content="数据的备份 (mysqldump) 使用 mysqldump 命令备份 mysqldump -h host -u user -p [password] dbname [tbname [tbname...]] &gt; filename.sql  先来看看 test 数据库下有哪些表， mysql&gt; use test; Database changed mysql&gt; show table">
+<meta property="og:description" content="数据的备份(mysqldump) 使用mysqldump命令备份 mysqldump -h host -u user -p[password] dbname [tbname [tbname...]] &gt; filename.sql  先来看看test数据库下有哪些表， mysql&gt; use test; Database changed mysql&gt; show tables; +--">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://7xibui.com1.z0.glb.clouddn.com/2015/03/blob9.png">
 <meta property="article:published_time" content="2015-03-21T07:00:08.000Z">
@@ -96,8 +96,125 @@ ga('send', 'pageview');
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
   
 
-<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"] > svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
 <body>
 
@@ -193,7 +310,7 @@ ga('send', 'pageview');
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%9A%84%E5%A4%87%E4%BB%BD-mysqldump"><span class="toc-text">数据的备份 (mysqldump)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-mysqldump-%E5%91%BD%E4%BB%A4%E5%A4%87%E4%BB%BD"><span class="toc-text">使用 mysqldump 命令备份</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#test-%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E6%89%80%E6%9C%89%E8%A1%A8%EF%BC%8C"><span class="toc-text">test 数据库中所有表，</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%87%E4%BB%BD-test-%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E6%9F%90%E4%B8%AA%E8%A1%A8%EF%BC%8C"><span class="toc-text">备份 test 数据库中某个表，</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%87%E4%BB%BD%E5%A4%9A%E4%B8%AA%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-text">备份多个数据库</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E8%BF%98%E5%8E%9F"><span class="toc-text">数据还原</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-mysql-%E8%BF%98%E5%8E%9F"><span class="toc-text">使用 mysql 还原</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E8%BF%81%E7%A7%BB"><span class="toc-text">数据迁移</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%A8%E7%9A%84%E5%AF%BC%E5%87%BA"><span class="toc-text">表的导出</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%94%A8-SELECT-INTO-OUTFILE-%E5%AF%BC%E5%87%BA%E6%96%87%E6%9C%AC%E6%96%87%E4%BB%B6"><span class="toc-text">用 SELECT ... INTO OUTFILE 导出文本文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-mysqldump-%E5%AF%BC%E5%87%BA%E6%96%87%E6%9C%AC%E6%96%87%E4%BB%B6"><span class="toc-text">使用 mysqldump 导出文本文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-mysql-%E6%8C%87%E4%BB%A4%E5%AF%BC%E5%87%BA%E6%96%87%E6%9C%AC%E6%96%87%E4%BB%B6"><span class="toc-text">使用 mysql 指令导出文本文件</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%A8%E7%9A%84%E5%AF%BC%E5%85%A5"><span class="toc-text">表的导入</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-LOAD-DATA-INFILE-%E6%96%B9%E5%BC%8F%E5%AF%BC%E5%85%A5%E6%96%87%E4%BB%B6"><span class="toc-text">使用 LOAD DATA INFILE 方式导入文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%94%A8-mysqlimport-%E5%91%BD%E4%BB%A4%E5%AF%BC%E5%85%A5%E6%96%87%E6%9C%AC%E6%96%87%E4%BB%B6"><span class="toc-text">用 mysqlimport 命令导入文本文件</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%9A%84%E5%A4%87%E4%BB%BD-mysqldump"><span class="toc-text">数据的备份(mysqldump)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8mysqldump%E5%91%BD%E4%BB%A4%E5%A4%87%E4%BB%BD"><span class="toc-text">使用mysqldump命令备份</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#test%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E6%89%80%E6%9C%89%E8%A1%A8%EF%BC%8C"><span class="toc-text">test数据库中所有表，</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%87%E4%BB%BDtest%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E6%9F%90%E4%B8%AA%E8%A1%A8%EF%BC%8C"><span class="toc-text">备份test数据库中某个表，</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%87%E4%BB%BD%E5%A4%9A%E4%B8%AA%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-text">备份多个数据库</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E8%BF%98%E5%8E%9F"><span class="toc-text">数据还原</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8mysql%E8%BF%98%E5%8E%9F"><span class="toc-text">使用mysql还原</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E8%BF%81%E7%A7%BB"><span class="toc-text">数据迁移</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%A8%E7%9A%84%E5%AF%BC%E5%87%BA"><span class="toc-text">表的导出</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%94%A8SELECT-INTO-OUTFILE-%E5%AF%BC%E5%87%BA%E6%96%87%E6%9C%AC%E6%96%87%E4%BB%B6"><span class="toc-text">用SELECT ... INTO OUTFILE 导出文本文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8mysqldump%E5%AF%BC%E5%87%BA%E6%96%87%E6%9C%AC%E6%96%87%E4%BB%B6"><span class="toc-text">使用mysqldump导出文本文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8mysql%E6%8C%87%E4%BB%A4%E5%AF%BC%E5%87%BA%E6%96%87%E6%9C%AC%E6%96%87%E4%BB%B6"><span class="toc-text">使用mysql指令导出文本文件</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%A8%E7%9A%84%E5%AF%BC%E5%85%A5"><span class="toc-text">表的导入</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8LOAD-DATA-INFILE%E6%96%B9%E5%BC%8F%E5%AF%BC%E5%85%A5%E6%96%87%E4%BB%B6"><span class="toc-text">使用LOAD DATA INFILE方式导入文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%94%A8mysqlimport%E5%91%BD%E4%BB%A4%E5%AF%BC%E5%85%A5%E6%96%87%E6%9C%AC%E6%96%87%E4%BB%B6"><span class="toc-text">用mysqlimport命令导入文本文件</span></a></li></ol></li></ol>
   </div>
 
 
@@ -239,11 +356,11 @@ ga('send', 'pageview');
 
   <div class="article-content">
     
-      <h3 id="数据的备份-mysqldump">数据的备份 (<code>mysqldump</code>)</h3>
-<h4 id="使用-mysqldump-命令备份">使用 mysqldump 命令备份</h4>
-<pre><code>mysqldump -h host -u user -p [password] dbname [tbname [tbname...]] &gt; filename.sql
+      <h3 id="数据的备份-mysqldump">数据的备份(<code>mysqldump</code>)</h3>
+<h4 id="使用mysqldump命令备份">使用mysqldump命令备份</h4>
+<pre><code>mysqldump -h host -u user -p[password] dbname [tbname [tbname...]] &gt; filename.sql
 </code></pre>
-<p>先来看看 test 数据库下有哪些表，</p>
+<p>先来看看test数据库下有哪些表，</p>
 <pre><code>mysql&gt; use test;
 Database changed
 mysql&gt; show tables;
@@ -293,10 +410,10 @@ mysql&gt; select * from fruits;
 +------+------+------------+---------+
 16 rows in set (0.00 sec)
 </code></pre>
-<h4 id="test-数据库中所有表，">test 数据库中所有表，</h4>
+<h4 id="test数据库中所有表，">test数据库中所有表，</h4>
 <pre><code>F:\workspace\MySQL&gt;mysqldump -h localhost -u root -p test &gt; test.sql
 </code></pre>
-<p>文件 test.sql 内容如下，</p>
+<p>文件test.sql内容如下，</p>
 <pre><code>-- MySQL dump 10.13  Distrib 5.5.40, for Win32 (x86)
 --
 -- Host: localhost    Database: test
@@ -322,9 +439,9 @@ DROP TABLE IF EXISTS `books`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `books` (
-`book_id` int (11) NOT NULL,
-`bk_title` varchar (60) NOT NULL,
-`copyright` year (4) NOT NULL,
+`book_id` int(11) NOT NULL,
+`bk_title` varchar(60) NOT NULL,
+`copyright` year(4) NOT NULL,
 PRIMARY KEY (`book_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -347,10 +464,10 @@ DROP TABLE IF EXISTS `fruits`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `fruits` (
-`f_id` char (10) NOT NULL,
-`s_id` int (11) DEFAULT NULL,
-`f_name` char (255) NOT NULL,
-`f_price` decimal (8,2) NOT NULL,
+`f_id` char(10) NOT NULL,
+`s_id` int(11) DEFAULT NULL,
+`f_name` char(255) NOT NULL,
+`f_price` decimal(8,2) NOT NULL,
 PRIMARY KEY (`f_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -376,10 +493,10 @@ UNLOCK TABLES;
 
 -- Dump completed on 2015-03-21 15:12:07
 </code></pre>
-<h4 id="备份-test-数据库中某个表，">备份 test 数据库中某个表，</h4>
+<h4 id="备份test数据库中某个表，">备份test数据库中某个表，</h4>
 <pre><code>F:\workspace\MySQL&gt;mysqldump -h localhost -u root -p test fruits &gt; fruits.sql
 </code></pre>
-<p>文件 fruits.sql 内容如下：</p>
+<p>文件fruits.sql内容如下：</p>
 <pre><code>-- MySQL dump 10.13  Distrib 5.5.40, for Win32 (x86)
 --
 -- Host: localhost    Database: test
@@ -405,10 +522,10 @@ DROP TABLE IF EXISTS `fruits`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `fruits` (
-`f_id` char (10) NOT NULL,
-`s_id` int (11) DEFAULT NULL,
-`f_name` char (255) NOT NULL,
-`f_price` decimal (8,2) NOT NULL,
+`f_id` char(10) NOT NULL,
+`s_id` int(11) DEFAULT NULL,
+`f_name` char(255) NOT NULL,
+`f_price` decimal(8,2) NOT NULL,
 PRIMARY KEY (`f_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -435,26 +552,26 @@ UNLOCK TABLES;
 -- Dump completed on 2015-03-21 15:14:43
 </code></pre>
 <h4 id="备份多个数据库">备份多个数据库</h4>
-<pre><code>mysqldump -h host -u user -p [password] --databases [dbname [dbname...]]&gt; filename.sql
+<pre><code>mysqldump -h host -u user -p[password] --databases [dbname [dbname...]]&gt; filename.sql
 </code></pre>
-<p><code>--all-databases</code> 可备份所有数据库。</p>
-<p>备份数据库 <code>test</code> 和 <code>test_db</code>，</p>
+<p><code>--all-databases</code>可备份所有数据库。</p>
+<p>备份数据库<code>test</code>和<code>test_db</code>，</p>
 <pre><code>F:\workspace\MySQL&gt;mysqldump -h localhost -u root -p --databases test test_db &gt; test.sql
 </code></pre>
-<p>test.sql 内容就不贴了，篇幅过大。</p>
+<p>test.sql内容就不贴了，篇幅过大。</p>
 <h3 id="数据还原">数据还原</h3>
-<h4 id="使用-mysql-还原">使用 mysql 还原</h4>
-<pre><code>mysql -h host -u user -p [password] &lt; filename.sql
+<h4 id="使用mysql还原">使用mysql还原</h4>
+<pre><code>mysql -h host -u user -p[password] &lt; filename.sql
 </code></pre>
-<p>或者登陆数据库使用，需要先 use 选定数据库</p>
+<p>或者登陆数据库使用,需要先use选定数据库</p>
 <pre><code>source filename.sql;
 </code></pre>
 <h3 id="数据迁移">数据迁移</h3>
-<p>将 <a target="_blank" rel="noopener" href="http://www.abc.com">www.abc.com</a> 主机上的 MySQL 数据库全部迁移到 <a target="_blank" rel="noopener" href="http://www.bcd.com">www.bcd.com</a> 主机上。</p>
+<p>将www.abc.com主机上的MySQL数据库全部迁移到www.bcd.com主机上。</p>
 <pre><code>mysqldump -h www.abc.com -u root -ppassword dbname | mysql -h www.bcd.com -u root -ppassword;
 </code></pre>
 <h3 id="表的导出">表的导出</h3>
-<h4 id="用-SELECT-INTO-OUTFILE-导出文本文件">用 <code>SELECT ... INTO OUTFILE</code> 导出文本文件</h4>
+<h4 id="用SELECT-INTO-OUTFILE-导出文本文件">用<code>SELECT ... INTO OUTFILE</code> 导出文本文件</h4>
 <pre><code>SELECT columnlist FROM table WHERE condition INTO OUTFILE 'filename' [OPTION]
 
 [OPTION] 选项
@@ -464,10 +581,10 @@ UNLOCK TABLES;
     LINES STARTING BY 'value'
     LINES TERMINATED BY 'value'
 </code></pre>
-<p>例如，将 fruits 表数据导出到 fruits.txt,</p>
+<p>例如，将fruits表数据导出到fruits.txt,</p>
 <pre><code>mysql&gt; select * from fruits into outfile 'C:/fruits.txt';
 Query OK, 16 rows affected (0.00 sec)
-fruits.txt 内容如下，
+fruits.txt内容如下，
 
 a1	101	apple	5.20
 a2	103	apricot	2.20
@@ -486,7 +603,7 @@ t1	102	banana	10.30
 t2	102	grape	5.30
 t4	107	xbababa	3.60
 </code></pre>
-<p>也可以设置导出的格式，比如字段之间用逗号隔开，字符串用引号括起来，转义符用？表示，每行以 &lt; 开头，以 &gt; 结尾。</p>
+<p>也可以设置导出的格式，比如字段之间用逗号隔开，字符串用引号括起来，转义符用?表示，每行以&lt;开头，以&gt;结尾。</p>
 <pre><code>mysql&gt; select * from fruits into outfile 'C:/fruits.txt'
 	-&gt; fields
 	-&gt;  terminated by ','
@@ -515,20 +632,20 @@ Query OK, 16 rows affected (0.02 sec)
 &lt;&quot;t2&quot;,102,&quot;grape&quot;,5.30&gt;
 &lt;&quot;t4&quot;,107,&quot;xbababa&quot;,3.60&gt;
 </code></pre>
-<h4 id="使用-mysqldump-导出文本文件">使用 mysqldump 导出文本文件</h4>
+<h4 id="使用mysqldump导出文本文件">使用mysqldump导出文本文件</h4>
 <pre><code>mysqldump -T out_dir -h host -u root -p dbname [tables][OPTIONS]
 
-OPTIONS 选项：
+OPTIONS选项：
     --fields-terminated-by=value
     --fields-enclosed-by=value
     --fields-optionally-enclosed-by=value
     --fields-escaped-by=value
     --lines-terminated-by=value
 </code></pre>
-<p>导出 fruits 表字段之间用逗号隔开，字符串用引号括起来，转义符用？表示。</p>
+<p>导出fruits表字段之间用逗号隔开，字符串用引号括起来，转义符用?表示。</p>
 <pre><code>F:\workspace\MySQL&gt;mysqldump -h localhost -u root -p test fruits -T . --fields-terminated-by=, --fields-optionally-enclosed-by=\&quot; --fields-escaped-by=\? --lines-terminated-by=\n
 </code></pre>
-<p>将在当前目录生成 fruits.sql 和 fruits.txt，内容分别为</p>
+<p>将在当前目录生成fruits.sql和fruits.txt，内容分别为</p>
 <pre><code>-- MySQL dump 10.13  Distrib 5.5.40, for Win32 (x86)
 --
 -- Host: localhost    Database: test
@@ -552,10 +669,10 @@ DROP TABLE IF EXISTS `fruits`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `fruits` (
-`f_id` char (10) NOT NULL,
-`s_id` int (11) DEFAULT NULL,
-`f_name` char (255) NOT NULL,
-`f_price` decimal (8,2) NOT NULL,
+`f_id` char(10) NOT NULL,
+`s_id` int(11) DEFAULT NULL,
+`f_name` char(255) NOT NULL,
+`f_price` decimal(8,2) NOT NULL,
 PRIMARY KEY (`f_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -586,16 +703,16 @@ PRIMARY KEY (`f_id`)
 &quot;t2&quot;,102,&quot;grape&quot;,5.30
 &quot;t4&quot;,107,&quot;xbababa&quot;,3.60
 </code></pre>
-<h4 id="使用-mysql-指令导出文本文件">使用 mysql 指令导出文本文件</h4>
+<h4 id="使用mysql指令导出文本文件">使用mysql指令导出文本文件</h4>
 <pre><code>mysql -h host -u root -p --execute=&quot;SELECT 语句&quot; dbname &gt; filename.txt
 --vertical 参数可把记录分为多行显示
---html 保存成 html
---xml 保存成 xml
+--html 保存成html
+--xml 保存成xml
 </code></pre>
-<p>导出 fruits 表数据。</p>
+<p>导出fruits表数据。</p>
 <pre><code>F:\workspace\MySQL&gt;mysql -h localhost -u root -p test --execute=&quot;select * from fruits;&quot; &gt; fruits.txt
 </code></pre>
-<p>fruits.txt 文件内容如下，</p>
+<p>fruits.txt文件内容如下，</p>
 <pre><code>f_id	s_id	f_name	f_price
 a1	101	apple	5.20
 a2	103	apricot	2.20
@@ -617,7 +734,7 @@ t4	107	xbababa	3.60
 <p>记录分行显示，</p>
 <pre><code>F:\workspace\MySQL&gt;mysql -h localhost -u root -p test --vertical --execute=&quot;select * from fruits;&quot; &gt; fruits.txt
 </code></pre>
-<p>fruits.txt 文件内容如下，</p>
+<p>fruits.txt文件内容如下，</p>
 <pre><code>*************************** 1. row ***************************
 f_id: a1
 s_id: 101
@@ -699,15 +816,15 @@ s_id: 107
 f_name: xbababa
 f_price: 3.60
 </code></pre>
-<p>保存为 html，</p>
+<p>保存为html，</p>
 <pre><code>F:\workspace\MySQL&gt;mysql -h localhost -u root -p test --html --execute=&quot;select * from fruits;&quot; &gt; fruits.html
 </code></pre>
-<p>fruits.html 内容如下，<br>
+<p>fruits.html内容如下，<br>
 <img src="http://7xibui.com1.z0.glb.clouddn.com/2015/03/blob9.png" alt="http://7xibui.com1.z0.glb.clouddn.com/2015/03/blob9.png"></p>
-<p>最后试试保存成 xml 的，</p>
+<p>最后试试保存成xml的，</p>
 <pre><code>F:\workspace\MySQL&gt;mysql -h localhost -u root -p test --xml --execute=&quot;select * from fruits;&quot; &gt; fruits.xml
 </code></pre>
-<p>fruits.xml 文件内容如下，</p>
+<p>fruits.xml文件内容如下，</p>
 <pre><code>&lt;?xml version=&quot;1.0&quot;?&gt;
 
 &lt;resultset statement=&quot;select * from fruits&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&gt;
@@ -825,7 +942,7 @@ f_price: 3.60
 &lt;/resultset&gt;
 </code></pre>
 <h3 id="表的导入">表的导入</h3>
-<h4 id="使用-LOAD-DATA-INFILE-方式导入文件">使用 LOAD DATA INFILE 方式导入文件</h4>
+<h4 id="使用LOAD-DATA-INFILE方式导入文件">使用LOAD DATA INFILE方式导入文件</h4>
 <pre><code>LOAD DATA INFILE 'filename.txt' INTO TABLE tablename [OPTIONS] [IGNORE number LINES]
 
 [OPTION] 选项
@@ -834,9 +951,9 @@ f_price: 3.60
         FIELDS ESCAPED BY 'value'
         LINES STARTING BY 'value'
         LINES TERMINATED BY 'value'
-[IGNORE number LINES] 忽略前面 number 行
+[IGNORE number LINES] 忽略前面number行
 </code></pre>
-<p>例如，将下面文件 fruits.txt 导入 fruits 表，</p>
+<p>例如，将下面文件fruits.txt导入fruits表，</p>
 <pre><code>a1	101	apple	5.20
 a2	103	apricot	2.20
 b1	101	blackberry	10.20
@@ -854,7 +971,7 @@ t1	102	banana	10.30
 t2	102	grape	5.30
 t4	107	xbababa	3.60
 </code></pre>
-<p>先删除 fruits 表中数据，</p>
+<p>先删除fruits表中数据，</p>
 <pre><code>mysql&gt; delete from test.fruits;
 Query OK, 16 rows affected (0.05 sec)
 </code></pre>
@@ -886,7 +1003,7 @@ mysql&gt; select * from test.fruits;
 +------+------+------------+---------+
 16 rows in set (0.00 sec)
 </code></pre>
-<p>忽略前 6 行导入，</p>
+<p>忽略前6行导入，</p>
 <pre><code>mysql&gt; load data infile 'C:/fruits.txt' into table test.fruits ignore 6 lines;
 Query OK, 10 rows affected (0.13 sec)
 Records: 10  Deleted: 0  Skipped: 0  Warnings: 0
@@ -908,10 +1025,10 @@ mysql&gt; select * from test.fruits;
 +------+------+---------+---------+
 10 rows in set (0.00 sec)
 </code></pre>
-<h4 id="用-mysqlimport-命令导入文本文件">用 mysqlimport 命令导入文本文件</h4>
+<h4 id="用mysqlimport命令导入文本文件">用mysqlimport命令导入文本文件</h4>
 <pre><code>mysqlimport -h host -u root -p dbname filename.txt [OPTIONS]
 
-[OPTIONS] 参数
+[OPTIONS]参数
     --fields-terminated-by=value
     --fields-enclosed-by=value
     --fields-optionally-enclosed-by=value
@@ -919,7 +1036,7 @@ mysql&gt; select * from test.fruits;
     --lines-terminated-by=value
     --ignore-lines=n
 </code></pre>
-<p>例如导入 fruits.txt 到表 fruits 中。</p>
+<p>例如导入fruits.txt到表fruits中。</p>
 <pre><code>F:\workspace\MySQL&gt;mysqlimport -h localhost -u root -p test fruits.txt
 Enter password: ********
 test.fruits: Records: 16  Deleted: 0  Skipped: 0  Warnings: 0
@@ -1155,22 +1272,7 @@ gitalk.render('gitalk-container')
       // load success
     });
   }
-</script>
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </body>
 </html>

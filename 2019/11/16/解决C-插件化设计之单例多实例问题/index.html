@@ -7,7 +7,7 @@
 <head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
-  <title>解决 C++ 插件化设计之单例多实例问题 | Netcan on Programming</title>
+  <title>解决C++插件化设计之单例多实例问题 | Netcan on Programming</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -17,7 +17,7 @@
 
   <meta name="description" content="背景 在插件化设计中，一般会把各个具体产品实现到动态库中，然后通过加载动态库（dlopen&#x2F;dlsym），再通过简单工厂模式创建具体的产品。 实现产品的时候需要看到对应的工厂，才能把创建自己的方法注册到工厂里。 这里的工厂应该采用单例模式，那么加载动态库的时候会出现多份单例的情况。 实际情况 测试例子如下结构。 . ├── CMakeLists.txt ├── main.cpp ├── plugi">
 <meta property="og:type" content="article">
-<meta property="og:title" content="解决 C++ 插件化设计之单例多实例问题">
+<meta property="og:title" content="解决C++插件化设计之单例多实例问题">
 <meta property="og:url" content="https://netcan.github.io/2019/11/16/%E8%A7%A3%E5%86%B3C-%E6%8F%92%E4%BB%B6%E5%8C%96%E8%AE%BE%E8%AE%A1%E4%B9%8B%E5%8D%95%E4%BE%8B%E5%A4%9A%E5%AE%9E%E4%BE%8B%E9%97%AE%E9%A2%98/index.html">
 <meta property="og:site_name" content="Netcan on Programming">
 <meta property="og:description" content="背景 在插件化设计中，一般会把各个具体产品实现到动态库中，然后通过加载动态库（dlopen&#x2F;dlsym），再通过简单工厂模式创建具体的产品。 实现产品的时候需要看到对应的工厂，才能把创建自己的方法注册到工厂里。 这里的工厂应该采用单例模式，那么加载动态库的时候会出现多份单例的情况。 实际情况 测试例子如下结构。 . ├── CMakeLists.txt ├── main.cpp ├── plugi">
@@ -93,8 +93,125 @@ ga('send', 'pageview');
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
   
 
-<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"] > svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
 <body>
 
@@ -198,7 +315,7 @@ ga('send', 'pageview');
 <div class="content content-post CENTER">
    <article id="post-解决C-插件化设计之单例多实例问题" class="article article-type-post" itemprop="blogPost">
   <header class="article-header">
-    <h1 class="post-title">解决 C++ 插件化设计之单例多实例问题</h1>
+    <h1 class="post-title">解决C++插件化设计之单例多实例问题</h1>
 
     <div class="article-meta">
       <span>
@@ -248,7 +365,7 @@ ga('send', 'pageview');
 ├── plugin1.cpp
 ├── plugin2.cpp
 └── singleton.h</code></pre>
-<p>先来看看 makefile，创建了两个 so，和一个 main。main 动态加载了这两个 so，并调用 so 中的函数，让其打印单例的地址:</p>
+<p>先来看看makefile，创建了两个so，和一个main。main动态加载了这两个so，并调用so中的函数，让其打印单例的地址:</p>
 <pre class="language-makefile" data-language="makefile"><code class="language-makefile">cmake_minimum_required<span class="token punctuation">(</span>VERSION 3.16<span class="token punctuation">)</span>
 PROJECT<span class="token punctuation">(</span>test_singleton<span class="token punctuation">)</span>
 set<span class="token punctuation">(</span>CMAKE_CXX_COMPILER clang++<span class="token punctuation">)</span>
@@ -275,14 +392,14 @@ target_link_libraries<span class="token punctuation">(</span>main dl<span class=
 <span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">"stdio.h"</span></span>
 <span class="token keyword">extern</span> <span class="token string">"C"</span> <span class="token keyword">void</span> <span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 <span class="token punctuation">&#123;</span>
-    <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"% s: % p\n"</span><span class="token punctuation">,</span> <span class="token constant">__func__</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span><span class="token class-name">Singleton</span><span class="token operator">::</span><span class="token function">Instance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%s: %p\n"</span><span class="token punctuation">,</span> <span class="token constant">__func__</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span><span class="token class-name">Singleton</span><span class="token operator">::</span><span class="token function">Instance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span></code></pre>
 <p>plugin2.cpp:</p>
 <pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">"singleton.h"</span></span>
 <span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">"stdio.h"</span></span>
 <span class="token keyword">extern</span> <span class="token string">"C"</span> <span class="token keyword">void</span> <span class="token function">g</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 <span class="token punctuation">&#123;</span>
-    <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"% s: % p\n"</span><span class="token punctuation">,</span> <span class="token constant">__func__</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span><span class="token class-name">Singleton</span><span class="token operator">::</span><span class="token function">Instance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%s: %p\n"</span><span class="token punctuation">,</span> <span class="token constant">__func__</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span><span class="token class-name">Singleton</span><span class="token operator">::</span><span class="token function">Instance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span></code></pre>
 <p>main.cpp:</p>
 <pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;cstdio></span></span>
@@ -308,43 +425,43 @@ Singleton ctor!
 f: 0x7fde8dcd7061
 Singleton ctor!
 g: 0x7fde8dad5061</code></pre>
-<p>通过输出可以看到存在多份单例，显然不符合我们预期，然而这个例子用 g++ 编译后（在 cmake 中将 <code>CMAKE_CXX_COMPILER</code> 设置为 g++），运行结果符合我们预期：</p>
+<p>通过输出可以看到存在多份单例，显然不符合我们预期，然而这个例子用g++编译后（在cmake中将<code>CMAKE_CXX_COMPILER</code>设置为g++），运行结果符合我们预期：</p>
 <pre class="language-sh" data-language="sh"><code class="language-sh">$ make
 $ .&#x2F;main
 Singleton ctor!
 f: 0x7f18c1b58069
 g: 0x7f18c1b58069</code></pre>
-<p>而如果不通过动态加载的方式（<code>dlopen/dlsym</code>），直接将这两个 so 链接到 main 中调用，则只有一份单例出现。</p>
-<p>综上所述，有如下 3 种情况：</p>
+<p>而如果不通过动态加载的方式（<code>dlopen/dlsym</code>），直接将这两个so链接到main中调用，则只有一份单例出现。</p>
+<p>综上所述，有如下3种情况：</p>
 <ol>
-<li>采用动态加载方式，clang++ 会出现单例多实例情况 (<strong>2020/05/30 更新：dlopen 通过 RTLD_GLOBAL 标记解决单例多实例问题！！</strong>)</li>
-<li>采用动态加载方式，g++ 是真正的单例</li>
-<li>采用编译链接方式，clang++/g++ 都是是真正的单例</li>
+<li>采用动态加载方式，clang++会出现单例多实例情况(<strong>2020/05/30更新：dlopen通过RTLD_GLOBAL标记解决单例多实例问题！！</strong>)</li>
+<li>采用动态加载方式，g++是真正的单例</li>
+<li>采用编译链接方式，clang++/g++都是是真正的单例</li>
 </ol>
-<p>现在来仔细分析一下如上三种情况，在 <code>singleton.h</code> 中，我们把函数实现（<code>Singleton::Instance</code>）在头文件中，然后两个 so 都 include 这个头文件，会导致两个 so 中会有同样的 Singleton 实例，那为何 g++ 编译出来的单例却是正确的呢？</p>
-<p>先来看看通过 clang++ 编译出来的 so 符号表：</p>
+<p>现在来仔细分析一下如上三种情况，在<code>singleton.h</code>中，我们把函数实现（<code>Singleton::Instance</code>）在头文件中，然后两个so都include这个头文件，会导致两个so中会有同样的Singleton实例，那为何g++编译出来的单例却是正确的呢？</p>
+<p>先来看看通过clang++编译出来的so符号表：</p>
 <pre class="language-sh" data-language="sh"><code class="language-sh">$ nm -CD libplugin1.so
 ...
-0000000000201068 V guard variable for Singleton::Instance ()::h
-00000000000009a0 W Singleton::Instance ()
-0000000000000a20 W Singleton::Singleton ()
-0000000000201061 V Singleton::Instance ()::h</code></pre>
-<p>再看看通过 g++ 编译出来的 so 符号表：</p>
+0000000000201068 V guard variable for Singleton::Instance()::h
+00000000000009a0 W Singleton::Instance()
+0000000000000a20 W Singleton::Singleton()
+0000000000201061 V Singleton::Instance()::h</code></pre>
+<p>再看看通过g++编译出来的so符号表：</p>
 <pre class="language-sh" data-language="sh"><code class="language-sh">$ nm -CD libplugin1.so
 ...
-0000000000201070 u guard variable for Singleton::Instance ()::h
-0000000000000a11 W Singleton::Instance ()
-0000000000000a98 W Singleton::Singleton ()
-0000000000201069 u Singleton::Instance ()::h</code></pre>
-<p>两者差异是什么呢？可以看到 <code>Singleton::Instance ()::h</code> 那行不一样，推测应该是关键所在，一个是 <code>V</code>，一个是 <code>u</code>，啥意思呢？参考手册容易得知 <a target="_blank" rel="noopener" href="https://linux.die.net/man/1/nm">https://linux.die.net/man/1/nm</a>：</p>
+0000000000201070 u guard variable for Singleton::Instance()::h
+0000000000000a11 W Singleton::Instance()
+0000000000000a98 W Singleton::Singleton()
+0000000000201069 u Singleton::Instance()::h</code></pre>
+<p>两者差异是什么呢？可以看到<code>Singleton::Instance()::h</code>那行不一样，推测应该是关键所在，一个是<code>V</code>，一个是<code>u</code>，啥意思呢？参考手册容易得知<a target="_blank" rel="noopener" href="https://linux.die.net/man/1/nm">https://linux.die.net/man/1/nm</a>：</p>
 <blockquote>
 <p><strong>&quot;u&quot;</strong>: The symbol is a unique global symbol. This is a GNU extension to the standard set of ELF symbol bindings. For such a symbol the <strong>dynamic linker will make sure that in the entire process there is just one symbol with this name and type in use</strong>.<br>
 <strong>&quot;V&quot;|“v”</strong>: The symbol is a weak object. When a weak defined symbol is linked with a normal defined symbol, the normal defined symbol is used with no error. When a weak undefined symbol is linked and the symbol is not defined, the value of the weak symbol becomes zero with no error. On some systems, uppercase indicates that a default value has been specified.</p>
 </blockquote>
-<p>可以看出 u 是 GNU 的扩展，动态链接器可以保证在整个进程生命周期内符号唯一，这就解释了为何 g++ 编译出来的单例正常。而 V 就是普通的弱符号，没有保证唯一性，在动态加载情况下 V 与 V 之间各用各的。</p>
-<p>但是又不能直接采用 g++ 编译器，毕竟整个安卓项目的 toolchains 是 clang 的，而采用编译链接方式又不够灵活，插件只能做成动态加载的。</p>
+<p>可以看出u是GNU的扩展，动态链接器可以保证在整个进程生命周期内符号唯一，这就解释了为何g++编译出来的单例正常。而V就是普通的弱符号，没有保证唯一性，在动态加载情况下V与V之间各用各的。</p>
+<p>但是又不能直接采用g++编译器，毕竟整个安卓项目的toolchains是clang的，而采用编译链接方式又不够灵活，插件只能做成动态加载的。</p>
 <h3 id="解决之道">解决之道</h3>
-<p>既然问题出在多个 so 都有同样的 <code>Singleton::Instance ()</code> 代码导致动态加载出现多份单例，那么就得采用声明与实现分离的方式，将函数定义到 cpp 中，声明放在头文件中：</p>
+<p>既然问题出在多个so都有同样的<code>Singleton::Instance()</code>代码导致动态加载出现多份单例，那么就得采用声明与实现分离的方式，将函数定义到cpp中，声明放在头文件中：</p>
 <p>singleton.h</p>
 <pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;cstdio></span></span>
 <span class="token keyword">class</span> <span class="token class-name">Singleton</span> <span class="token punctuation">&#123;</span>
@@ -361,7 +478,7 @@ Singleton<span class="token operator">&amp;</span> <span class="token class-name
     <span class="token keyword">static</span> Singleton h<span class="token punctuation">;</span>
     <span class="token keyword">return</span> h<span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span></code></pre>
-<p>同时在 cmake 中添加一个单独的 singleton 动态库存放真正的实现，其他两个 plugin 动态库只是简单地引用单例：</p>
+<p>同时在cmake中添加一个单独的singleton动态库存放真正的实现，其他两个plugin动态库只是简单地引用单例：</p>
 <pre class="language-makefile" data-language="makefile"><code class="language-makefile">add_library<span class="token punctuation">(</span>singleton SHARED singleton.cpp<span class="token punctuation">)</span>
 add_executable<span class="token punctuation">(</span>main main.cpp<span class="token punctuation">)</span>
 target_link_libraries<span class="token punctuation">(</span>main dl singleton<span class="token punctuation">)</span></code></pre>
@@ -371,28 +488,28 @@ $ .&#x2F;main
 Singleton ctor!
 f: 0x7f8ac0631060
 g: 0x7f8ac0631060</code></pre>
-<p>再来看看 <code>plugin.so</code> 的符号表，由于包含的头文件没有实现 <code>Singleton::Instance</code>，所以只是简单的引用：</p>
+<p>再来看看<code>plugin.so</code>的符号表，由于包含的头文件没有实现<code>Singleton::Instance</code>，所以只是简单的引用：</p>
 <pre class="language-sh" data-language="sh"><code class="language-sh">0000000000000560 T _init
                  w _ITM_deregisterTMCloneTable
                  w _ITM_registerTMCloneTable
                  U printf
-                 U Singleton::Instance ()</code></pre>
-<p>看看 <code>singleton.so</code> 的符号表，实现在这：</p>
-<pre class="language-sh" data-language="sh"><code class="language-sh">0000000000000880 T Singleton::Instance ()
-00000000000008f0 W Singleton::Singleton ()</code></pre>
+                 U Singleton::Instance()</code></pre>
+<p>看看<code>singleton.so</code>的符号表，实现在这：</p>
+<pre class="language-sh" data-language="sh"><code class="language-sh">0000000000000880 T Singleton::Instance()
+00000000000008f0 W Singleton::Singleton()</code></pre>
 <h3 id="扩展：单例模板">扩展：单例模板</h3>
-<p>前面情况比较简单，一般单例会采用模板方式实现，而模板必须得在头文件中看到实现（C++ 语言约束），那就不能简单地将 <code>Instance ()</code> 分离到 cpp 中了，不过 C++11 支持模板显式实例化 explicit instantiation，可以将实现分离到 cpp 中，并显示实例化需要的类型。</p>
+<p>前面情况比较简单，一般单例会采用模板方式实现，而模板必须得在头文件中看到实现（C++语言约束），那就不能简单地将<code>Instance()</code>分离到cpp中了，不过C++11支持模板显式实例化explicit instantiation，可以将实现分离到cpp中，并显示实例化需要的类型。</p>
 <p>singleton.h:</p>
 <pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h></span></span>
 <span class="token keyword">struct</span> <span class="token class-name">Test</span> <span class="token punctuation">&#123;</span>
     <span class="token function">Test</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"% s ctor\n"</span><span class="token punctuation">,</span> <span class="token constant">__func__</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%s ctor\n"</span><span class="token punctuation">,</span> <span class="token constant">__func__</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
 <span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">T</span><span class="token operator">></span>
 <span class="token keyword">class</span> <span class="token class-name">Singleton</span> <span class="token punctuation">&#123;</span>
 <span class="token keyword">public</span><span class="token operator">:</span>
-    <span class="token keyword">static</span> T<span class="token operator">&amp;</span> <span class="token function">Instance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 实现放到 cpp，并显式实例化需要的类型 </span>
+    <span class="token keyword">static</span> T<span class="token operator">&amp;</span> <span class="token function">Instance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 实现放到cpp，并显式实例化需要的类型</span>
 <span class="token keyword">private</span><span class="token operator">:</span>
     <span class="token function">Singleton</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
@@ -403,25 +520,25 @@ T<span class="token operator">&amp;</span> <span class="token class-name">Single
     <span class="token keyword">static</span> T h<span class="token punctuation">;</span>
     <span class="token keyword">return</span> h<span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span>
-<span class="token keyword">template</span> <span class="token keyword">class</span> <span class="token class-name">Singleton</span><span class="token operator">&lt;</span>Test<span class="token operator">></span><span class="token punctuation">;</span> <span class="token comment">// 显式实例化需要的类型 </span></code></pre>
-<p>然后和之前一样，将单例编成单独的 so，链接到 main 中，跑出结果如下，符合预期：</p>
+<span class="token keyword">template</span> <span class="token keyword">class</span> <span class="token class-name">Singleton</span><span class="token operator">&lt;</span>Test<span class="token operator">></span><span class="token punctuation">;</span> <span class="token comment">// 显式实例化需要的类型</span></code></pre>
+<p>然后和之前一样，将单例编成单独的so，链接到main中，跑出结果如下，符合预期：</p>
 <pre class="language-sh" data-language="sh"><code class="language-sh">Test ctor
 f: 0x7f883ac1f059
 g: 0x7f883ac1f059</code></pre>
-<p>而 <code>plugin.so</code> 的符号表也是引用单例，真正的单例在 <code>singleton.so</code> 中了：</p>
+<p>而<code>plugin.so</code>的符号表也是引用单例，真正的单例在<code>singleton.so</code>中了：</p>
 <pre class="language-sh" data-language="sh"><code class="language-sh">0000000000000588 T _init
                  w _ITM_deregisterTMCloneTable
                  w _ITM_registerTMCloneTable
                  U printf
-                 U Singleton&lt;Test&gt;::Instance ()</code></pre>
+                 U Singleton&lt;Test&gt;::Instance()</code></pre>
 <p><code>singleton.so</code>:</p>
-<pre class="language-sh" data-language="sh"><code class="language-sh">0000000000201060 V guard variable for Singleton&lt;Test&gt;::Instance ()::h
-0000000000000a20 W Test::Test ()
-00000000000009a0 W Singleton&lt;Test&gt;::Instance ()
-0000000000000a50 W Singleton&lt;Test&gt;::Singleton ()
-0000000000000a50 W Singleton&lt;Test&gt;::Singleton ()
-0000000000201059 V Singleton&lt;Test&gt;::Instance ()::h</code></pre>
-<p>所以实际项目中，可以把工厂这个单例放到单独的一个 so 中，并链接到 main 模块中，其他产品采用动态加载方式，注册创建方法到对应工厂单例中。</p>
+<pre class="language-sh" data-language="sh"><code class="language-sh">0000000000201060 V guard variable for Singleton&lt;Test&gt;::Instance()::h
+0000000000000a20 W Test::Test()
+00000000000009a0 W Singleton&lt;Test&gt;::Instance()
+0000000000000a50 W Singleton&lt;Test&gt;::Singleton()
+0000000000000a50 W Singleton&lt;Test&gt;::Singleton()
+0000000000201059 V Singleton&lt;Test&gt;::Instance()::h</code></pre>
+<p>所以实际项目中，可以把工厂这个单例放到单独的一个so中，并链接到main模块中，其他产品采用动态加载方式，注册创建方法到对应工厂单例中。</p>
 
     
   </div>
@@ -432,7 +549,7 @@ g: 0x7f883ac1f059</code></pre>
    
        <div class="original">
     <ul>
-        <li>本文标题：解决 C++ 插件化设计之单例多实例问题</li>
+        <li>本文标题：解决C++插件化设计之单例多实例问题</li>
         <li>本文字数：1.6k</li>
         <li>本文作者：Netcan</li>
         <li>发布时间：2019年11月16日 - 15时31分</li>
@@ -653,22 +770,7 @@ gitalk.render('gitalk-container')
       // load success
     });
   }
-</script>
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </body>
 </html>

@@ -96,8 +96,125 @@ ga('send', 'pageview');
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
   
 
-<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"] > svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
 <body>
 
@@ -247,25 +364,25 @@ ga('send', 'pageview');
 <span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span><span class="token string">&lt;malloc.h></span></span>
 
 <span class="token keyword">struct</span> <span class="token class-name">Queue</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 定义一个环形队列（静态队列）</span>
-    <span class="token keyword">int</span> <span class="token operator">*</span> pBase<span class="token punctuation">;</span> <span class="token comment">// 存放数据的数组 </span>
-    <span class="token keyword">int</span> front<span class="token punctuation">;</span> <span class="token comment">// 队列首下标 </span>
-    <span class="token keyword">int</span> rear<span class="token punctuation">;</span> <span class="token comment">// 队列尾下标，指向最后一个有效数据的后一个 </span>
-    <span class="token keyword">int</span> size<span class="token punctuation">;</span> <span class="token comment">// 队列大小 </span>
+    <span class="token keyword">int</span> <span class="token operator">*</span> pBase<span class="token punctuation">;</span> <span class="token comment">// 存放数据的数组</span>
+    <span class="token keyword">int</span> front<span class="token punctuation">;</span> <span class="token comment">// 队列首下标</span>
+    <span class="token keyword">int</span> rear<span class="token punctuation">;</span> <span class="token comment">// 队列尾下标，指向最后一个有效数据的后一个</span>
+    <span class="token keyword">int</span> size<span class="token punctuation">;</span> <span class="token comment">// 队列大小</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
 
-<span class="token keyword">void</span> <span class="token function">init_Queue</span><span class="token punctuation">(</span>Queue <span class="token operator">*</span>Q<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 初始化队列 </span>
-<span class="token keyword">bool</span> <span class="token function">is_empty_Queue</span><span class="token punctuation">(</span>Queue <span class="token operator">*</span>Q<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 检测队列是否为空 </span>
-<span class="token keyword">bool</span> <span class="token function">is_full_Queue</span><span class="token punctuation">(</span>Queue <span class="token operator">*</span>Q<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 检测队列是否满 </span>
-<span class="token keyword">bool</span> <span class="token function">in_Queue</span><span class="token punctuation">(</span>Queue <span class="token operator">*</span>Q<span class="token punctuation">,</span> <span class="token keyword">int</span> val<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 入队 </span>
-<span class="token keyword">bool</span> <span class="token function">out_Queue</span><span class="token punctuation">(</span>Queue <span class="token operator">*</span>Q<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 出队 </span>
-<span class="token keyword">void</span> <span class="token function">traverse_Queue</span><span class="token punctuation">(</span>Queue <span class="token operator">*</span>Q<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 遍历队列 </span>
+<span class="token keyword">void</span> <span class="token function">init_Queue</span><span class="token punctuation">(</span>Queue <span class="token operator">*</span>Q<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 初始化队列</span>
+<span class="token keyword">bool</span> <span class="token function">is_empty_Queue</span><span class="token punctuation">(</span>Queue <span class="token operator">*</span>Q<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 检测队列是否为空</span>
+<span class="token keyword">bool</span> <span class="token function">is_full_Queue</span><span class="token punctuation">(</span>Queue <span class="token operator">*</span>Q<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 检测队列是否满</span>
+<span class="token keyword">bool</span> <span class="token function">in_Queue</span><span class="token punctuation">(</span>Queue <span class="token operator">*</span>Q<span class="token punctuation">,</span> <span class="token keyword">int</span> val<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 入队</span>
+<span class="token keyword">bool</span> <span class="token function">out_Queue</span><span class="token punctuation">(</span>Queue <span class="token operator">*</span>Q<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 出队</span>
+<span class="token keyword">void</span> <span class="token function">traverse_Queue</span><span class="token punctuation">(</span>Queue <span class="token operator">*</span>Q<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 遍历队列</span>
 
 <span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    Queue Q<span class="token punctuation">;</span> <span class="token comment">// 声明一个队列 </span>
-    <span class="token function">init_Queue</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>Q<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 初始化 </span>
-    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">is_empty_Queue</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>Q<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">// 检测队列是否为空 </span>
+    Queue Q<span class="token punctuation">;</span> <span class="token comment">// 声明一个队列</span>
+    <span class="token function">init_Queue</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>Q<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 初始化</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">is_empty_Queue</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>Q<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">// 检测队列是否为空</span>
         <span class="token function">puts</span><span class="token punctuation">(</span><span class="token string">"Queue empty."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token function">in_Queue</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>Q<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 入队 </span>
+    <span class="token function">in_Queue</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>Q<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 入队</span>
     <span class="token function">in_Queue</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>Q<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token function">in_Queue</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>Q<span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token function">in_Queue</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>Q<span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -275,10 +392,10 @@ ga('send', 'pageview');
     <span class="token function">in_Queue</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>Q<span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token function">in_Queue</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>Q<span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token function">in_Queue</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>Q<span class="token punctuation">,</span> <span class="token number">9</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">is_full_Queue</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>Q<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">// 检测队列是否满 </span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">is_full_Queue</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>Q<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">// 检测队列是否满</span>
         <span class="token function">puts</span><span class="token punctuation">(</span><span class="token string">"Queue full."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token function">traverse_Queue</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>Q<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 输出队列 </span>
-    <span class="token function">out_Queue</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>Q<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 出队 </span>
+    <span class="token function">traverse_Queue</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>Q<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 输出队列</span>
+    <span class="token function">out_Queue</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>Q<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 出队</span>
     <span class="token function">out_Queue</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>Q<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token function">traverse_Queue</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>Q<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
@@ -287,15 +404,15 @@ ga('send', 'pageview');
 
 <span class="token keyword">void</span> <span class="token function">init_Queue</span><span class="token punctuation">(</span>Queue <span class="token operator">*</span>Q<span class="token punctuation">)</span>
 <span class="token punctuation">&#123;</span>
-    Q<span class="token operator">-></span>size <span class="token operator">=</span> <span class="token number">11</span><span class="token punctuation">;</span> <span class="token comment">// 设队列大小为 11</span>
-    Q<span class="token operator">-></span>pBase <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span> <span class="token operator">*</span><span class="token punctuation">)</span><span class="token function">malloc</span><span class="token punctuation">(</span><span class="token keyword">sizeof</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span><span class="token operator">*</span>Q<span class="token operator">-></span>size<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 分配内存用于存储数据 </span>
-    Q<span class="token operator">-></span>rear <span class="token operator">=</span> Q<span class="token operator">-></span>front <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> <span class="token comment">// 初始化首尾下标 </span>
+    Q<span class="token operator">-></span>size <span class="token operator">=</span> <span class="token number">11</span><span class="token punctuation">;</span> <span class="token comment">// 设队列大小为11</span>
+    Q<span class="token operator">-></span>pBase <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span> <span class="token operator">*</span><span class="token punctuation">)</span><span class="token function">malloc</span><span class="token punctuation">(</span><span class="token keyword">sizeof</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span><span class="token operator">*</span>Q<span class="token operator">-></span>size<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 分配内存用于存储数据</span>
+    Q<span class="token operator">-></span>rear <span class="token operator">=</span> Q<span class="token operator">-></span>front <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> <span class="token comment">// 初始化首尾下标</span>
     <span class="token keyword">return</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span>
 
 <span class="token keyword">bool</span> <span class="token function">is_empty_Queue</span><span class="token punctuation">(</span>Queue <span class="token operator">*</span>Q<span class="token punctuation">)</span>
 <span class="token punctuation">&#123;</span>
-    <span class="token keyword">if</span><span class="token punctuation">(</span>Q<span class="token operator">-></span>front <span class="token operator">==</span> Q<span class="token operator">-></span>rear<span class="token punctuation">)</span> <span class="token comment">// 如果首尾下标相等则空 </span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span>Q<span class="token operator">-></span>front <span class="token operator">==</span> Q<span class="token operator">-></span>rear<span class="token punctuation">)</span> <span class="token comment">// 如果首尾下标相等则空</span>
         <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
     <span class="token keyword">else</span>
         <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
@@ -303,7 +420,7 @@ ga('send', 'pageview');
 
 <span class="token keyword">bool</span> <span class="token function">is_full_Queue</span><span class="token punctuation">(</span>Queue <span class="token operator">*</span>Q<span class="token punctuation">)</span>
 <span class="token punctuation">&#123;</span>
-    <span class="token keyword">if</span><span class="token punctuation">(</span> <span class="token punctuation">(</span>Q<span class="token operator">-></span>rear <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">%</span>Q<span class="token operator">-></span>size <span class="token operator">==</span> Q<span class="token operator">-></span>front <span class="token punctuation">)</span> <span class="token comment">// 如果尾下标的下一个是首下标则满 </span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span> <span class="token punctuation">(</span>Q<span class="token operator">-></span>rear <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">%</span>Q<span class="token operator">-></span>size <span class="token operator">==</span> Q<span class="token operator">-></span>front <span class="token punctuation">)</span> <span class="token comment">// 如果尾下标的下一个是首下标则满</span>
         <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
     <span class="token keyword">else</span>
         <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
@@ -311,24 +428,24 @@ ga('send', 'pageview');
 
 <span class="token keyword">bool</span> <span class="token function">in_Queue</span><span class="token punctuation">(</span>Queue <span class="token operator">*</span>Q<span class="token punctuation">,</span> <span class="token keyword">int</span> val<span class="token punctuation">)</span>
 <span class="token punctuation">&#123;</span>
-    <span class="token keyword">if</span><span class="token punctuation">(</span> <span class="token function">is_full_Queue</span><span class="token punctuation">(</span>Q<span class="token punctuation">)</span> <span class="token punctuation">)</span> <span class="token comment">// 满的话就不能入队 </span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span> <span class="token function">is_full_Queue</span><span class="token punctuation">(</span>Q<span class="token punctuation">)</span> <span class="token punctuation">)</span> <span class="token comment">// 满的话就不能入队</span>
         <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-    Q<span class="token operator">-></span>pBase<span class="token punctuation">[</span>Q<span class="token operator">-></span>rear<span class="token punctuation">]</span> <span class="token operator">=</span> val<span class="token punctuation">;</span> <span class="token comment">// 入队 </span>
-    Q<span class="token operator">-></span>rear <span class="token operator">=</span> <span class="token punctuation">(</span>Q<span class="token operator">-></span>rear <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">%</span>Q<span class="token operator">-></span>size<span class="token punctuation">;</span> <span class="token comment">// 尾下标后移 </span>
+    Q<span class="token operator">-></span>pBase<span class="token punctuation">[</span>Q<span class="token operator">-></span>rear<span class="token punctuation">]</span> <span class="token operator">=</span> val<span class="token punctuation">;</span> <span class="token comment">// 入队</span>
+    Q<span class="token operator">-></span>rear <span class="token operator">=</span> <span class="token punctuation">(</span>Q<span class="token operator">-></span>rear <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">%</span>Q<span class="token operator">-></span>size<span class="token punctuation">;</span> <span class="token comment">// 尾下标后移</span>
     <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span>
 
 <span class="token keyword">bool</span> <span class="token function">out_Queue</span><span class="token punctuation">(</span>Queue <span class="token operator">*</span>Q<span class="token punctuation">)</span>
 <span class="token punctuation">&#123;</span>
-    <span class="token keyword">if</span><span class="token punctuation">(</span> <span class="token function">is_empty_Queue</span><span class="token punctuation">(</span>Q<span class="token punctuation">)</span> <span class="token punctuation">)</span> <span class="token comment">// 如果空的话就不能出队 </span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span> <span class="token function">is_empty_Queue</span><span class="token punctuation">(</span>Q<span class="token punctuation">)</span> <span class="token punctuation">)</span> <span class="token comment">// 如果空的话就不能出队</span>
         <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-    Q<span class="token operator">-></span>front <span class="token operator">=</span> <span class="token punctuation">(</span>Q<span class="token operator">-></span>front <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">%</span> Q<span class="token operator">-></span>size<span class="token punctuation">;</span> <span class="token comment">// 首下标后移表示出队 </span>
+    Q<span class="token operator">-></span>front <span class="token operator">=</span> <span class="token punctuation">(</span>Q<span class="token operator">-></span>front <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">%</span> Q<span class="token operator">-></span>size<span class="token punctuation">;</span> <span class="token comment">// 首下标后移表示出队</span>
     <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span>
 
 <span class="token keyword">void</span> <span class="token function">traverse_Queue</span><span class="token punctuation">(</span>Queue <span class="token operator">*</span>Q<span class="token punctuation">)</span>
 <span class="token punctuation">&#123;</span>
-    <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> Q<span class="token operator">-></span>front<span class="token punctuation">;</span> i <span class="token operator">!=</span> Q<span class="token operator">-></span>rear<span class="token punctuation">;</span> i <span class="token operator">=</span> <span class="token punctuation">(</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">%</span>Q<span class="token operator">-></span>size<span class="token punctuation">)</span> <span class="token comment">//i 用于输出元素的下标，当 i 等于尾下标输出结束 </span>
+    <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> Q<span class="token operator">-></span>front<span class="token punctuation">;</span> i <span class="token operator">!=</span> Q<span class="token operator">-></span>rear<span class="token punctuation">;</span> i <span class="token operator">=</span> <span class="token punctuation">(</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">%</span>Q<span class="token operator">-></span>size<span class="token punctuation">)</span> <span class="token comment">// i用于输出元素的下标，当i等于尾下标输出结束</span>
         <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%3d"</span><span class="token punctuation">,</span>Q<span class="token operator">-></span>pBase<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token function">puts</span><span class="token punctuation">(</span><span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token keyword">return</span><span class="token punctuation">;</span>
@@ -565,22 +682,7 @@ gitalk.render('gitalk-container')
       // load success
     });
   }
-</script>
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </body>
 </html>

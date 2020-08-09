@@ -7,7 +7,7 @@
 <head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
-  <title>pImpl 技巧：接口与实现分离 | Netcan on Programming</title>
+  <title>pImpl技巧：接口与实现分离 | Netcan on Programming</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -15,12 +15,12 @@
     <meta name="keywords" content="C/C++," />
   
 
-  <meta name="description" content="最近在实现某个模块加强了对 pImpl 设计模式的理解，这里记录下来备忘。 pImpl 模式用来将接口与实现分离，更改实现的话只需要重新编译 cpp 实现，不影响依赖其抽象的模块，也就是著名的桥接模式。 然而在实践中发现有很多类嵌套类，这种也算是 pImpl 的体现，但是做的不够完美，因为这些嵌套类直接定义在头文件中，头文件需要暴露出去，其他模块自然也会看到这些内部嵌套类的定义，影响依赖关系。比如">
+  <meta name="description" content="最近在实现某个模块加强了对pImpl设计模式的理解，这里记录下来备忘。 pImpl模式用来将接口与实现分离，更改实现的话只需要重新编译cpp实现，不影响依赖其抽象的模块，也就是著名的桥接模式。 然而在实践中发现有很多类嵌套类，这种也算是pImpl的体现，但是做的不够完美，因为这些嵌套类直接定义在头文件中，头文件需要暴露出去，其他模块自然也会看到这些内部嵌套类的定义，影响依赖关系。比如： &#x2F;&#x2F; Mo">
 <meta property="og:type" content="article">
-<meta property="og:title" content="pImpl 技巧：接口与实现分离">
+<meta property="og:title" content="pImpl技巧：接口与实现分离">
 <meta property="og:url" content="https://netcan.github.io/2020/03/12/pImpl%E6%8A%80%E5%B7%A7%EF%BC%9A%E6%8E%A5%E5%8F%A3%E4%B8%8E%E5%AE%9E%E7%8E%B0%E5%88%86%E7%A6%BB/index.html">
 <meta property="og:site_name" content="Netcan on Programming">
-<meta property="og:description" content="最近在实现某个模块加强了对 pImpl 设计模式的理解，这里记录下来备忘。 pImpl 模式用来将接口与实现分离，更改实现的话只需要重新编译 cpp 实现，不影响依赖其抽象的模块，也就是著名的桥接模式。 然而在实践中发现有很多类嵌套类，这种也算是 pImpl 的体现，但是做的不够完美，因为这些嵌套类直接定义在头文件中，头文件需要暴露出去，其他模块自然也会看到这些内部嵌套类的定义，影响依赖关系。比如">
+<meta property="og:description" content="最近在实现某个模块加强了对pImpl设计模式的理解，这里记录下来备忘。 pImpl模式用来将接口与实现分离，更改实现的话只需要重新编译cpp实现，不影响依赖其抽象的模块，也就是著名的桥接模式。 然而在实践中发现有很多类嵌套类，这种也算是pImpl的体现，但是做的不够完美，因为这些嵌套类直接定义在头文件中，头文件需要暴露出去，其他模块自然也会看到这些内部嵌套类的定义，影响依赖关系。比如： &#x2F;&#x2F; Mo">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-03-12T10:56:40.000Z">
 <meta property="article:modified_time" content="2020-08-09T01:01:02.135Z">
@@ -93,8 +93,125 @@ ga('send', 'pageview');
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
   
 
-<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"] > svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
 <body>
 
@@ -193,7 +310,7 @@ ga('send', 'pageview');
 <div class="content content-post CENTER">
    <article id="post-pImpl技巧：接口与实现分离" class="article article-type-post" itemprop="blogPost">
   <header class="article-header">
-    <h1 class="post-title">pImpl 技巧：接口与实现分离</h1>
+    <h1 class="post-title">pImpl技巧：接口与实现分离</h1>
 
     <div class="article-meta">
       <span>
@@ -231,19 +348,19 @@ ga('send', 'pageview');
 
   <div class="article-content">
     
-      <p>最近在实现某个模块加强了对 <code>pImpl</code> 设计模式的理解，这里记录下来备忘。</p>
-<p><code>pImpl</code> 模式用来将接口与实现分离，更改实现的话只需要重新编译 cpp 实现，不影响依赖其抽象的模块，也就是著名的桥接模式。</p>
-<p>然而在实践中发现有很多类嵌套类，这种也算是 <code>pImpl</code> 的体现，但是做的不够完美，因为这些嵌套类直接定义在头文件中，头文件需要暴露出去，其他模块自然也会看到这些内部嵌套类的定义，影响依赖关系。比如：</p>
+      <p>最近在实现某个模块加强了对<code>pImpl</code>设计模式的理解，这里记录下来备忘。</p>
+<p><code>pImpl</code>模式用来将接口与实现分离，更改实现的话只需要重新编译cpp实现，不影响依赖其抽象的模块，也就是著名的桥接模式。</p>
+<p>然而在实践中发现有很多类嵌套类，这种也算是<code>pImpl</code>的体现，但是做的不够完美，因为这些嵌套类直接定义在头文件中，头文件需要暴露出去，其他模块自然也会看到这些内部嵌套类的定义，影响依赖关系。比如：</p>
 <pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">// Module.h</span>
 <span class="token keyword">class</span> <span class="token class-name">Module</span> <span class="token punctuation">&#123;</span>
 <span class="token keyword">public</span><span class="token operator">:</span>
     <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
 <span class="token keyword">private</span><span class="token operator">:</span>
-    <span class="token keyword">class</span> <span class="token class-name">InternalModule</span> <span class="token punctuation">&#123;</span> <span class="token comment">// Module 部分实现委托到 InternalModule 内部类 </span>
+    <span class="token keyword">class</span> <span class="token class-name">InternalModule</span> <span class="token punctuation">&#123;</span> <span class="token comment">// Module部分实现委托到InternalModule内部类</span>
         <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
     <span class="token punctuation">&#125;</span> m_module<span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
-<p>这个模式核心所在是在头文件通过前向声明 <code>class Impl</code>，并通过指针指向实例，然后在 cpp 中定义并实现 <code>Impl</code>。</p>
+<p>这个模式核心所在是在头文件通过前向声明<code>class Impl</code>，并通过指针指向实例，然后在cpp中定义并实现<code>Impl</code>。</p>
 <pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">// Person.h</span>
 <span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;memory></span></span>
 <span class="token keyword">class</span> <span class="token class-name">Person</span> <span class="token punctuation">&#123;</span>
@@ -258,11 +375,11 @@ ga('send', 'pageview');
 <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
 <span class="token comment">// Person.cpp</span>
 <span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">"Person.h"</span></span>
-<span class="token keyword">class</span> <span class="token class-name">Person</span><span class="token operator">:</span><span class="token base-clause"><span class="token operator">:</span><span class="token class-name">Impl</span></span> <span class="token punctuation">&#123;</span> <span class="token comment">//impl 定义与实现 </span>
+<span class="token keyword">class</span> <span class="token class-name">Person</span><span class="token operator">:</span><span class="token base-clause"><span class="token operator">:</span><span class="token class-name">Impl</span></span> <span class="token punctuation">&#123;</span> <span class="token comment">// impl定义与实现</span>
 <span class="token keyword">public</span><span class="token operator">:</span>
     <span class="token function">Impl</span><span class="token punctuation">(</span>std<span class="token operator">::</span>string name<span class="token punctuation">)</span><span class="token operator">:</span> <span class="token function">name</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token punctuation">&#125;</span>
     <span class="token keyword">void</span> <span class="token function">Dosomething</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token comment">//...</span>
+        <span class="token comment">// ...</span>
     <span class="token punctuation">&#125;</span>
 <span class="token keyword">private</span><span class="token operator">:</span>
     std<span class="token operator">::</span>string name<span class="token punctuation">;</span>
@@ -270,20 +387,20 @@ ga('send', 'pageview');
 <span class="token keyword">void</span> <span class="token class-name">Person</span><span class="token operator">::</span><span class="token function">Dosomething</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
     <span class="token keyword">return</span> pImpl<span class="token operator">-></span><span class="token function">Dosomething</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span>
-<span class="token comment">// 构造、析构函数必须放在实现 cpp 里，避免 inline constructor/destructor 导致的 incomplete type `Impl' 问题 </span>
+<span class="token comment">// 构造、析构函数必须放在实现cpp里，避免inline constructor/destructor导致的incomplete type `Impl'问题</span>
 <span class="token class-name">Person</span><span class="token operator">::</span><span class="token function">Person</span><span class="token punctuation">(</span>std<span class="token operator">::</span>string name<span class="token punctuation">)</span><span class="token operator">:</span>
-    <span class="token function">pImpl</span><span class="token punctuation">(</span><span class="token keyword">new</span> Impl<span class="token punctuation">&#123;</span>name<span class="token punctuation">&#125;</span><span class="token punctuation">)</span>  <span class="token comment">// 编程规范问题，可以放到 Init () 函数中初始化 </span>
+    <span class="token function">pImpl</span><span class="token punctuation">(</span><span class="token keyword">new</span> Impl<span class="token punctuation">&#123;</span>name<span class="token punctuation">&#125;</span><span class="token punctuation">)</span>  <span class="token comment">// 编程规范问题，可以放到Init()函数中初始化</span>
     <span class="token punctuation">&#123;</span> <span class="token punctuation">&#125;</span>
 <span class="token class-name">Person</span><span class="token operator">::</span><span class="token operator">~</span><span class="token function">Person</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token keyword">default</span><span class="token punctuation">;</span></code></pre>
-<p>需要注意几个点，由于采用 <code>std::unqiue_ptr</code> 托管 <code>pImpl</code>，而 <code>std::unqiue_ptr</code> 的声明如下：</p>
+<p>需要注意几个点，由于采用<code>std::unqiue_ptr</code>托管<code>pImpl</code>，而<code>std::unqiue_ptr</code>的声明如下：</p>
 <pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">_Tp</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">_Dp</span> <span class="token operator">=</span> default_delete<span class="token operator">&lt;</span>_Tp<span class="token operator">>></span>
 <span class="token keyword">class</span> <span class="token class-name">unique_ptr</span><span class="token punctuation">;</span></code></pre>
-<p>其中 <code>default_delete</code> 模板实例化需要看到 <code>Impl</code> 的定义，而其定义在 cpp 中，导致构造、析构函数必须得放到 cpp 中：</p>
+<p>其中<code>default_delete</code>模板实例化需要看到<code>Impl</code>的定义，而其定义在cpp中，导致构造、析构函数必须得放到cpp中：</p>
 <ul>
-<li>(1) 构造函数需要在头文件中声明，cpp 中实现，而初始化 <code>pImpl</code> 可以放到 Init 函数中</li>
+<li>(1) 构造函数需要在头文件中声明，cpp中实现，而初始化<code>pImpl</code>可以放到Init函数中</li>
 <li>(2) 析构函数同上</li>
-<li>(3) 在类内前向声明 <code>Impl</code>，避免暴露实现出去</li>
-<li>(4) 使用 <code>std::unique_ptr</code> 托管 <code>pImpl</code>。</li>
+<li>(3) 在类内前向声明<code>Impl</code>，避免暴露实现出去</li>
+<li>(4) 使用<code>std::unique_ptr</code>托管<code>pImpl</code>。</li>
 </ul>
 
     
@@ -295,8 +412,8 @@ ga('send', 'pageview');
    
        <div class="original">
     <ul>
-        <li>本文标题：pImpl 技巧：接口与实现分离</li>
-        <li>本文字数：496</li>
+        <li>本文标题：pImpl技巧：接口与实现分离</li>
+        <li>本文字数：489</li>
         <li>本文作者：Netcan</li>
         <li>发布时间：2020年03月12日 - 18时56分</li>
         <li>最后更新：2020年08月09日 - 09时01分</li>
@@ -516,22 +633,7 @@ gitalk.render('gitalk-container')
       // load success
     });
   }
-</script>
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </body>
 </html>

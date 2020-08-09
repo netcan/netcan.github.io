@@ -7,7 +7,7 @@
 <head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
-  <title>利用 telnet 在命令行发送 / 接收邮件 | Netcan on Programming</title>
+  <title>利用telnet在命令行发送/接收邮件 | Netcan on Programming</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -15,12 +15,12 @@
     <meta name="keywords" content="计算机网络," />
   
 
-  <meta name="description" content="明天就要去学校了。。有点不舍，本来今天就要去的，因为玉林到合肥有票了，就改签到明天，因为学生票还省下了 100。。。 废话不多说，这几天在学《计算机网络》，发现 telnet 其实是个很万能的东西，我曾对它的印象仅仅停留在远程控制，那时候在机房叫老师打开机房的网络，老师在 cmd 就用 telnet 远程控制来打开网络。 比如用 telnet 发送邮件，就可以深刻理解协议的含义：** 语义 、 语">
+  <meta name="description" content="明天就要去学校了。。有点不舍，本来今天就要去的，因为玉林到合肥有票了，就改签到明天，因为学生票还省下了100。。。 废话不多说，这几天在学《计算机网络》，发现telnet其实是个很万能的东西，我曾对它的印象仅仅停留在远程控制，那时候在机房叫老师打开机房的网络，老师在cmd就用telnet远程控制来打开网络。 比如用telnet发送邮件，就可以深刻理解协议的含义：语义、语法和时序，以后socket编">
 <meta property="og:type" content="article">
-<meta property="og:title" content="利用 telnet 在命令行发送 &#x2F; 接收邮件">
+<meta property="og:title" content="利用telnet在命令行发送&#x2F;接收邮件">
 <meta property="og:url" content="https://netcan.github.io/2016/02/20/%E5%88%A9%E7%94%A8telnet%E5%9C%A8%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%8F%91%E9%80%81-%E6%8E%A5%E6%94%B6%E9%82%AE%E4%BB%B6/index.html">
 <meta property="og:site_name" content="Netcan on Programming">
-<meta property="og:description" content="明天就要去学校了。。有点不舍，本来今天就要去的，因为玉林到合肥有票了，就改签到明天，因为学生票还省下了 100。。。 废话不多说，这几天在学《计算机网络》，发现 telnet 其实是个很万能的东西，我曾对它的印象仅仅停留在远程控制，那时候在机房叫老师打开机房的网络，老师在 cmd 就用 telnet 远程控制来打开网络。 比如用 telnet 发送邮件，就可以深刻理解协议的含义：** 语义 、 语">
+<meta property="og:description" content="明天就要去学校了。。有点不舍，本来今天就要去的，因为玉林到合肥有票了，就改签到明天，因为学生票还省下了100。。。 废话不多说，这几天在学《计算机网络》，发现telnet其实是个很万能的东西，我曾对它的印象仅仅停留在远程控制，那时候在机房叫老师打开机房的网络，老师在cmd就用telnet远程控制来打开网络。 比如用telnet发送邮件，就可以深刻理解协议的含义：语义、语法和时序，以后socket编">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://7xibui.com1.z0.glb.clouddn.com/%40%2F2016%2F02%2Fscreenshot-area-2016-02-20-103534.png">
 <meta property="article:published_time" content="2016-02-20T02:09:42.000Z">
@@ -95,8 +95,125 @@ ga('send', 'pageview');
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
   
 
-<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"] > svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
 <body>
 
@@ -200,7 +317,7 @@ ga('send', 'pageview');
 <div class="content content-post CENTER">
    <article id="post-利用telnet在命令行发送-接收邮件" class="article article-type-post" itemprop="blogPost">
   <header class="article-header">
-    <h1 class="post-title">利用 telnet 在命令行发送 / 接收邮件</h1>
+    <h1 class="post-title">利用telnet在命令行发送/接收邮件</h1>
 
     <div class="article-meta">
       <span>
@@ -238,22 +355,22 @@ ga('send', 'pageview');
 
   <div class="article-content">
     
-      <p>明天就要去学校了。。有点不舍，本来今天就要去的，因为玉林到合肥有票了，就改签到明天，因为学生票还省下了 100。。。</p>
-<p>废话不多说，这几天在学《计算机网络》，发现 <code>telnet</code> 其实是个很万能的东西，我曾对它的印象仅仅停留在远程控制，那时候在机房叫老师打开机房的网络，老师在 <code>cmd</code> 就用 <code>telnet</code> 远程控制来打开网络。</p>
-<p>比如用 <code>telnet</code> 发送邮件，就可以深刻理解协议的含义：** 语义 <strong>、</strong> 语法 ** 和 ** 时序 **，以后 <code>socket</code> 编程的时候就知道怎么设计协议了，其实和设计指令差不多。</p>
-<p>因为 * QQ 邮箱 * 加密传输了，不好测试，这里用 * 139 移动邮箱 * 发送到 * QQ 邮箱 * 来测试。</p>
-<p>注意退出 <code>telnet</code> 的话，先按 <code>CTRL+J</code>，然后输入 <code>quit</code> 即可退出。</p>
-<p><code>base64</code> 加密的话：</p>
+      <p>明天就要去学校了。。有点不舍，本来今天就要去的，因为玉林到合肥有票了，就改签到明天，因为学生票还省下了100。。。</p>
+<p>废话不多说，这几天在学《计算机网络》，发现<code>telnet</code>其实是个很万能的东西，我曾对它的印象仅仅停留在远程控制，那时候在机房叫老师打开机房的网络，老师在<code>cmd</code>就用<code>telnet</code>远程控制来打开网络。</p>
+<p>比如用<code>telnet</code>发送邮件，就可以深刻理解协议的含义：<strong>语义</strong>、<strong>语法</strong>和<strong>时序</strong>，以后<code>socket</code>编程的时候就知道怎么设计协议了，其实和设计指令差不多。</p>
+<p>因为<em>QQ邮箱</em>加密传输了，不好测试，这里用<em>139移动邮箱</em>发送到<em>QQ邮箱</em>来测试。</p>
+<p>注意退出<code>telnet</code>的话，先按<code>CTRL+J</code>，然后输入<code>quit</code>即可退出。</p>
+<p><code>base64</code>加密的话：</p>
 <pre><code>echo -n 待加密的内容 | base64
 </code></pre>
-<p>先看看发送图 (<code>smtp</code>)：<br>
+<p>先看看发送图(<code>smtp</code>)：<br>
 <img src="http://7xibui.com1.z0.glb.clouddn.com/%40%2F2016%2F02%2Fscreenshot-area-2016-02-20-103534.png" alt="发邮件"></p>
-<p>再来看看收邮件的 (<code>pop3</code>)：</p>
+<p>再来看看收邮件的(<code>pop3</code>)：</p>
 <pre><code>✘  ~/WorkSpace/Netcan_Web/blog/source/Timeline  telnet pop.139.com 110
 Trying 221.176.9.169...
 Connected to pop.mail.10086.cn.
 Escape character is '^]'.
-+OK richmail system v10 (32d256c7d202533-1a2ff)
++OK richmail system v10(32d256c7d202533-1a2ff)
 USER netcan
 +OK
 PASS xxxxxx
@@ -285,7 +402,7 @@ LIST
 .
 RETR 1
 +OK
-Received:from mail139@139.com (unknown [172.16.202.6])
+Received:from mail139@139.com (unknown[172.16.202.6])
 	by rmoda-17132 (RichMail) with ODA id 42ec5409b9d04b8-050cc;
 	Fri, 05 Sep 2014 21:25:36 +0800 (CST)
 X-RM-TRANSID:42ec5409b9d04b8-050cc
@@ -340,23 +457,23 @@ cj0iMCIgc3R5bGU9ImRpc3BsYXk6YmxvY2s7Ii8+PC90ZD4JPC90cj48dHI+PHRkPgkJCTxpbWcg
 <p>下面是步骤：</p>
 <h2 id="发邮件">发邮件</h2>
 <ol>
-<li>使用 <code>telnet SMTP 地址 端口</code> 连接</li>
-<li>发送 <code>HELO 邮箱服务器名称</code></li>
-<li>发送 <code>AUTH LOGIN</code> 进行登陆，第一次输入的是 <code>base64</code> 加密过的用户名，第二次是 <code>base64</code> 加密过的密码。</li>
-<li>发送 <code>MAIL FROM: &lt;xxx@xx.com&gt;</code> 准备发邮件</li>
-<li>发送 <code>RCPT TO: &lt;xx@xx.com&gt;</code> 指定目标邮箱地址</li>
-<li>发送 <code>DATA</code> 开始输入邮件内容，一行用 <code>.</code> 结束。</li>
-<li>发送 <code>QUIT</code> 退出</li>
+<li>使用<code>telnet SMTP地址 端口</code>连接</li>
+<li>发送<code>HELO 邮箱服务器名称</code></li>
+<li>发送<code>AUTH LOGIN</code>进行登陆，第一次输入的是<code>base64</code>加密过的用户名，第二次是<code>base64</code>加密过的密码。</li>
+<li>发送<code>MAIL FROM: &lt;xxx@xx.com&gt;</code>准备发邮件</li>
+<li>发送<code>RCPT TO: &lt;xx@xx.com&gt;</code>指定目标邮箱地址</li>
+<li>发送<code>DATA</code>开始输入邮件内容，一行用<code>.</code>结束。</li>
+<li>发送<code>QUIT</code>退出</li>
 </ol>
 <h2 id="收邮件">收邮件</h2>
 <ol>
-<li>使用 <code>telnet POP3 地址 端口</code> 连接</li>
-<li>发送 <code>USER 用户名</code> 进行登陆</li>
-<li>发送 <code>PASS 密码</code> 确定登陆</li>
-<li>发送 <code>LIST</code> 查看邮件列表</li>
-<li>发送 <code>RETR 编号</code> 查看邮件信息</li>
-<li>发送 <code>DELE 编号</code> 删除邮件</li>
-<li>发送 <code>QUIT</code> 退出</li>
+<li>使用<code>telnet POP3地址 端口</code>连接</li>
+<li>发送<code>USER 用户名</code>进行登陆</li>
+<li>发送<code>PASS 密码</code>确定登陆</li>
+<li>发送<code>LIST</code>查看邮件列表</li>
+<li>发送<code>RETR 编号</code>查看邮件信息</li>
+<li>发送<code>DELE 编号</code>删除邮件</li>
+<li>发送<code>QUIT</code>退出</li>
 </ol>
 
     
@@ -368,8 +485,8 @@ cj0iMCIgc3R5bGU9ImRpc3BsYXk6YmxvY2s7Ii8+PC90ZD4JPC90cj48dHI+PHRkPgkJCTxpbWcg
    
        <div class="original">
     <ul>
-        <li>本文标题：利用 telnet 在命令行发送 / 接收邮件</li>
-        <li>本文字数：713</li>
+        <li>本文标题：利用telnet在命令行发送/接收邮件</li>
+        <li>本文字数：711</li>
         <li>本文作者：Netcan</li>
         <li>发布时间：2016年02月20日 - 10时09分</li>
         <li>最后更新：2020年08月09日 - 09时01分</li>
@@ -589,22 +706,7 @@ gitalk.render('gitalk-container')
       // load success
     });
   }
-</script>
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </body>
 </html>

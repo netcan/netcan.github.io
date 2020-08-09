@@ -15,12 +15,12 @@
     <meta name="keywords" content="计算机网络,点滴,经验," />
   
 
-  <meta name="description" content="今天难得认真听了下课（因为今天才选上了课）：计算机网络。老师讲的还是比较有趣的，比如数据传输在海洋电缆中被鲨鱼咬断丢失，或者在空中被雷劈丢失，用水杯盖子打电话为啥打不出去因为没有底层支持，给我感觉讲得很慢，毕竟学校要求掌握的知识点比较少，可以啰嗦些。 但是我看了好几本教材，还有老师讲课顺序，无非是先介绍那几层结构（OSI 结构）作用，然后就按照物理层 -&gt; 数据链路层 -&gt; 网络层（I">
+  <meta name="description" content="今天难得认真听了下课（因为今天才选上了课）：计算机网络。老师讲的还是比较有趣的，比如数据传输在海洋电缆中被鲨鱼咬断丢失，或者在空中被雷劈丢失，用水杯盖子打电话为啥打不出去因为没有底层支持，给我感觉讲得很慢，毕竟学校要求掌握的知识点比较少，可以啰嗦些。 但是我看了好几本教材，还有老师讲课顺序，无非是先介绍那几层结构（OSI结构）作用，然后就按照物理层-&gt;数据链路层-&gt;网络层（IP层）-&amp;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="《计算机网络》学习心得">
 <meta property="og:url" content="https://netcan.github.io/2016/03/09/%E3%80%8A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E3%80%8B%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/index.html">
 <meta property="og:site_name" content="Netcan on Programming">
-<meta property="og:description" content="今天难得认真听了下课（因为今天才选上了课）：计算机网络。老师讲的还是比较有趣的，比如数据传输在海洋电缆中被鲨鱼咬断丢失，或者在空中被雷劈丢失，用水杯盖子打电话为啥打不出去因为没有底层支持，给我感觉讲得很慢，毕竟学校要求掌握的知识点比较少，可以啰嗦些。 但是我看了好几本教材，还有老师讲课顺序，无非是先介绍那几层结构（OSI 结构）作用，然后就按照物理层 -&gt; 数据链路层 -&gt; 网络层（I">
+<meta property="og:description" content="今天难得认真听了下课（因为今天才选上了课）：计算机网络。老师讲的还是比较有趣的，比如数据传输在海洋电缆中被鲨鱼咬断丢失，或者在空中被雷劈丢失，用水杯盖子打电话为啥打不出去因为没有底层支持，给我感觉讲得很慢，毕竟学校要求掌握的知识点比较少，可以啰嗦些。 但是我看了好几本教材，还有老师讲课顺序，无非是先介绍那几层结构（OSI结构）作用，然后就按照物理层-&gt;数据链路层-&gt;网络层（IP层）-&amp;">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2016-03-09T13:23:33.000Z">
 <meta property="article:modified_time" content="2020-08-09T01:01:02.170Z">
@@ -95,8 +95,125 @@ ga('send', 'pageview');
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
   
 
-<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"] > svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
 <body>
 
@@ -234,10 +351,10 @@ ga('send', 'pageview');
   <div class="article-content">
     
       <p>今天难得认真听了下课（因为今天才选上了课）：计算机网络。老师讲的还是比较有趣的，比如数据传输在海洋电缆中被鲨鱼咬断丢失，或者在空中被雷劈丢失，用水杯盖子打电话为啥打不出去因为没有底层支持，给我感觉讲得很慢，毕竟学校要求掌握的知识点比较少，可以啰嗦些。</p>
-<p>但是我看了好几本教材，还有老师讲课顺序，无非是先介绍那几层结构（OSI 结构）作用，然后就按照物理层 -&gt; 数据链路层 -&gt; 网络层（IP 层）-&gt; 传（运）输层 -&gt; 应用层的顺序来讲，虽然这样越学越有趣，但是一开始就听不下去了，因为前面比较枯燥，后面比较有趣。而我发现比较容易接受的顺序是，先讲讲那几层的作用（有个全局把握），然后按照相反顺序（即应用层 -&gt; 传输层 -&gt; 网络层 -&gt; 数据链路层 -&gt; 物理层）来学，会轻松很多，反而更容易掌握。</p>
-<p>首先层与层之间是互通的（有接口），不用担心顺序反了无法接受，一开始就长篇大论一脸闷逼的学高度抽象的物理层，不如先学学最容易接受的应用层，最基本的就是写写网页了，再深一点就是 <code>Socket</code> 编程（简单点例如实现多进程（然后看操作系统去了。。）HTTP 服务器）还能掌握协议的含义（语义、语法和时序），利用 <code>telnet</code> 工具发送 <code>TCP</code> 请求比如发邮件这些。而且应用层都是我们很常见的东西，例如 <code>HTTP</code>，<code>DNS</code>，<code>DHCP</code>，<code>SMTP</code> 这些经典应用。</p>
-<p>接触到 <code>Socket</code> 之后，又会促使你看下传输层的 <code>TCP</code> 和 <code>UDP</code> 协议，以及传输层实现的那几个机制是怎么在不可靠传输信道进行可靠传输的（流量 / 拥塞控制，流水线机制，滑动窗口协议（顺便了解 GBN 和 SR），差错控制等等），还能感受到人类的智慧。</p>
-<p>在了解完传输层后，很自发地你又会学到网络层，这时候还能接受，比如 <code>IP 地址</code> 的分类啊，子网划分，超网聚合，广播，ARP 寻址这些基本概念，还能学到路由算法（链路状态路由算法 <code>Dijkstra</code>，距离向量路由算法 <code>Bellman-Ford</code>）等等。</p>
+<p>但是我看了好几本教材，还有老师讲课顺序，无非是先介绍那几层结构（OSI结构）作用，然后就按照物理层-&gt;数据链路层-&gt;网络层（IP层）-&gt;传（运）输层-&gt;应用层的顺序来讲，虽然这样越学越有趣，但是一开始就听不下去了，因为前面比较枯燥，后面比较有趣。而我发现比较容易接受的顺序是，先讲讲那几层的作用（有个全局把握），然后按照相反顺序（即应用层-&gt;传输层-&gt;网络层-&gt;数据链路层-&gt;物理层）来学，会轻松很多，反而更容易掌握。</p>
+<p>首先层与层之间是互通的（有接口），不用担心顺序反了无法接受，一开始就长篇大论一脸闷逼的学高度抽象的物理层，不如先学学最容易接受的应用层，最基本的就是写写网页了，再深一点就是<code>Socket</code>编程（简单点例如实现多进程（然后看操作系统去了。。）HTTP服务器）还能掌握协议的含义（语义、语法和时序），利用<code>telnet</code>工具发送<code>TCP</code>请求比如发邮件这些。而且应用层都是我们很常见的东西，例如<code>HTTP</code>，<code>DNS</code>，<code>DHCP</code>，<code>SMTP</code>这些经典应用。</p>
+<p>接触到<code>Socket</code>之后，又会促使你看下传输层的<code>TCP</code>和<code>UDP</code>协议，以及传输层实现的那几个机制是怎么在不可靠传输信道进行可靠传输的（流量/拥塞控制，流水线机制，滑动窗口协议（顺便了解GBN和SR），差错控制等等），还能感受到人类的智慧。</p>
+<p>在了解完传输层后，很自发地你又会学到网络层，这时候还能接受，比如<code>IP地址</code>的分类啊，子网划分，超网聚合，广播，ARP寻址这些基本概念，还能学到路由算法（链路状态路由算法<code>Dijkstra</code>，距离向量路由算法<code>Bellman-Ford</code>）等等。</p>
 <p>待续。</p>
 
     
@@ -250,7 +367,7 @@ ga('send', 'pageview');
        <div class="original">
     <ul>
         <li>本文标题：《计算机网络》学习心得</li>
-        <li>本文字数：633</li>
+        <li>本文字数：630</li>
         <li>本文作者：Netcan</li>
         <li>发布时间：2016年03月09日 - 21时23分</li>
         <li>最后更新：2020年08月09日 - 09时01分</li>
@@ -470,22 +587,7 @@ gitalk.render('gitalk-container')
       // load success
     });
   }
-</script>
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </body>
 </html>

@@ -7,7 +7,7 @@
 <head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
-  <title>Linux POSIX 信号量解决经典进程同步问题 | Netcan on Programming</title>
+  <title>Linux POSIX信号量解决经典进程同步问题 | Netcan on Programming</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -15,12 +15,12 @@
     <meta name="keywords" content="Linux,操作系统," />
   
 
-  <meta name="description" content="之前我写了一篇博文：[操作系统之进程同步](&#x2F;2016&#x2F;09&#x2F;13 &#x2F; 操作系统之进程同步 &#x2F;)，关于多进程（线程）同步的问题，这里我来继续扩展下主题，如何使用信号量来解决进程之间的同步问题，不过我接下来实现还是使用 ** 线程 **，理由很简单我之前说过了。 在 Unix&#x2F;Linux 上，信号量有 2 种标准：System V 和 Posix。我选择了 Posix，因为它的接口很简单，功能又和">
+  <meta name="description" content="之前我写了一篇博文：操作系统之进程同步，关于多进程（线程）同步的问题，这里我来继续扩展下主题，如何使用信号量来解决进程之间的同步问题，不过我接下来实现还是使用线程，理由很简单我之前说过了。 在Unix&#x2F;Linux上，信号量有2种标准：System V和Posix。我选择了Posix，因为它的接口很简单，功能又和System V相近。 不过有些情况可以用互斥体来实现，信号量有时候称为并发式编程的go">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Linux POSIX 信号量解决经典进程同步问题">
+<meta property="og:title" content="Linux POSIX信号量解决经典进程同步问题">
 <meta property="og:url" content="https://netcan.github.io/2016/09/24/Linux-POSIX%E4%BF%A1%E5%8F%B7%E9%87%8F%E8%A7%A3%E5%86%B3%E7%BB%8F%E5%85%B8%E8%BF%9B%E7%A8%8B%E5%90%8C%E6%AD%A5%E9%97%AE%E9%A2%98/index.html">
 <meta property="og:site_name" content="Netcan on Programming">
-<meta property="og:description" content="之前我写了一篇博文：[操作系统之进程同步](&#x2F;2016&#x2F;09&#x2F;13 &#x2F; 操作系统之进程同步 &#x2F;)，关于多进程（线程）同步的问题，这里我来继续扩展下主题，如何使用信号量来解决进程之间的同步问题，不过我接下来实现还是使用 ** 线程 **，理由很简单我之前说过了。 在 Unix&#x2F;Linux 上，信号量有 2 种标准：System V 和 Posix。我选择了 Posix，因为它的接口很简单，功能又和">
+<meta property="og:description" content="之前我写了一篇博文：操作系统之进程同步，关于多进程（线程）同步的问题，这里我来继续扩展下主题，如何使用信号量来解决进程之间的同步问题，不过我接下来实现还是使用线程，理由很简单我之前说过了。 在Unix&#x2F;Linux上，信号量有2种标准：System V和Posix。我选择了Posix，因为它的接口很简单，功能又和System V相近。 不过有些情况可以用互斥体来实现，信号量有时候称为并发式编程的go">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2016-09-24T11:28:01.000Z">
 <meta property="article:modified_time" content="2020-08-09T01:01:02.126Z">
@@ -94,8 +94,125 @@ ga('send', 'pageview');
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
   
 
-<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"] > svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
 <body>
 
@@ -191,7 +308,7 @@ ga('send', 'pageview');
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%A1%E5%8F%B7%E9%87%8F%E4%BB%8B%E7%BB%8D"><span class="toc-text">信号量介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Posix-%E4%BF%A1%E5%8F%B7%E9%87%8F%E6%8E%A5%E5%8F%A3"><span class="toc-text">Posix 信号量接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%9F%E4%BA%A7%E8%80%85-%E6%B6%88%E8%B4%B9%E8%80%85%E9%97%AE%E9%A2%98"><span class="toc-text">生产者 - 消费者问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%BB%E8%80%85-%E5%86%99%E8%80%85%E9%97%AE%E9%A2%98"><span class="toc-text">读者 - 写者问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-text">参考资料</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%A1%E5%8F%B7%E9%87%8F%E4%BB%8B%E7%BB%8D"><span class="toc-text">信号量介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Posix%E4%BF%A1%E5%8F%B7%E9%87%8F%E6%8E%A5%E5%8F%A3"><span class="toc-text">Posix信号量接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%9F%E4%BA%A7%E8%80%85-%E6%B6%88%E8%B4%B9%E8%80%85%E9%97%AE%E9%A2%98"><span class="toc-text">生产者-消费者问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%BB%E8%80%85-%E5%86%99%E8%80%85%E9%97%AE%E9%A2%98"><span class="toc-text">读者-写者问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-text">参考资料</span></a></li></ol>
   </div>
 
 
@@ -199,7 +316,7 @@ ga('send', 'pageview');
 <div class="content content-post CENTER">
    <article id="post-Linux-POSIX信号量解决经典进程同步问题" class="article article-type-post" itemprop="blogPost">
   <header class="article-header">
-    <h1 class="post-title">Linux POSIX 信号量解决经典进程同步问题</h1>
+    <h1 class="post-title">Linux POSIX信号量解决经典进程同步问题</h1>
 
     <div class="article-meta">
       <span>
@@ -237,20 +354,20 @@ ga('send', 'pageview');
 
   <div class="article-content">
     
-      <p>之前我写了一篇博文：[操作系统之进程同步](/2016/09/13 / 操作系统之进程同步 /)，关于多进程（线程）同步的问题，这里我来继续扩展下主题，如何使用信号量来解决进程之间的同步问题，不过我接下来实现还是使用 ** 线程 **，理由很简单我之前说过了。</p>
-<p>在 Unix/Linux 上，信号量有 2 种标准：<code>System V</code> 和 <code>Posix</code>。我选择了 <code>Posix</code>，因为它的接口很简单，功能又和 <code>System V</code> 相近。</p>
-<p>不过有些情况可以用 ** 互斥体 ** 来实现，信号量有时候称为并发式编程的 <code>goto</code>，因为它能在一个进程中唤醒另一个进程，很容易产生出糟糕的同步设计。</p>
+      <p>之前我写了一篇博文：<a href="/2016/09/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E8%BF%9B%E7%A8%8B%E5%90%8C%E6%AD%A5/">操作系统之进程同步</a>，关于多进程（线程）同步的问题，这里我来继续扩展下主题，如何使用信号量来解决进程之间的同步问题，不过我接下来实现还是使用<strong>线程</strong>，理由很简单我之前说过了。</p>
+<p>在Unix/Linux上，信号量有2种标准：<code>System V</code>和<code>Posix</code>。我选择了<code>Posix</code>，因为它的接口很简单，功能又和<code>System V</code>相近。</p>
+<p>不过有些情况可以用<strong>互斥体</strong>来实现，信号量有时候称为并发式编程的<code>goto</code>，因为它能在一个进程中唤醒另一个进程，很容易产生出糟糕的同步设计。</p>
 <h3 id="信号量介绍">信号量介绍</h3>
-<p>信号量是同步进程的一个机制，由内核维护的整数（限制 &gt;=0），通常用来表示一个共享资源的数量。在一个信号量上可以执行以下操作：</p>
+<p>信号量是同步进程的一个机制，由内核维护的整数（限制&gt;=0），通常用来表示一个共享资源的数量。在一个信号量上可以执行以下操作：</p>
 <ul>
 <li>将信号量设置成一个初值</li>
-<li>在信号量上 + 1 (wait 原子操作)</li>
-<li>在信号量上 - 1 (signal/post 原子操作)</li>
-<li>信号量为 0</li>
+<li>在信号量上+1(wait原子操作)</li>
+<li>在信号量上-1(signal/post原子操作)</li>
+<li>信号量为0</li>
 </ul>
-<p>后两种操作可能会导致进程阻塞。第 2,3 种操作通常称为 <code>P/V</code> 操作。</p>
-<h3 id="Posix-信号量接口">Posix 信号量接口</h3>
-<p>使用的 <code>Posix</code> 信号量接口声明在 <code>&lt;semaphore.h&gt;</code> 中。</p>
+<p>后两种操作可能会导致进程阻塞。第2,3种操作通常称为<code>P/V</code>操作。</p>
+<h3 id="Posix信号量接口">Posix信号量接口</h3>
+<p>使用的<code>Posix</code>信号量接口声明在<code>&lt;semaphore.h&gt;</code>中。</p>
 <pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">typedef</span> <span class="token keyword">union</span>
 <span class="token punctuation">&#123;</span>
 	<span class="token keyword">char</span> __size<span class="token punctuation">[</span>__SIZEOF_SEM_T<span class="token punctuation">]</span><span class="token punctuation">;</span>
@@ -273,7 +390,7 @@ ga('send', 'pageview');
 <span class="token comment">/* Free resources associated with semaphore object SEM.  */</span>
 <span class="token keyword">extern</span> <span class="token keyword">int</span> <span class="token function">sem_destroy</span> <span class="token punctuation">(</span>sem_t <span class="token operator">*</span>__sem<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
 <p>接口都知道了，开搞。</p>
-<h3 id="生产者-消费者问题">生产者 - 消费者问题</h3>
+<h3 id="生产者-消费者问题">生产者-消费者问题</h3>
 <p>我们来看看生产者消费者问题。生产者消费者问题是一个著名的线程同步问题，该问题描述如下：有一个生产者在生产产品，这些产品将提供给若干个消费者去消费，为了使生产者和消费者能并发执行，在两者之间设置一个具有多个缓冲区的缓冲池，生产者将它生产的产品放入一个缓冲区中，消费者可以从缓冲区中取走产品进行消费，显然生产者和消费者之间必须保持同步，即不允许消费者到一个空的缓冲区中取产品，也不允许生产者向一个已经放入产品的缓冲区中再次投放产品。</p>
 <p>代码很容易写出来：</p>
 <pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">/*************************************************************************
@@ -292,18 +409,18 @@ ga('send', 'pageview');
 <span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token expression">N <span class="token number">10</span></span></span>
 
 <span class="token keyword">typedef</span> <span class="token keyword">int</span> item<span class="token punctuation">;</span>
-<span class="token comment">// 环形队列 </span>
+<span class="token comment">// 环形队列</span>
 <span class="token keyword">int</span> in <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> out <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
-<span class="token comment">// 缓冲区 </span>
+<span class="token comment">// 缓冲区</span>
 item buffer<span class="token punctuation">[</span>N<span class="token punctuation">]</span><span class="token punctuation">;</span>
-<span class="token comment">// 互斥、空缓冲区、满缓冲区信号量 </span>
+<span class="token comment">// 互斥、空缓冲区、满缓冲区信号量</span>
 sem_t mutex<span class="token punctuation">,</span> empty<span class="token punctuation">,</span> full<span class="token punctuation">;</span>
 
-<span class="token comment">// 显示缓冲区内容 </span>
+<span class="token comment">// 显示缓冲区内容</span>
 <span class="token keyword">void</span> <span class="token function">show_buffer</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-<span class="token comment">//	printf ("in=% d, out=% d\n", in, out);</span>
+<span class="token comment">//	printf("in=%d, out=%d\n", in, out);</span>
 	<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"["</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-	<span class="token keyword">if</span><span class="token punctuation">(</span>in <span class="token operator">==</span> out<span class="token punctuation">)</span> <span class="token comment">// 满了 </span>
+	<span class="token keyword">if</span><span class="token punctuation">(</span>in <span class="token operator">==</span> out<span class="token punctuation">)</span> <span class="token comment">// 满了</span>
 		<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">&lt;</span>N<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span>
 			<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%2d"</span><span class="token punctuation">,</span> buffer<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 	<span class="token keyword">else</span> <span class="token keyword">if</span><span class="token punctuation">(</span>out <span class="token operator">&lt;</span> in<span class="token punctuation">)</span>
@@ -315,10 +432,10 @@ sem_t mutex<span class="token punctuation">,</span> empty<span class="token punc
 		<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">&lt;</span>in<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span>
 			<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%2d"</span><span class="token punctuation">,</span> buffer<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 	<span class="token punctuation">&#125;</span>
-	<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"]\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">" ]\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span>
 
-<span class="token comment">// 生产者 </span>
+<span class="token comment">// 生产者</span>
 <span class="token keyword">void</span><span class="token operator">*</span> <span class="token function">producer</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token operator">*</span> id<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
 	<span class="token keyword">while</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
 		item nextp <span class="token operator">=</span> <span class="token function">rand</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">%</span> <span class="token number">10</span><span class="token punctuation">;</span>
@@ -326,15 +443,15 @@ sem_t mutex<span class="token punctuation">,</span> empty<span class="token punc
 		<span class="token function">sem_wait</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>mutex<span class="token punctuation">)</span><span class="token punctuation">;</span>
 		buffer<span class="token punctuation">[</span>in<span class="token punctuation">]</span> <span class="token operator">=</span> nextp<span class="token punctuation">;</span>
 		in <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token operator">++</span>in<span class="token punctuation">)</span><span class="token operator">%</span>N<span class="token punctuation">;</span>
-		<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"======% s======\n"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token keyword">char</span><span class="token operator">*</span><span class="token punctuation">)</span>id<span class="token punctuation">)</span><span class="token punctuation">;</span>
-		<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"生产了：% d\n"</span><span class="token punctuation">,</span> nextp<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"======%s======\n"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token keyword">char</span><span class="token operator">*</span><span class="token punctuation">)</span>id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"生产了：%d\n"</span><span class="token punctuation">,</span> nextp<span class="token punctuation">)</span><span class="token punctuation">;</span>
 		<span class="token function">show_buffer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 		<span class="token function">sem_post</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>mutex<span class="token punctuation">)</span><span class="token punctuation">;</span>
 		<span class="token function">sem_post</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>full<span class="token punctuation">)</span><span class="token punctuation">;</span>
 	<span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span>
 
-<span class="token comment">// 消费者 </span>
+<span class="token comment">// 消费者</span>
 <span class="token keyword">void</span><span class="token operator">*</span> <span class="token function">consumer</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token operator">*</span> id<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
 	<span class="token keyword">while</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
 		<span class="token function">sem_wait</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>full<span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -344,11 +461,11 @@ sem_t mutex<span class="token punctuation">,</span> empty<span class="token punc
 		<span class="token keyword">int</span> emp<span class="token punctuation">,</span> ful<span class="token punctuation">;</span>
 		<span class="token function">sem_getvalue</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>empty<span class="token punctuation">,</span> <span class="token operator">&amp;</span>emp<span class="token punctuation">)</span><span class="token punctuation">;</span>
 		<span class="token function">sem_getvalue</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>full<span class="token punctuation">,</span> <span class="token operator">&amp;</span>ful<span class="token punctuation">)</span><span class="token punctuation">;</span>
-		<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"======% s======\n"</span>
-				<span class="token string">"缓冲区大小：% d\n"</span>
-				<span class="token string">"消费的物品：% d\n"</span>
-				<span class="token string">"空缓冲区数量：% d\n"</span>
-				<span class="token string">"满缓冲区数量：% d\n"</span>
+		<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"======%s======\n"</span>
+				<span class="token string">"缓冲区大小：%d\n"</span>
+				<span class="token string">"消费的物品：%d\n"</span>
+				<span class="token string">"空缓冲区数量：%d\n"</span>
+				<span class="token string">"满缓冲区数量：%d\n"</span>
 				<span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token keyword">char</span><span class="token operator">*</span><span class="token punctuation">)</span>id<span class="token punctuation">,</span> N<span class="token punctuation">,</span> nextc<span class="token punctuation">,</span> emp<span class="token punctuation">,</span> ful<span class="token punctuation">)</span><span class="token punctuation">;</span>
 		<span class="token function">show_buffer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 		<span class="token function">sem_post</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>mutex<span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -358,7 +475,7 @@ sem_t mutex<span class="token punctuation">,</span> empty<span class="token punc
 
 <span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 <span class="token punctuation">&#123;</span>
-	<span class="token comment">// 初始化信号量 </span>
+	<span class="token comment">// 初始化信号量</span>
 	<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">sem_init</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>mutex<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
 		<span class="token function">perror</span><span class="token punctuation">(</span><span class="token string">"sem_init"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 	<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">sem_init</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>empty<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> N<span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
@@ -366,17 +483,17 @@ sem_t mutex<span class="token punctuation">,</span> empty<span class="token punc
 	<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">sem_init</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>full<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
 		<span class="token function">perror</span><span class="token punctuation">(</span><span class="token string">"sem_init"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-	<span class="token comment">// 2 个生产者、2 个消费者 </span>
+	<span class="token comment">// 2个生产者、2个消费者</span>
 	pthread_t p1<span class="token punctuation">,</span> p2<span class="token punctuation">,</span> c1<span class="token punctuation">,</span> c2<span class="token punctuation">;</span>
 
-	<span class="token comment">// 并发执行 </span>
-	<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">pthread_create</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>p1<span class="token punctuation">,</span> <span class="token constant">NULL</span><span class="token punctuation">,</span> producer<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token keyword">void</span><span class="token operator">*</span><span class="token punctuation">)</span><span class="token string">"生产者 1"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+	<span class="token comment">// 并发执行</span>
+	<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">pthread_create</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>p1<span class="token punctuation">,</span> <span class="token constant">NULL</span><span class="token punctuation">,</span> producer<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token keyword">void</span><span class="token operator">*</span><span class="token punctuation">)</span><span class="token string">"生产者1"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 		<span class="token function">perror</span><span class="token punctuation">(</span><span class="token string">"pthread_create"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-	<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">pthread_create</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>p2<span class="token punctuation">,</span> <span class="token constant">NULL</span><span class="token punctuation">,</span> producer<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token keyword">void</span><span class="token operator">*</span><span class="token punctuation">)</span><span class="token string">"生产者 2"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+	<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">pthread_create</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>p2<span class="token punctuation">,</span> <span class="token constant">NULL</span><span class="token punctuation">,</span> producer<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token keyword">void</span><span class="token operator">*</span><span class="token punctuation">)</span><span class="token string">"生产者2"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 		<span class="token function">perror</span><span class="token punctuation">(</span><span class="token string">"pthread_create"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-	<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">pthread_create</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>c1<span class="token punctuation">,</span> <span class="token constant">NULL</span><span class="token punctuation">,</span> consumer<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token keyword">void</span><span class="token operator">*</span><span class="token punctuation">)</span><span class="token string">"消费者 1"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+	<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">pthread_create</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>c1<span class="token punctuation">,</span> <span class="token constant">NULL</span><span class="token punctuation">,</span> consumer<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token keyword">void</span><span class="token operator">*</span><span class="token punctuation">)</span><span class="token string">"消费者1"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 		<span class="token function">perror</span><span class="token punctuation">(</span><span class="token string">"pthread_create"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-	<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">pthread_create</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>c2<span class="token punctuation">,</span> <span class="token constant">NULL</span><span class="token punctuation">,</span> consumer<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token keyword">void</span><span class="token operator">*</span><span class="token punctuation">)</span><span class="token string">"消费者 2"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+	<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">pthread_create</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>c2<span class="token punctuation">,</span> <span class="token constant">NULL</span><span class="token punctuation">,</span> consumer<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token keyword">void</span><span class="token operator">*</span><span class="token punctuation">)</span><span class="token string">"消费者2"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 		<span class="token function">perror</span><span class="token punctuation">(</span><span class="token string">"pthread_create"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 	<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">pthread_join</span><span class="token punctuation">(</span>p1<span class="token punctuation">,</span> <span class="token constant">NULL</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token function">perror</span><span class="token punctuation">(</span><span class="token string">"pthread_join"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 	<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">pthread_join</span><span class="token punctuation">(</span>p2<span class="token punctuation">,</span> <span class="token constant">NULL</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token function">perror</span><span class="token punctuation">(</span><span class="token string">"pthread_join"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -385,72 +502,72 @@ sem_t mutex<span class="token punctuation">,</span> empty<span class="token punc
 
 	<span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span></code></pre>
-<p>首先我们定义一个环形队列表示缓冲区，<code>in/out</code> 来表示当前生产者、消费者的缓冲区位置，然后定义 <code>empty</code> 和 <code>full</code> 表示空缓冲区和满缓冲区数目，易知一开始 <code>empty = n</code>，<code>full = 0</code>，倘若刚开始消费者抢到 cpu，则由于 <code>full</code> 为 0 导致阻塞，直到生产者生产物品，令 <code>full++</code>，才能唤醒消费者消费。这里的 <code>mutex</code> 作用是同一时间段只能让一个线程访问缓冲区，即我生产者在生产后将物品放入缓冲区的时候，其他生产者、消费者不能访问缓冲区。</p>
-<p>注意 <code>wait</code> 操作的 <code>empty</code> 和 <code>mutex</code> 之间的顺序不能互换，否则会产生死锁，比如我缓冲区满了，<code>mutex=1</code>,<code>empty=0</code>，这时候生产者再更新缓冲区的时候就会死锁了，消费者的情况同理。</p>
+<p>首先我们定义一个环形队列表示缓冲区，<code>in/out</code>来表示当前生产者、消费者的缓冲区位置，然后定义<code>empty</code>和<code>full</code>表示空缓冲区和满缓冲区数目，易知一开始<code>empty = n</code>，<code>full = 0</code>，倘若刚开始消费者抢到cpu，则由于<code>full</code>为0导致阻塞，直到生产者生产物品，令<code>full++</code>，才能唤醒消费者消费。这里的<code>mutex</code>作用是同一时间段只能让一个线程访问缓冲区，即我生产者在生产后将物品放入缓冲区的时候，其他生产者、消费者不能访问缓冲区。</p>
+<p>注意<code>wait</code>操作的<code>empty</code>和<code>mutex</code>之间的顺序不能互换，否则会产生死锁，比如我缓冲区满了，<code>mutex=1</code>,<code>empty=0</code>，这时候生产者再更新缓冲区的时候就会死锁了，消费者的情况同理。</p>
 <p>下面来看看程序的执行结果，我只摘抄了具代表性的内容：</p>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token operator">&lt;</span > 略 < span class="token operator">></span>
-<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span > 生产者 2<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token operator">&lt;</span>略<span class="token operator">></span>
+<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>生产者2<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
 生产了：2
 <span class="token punctuation">[</span> <span class="token number">2</span> <span class="token number">9</span> <span class="token number">1</span> <span class="token number">2</span> <span class="token punctuation">]</span>
-<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span > 消费者 1<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
+<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>消费者1<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
 缓冲区大小：10
 消费的物品：2
 空缓冲区数量：5
 满缓冲区数量：1
 <span class="token punctuation">[</span> <span class="token number">9</span> <span class="token number">1</span> <span class="token number">2</span> <span class="token punctuation">]</span>
-<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span > 生产者 1<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
+<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>生产者1<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
 生产了：6
 <span class="token punctuation">[</span> <span class="token number">9</span> <span class="token number">1</span> <span class="token number">2</span> <span class="token number">6</span> <span class="token punctuation">]</span>
-<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span > 消费者 2<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
+<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>消费者2<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
 缓冲区大小：10
 消费的物品：9
 空缓冲区数量：5
 满缓冲区数量：1
 <span class="token punctuation">[</span> <span class="token number">1</span> <span class="token number">2</span> <span class="token number">6</span> <span class="token punctuation">]</span>
-<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span > 生产者 2<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
+<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>生产者2<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
 生产了：7
 <span class="token punctuation">[</span> <span class="token number">1</span> <span class="token number">2</span> <span class="token number">6</span> <span class="token number">7</span> <span class="token punctuation">]</span>
-<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span > 消费者 1<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
+<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>消费者1<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
 缓冲区大小：10
 消费的物品：1
 空缓冲区数量：5
 满缓冲区数量：1
 <span class="token punctuation">[</span> <span class="token number">2</span> <span class="token number">6</span> <span class="token number">7</span> <span class="token punctuation">]</span>
-<span class="token operator">&lt;</span > 略 < span class="token operator">></span></code></pre>
+<span class="token operator">&lt;</span>略<span class="token operator">></span></code></pre>
 <p>因为程序的异步的，所以输出结果可能不会是顺序的。</p>
 <p>为了便于分析，我只让一个生产者、一个消费者进行实验，得出如下结果：</p>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token operator">&lt;</span > 略 < span class="token operator">></span>
-<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span > 生产者 1<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token operator">&lt;</span>略<span class="token operator">></span>
+<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>生产者1<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
 生产了：2
 <span class="token punctuation">[</span> <span class="token number">3</span> <span class="token number">6</span> <span class="token number">7</span> <span class="token number">5</span> <span class="token number">3</span> <span class="token number">5</span> <span class="token number">6</span> <span class="token number">2</span> <span class="token punctuation">]</span>
-<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span > 生产者 1<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
+<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>生产者1<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
 生产了：9
 <span class="token punctuation">[</span> <span class="token number">3</span> <span class="token number">6</span> <span class="token number">7</span> <span class="token number">5</span> <span class="token number">3</span> <span class="token number">5</span> <span class="token number">6</span> <span class="token number">2</span> <span class="token number">9</span> <span class="token punctuation">]</span>
-<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span > 生产者 1<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
+<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>生产者1<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
 生产了：1
 <span class="token punctuation">[</span> <span class="token number">3</span> <span class="token number">6</span> <span class="token number">7</span> <span class="token number">5</span> <span class="token number">3</span> <span class="token number">5</span> <span class="token number">6</span> <span class="token number">2</span> <span class="token number">9</span> <span class="token number">1</span> <span class="token punctuation">]</span>
-<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span > 消费者 1<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
+<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>消费者1<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
 缓冲区大小：10
 消费的物品：3
 空缓冲区数量：0
 满缓冲区数量：9
 <span class="token punctuation">[</span> <span class="token number">6</span> <span class="token number">7</span> <span class="token number">5</span> <span class="token number">3</span> <span class="token number">5</span> <span class="token number">6</span> <span class="token number">2</span> <span class="token number">9</span> <span class="token number">1</span> <span class="token punctuation">]</span>
-<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span > 消费者 1<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
+<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>消费者1<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
 缓冲区大小：10
 消费的物品：6
 空缓冲区数量：1
 满缓冲区数量：8
 <span class="token punctuation">[</span> <span class="token number">7</span> <span class="token number">5</span> <span class="token number">3</span> <span class="token number">5</span> <span class="token number">6</span> <span class="token number">2</span> <span class="token number">9</span> <span class="token number">1</span> <span class="token punctuation">]</span>
-<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span > 消费者 1<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
+<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>消费者1<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
 缓冲区大小：10
 消费的物品：7
 空缓冲区数量：2
 满缓冲区数量：7
 <span class="token punctuation">[</span> <span class="token number">5</span> <span class="token number">3</span> <span class="token number">5</span> <span class="token number">6</span> <span class="token number">2</span> <span class="token number">9</span> <span class="token number">1</span> <span class="token punctuation">]</span>
-<span class="token operator">&lt;</span > 略 < span class="token operator">></span></code></pre>
-<p>易知，<code>empty+full == 9</code>，因为我打印的结果是 <code>wait (full)</code> 后的结果，所以为 9 不为 10。</p>
-<h3 id="读者-写者问题">读者 - 写者问题</h3>
-<p>多个读者、多个写者共享资源（例如文件、数据等），允许多个读者同时访问资源，写者写时不允许其他进程读或写 (互斥访问资源)。</p>
+<span class="token operator">&lt;</span>略<span class="token operator">></span></code></pre>
+<p>易知，<code>empty+full == 9</code>，因为我打印的结果是<code>wait(full)</code>后的结果，所以为9不为10。</p>
+<h3 id="读者-写者问题">读者-写者问题</h3>
+<p>多个读者、多个写者共享资源（例如文件、数据等），允许多个读者同时访问资源，写者写时不允许其他进程读或写(互斥访问资源)。</p>
 <ul>
 <li>读者进程：不控制</li>
 <li>写者进程：互斥</li>
@@ -477,20 +594,20 @@ sem_t mutex<span class="token punctuation">,</span> empty<span class="token punc
 sem_t rmutex<span class="token punctuation">,</span> wmutex<span class="token punctuation">;</span>
 <span class="token keyword">int</span> readCnt <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
 
-<span class="token comment">// 读者 </span>
+<span class="token comment">// 读者</span>
 <span class="token keyword">void</span> <span class="token operator">*</span><span class="token function">reader</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token operator">*</span> id<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
 	<span class="token function">sem_wait</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>rmutex<span class="token punctuation">)</span><span class="token punctuation">;</span>
 	<span class="token keyword">if</span><span class="token punctuation">(</span>readCnt <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token function">sem_wait</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>wmutex<span class="token punctuation">)</span><span class="token punctuation">;</span>
 	<span class="token operator">++</span>readCnt<span class="token punctuation">;</span>
 
-	<span class="token comment">// 下面的读操作应该放在 rmutex 外面，但是为了结果好看，就放在里面了 </span>
-	<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"======% s======\n"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token keyword">char</span><span class="token operator">*</span><span class="token punctuation">)</span>id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token comment">// 下面的读操作应该放在rmutex外面，但是为了结果好看，就放在里面了</span>
+	<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"======%s======\n"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token keyword">char</span><span class="token operator">*</span><span class="token punctuation">)</span>id<span class="token punctuation">)</span><span class="token punctuation">;</span>
 	<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">&lt;</span>datap<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span>
-		<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"% c"</span><span class="token punctuation">,</span> data<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%c"</span><span class="token punctuation">,</span> data<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 	<span class="token function">puts</span><span class="token punctuation">(</span><span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 	<span class="token function">sem_post</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>rmutex<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-	<span class="token comment">// 读操作 </span>
+	<span class="token comment">// 读操作</span>
 
 	<span class="token function">sem_wait</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>rmutex<span class="token punctuation">)</span><span class="token punctuation">;</span>
 	<span class="token operator">--</span>readCnt<span class="token punctuation">;</span>
@@ -500,12 +617,12 @@ sem_t rmutex<span class="token punctuation">,</span> wmutex<span class="token pu
 	<span class="token keyword">return</span> <span class="token constant">NULL</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span>
 
-<span class="token comment">// 写者，随意写入一个 128 字节文本 </span>
+<span class="token comment">// 写者，随意写入一个128字节文本</span>
 <span class="token keyword">void</span> <span class="token operator">*</span><span class="token function">writer</span><span class="token punctuation">(</span><span class="token keyword">void</span> <span class="token operator">*</span>id<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
 	<span class="token function">sem_wait</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>wmutex<span class="token punctuation">)</span><span class="token punctuation">;</span>
-	<span class="token comment">// 写 </span>
+	<span class="token comment">// 写</span>
 	<span class="token keyword">if</span><span class="token punctuation">(</span>datap <span class="token operator">==</span> N<span class="token punctuation">)</span> datap <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
-	<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"======% s======\n"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token keyword">char</span><span class="token operator">*</span><span class="token punctuation">)</span>id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"======%s======\n"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token keyword">char</span><span class="token operator">*</span><span class="token punctuation">)</span>id<span class="token punctuation">)</span><span class="token punctuation">;</span>
 	<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token punctuation">;</span> datap <span class="token operator">&lt;</span> N<span class="token punctuation">;</span> <span class="token operator">++</span>datap<span class="token punctuation">)</span>
 		data<span class="token punctuation">[</span>datap<span class="token operator">++</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">rand</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">%</span><span class="token number">26</span> <span class="token operator">+</span> <span class="token string">'a'</span><span class="token punctuation">;</span>
 	<span class="token function">sem_post</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>wmutex<span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -515,20 +632,20 @@ sem_t rmutex<span class="token punctuation">,</span> wmutex<span class="token pu
 
 <span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 <span class="token punctuation">&#123;</span>
-	<span class="token comment">// 初始化信号量 </span>
+	<span class="token comment">// 初始化信号量</span>
 	<span class="token function">sem_init</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>rmutex<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 	<span class="token function">sem_init</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>wmutex<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-	<span class="token comment">// 一个写者，3 个读者 </span>
+	<span class="token comment">// 一个写者，3个读者</span>
 	pthread_t w1<span class="token punctuation">,</span> r1<span class="token punctuation">,</span> r2<span class="token punctuation">,</span> r3<span class="token punctuation">;</span>
 	<span class="token keyword">while</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
 		<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">pthread_create</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>w1<span class="token punctuation">,</span> <span class="token constant">NULL</span><span class="token punctuation">,</span> writer<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token keyword">void</span><span class="token operator">*</span><span class="token punctuation">)</span><span class="token string">"写者"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 			<span class="token function">perror</span><span class="token punctuation">(</span><span class="token string">"pthread_create"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-		<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">pthread_create</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>r1<span class="token punctuation">,</span> <span class="token constant">NULL</span><span class="token punctuation">,</span> reader<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token keyword">void</span><span class="token operator">*</span><span class="token punctuation">)</span><span class="token string">"读者 1"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+		<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">pthread_create</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>r1<span class="token punctuation">,</span> <span class="token constant">NULL</span><span class="token punctuation">,</span> reader<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token keyword">void</span><span class="token operator">*</span><span class="token punctuation">)</span><span class="token string">"读者1"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 			<span class="token function">perror</span><span class="token punctuation">(</span><span class="token string">"pthread_create"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-		<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">pthread_create</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>r2<span class="token punctuation">,</span> <span class="token constant">NULL</span><span class="token punctuation">,</span> reader<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token keyword">void</span><span class="token operator">*</span><span class="token punctuation">)</span><span class="token string">"读者 2"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+		<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">pthread_create</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>r2<span class="token punctuation">,</span> <span class="token constant">NULL</span><span class="token punctuation">,</span> reader<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token keyword">void</span><span class="token operator">*</span><span class="token punctuation">)</span><span class="token string">"读者2"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 			<span class="token function">perror</span><span class="token punctuation">(</span><span class="token string">"pthread_create"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-		<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">pthread_create</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>r3<span class="token punctuation">,</span> <span class="token constant">NULL</span><span class="token punctuation">,</span> reader<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token keyword">void</span><span class="token operator">*</span><span class="token punctuation">)</span><span class="token string">"读者 3"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+		<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">pthread_create</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>r3<span class="token punctuation">,</span> <span class="token constant">NULL</span><span class="token punctuation">,</span> reader<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token keyword">void</span><span class="token operator">*</span><span class="token punctuation">)</span><span class="token string">"读者3"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 			<span class="token function">perror</span><span class="token punctuation">(</span><span class="token string">"pthread_create"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 		<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">pthread_join</span><span class="token punctuation">(</span>r1<span class="token punctuation">,</span> <span class="token constant">NULL</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token function">perror</span><span class="token punctuation">(</span><span class="token string">"pthread_join"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 		<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">pthread_join</span><span class="token punctuation">(</span>r2<span class="token punctuation">,</span> <span class="token constant">NULL</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token function">perror</span><span class="token punctuation">(</span><span class="token string">"pthread_join"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -539,26 +656,26 @@ sem_t rmutex<span class="token punctuation">,</span> wmutex<span class="token pu
 	<span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span></code></pre>
 <p>这里因为可以有任意个读者访问内容，所以当我在读的时候，是不允许你写的；当你在写的时候，是不允许其他线程读、写。</p>
-<p>所以我这里用 <code>readCnt</code> 标记正在读的线程数，初始化为 0，倘若第一个读者抢到 cpu，由于 <code>readCnt==0</code>，所以将 <code>wait (wmutex)</code>，后面若写者进行写的时候就会被阻塞。若其他读线程访问内容，也会对 <code>readCnt</code> 做出修改，所以这个 <code>readCnt</code> 为读者线程的临界资源，需要在临界资源前后用 <code>rmutex</code> 互斥访问。当最后一个读者线程结束时，<code>readCnt==0</code>，这时候会 <code>signal (wmutex)</code>，即会唤醒写者线程，后面若有读者要访问，将会被阻塞，直到写线程结束。</p>
+<p>所以我这里用<code>readCnt</code>标记正在读的线程数，初始化为0，倘若第一个读者抢到cpu，由于<code>readCnt==0</code>，所以将<code>wait(wmutex)</code>，后面若写者进行写的时候就会被阻塞。若其他读线程访问内容，也会对<code>readCnt</code>做出修改，所以这个<code>readCnt</code>为读者线程的临界资源，需要在临界资源前后用<code>rmutex</code>互斥访问。当最后一个读者线程结束时，<code>readCnt==0</code>，这时候会<code>signal(wmutex)</code>，即会唤醒写者线程，后面若有读者要访问，将会被阻塞，直到写线程结束。</p>
 <p>运行效果：</p>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span > 写者 < span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
-<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span > 读者 3<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>写者<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
+<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>读者3<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
 rgoqkzrlqiiecwukozljwpeulyharmckvrafsrqibaodyinnjbygsccdbkfuyket
-<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span > 读者 2<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
+<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>读者2<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
 rgoqkzrlqiiecwukozljwpeulyharmckvrafsrqibaodyinnjbygsccdbkfuyket
-<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span > 读者 1<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
+<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>读者1<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
 rgoqkzrlqiiecwukozljwpeulyharmckvrafsrqibaodyinnjbygsccdbkfuyket
-<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span > 写者 < span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
-<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span > 读者 1<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
+<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>写者<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
+<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>读者1<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
 deavxtfyttcubphnqfvkhxokjvgihkdkqgfnzkmudqohfvuycrimoyyawfkdrpok
-<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span > 读者 2<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
+<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>读者2<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
 deavxtfyttcubphnqfvkhxokjvgihkdkqgfnzkmudqohfvuycrimoyyawfkdrpok
-<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span > 读者 3<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
+<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>读者3<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
 deavxtfyttcubphnqfvkhxokjvgihkdkqgfnzkmudqohfvuycrimoyyawfkdrpok</code></pre>
 <h3 id="参考资料">参考资料</h3>
 <ul>
 <li>《计算机操作系统（第四版）》</li>
-<li>《Linux/Unix 系统编程手册》第 53 章</li>
+<li>《Linux/Unix系统编程手册》第53章</li>
 </ul>
 
     
@@ -570,7 +687,7 @@ deavxtfyttcubphnqfvkhxokjvgihkdkqgfnzkmudqohfvuycrimoyyawfkdrpok</code></pre>
    
        <div class="original">
     <ul>
-        <li>本文标题：Linux POSIX 信号量解决经典进程同步问题</li>
+        <li>本文标题：Linux POSIX信号量解决经典进程同步问题</li>
         <li>本文字数：2.4k</li>
         <li>本文作者：Netcan</li>
         <li>发布时间：2016年09月24日 - 19时28分</li>
@@ -791,22 +908,7 @@ gitalk.render('gitalk-container')
       // load success
     });
   }
-</script>
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </body>
 </html>

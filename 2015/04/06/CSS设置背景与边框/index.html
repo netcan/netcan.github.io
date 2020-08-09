@@ -7,7 +7,7 @@
 <head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
-  <title>CSS 设置背景与边框 | Netcan on Programming</title>
+  <title>CSS设置背景与边框 | Netcan on Programming</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -15,12 +15,12 @@
     <meta name="keywords" content="CSS," />
   
 
-  <meta name="description" content="清明节都呆在宿舍了，博客也没怎么写，书都看完了 &#x3D; &#x3D; 赶紧更新和室友打红警。。。 设置背景： 背景颜色 (background-color) 默认背景色为透明 (transparent) &amp;#123; background-color： transparent|color; &amp;#125;  背景图片 (background-image) 用于设定标记的背景图片。 &amp;#123; backgroun">
+  <meta name="description" content="清明节都呆在宿舍了，博客也没怎么写，书都看完了&#x3D; &#x3D; 赶紧更新和室友打红警。。。 设置背景： 背景颜色(background-color) 默认背景色为透明(transparent) &amp;#123; background-color： transparent|color; &amp;#125;  背景图片(background-image) 用于设定标记的背景图片。 &amp;#123; background-im">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CSS 设置背景与边框">
+<meta property="og:title" content="CSS设置背景与边框">
 <meta property="og:url" content="https://netcan.github.io/2015/04/06/CSS%E8%AE%BE%E7%BD%AE%E8%83%8C%E6%99%AF%E4%B8%8E%E8%BE%B9%E6%A1%86/index.html">
 <meta property="og:site_name" content="Netcan on Programming">
-<meta property="og:description" content="清明节都呆在宿舍了，博客也没怎么写，书都看完了 &#x3D; &#x3D; 赶紧更新和室友打红警。。。 设置背景： 背景颜色 (background-color) 默认背景色为透明 (transparent) &amp;#123; background-color： transparent|color; &amp;#125;  背景图片 (background-image) 用于设定标记的背景图片。 &amp;#123; backgroun">
+<meta property="og:description" content="清明节都呆在宿舍了，博客也没怎么写，书都看完了&#x3D; &#x3D; 赶紧更新和室友打红警。。。 设置背景： 背景颜色(background-color) 默认背景色为透明(transparent) &amp;#123; background-color： transparent|color; &amp;#125;  背景图片(background-image) 用于设定标记的背景图片。 &amp;#123; background-im">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2015-04-06T07:35:16.000Z">
 <meta property="article:modified_time" content="2015-04-06T07:35:16.000Z">
@@ -93,8 +93,125 @@ ga('send', 'pageview');
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
   
 
-<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"] > svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
 <body>
 
@@ -190,7 +307,7 @@ ga('send', 'pageview');
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E8%83%8C%E6%99%AF%EF%BC%9A"><span class="toc-text">设置背景：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%83%8C%E6%99%AF%E9%A2%9C%E8%89%B2-background-color"><span class="toc-text">背景颜色 (background-color)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%83%8C%E6%99%AF%E5%9B%BE%E7%89%87-background-image"><span class="toc-text">背景图片 (background-image)</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%83%8C%E6%99%AF%E5%9B%BE%E7%89%87%E9%87%8D%E5%A4%8D-background-repeat"><span class="toc-text">背景图片重复 (background-repeat)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%83%8C%E6%99%AF%E5%9B%BE%E7%89%87%E6%98%BE%E7%A4%BA-background-attachment"><span class="toc-text">背景图片显示 (background-attachment)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%83%8C%E6%99%AF%E5%9B%BE%E7%89%87%E7%9A%84%E4%BD%8D%E7%BD%AE-background-position"><span class="toc-text">背景图片的位置 (background-position)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E5%9B%BE%E7%89%87%E5%A4%A7%E5%B0%8F-background-size"><span class="toc-text">设置图片大小 (background-size)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%83%8C%E6%99%AF%E5%A4%8D%E5%90%88%E5%B1%9E%E6%80%A7-background"><span class="toc-text">背景复合属性 (background)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E8%BE%B9%E6%A1%86"><span class="toc-text">设置边框</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BE%B9%E6%A1%86%E6%A0%B7%E5%BC%8F-border-style"><span class="toc-text">边框样式 (border-style)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BE%B9%E6%A1%86%E9%A2%9C%E8%89%B2-border-color"><span class="toc-text">边框颜色 (border-color)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BE%B9%E6%A1%86%E7%BA%BF%E5%AE%BD-border-width"><span class="toc-text">边框线宽 (border-width)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BE%B9%E6%A1%86%E5%A4%8D%E5%90%88%E5%B1%9E%E6%80%A7-border"><span class="toc-text">边框复合属性 (border)</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E8%83%8C%E6%99%AF%EF%BC%9A"><span class="toc-text">设置背景：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%83%8C%E6%99%AF%E9%A2%9C%E8%89%B2-background-color"><span class="toc-text">背景颜色(background-color)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%83%8C%E6%99%AF%E5%9B%BE%E7%89%87-background-image"><span class="toc-text">背景图片(background-image)</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%83%8C%E6%99%AF%E5%9B%BE%E7%89%87%E9%87%8D%E5%A4%8D-background-repeat"><span class="toc-text">背景图片重复(background-repeat)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%83%8C%E6%99%AF%E5%9B%BE%E7%89%87%E6%98%BE%E7%A4%BA-background-attachment"><span class="toc-text">背景图片显示(background-attachment)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%83%8C%E6%99%AF%E5%9B%BE%E7%89%87%E7%9A%84%E4%BD%8D%E7%BD%AE-background-position"><span class="toc-text">背景图片的位置(background-position)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E5%9B%BE%E7%89%87%E5%A4%A7%E5%B0%8F-background-size"><span class="toc-text">设置图片大小(background-size)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%83%8C%E6%99%AF%E5%A4%8D%E5%90%88%E5%B1%9E%E6%80%A7-background"><span class="toc-text">背景复合属性(background)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E8%BE%B9%E6%A1%86"><span class="toc-text">设置边框</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BE%B9%E6%A1%86%E6%A0%B7%E5%BC%8F-border-style"><span class="toc-text">边框样式(border-style)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BE%B9%E6%A1%86%E9%A2%9C%E8%89%B2-border-color"><span class="toc-text">边框颜色(border-color)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BE%B9%E6%A1%86%E7%BA%BF%E5%AE%BD-border-width"><span class="toc-text">边框线宽(border-width)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BE%B9%E6%A1%86%E5%A4%8D%E5%90%88%E5%B1%9E%E6%80%A7-border"><span class="toc-text">边框复合属性(border)</span></a></li></ol></li></ol>
   </div>
 
 
@@ -198,7 +315,7 @@ ga('send', 'pageview');
 <div class="content content-post CENTER">
    <article id="post-CSS设置背景与边框" class="article article-type-post" itemprop="blogPost">
   <header class="article-header">
-    <h1 class="post-title">CSS 设置背景与边框</h1>
+    <h1 class="post-title">CSS设置背景与边框</h1>
 
     <div class="article-meta">
       <span>
@@ -236,50 +353,50 @@ ga('send', 'pageview');
 
   <div class="article-content">
     
-      <p>清明节都呆在宿舍了，博客也没怎么写，书都看完了 = =</p>
+      <p>清明节都呆在宿舍了，博客也没怎么写，书都看完了= =</p>
 <p>赶紧更新和室友打红警。。。</p>
 <h3 id="设置背景：">设置背景：</h3>
-<h4 id="背景颜色-background-color">背景颜色 (<a target="_blank" rel="noopener" href="http://www.w3school.com.cn/cssref/pr_background.asp">background-color</a>)</h4>
-<p>默认背景色为透明 (transparent)</p>
+<h4 id="背景颜色-background-color">背景颜色(<a target="_blank" rel="noopener" href="http://www.w3school.com.cn/cssref/pr_background.asp">background-color</a>)</h4>
+<p>默认背景色为透明(transparent)</p>
 <pre><code>&#123; background-color： transparent|color; &#125;
 </code></pre>
-<h4 id="背景图片-background-image">背景图片 (<a target="_blank" rel="noopener" href="http://www.w3school.com.cn/cssref/pr_background-image.asp">background-image</a>)</h4>
+<h4 id="背景图片-background-image">背景图片(<a target="_blank" rel="noopener" href="http://www.w3school.com.cn/cssref/pr_background-image.asp">background-image</a>)</h4>
 <p>用于设定标记的背景图片。</p>
-<pre><code>&#123; background-image: none|url (url); &#125;
+<pre><code>&#123; background-image: none|url(url); &#125;
 </code></pre>
-<h5 id="背景图片重复-background-repeat">背景图片重复 (<a target="_blank" rel="noopener" href="http://www.w3school.com.cn/cssref/pr_background-repeat.asp">background-repeat</a>)</h5>
+<h5 id="背景图片重复-background-repeat">背景图片重复(<a target="_blank" rel="noopener" href="http://www.w3school.com.cn/cssref/pr_background-repeat.asp">background-repeat</a>)</h5>
 <p>可设置图片的重复方式，包括水平重复，垂直重复和不重复等。</p>
 <pre><code>&#123; background-repeat: repeat|repeat-x|repeat-y|no-repeat; &#125;
 </code></pre>
-<h5 id="背景图片显示-background-attachment">背景图片显示 (<a target="_blank" rel="noopener" href="http://www.w3school.com.cn/cssref/pr_background-attachment.asp">background-attachment</a>)</h5>
+<h5 id="背景图片显示-background-attachment">背景图片显示(<a target="_blank" rel="noopener" href="http://www.w3school.com.cn/cssref/pr_background-attachment.asp">background-attachment</a>)</h5>
 <p>该属性用来设定背景图片是否随文档一起滚动。</p>
 <pre><code>&#123; background-attachment: scroll|fixed; &#125;
 </code></pre>
-<h5 id="背景图片的位置-background-position">背景图片的位置 (<a target="_blank" rel="noopener" href="http://www.w3school.com.cn/cssref/pr_background-position.asp">background-position</a>)</h5>
+<h5 id="背景图片的位置-background-position">背景图片的位置(<a target="_blank" rel="noopener" href="http://www.w3school.com.cn/cssref/pr_background-position.asp">background-position</a>)</h5>
 <p>指定背景图片在页面所处的位置。</p>
 <pre><code>&#123; background-position: length|percentage|top|center|bottom|left|right; &#125;
 </code></pre>
-<h5 id="设置图片大小-background-size">设置图片大小 (<a target="_blank" rel="noopener" href="http://www.w3school.com.cn/cssref/pr_background-size.asp">background-size</a>)</h5>
+<h5 id="设置图片大小-background-size">设置图片大小(<a target="_blank" rel="noopener" href="http://www.w3school.com.cn/cssref/pr_background-size.asp">background-size</a>)</h5>
 <pre><code>&#123; background-size: [&lt;length&gt;|&lt;percentage&gt;|auto]|cover|contain; &#125;
 </code></pre>
-<h5 id="背景复合属性-background">背景复合属性 (<a target="_blank" rel="noopener" href="http://www.w3school.com.cn/cssref/pr_background.asp">background</a>)</h5>
+<h5 id="背景复合属性-background">背景复合属性(<a target="_blank" rel="noopener" href="http://www.w3school.com.cn/cssref/pr_background.asp">background</a>)</h5>
 <p>综合了以上所有与背景有关的属性，可以一次性地设定背景样式。</p>
 <pre><code>&#123; background: [background-color][background-image][background-repeat][background-attachment][background-position][background-size][background-clip][background-origin]; &#125;
 </code></pre>
 <h3 id="设置边框">设置边框</h3>
-<h3 id="边框样式-border-style">边框样式 (<a target="_blank" rel="noopener" href="http://www.w3school.com.cn/cssref/pr_border-style.asp">border-style</a>)</h3>
+<h3 id="边框样式-border-style">边框样式(<a target="_blank" rel="noopener" href="http://www.w3school.com.cn/cssref/pr_border-style.asp">border-style</a>)</h3>
 <p>主要用于为页面元素添加边框。</p>
 <pre><code>&#123; border-style: none|hidden|dotted|dashed|solid|double|groove|ridge|inset|outset; &#125;
 </code></pre>
-<h4 id="边框颜色-border-color">边框颜色 (<a target="_blank" rel="noopener" href="http://www.w3school.com.cn/cssref/pr_border-color.asp">border-color</a>)</h4>
+<h4 id="边框颜色-border-color">边框颜色(<a target="_blank" rel="noopener" href="http://www.w3school.com.cn/cssref/pr_border-color.asp">border-color</a>)</h4>
 <p>可以设置边框的颜色</p>
 <pre><code>&#123; border-color: color; &#125;
 </code></pre>
-<h4 id="边框线宽-border-width">边框线宽 (<a target="_blank" rel="noopener" href="http://www.w3school.com.cn/cssref/pr_border-width.asp">border-width</a>)</h4>
+<h4 id="边框线宽-border-width">边框线宽(<a target="_blank" rel="noopener" href="http://www.w3school.com.cn/cssref/pr_border-width.asp">border-width</a>)</h4>
 <p>设置边框的宽度。</p>
 <pre><code>&#123; border-width: medium|thin|thick|length; &#125;
 </code></pre>
-<h4 id="边框复合属性-border">边框复合属性 (<a target="_blank" rel="noopener" href="http://www.w3school.com.cn/cssref/pr_border.asp">border</a>)</h4>
+<h4 id="边框复合属性-border">边框复合属性(<a target="_blank" rel="noopener" href="http://www.w3school.com.cn/cssref/pr_border.asp">border</a>)</h4>
 <p>集合了以上介绍的几种属性。</p>
 <pre><code>&#123; border: border-width|border-style|border-color; &#125;
 </code></pre>
@@ -293,7 +410,7 @@ ga('send', 'pageview');
    
        <div class="original">
     <ul>
-        <li>本文标题：CSS 设置背景与边框</li>
+        <li>本文标题：CSS设置背景与边框</li>
         <li>本文字数：372</li>
         <li>本文作者：Netcan</li>
         <li>发布时间：2015年04月06日 - 15时35分</li>
@@ -514,22 +631,7 @@ gitalk.render('gitalk-container')
       // load success
     });
   }
-</script>
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </body>
 </html>

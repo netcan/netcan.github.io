@@ -7,7 +7,7 @@
 <head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
-  <title>PHP 与 Web 页面交互 | Netcan on Programming</title>
+  <title>PHP与Web页面交互 | Netcan on Programming</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -15,12 +15,12 @@
     <meta name="keywords" content="PHP," />
   
 
-  <meta name="description" content="PHP 基本上搞定了，还差最后一章 PHP 图形处理。 这节也通过一堆代码来写吧，很好理解的。 首先是 web 页面，file.html 页面用来测试收集数据和上传文件。 &lt;html&gt; &lt;head&gt; 	&lt;meta charset&#x3D;&quot;utf-8&quot;&gt; 	&lt;title&gt; 测试 PHP 与 Web 交互与文件 &#x2F; 目录操作 &lt; span class&#x3D;&quot;token tag&quot;&gt;&lt;">
+  <meta name="description" content="PHP基本上搞定了，还差最后一章PHP图形处理。 这节也通过一堆代码来写吧，很好理解的。 首先是web页面，file.html页面用来测试收集数据和上传文件。 &lt;html&gt; &lt;head&gt; 	&lt;meta charset&#x3D;&quot;utf-8&quot;&gt; 	&lt;title&gt;测试PHP与Web交互与文件&#x2F;目录操作&lt;&#x2F;title&gt; &lt;&#x2F;head&gt; &lt;body&gt; &lt;center">
 <meta property="og:type" content="article">
-<meta property="og:title" content="PHP 与 Web 页面交互">
+<meta property="og:title" content="PHP与Web页面交互">
 <meta property="og:url" content="https://netcan.github.io/2015/03/15/PHP%E4%B8%8EWeb%E9%A1%B5%E9%9D%A2%E4%BA%A4%E4%BA%92/index.html">
 <meta property="og:site_name" content="Netcan on Programming">
-<meta property="og:description" content="PHP 基本上搞定了，还差最后一章 PHP 图形处理。 这节也通过一堆代码来写吧，很好理解的。 首先是 web 页面，file.html 页面用来测试收集数据和上传文件。 &lt;html&gt; &lt;head&gt; 	&lt;meta charset&#x3D;&quot;utf-8&quot;&gt; 	&lt;title&gt; 测试 PHP 与 Web 交互与文件 &#x2F; 目录操作 &lt; span class&#x3D;&quot;token tag&quot;&gt;&lt;">
+<meta property="og:description" content="PHP基本上搞定了，还差最后一章PHP图形处理。 这节也通过一堆代码来写吧，很好理解的。 首先是web页面，file.html页面用来测试收集数据和上传文件。 &lt;html&gt; &lt;head&gt; 	&lt;meta charset&#x3D;&quot;utf-8&quot;&gt; 	&lt;title&gt;测试PHP与Web交互与文件&#x2F;目录操作&lt;&#x2F;title&gt; &lt;&#x2F;head&gt; &lt;body&gt; &lt;center">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://7xibui.com1.z0.glb.clouddn.com/2015/03/blob2.png">
 <meta property="og:image" content="http://7xibui.com1.z0.glb.clouddn.com/2015/03/blob5.png">
@@ -97,8 +97,125 @@ ga('send', 'pageview');
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
   
 
-<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"] > svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
 <body>
 
@@ -197,7 +314,7 @@ ga('send', 'pageview');
 <div class="content content-post CENTER">
    <article id="post-PHP与Web页面交互" class="article article-type-post" itemprop="blogPost">
   <header class="article-header">
-    <h1 class="post-title">PHP 与 Web 页面交互</h1>
+    <h1 class="post-title">PHP与Web页面交互</h1>
 
     <div class="article-meta">
       <span>
@@ -235,27 +352,27 @@ ga('send', 'pageview');
 
   <div class="article-content">
     
-      <p>PHP 基本上搞定了，还差最后一章 PHP 图形处理。</p>
+      <p>PHP基本上搞定了，还差最后一章PHP图形处理。</p>
 <p>这节也通过一堆代码来写吧，很好理解的。</p>
-<p>首先是 web 页面，file.html 页面用来测试收集数据和上传文件。</p>
+<p>首先是web页面，file.html页面用来测试收集数据和上传文件。</p>
 <pre class="language-html" data-language="html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span>
 	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">charset</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>utf-8<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
-	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span > 测试 PHP 与 Web 交互与文件 / 目录操作 < span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span>测试PHP与Web交互与文件/目录操作<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>center</span><span class="token punctuation">></span></span>
-	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h2</span><span class="token punctuation">></span></span > 测试 PHP 与 Web 交互与文件 / 目录操作 < span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h2</span><span class="token punctuation">></span></span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h2</span><span class="token punctuation">></span></span>测试PHP与Web交互与文件/目录操作<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h2</span><span class="token punctuation">></span></span>
 	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>form</span> <span class="token attr-name">action</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>file.php<span class="token punctuation">"</span></span> <span class="token attr-name">method</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>post<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
 		<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>table</span><span class="token punctuation">></span></span>
 			<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>tr</span> <span class="token attr-name">bgcolor</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>#3399ff<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
-				<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span><span class="token punctuation">></span></span > 用户名:<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>text<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>name<span class="token punctuation">"</span></span> <span class="token attr-name">size</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>20<span class="token punctuation">"</span></span> <span class="token attr-name">maxLength</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>20<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span>
+				<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span><span class="token punctuation">></span></span>用户名:<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>text<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>name<span class="token punctuation">"</span></span> <span class="token attr-name">size</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>20<span class="token punctuation">"</span></span> <span class="token attr-name">maxLength</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>20<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span>
 			<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>tr</span><span class="token punctuation">></span></span>
 			<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>tr</span> <span class="token attr-name">bgcolor</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>#CCCCCC<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
-				<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span><span class="token punctuation">></span></span > 性别:<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>center</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>radio<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sex<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>1<span class="token punctuation">"</span></span> <span class="token attr-name">checked</span><span class="token punctuation">/></span></span > 男 < span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>radio<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sex<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>2<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span > 女 < span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>center</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span>
+				<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span><span class="token punctuation">></span></span>性别:<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>center</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>radio<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sex<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>1<span class="token punctuation">"</span></span> <span class="token attr-name">checked</span><span class="token punctuation">/></span></span>男<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>radio<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sex<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>2<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>女<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>center</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span>
 			<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>tr</span><span class="token punctuation">></span></span>
 			<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>tr</span> <span class="token attr-name">bgcolor</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>#4ADDFF<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
-				<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span><span class="token punctuation">></span></span > 擅长:<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span>
+				<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span><span class="token punctuation">></span></span>擅长:<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span>
 				<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span><span class="token punctuation">></span></span>
 				<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>center</span><span class="token punctuation">></span></span>
 					<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>select</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>fav<span class="token punctuation">"</span></span> <span class="token punctuation">></span></span>
@@ -269,30 +386,30 @@ ga('send', 'pageview');
 				<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span>
 			<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>tr</span><span class="token punctuation">></span></span>
 			<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>tr</span> <span class="token attr-name">bgcolor</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>#CAFF0D<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
-				<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span><span class="token punctuation">></span></span > 密码:<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>password<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>passwd<span class="token punctuation">"</span></span> <span class="token attr-name">size</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>20<span class="token punctuation">"</span></span> <span class="token attr-name">maxLength</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>20<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span> 
+				<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span><span class="token punctuation">></span></span>密码:<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>password<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>passwd<span class="token punctuation">"</span></span> <span class="token attr-name">size</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>20<span class="token punctuation">"</span></span> <span class="token attr-name">maxLength</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>20<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span> 
 			<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>tr</span><span class="token punctuation">></span></span>
 			<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>tr</span> <span class="token attr-name">bgcolor</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>#CAFF0D<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
-				<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span><span class="token punctuation">></span></span > 确认:<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>password<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>repasswd<span class="token punctuation">"</span></span> <span class="token attr-name">size</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>20<span class="token punctuation">"</span></span> <span class="token attr-name">maxLength</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>20<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span> 
+				<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span><span class="token punctuation">></span></span>确认:<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>password<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>repasswd<span class="token punctuation">"</span></span> <span class="token attr-name">size</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>20<span class="token punctuation">"</span></span> <span class="token attr-name">maxLength</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>20<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span> 
 			<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>tr</span><span class="token punctuation">></span></span>
 			<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>tr</span> <span class="token attr-name">bgcolor</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>#E8950C<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
-				<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span> <span class="token attr-name">colspan</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span>2</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>center</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>reset<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span > 重置 < span class="token punctuation">"</span></span><span class="token punctuation">/></span></span>
-						<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>submit<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span > 提交 < span class="token punctuation">"</span></span><span class="token punctuation">/></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>center</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span>
+				<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span> <span class="token attr-name">colspan</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span>2</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>center</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>reset<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>重置<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span>
+						<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>submit<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>提交<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>center</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span>
 			<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>tr</span><span class="token punctuation">></span></span>
 		<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>table</span><span class="token punctuation">></span></span>
 	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>form</span><span class="token punctuation">></span></span>
-	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h2</span><span class="token punctuation">></span></span > 测试文件上传 < span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h2</span><span class="token punctuation">></span></span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h2</span><span class="token punctuation">></span></span>测试文件上传<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h2</span><span class="token punctuation">></span></span>
 	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>form</span> <span class="token attr-name">method</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>post<span class="token punctuation">"</span></span> <span class="token attr-name">action</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>upload.php<span class="token punctuation">"</span></span> <span class="token attr-name">enctype</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>multipart/form-data<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
 		<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>file<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>upload<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span>
-		<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>submit<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span > 上传 < span class="token punctuation">"</span></span><span class="token punctuation">/></span></span>
+		<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>submit<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>上传<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span>
 	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>form</span><span class="token punctuation">></span></span>
 
 
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span></code></pre>
-<p>其次是 file.php，处理表单接收的数据，并写入文件 file.data，然后读取。</p>
+<p>其次是file.php，处理表单接收的数据，并写入文件file.data，然后读取。</p>
 <pre class="language-php" data-language="php"><code class="language-php"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">charset</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>utf-8<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
 <span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
-   <span class="token keyword">echo</span> <span class="token double-quoted-string string">"&lt;h2 > 测试 PHP 与 Web 交互与文件 / 目录操作 & lt;/h2>"</span><span class="token punctuation">;</span>
+   <span class="token keyword">echo</span> <span class="token double-quoted-string string">"&lt;h2>测试PHP与Web交互与文件/目录操作&lt;/h2>"</span><span class="token punctuation">;</span>
    <span class="token variable">$name</span> <span class="token operator">=</span> <span class="token function">trim</span><span class="token punctuation">(</span><span class="token variable">$_POST</span><span class="token punctuation">[</span><span class="token single-quoted-string string">'name'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
    <span class="token variable">$sex</span> <span class="token operator">=</span> <span class="token function">trim</span><span class="token punctuation">(</span><span class="token variable">$_POST</span><span class="token punctuation">[</span><span class="token single-quoted-string string">'sex'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
    <span class="token variable">$fav</span> <span class="token operator">=</span> <span class="token function">trim</span><span class="token punctuation">(</span><span class="token variable">$_POST</span><span class="token punctuation">[</span><span class="token single-quoted-string string">'fav'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -300,25 +417,25 @@ ga('send', 'pageview');
    <span class="token variable">$passwd</span> <span class="token operator">=</span> <span class="token function">trim</span><span class="token punctuation">(</span><span class="token variable">$_POST</span><span class="token punctuation">[</span><span class="token single-quoted-string string">'passwd'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
    <span class="token variable">$repasswd</span> <span class="token operator">=</span> <span class="token function">trim</span><span class="token punctuation">(</span><span class="token variable">$_POST</span><span class="token punctuation">[</span><span class="token single-quoted-string string">'repasswd'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token variable">$passwd</span> <span class="token operator">!=</span> <span class="token variable">$repasswd</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-      <span class="token keyword">echo</span> <span class="token double-quoted-string string">"&lt;script>alert (\" 密码不一致！\");history.go (-1);&lt;/script>"</span><span class="token punctuation">;</span>
+      <span class="token keyword">echo</span> <span class="token double-quoted-string string">"&lt;script>alert(\"密码不一致!\");history.go(-1);&lt;/script>"</span><span class="token punctuation">;</span>
 	  <span class="token keyword">exit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
    <span class="token punctuation">&#125;</span>
    @<span class="token variable">$sav</span> <span class="token operator">=</span> <span class="token function">fopen</span><span class="token punctuation">(</span><span class="token double-quoted-string string">"./file.data"</span><span class="token punctuation">,</span> <span class="token double-quoted-string string">"a+b"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
    <span class="token function">fwrite</span><span class="token punctuation">(</span><span class="token variable">$sav</span><span class="token punctuation">,</span> <span class="token function">date</span><span class="token punctuation">(</span><span class="token double-quoted-string string">"Y-M-D H:i:s"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token double-quoted-string string">"\t<span class="token interpolation"><span class="token variable">$name</span></span>\t<span class="token interpolation"><span class="token variable">$sex</span></span>\t<span class="token interpolation"><span class="token variable">$fav</span></span>\t<span class="token interpolation"><span class="token variable">$passwd</span></span>\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
    <span class="token function">rewind</span><span class="token punctuation">(</span><span class="token variable">$sav</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-   <span class="token keyword">echo</span> <span class="token double-quoted-string string">"信息已提交！&lt;br>"</span><span class="token punctuation">;</span>
+   <span class="token keyword">echo</span> <span class="token double-quoted-string string">"信息已提交!&lt;br>"</span><span class="token punctuation">;</span>
    <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">feof</span><span class="token punctuation">(</span><span class="token variable">$sav</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
       <span class="token keyword">echo</span> <span class="token function">fgets</span><span class="token punctuation">(</span><span class="token variable">$sav</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token double-quoted-string string">"&lt;br>"</span><span class="token punctuation">;</span>
    <span class="token function">fclose</span><span class="token punctuation">(</span><span class="token variable">$sav</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token delimiter important">?></span></span></code></pre>
-<p>最后是上传的 upload.php，用来处理上传的文件，和操作目录。</p>
+<p>最后是上传的upload.php，用来处理上传的文件，和操作目录。</p>
 <pre class="language-php" data-language="php"><code class="language-php"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">charset</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>utf-8<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
 <span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
    <span class="token function">define</span><span class="token punctuation">(</span><span class="token double-quoted-string string">"UPLOAD"</span><span class="token punctuation">,</span> <span class="token double-quoted-string string">"./uploads/"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-   <span class="token keyword">echo</span> <span class="token double-quoted-string string">"&lt;h2 > 测试文件上传 & lt;/h2>"</span><span class="token punctuation">;</span>
-   <span class="token keyword">echo</span> <span class="token double-quoted-string string">"上传文件名:"</span><span class="token punctuation">.</span><span class="token variable">$_FILES</span><span class="token punctuation">[</span><span class="token single-quoted-string string">'upload'</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token single-quoted-string string">'name'</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token double-quoted-string string">"&lt;br>"</span><span class="token punctuation">;</span>
-   <span class="token keyword">echo</span> <span class="token double-quoted-string string">"上传文件类型:"</span><span class="token punctuation">.</span><span class="token variable">$_FILES</span><span class="token punctuation">[</span><span class="token single-quoted-string string">'upload'</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token single-quoted-string string">'type'</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token double-quoted-string string">"&lt;br>"</span><span class="token punctuation">;</span>
-   <span class="token keyword">echo</span> <span class="token double-quoted-string string">"上传文件大小:"</span><span class="token punctuation">.</span><span class="token variable">$_FILES</span><span class="token punctuation">[</span><span class="token single-quoted-string string">'upload'</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token single-quoted-string string">'size'</span><span class="token punctuation">]</span><span class="token operator">/</span><span class="token number">1024</span><span class="token punctuation">;</span>
+   <span class="token keyword">echo</span> <span class="token double-quoted-string string">"&lt;h2>测试文件上传&lt;/h2>"</span><span class="token punctuation">;</span>
+   <span class="token keyword">echo</span> <span class="token double-quoted-string string">"上传文件名: "</span><span class="token punctuation">.</span><span class="token variable">$_FILES</span><span class="token punctuation">[</span><span class="token single-quoted-string string">'upload'</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token single-quoted-string string">'name'</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token double-quoted-string string">"&lt;br>"</span><span class="token punctuation">;</span>
+   <span class="token keyword">echo</span> <span class="token double-quoted-string string">"上传文件类型: "</span><span class="token punctuation">.</span><span class="token variable">$_FILES</span><span class="token punctuation">[</span><span class="token single-quoted-string string">'upload'</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token single-quoted-string string">'type'</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token double-quoted-string string">"&lt;br>"</span><span class="token punctuation">;</span>
+   <span class="token keyword">echo</span> <span class="token double-quoted-string string">"上传文件大小: "</span><span class="token punctuation">.</span><span class="token variable">$_FILES</span><span class="token punctuation">[</span><span class="token single-quoted-string string">'upload'</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token single-quoted-string string">'size'</span><span class="token punctuation">]</span><span class="token operator">/</span><span class="token number">1024</span><span class="token punctuation">;</span>
    <span class="token keyword">echo</span> <span class="token double-quoted-string string">"kb&lt;br>"</span><span class="token punctuation">;</span>
    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">file_exists</span><span class="token punctuation">(</span><span class="token constant">UPLOAD</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 	  <span class="token function">mkdir</span><span class="token punctuation">(</span><span class="token constant">UPLOAD</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -352,8 +469,8 @@ ga('send', 'pageview');
    
        <div class="original">
     <ul>
-        <li>本文标题：PHP 与 Web 页面交互</li>
-        <li>本文字数：716</li>
+        <li>本文标题：PHP与Web页面交互</li>
+        <li>本文字数：681</li>
         <li>本文作者：Netcan</li>
         <li>发布时间：2015年03月15日 - 23时32分</li>
         <li>最后更新：2015年03月15日 - 23时32分</li>
@@ -573,22 +690,7 @@ gitalk.render('gitalk-container')
       // load success
     });
   }
-</script>
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </body>
 </html>
