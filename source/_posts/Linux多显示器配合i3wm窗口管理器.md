@@ -19,7 +19,7 @@ categories:
 
 最近了解到一个窗口管理器[i3wm](http://i3wm.org/)，可以完美解决由于多显示器导致的bug，先来上图。图为2块显示器的效果，黑色部分不存在。
 
-![Screenshot from 2017-03-17 10-35-32.png](Screenshot from 2017-03-17 10-35-32.png)
+![Screenshot_from_2017-03-17_10-35-32.png](Screenshot_from_2017-03-17_10-35-32.png)
 
 官方视频：
 

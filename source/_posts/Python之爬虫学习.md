@@ -14,7 +14,7 @@ categories:
 ## 前言
 最近想做一个关于爬虫的项目，就学了一下Python爬虫方面的，把《Python Web Scraping 2nd》这本书看完了，内容比较浅，能够了解实现一个爬虫需要涉及哪些方面。以下是整理的思维导图：
 
-![Python Web Scraping.png](Python Web Scraping.png)
+![Python_Web_Scraping.png](Python_Web_Scraping.png)
 
 书上采用爬取自建网站[http://example.webscraping.com/](http://example.webscraping.com/)的形式来介绍，要是以真实网站作为爬取对象的话，很有可能因为网站更新，导致书上内容失效，所以这样可以将注意力集中在编写一个爬虫的流程。不过书上的url与她给的自建网站url还是有点出入的，需要注意，拿个最明显的例子，`sitemap.xml`，书上的位于[http://example.webscraping.com/sitemap.xml](http://example.webscraping.com/sitemap.xml)，可实际上是[http://example.webscraping.com/places/default/sitemap.xml](http://example.webscraping.com/places/default/sitemap.xml)，也就是说书上的url都少了`/places/default/`这部分。
 

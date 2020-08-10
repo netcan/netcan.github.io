@@ -249,7 +249,7 @@ plt.ylabel('accuracy')
 ```
 如图，显然随着邻居增加的情况下，精度越来越低了。在2个邻居的情况下效果比较好：
 
-![Nearest neighbors](Nearest neighbors.png)
+![Nearest neighbors](Nearest_neighbors.png)
 
 ## 预处理
 因为有些特征的值比较大，会影响到其他特征。
@@ -441,7 +441,7 @@ Out[390]:
 ## 决策树
 先来看看决策树的样子，有点像流程图了，是一个监督算法：
 
-![Decision Tree](Decision Tree.png)
+![Decision Tree](Decision_Tree.png)
 
 大多数分类算法，都有两个阶段：
 - 训练阶段(training)，使用训练集构建决策树。之前介绍的最近邻居算法是*lazy learner*，也就是仅在预测的时候才工作，而这个是*eager learner*，在训练阶段做工作，在预测阶段需要做的就少了。
