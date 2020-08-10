@@ -1,4 +1,6 @@
 <li class="item-post item">
-  <%- partial('date') %>
-  <%- partial('title') %>
+    <% if(page.path.startsWith("archives")) { %>
+        <%- partial('date') %>
+    <% } %>
+    <%- partial('title') %>
 </li>
