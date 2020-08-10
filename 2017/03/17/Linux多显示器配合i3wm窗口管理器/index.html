@@ -22,11 +22,13 @@
 <meta property="og:site_name" content="Netcan on Programming">
 <meta property="og:description" content="很久没写博客了，来更新下关于 Linux 方面的问题。 已知问题 在 Linux 桌面环境下，使用多显示器会遇到很多 bug，例如窗口菜单栏无法下拉，Chrome 浏览器表单下拉框无法显示等等，头疼死了。 可能是由于多显示器的虚拟显示器过大，导致一些组件溢出无法显示。举个例子，我的外接显示器分辨率为1080x1920（竖屏），主显示的分辨率为1366x768（横屏），而两块屏幕拼接起来后的虚拟显示">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://netcan.github.io/2017/03/17/Linux%E5%A4%9A%E6%98%BE%E7%A4%BA%E5%99%A8%E9%85%8D%E5%90%88i3wm%E7%AA%97%E5%8F%A3%E7%AE%A1%E7%90%86%E5%99%A8/Screenshot_from_2017-03-17_10-35-32.png">
 <meta property="article:published_time" content="2017-03-17T02:23:00.000Z">
-<meta property="article:modified_time" content="2020-08-09T01:01:02.127Z">
+<meta property="article:modified_time" content="2020-08-10T16:58:45.685Z">
 <meta property="article:author" content="Netcan">
 <meta property="article:tag" content="Linux">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://netcan.github.io/2017/03/17/Linux%E5%A4%9A%E6%98%BE%E7%A4%BA%E5%99%A8%E9%85%8D%E5%90%88i3wm%E7%AA%97%E5%8F%A3%E7%AE%A1%E7%90%86%E5%99%A8/Screenshot_from_2017-03-17_10-35-32.png">
 
   
 
@@ -358,7 +360,7 @@ mjx-container[display="true"] + br {
 <p>在 Linux 桌面环境下，使用多显示器会遇到很多 bug，例如窗口菜单栏无法下拉，Chrome 浏览器表单下拉框无法显示等等，头疼死了。</p>
 <p>可能是由于多显示器的虚拟显示器过大，导致一些组件溢出无法显示。举个例子，我的外接显示器分辨率为<code>1080x1920</code>（竖屏），主显示的分辨率为<code>1366x768</code>（横屏），而两块屏幕拼接起来后的虚拟显示器分辨率却为<code>2446x1920</code>，也就是宽相加，1080+1366=2446，高取最大 1920，所以会导致组件溢出无法正常显示的现象。</p>
 <p>最近了解到一个窗口管理器<a target="_blank" rel="noopener" href="http://i3wm.org/">i3wm</a>，可以完美解决由于多显示器导致的 bug，先来上图。图为 2 块显示器的效果，黑色部分不存在。</p>
-<p>![Screenshot from 2017-03-17 10-35-32.png](Screenshot from 2017-03-17 10-35-32.png)</p>
+<p><img src="Screenshot_from_2017-03-17_10-35-32.png" alt="Screenshot_from_2017-03-17_10-35-32.png"></p>
 <p>官方视频：</p>
 
 <video width="100%" controls>
@@ -443,10 +445,10 @@ bindsym --release $mod+Print exec gnome-screenshot -w
        <div class="original">
     <ul>
         <li>本文标题：Linux 多显示器配合 i3wm 窗口管理器</li>
-        <li>本文字数：739</li>
+        <li>本文字数：721</li>
         <li>本文作者：Netcan</li>
         <li>发布时间：2017年03月17日 - 10时23分</li>
-        <li>最后更新：2020年08月09日 - 09时01分</li>
+        <li>最后更新：2020年08月11日 - 00时58分</li>
         <li>原始链接：<a href="https://netcan.github.io/2017/03/17/Linux%E5%A4%9A%E6%98%BE%E7%A4%BA%E5%99%A8%E9%85%8D%E5%90%88i3wm%E7%AA%97%E5%8F%A3%E7%AE%A1%E7%90%86%E5%99%A8/">https://netcan.github.io/2017/03/17/Linux多显示器配合i3wm窗口管理器/</a></li>
         <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
     </ul>

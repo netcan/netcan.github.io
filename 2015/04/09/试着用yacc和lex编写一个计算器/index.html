@@ -366,20 +366,20 @@ mjx-container[display="true"] + br {
 	printf(&quot;piyo\n&quot;);
 &#125;
 </code></pre>
-<p>大多数编程语言，都会将上面代码转换成一种叫语法分析树的东西。如上代码做成分析树如下图所示。<br>
+<p>大多数编程语言，都会将上面代码转换成一种叫语法分析树的东西。如上代码做成分析树如下图所示。
 <img src="http://7xibui.com1.z0.glb.clouddn.com/2015/04/tree.png" alt="http://7xibui.com1.z0.glb.clouddn.com/2015/04/tree.png"></p>
 <p>解释器会将源码或者分析树解析为字节码这种中间形态，并且一边解析一边运行，但是解释器并不会将源码翻译为机器码。</p>
 <p>下面开始介绍计算器实例。</p>
 <p>首先介绍 yacc 和 lex 这两个工具，一般编程语言的语法处理，都会有一下的过程。</p>
 <ol>
-<li>词法分析<br>
+<li>词法分析
 将源代码分割为若干个记号（token）的处理</li>
-<li>语法分析<br>
+<li>语法分析
 将从记号构建分析树 (parse tree) 的处理，分析树也叫语法树或者抽象语法树。</li>
-<li>语义分析<br>
-经过语法分析生成的分析树，并不包含数据类型等语义信息，因此在语义分析阶段，会检查程序中是否含有语法正确但是存在逻辑问题的错误。<br>
+<li>语义分析
+经过语法分析生成的分析树，并不包含数据类型等语义信息，因此在语义分析阶段，会检查程序中是否含有语法正确但是存在逻辑问题的错误。
 一般来说执行语义分析时主要会做数据类型的解析以及错误的检查。</li>
-<li>生成代码<br>
+<li>生成代码
 如果是 C 语言等生成机器码的编译器或 Java 这样生成字节码的编译器，在分析树构建完毕后会进入代码生成阶段。</li>
 </ol>
 <p>比如说有如下代码：</p>
@@ -391,12 +391,12 @@ mjx-container[display="true"] + br {
 </code></pre>
 <p>执行词法分析后，将被分割成如下所示的记号（每一个块就是一个记号）。</p>
 <p>If<code> </code>(<code> </code>a<code> </code>==<code> </code>10<code> </code>)<code> </code>{<code> </code>printf<code> </code>(<code> </code>“ hoge\n”<code> </code>)<code> </code>;<code> </code>}<code> </code>else<code> </code>{<code> </code>printf<code> </code>(<code> </code>“piyo\n”<code> </code>)<code> </code>;<code> </code>}`</p>
-<p>语法分析树如图：<br>
+<p>语法分析树如图：
 <img src="http://7xibui.com1.z0.glb.clouddn.com/2015/04/tree.png" alt="http://7xibui.com1.z0.glb.clouddn.com/2015/04/tree.png"></p>
 <p>执行词法分析的程序称为词法分析器（lexical analyzer)，lex 的工作原理就是根据词法规则自动生成的词法分析器。</p>
 <p>执行语法分析的程序称为解析器(parser)，yacc 就是能根据语法规则自动生成解析器程序。</p>
 <p>yacc 和 lex 一起使用可以将一个特殊格式的定义文件输出为 C 语言代码。</p>
-<p>书中第一个例子是制作一个简单的计算器，因为一开始就讲“用 yacc/lex 制作编程语言”肯定会吃不消的。。我们先来看看有什么功能吧。。<br>
+<p>书中第一个例子是制作一个简单的计算器，因为一开始就讲“用 yacc/lex 制作编程语言”肯定会吃不消的。。我们先来看看有什么功能吧。。
 <img src="http://7xibui.com1.z0.glb.clouddn.com/2015/04/blob.png" alt="http://7xibui.com1.z0.glb.clouddn.com/2015/04/blob.png"></p>
 <p>看得出来 mycalc 可按照优先级输出结果。虽然使用了整数，但是内部是用 double 实现的运算。</p>
 <p>lex 是自动生成词法分析器的工具，通过扩展名为.l 的文件，输出词法分析器的 C 语言代码。</p>

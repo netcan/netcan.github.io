@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://netcan.github.io/"/>
-  <updated>2020-08-09T09:01:12.666Z</updated>
+  <updated>2020-08-10T16:46:30.267Z</updated>
   <id>https://netcan.github.io/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>为 Github 打造一个 Geek 风个人 Profile</title>
+    <link href="https://netcan.github.io/2020/08/11/%E4%B8%BAGithub%E6%89%93%E9%80%A0%E4%B8%80%E4%B8%AAGeek%E9%A3%8E%E4%B8%AA%E4%BA%BAProfile/"/>
+    <id>https://netcan.github.io/2020/08/11/%E4%B8%BAGithub%E6%89%93%E9%80%A0%E4%B8%80%E4%B8%AAGeek%E9%A3%8E%E4%B8%AA%E4%BA%BAProfile/</id>
+    <published>2020-08-10T16:17:13.000Z</published>
+    <updated>2020-08-10T16:46:30.267Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;最近在 Hacker News&lt;a href=&quot;https://news.ycombinator.com/item?id=23807881&quot;&gt;https://news.ycombinator.com/item?id=23807881&lt;/a&gt;看到一个很有意思的讨论，给
+        
+      
+    
+    </summary>
+    
+    
+      <category term="随笔" scheme="https://netcan.github.io/categories/%E9%9A%8F%E7%AC%94/"/>
+    
+    
+      <category term="Python" scheme="https://netcan.github.io/tags/Python/"/>
+    
+  </entry>
   
   <entry>
     <title>如何为 Clang 编译器写插件实现自动化重构</title>
@@ -88,7 +115,7 @@
           &lt;p&gt;项目地址：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Github: &lt;a href=&quot;https://github.com/netcan/AnimalChess&quot;&gt;https://github.com/netcan/AnimalChess&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a
+&lt;li&gt;Crate.io:
         
       
     
@@ -290,7 +317,7 @@
     <link href="https://netcan.github.io/2017/12/25/Python%E4%B9%8B%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98/"/>
     <id>https://netcan.github.io/2017/12/25/Python%E4%B9%8B%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98/</id>
     <published>2017-12-25T02:21:21.000Z</published>
-    <updated>2020-08-09T01:01:02.131Z</updated>
+    <updated>2020-08-10T16:58:45.688Z</updated>
     
     <summary type="html">
     
@@ -320,7 +347,7 @@
     <link href="https://netcan.github.io/2017/10/26/Python%E4%B9%8B%E7%88%AC%E8%99%AB%E5%AD%A6%E4%B9%A0/"/>
     <id>https://netcan.github.io/2017/10/26/Python%E4%B9%8B%E7%88%AC%E8%99%AB%E5%AD%A6%E4%B9%A0/</id>
     <published>2017-10-26T11:31:41.000Z</published>
-    <updated>2020-08-09T01:01:02.132Z</updated>
+    <updated>2020-08-10T16:58:45.689Z</updated>
     
     <summary type="html">
     
@@ -329,7 +356,8 @@
         
         
           &lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
-&lt;p&gt;最近想做一个关于爬虫的项目，就学了一下 Python 爬虫方面的，把《Python Web Scraping
+&lt;p&gt;最近想做一个关于爬虫的项目，就学了一下 Python 爬虫方面的，把《Python Web Scraping 2nd》这本书看完了，内容比较浅，能够了解实现一个爬虫需要涉及哪些方面。以下是整理的思维导图：&lt;/p&gt;
+&lt;p&gt;&lt;img
         
       
     
@@ -493,7 +521,7 @@
     <link href="https://netcan.github.io/2017/03/23/2017%E5%8D%8E%E4%B8%BA%E8%BD%AF%E4%BB%B6%E7%B2%BE%E8%8B%B1%E6%8C%91%E6%88%98%E8%B5%9B%E5%8F%82%E8%B5%9B%E5%BF%83%E5%BE%97/"/>
     <id>https://netcan.github.io/2017/03/23/2017%E5%8D%8E%E4%B8%BA%E8%BD%AF%E4%BB%B6%E7%B2%BE%E8%8B%B1%E6%8C%91%E6%88%98%E8%B5%9B%E5%8F%82%E8%B5%9B%E5%BF%83%E5%BE%97/</id>
     <published>2017-03-23T01:26:09.000Z</published>
-    <updated>2020-08-09T04:34:49.292Z</updated>
+    <updated>2020-08-10T16:58:45.680Z</updated>
     
     <summary type="html">
     
@@ -525,7 +553,7 @@
     <link href="https://netcan.github.io/2017/03/17/Linux%E5%A4%9A%E6%98%BE%E7%A4%BA%E5%99%A8%E9%85%8D%E5%90%88i3wm%E7%AA%97%E5%8F%A3%E7%AE%A1%E7%90%86%E5%99%A8/"/>
     <id>https://netcan.github.io/2017/03/17/Linux%E5%A4%9A%E6%98%BE%E7%A4%BA%E5%99%A8%E9%85%8D%E5%90%88i3wm%E7%AA%97%E5%8F%A3%E7%AE%A1%E7%90%86%E5%99%A8/</id>
     <published>2017-03-17T02:23:00.000Z</published>
-    <updated>2020-08-09T01:01:02.127Z</updated>
+    <updated>2020-08-10T16:58:45.685Z</updated>
     
     <summary type="html">
     
@@ -2282,8 +2310,10 @@
       
         
         
-          &lt;p&gt; 游戏规则:&lt;br&gt;
-有三根相邻的柱子，标号为 A,B,C，A 柱子上从下到上按金字塔状叠放着 n 个不同大小的圆盘，编号从上往下 1 到 n，现在把所有盘子一个一个移动到柱子 C
+          &lt;p&gt; 游戏规则:
+有三根相邻的柱子，标号为 A,B,C，A 柱子上从下到上按金字塔状叠放着 n 个不同大小的圆盘，编号从上往下 1 到 n，现在把所有盘子一个一个移动到柱子 C 上，并且每次移动同一根柱子上都不能出现大盘子在小盘子上方。
+代码：&lt;/p&gt;
+&lt;pre
         
       
     
@@ -2312,7 +2342,7 @@
       
         
         
-          &lt;p&gt; 看图，看代码理解。。&lt;br&gt;
+          &lt;p&gt; 看图，看代码理解。。
 &lt;img src=&quot;http://7xibui.com1.z0.glb.clouddn.com/2015/02/clipboard.png&quot; alt=&quot;环形队列&quot;&gt;&lt;/p&gt;
 &lt;pre class=&quot;language-cpp&quot;
         
@@ -2433,7 +2463,7 @@
       
         
         
-          &lt;p&gt; 学到数据结构了，所以想写点什么，以后回来看看，因为刚开始学，所以就写了个仿 vector 的程序吧。。没有 c++ 的强大，这个 vector 是 &lt;br&gt;
+          &lt;p&gt; 学到数据结构了，所以想写点什么，以后回来看看，因为刚开始学，所以就写了个仿 vector 的程序吧。。没有 c++ 的强大，这个 vector 是
 特定的类型，针对 int 的 = = 改改就好了。。&lt;/p&gt;
 &lt;pre class=&quot;language-cpp&quot;
         

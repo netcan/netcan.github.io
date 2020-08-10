@@ -460,7 +460,7 @@ backtrace:
 [2]: 0x0</code></pre>
 <p>可以得出结论，在基类的析构期间，子类的虚函数表已经清空，这时候调子类的虚函数已经是不安全的了，虽然这时候对象还活着，但 <strong> 不完整</strong>。所以得通过加接口，在析构函数之前去释放回调，这样才是安全的了。</p>
 <p>科目二，《Effective C++》也指出，不能在构造、析构函数中调虚函数，原因是这期间虚函数 <strong> 没有多态性 </strong>，所以即使编码遵守原则，在多线程场景下，也防不住有析构期间<strong> 被调用 </strong> 虚函数的情况，特别是被调的时候。</p>
-<p><strong>2020/6/2 更新</strong><br>
+<p><strong>2020/6/2 更新</strong>
 前面说通过加接口，在析构函数之前去释放回调，这样不够优雅，因为子类重写得记得多了这么一个接口需要调用，所以继续重构，达到了如下完美的方案：</p>
 <pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">class</span> <span class="token class-name">Base</span><span class="token operator">:</span> <span class="token base-clause"><span class="token keyword">public</span> std<span class="token operator">::</span><span class="token class-name">enable_share_from_this</span><span class="token operator">&lt;</span><span class="token class-name">Base</span><span class="token operator">></span> <span class="token comment">// 需要继承这个类从而拿到 this 的智能指针</span></span> <span class="token punctuation">&#123;</span>
     <span class="token comment">// ...</span>

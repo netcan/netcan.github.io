@@ -455,7 +455,7 @@ g: 0x7f18c1b58069</code></pre>
 0000000000201069 u Singleton::Instance()::h</code></pre>
 <p>两者差异是什么呢？可以看到 <code>Singleton::Instance()::h</code> 那行不一样，推测应该是关键所在，一个是<code>V</code>，一个是<code>u</code>，啥意思呢？参考手册容易得知<a target="_blank" rel="noopener" href="https://linux.die.net/man/1/nm">https://linux.die.net/man/1/nm</a>：</p>
 <blockquote>
-<p><strong>&quot;u&quot;</strong>: The symbol is a unique global symbol. This is a GNU extension to the standard set of ELF symbol bindings. For such a symbol the <strong>dynamic linker will make sure that in the entire process there is just one symbol with this name and type in use</strong>.<br>
+<p><strong>&quot;u&quot;</strong>: The symbol is a unique global symbol. This is a GNU extension to the standard set of ELF symbol bindings. For such a symbol the <strong>dynamic linker will make sure that in the entire process there is just one symbol with this name and type in use</strong>.
 <strong>&quot;V&quot;|“v”</strong>: The symbol is a weak object. When a weak defined symbol is linked with a normal defined symbol, the normal defined symbol is used with no error. When a weak undefined symbol is linked and the symbol is not defined, the value of the weak symbol becomes zero with no error. On some systems, uppercase indicates that a default value has been specified.</p>
 </blockquote>
 <p>可以看出 u 是 GNU 的扩展，动态链接器可以保证在整个进程生命周期内符号唯一，这就解释了为何 g++ 编译出来的单例正常。而 V 就是普通的弱符号，没有保证唯一性，在动态加载情况下 V 与 V 之间各用各的。</p>

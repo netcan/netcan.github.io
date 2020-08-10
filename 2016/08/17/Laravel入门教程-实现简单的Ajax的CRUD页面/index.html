@@ -363,7 +363,7 @@ mjx-container[display="true"] + br {
 <p>这段时间在写一个考试系统 <a target="_blank" rel="noopener" href="https://github.com/netcan/HFUT_ChemLab">ChemLab</a>，期间用到了<code>AJAX</code> 实现增删查改（<code>CRUD</code>）页面，现在写一个 <code>Laravel</code> 入门教程吧，一步步实现最基本的 <code>CRUD</code> 页面。</p>
 <p>项目地址，求<code>Star</code>：<a target="_blank" rel="noopener" href="https://github.com/netcan/Laravel_AJAX_CRUD">Laravel_AJAX_CRUD</a></p>
 <p>演示地址：<a target="_blank" rel="noopener" href="http://115.159.147.250/task">http://115.159.147.250/task</a></p>
-<p>先来看看效果图：<br>
+<p>先来看看效果图：
 <img src="http://7xibui.com1.z0.glb.clouddn.com/crud.gif" alt="http://7xibui.com1.z0.glb.clouddn.com/crud.gif"></p>
 <p>这个教程需要安装 <code>homestead</code> 环境，关于 <code>homestead</code> 可以参考我的另一篇博文：<a target="_blank" rel="noopener" href="http://www.netcan666.com/2016/06/24/windows%E4%B8%8B%E5%AE%89%E8%A3%85Homestead%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">windows 下安装 Homestead 开发环境</a></p>
 <h3 id="创建项目">创建项目</h3>
@@ -380,7 +380,7 @@ vagrant@homestead:~/Code$ <span class="token builtin class-name">cd</span> AJAX_
 <span class="token assign-left variable">DB_PASSWORD</span><span class="token operator">=</span>secret</code></pre>
 <p>然后在数据库中创建 <code>task</code> 数据库。</p>
 <h4 id="修改网址映射">修改网址映射</h4>
-<p>注意这部分是在 <strong> 主机 </strong> 下进行的，不是在虚拟机 <code>homestead</code> 中进行的，后面我提到 <strong> 主机 </strong> 应该注意。<br>
+<p>注意这部分是在 <strong> 主机 </strong> 下进行的，不是在虚拟机 <code>homestead</code> 中进行的，后面我提到 <strong> 主机 </strong> 应该注意。
 修改 <code>homestead</code> 的配置文件：<code>~/.homestead/Homestead.yaml</code>，增加如下内容：</p>
 <pre class="language-bash" data-language="bash"><code class="language-bash">sites:
 	- map: crud.app
@@ -390,7 +390,7 @@ vagrant@homestead:~/Code$ <span class="token builtin class-name">cd</span> AJAX_
 <p>重启 <code>homestead</code> 虚拟机：</p>
 <pre class="language-bash" data-language="bash"><code class="language-bash">homestead reload --provision</code></pre>
 <h3 id="访问项目">访问项目</h3>
-<p>浏览器访问<code>crud.app</code>，应该能见到如下页面：<br>
+<p>浏览器访问<code>crud.app</code>，应该能见到如下页面：
 <img src="http://7xibui.com1.z0.glb.clouddn.com/QQ%E6%88%AA%E5%9B%BE20160817111329.png" alt="http://7xibui.com1.z0.glb.clouddn.com/QQ%E6%88%AA%E5%9B%BE20160817111329.png"></p>
 <h3 id="引入 Bootstrap、JQuery、Toastr">引入 Bootstrap、JQuery、Toastr</h3>
 <p>刚创建的项目什么都没有，在 <code>resources/welcome.blade.php</code> 中加入<code>bootstrap</code>、<code>JQuery</code>、<code>Toastr</code>：</p>
@@ -571,7 +571,7 @@ Route<span class="token punctuation">:</span><span class="token punctuation">:</
 <p>在 <code>&lt;head&gt;&lt;/head&gt;</code> 中插入：</p>
 <pre class="language-html" data-language="html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>&#123;&#123; asset(<span class="token punctuation">'</span>js/app.js<span class="token punctuation">'</span>) &#125;&#125;<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token script"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span></code></pre>
 <p>创建<code>public/js/app.js</code></p>
-<p>好了目前页面如图：<br>
+<p>好了目前页面如图：
 <img src="http://7xibui.com1.z0.glb.clouddn.com//2016/08/QQ%E6%88%AA%E5%9B%BE20160817151321.png" alt="http://7xibui.com1.z0.glb.clouddn.com//2016/08/QQ%E6%88%AA%E5%9B%BE20160817151321.png"></p>
 <h3 id="增删查改 CRUD">增删查改 CRUD</h3>
 <p>下面我们来实现核心功能：增删查改。</p>

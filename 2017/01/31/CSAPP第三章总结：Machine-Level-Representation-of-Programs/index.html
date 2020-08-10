@@ -453,7 +453,7 @@ SF = (t&lt;0)
 OF = (a &lt; 0 == b &lt; 0) &amp;&amp; (t&lt;0 != a&lt;0)
 </code></pre>
 <p>这里也可以看出 <code>CF</code> 和<code>OF</code>的区别，<code>CF</code>把操作数当 <strong> 无符号 </strong> 数来看待；而<code>OF</code>，判断 2 个同号的数运算结果是否异号，即溢出（正 + 正 = 负，负 + 负 = 正）。</p>
-<p>186 页表 3.10 给出了相关判断指令，例如 <code>cmp</code> 和<code>test</code>指令。表 3.11 给出了 <code>set</code> 指令。<br>
+<p>186 页表 3.10 给出了相关判断指令，例如 <code>cmp</code> 和<code>test</code>指令。表 3.11 给出了 <code>set</code> 指令。
 <code>cmp S,D</code>，根据 D-S 的差，设置 <code>Condition Codes</code>。各大编程语言的<code>cmp</code> 比较函数也应该衍生于此吧。</p>
 <p><code>test S,D</code>，根据 S&amp;D（按位且）的结果，设置 <code>Condition Codes</code>。典型应用就是，<code>testl %eax, %eax</code>，用来判断<code>%eax</code> 的正负、或者是否为 0。</p>
 <p><code>set D</code>，一系列 <code>set</code> 指令，根据 <code>Condition Codes</code> 的混合操作来设置 <code>D</code>。例如<code>sete</code>，当运算结果为 0，设置 D 为 1，这个表 3.11 说的很清楚了。因为不能直接访问<code>Condition Codes</code>，所以可以根据<code>set</code> 指令来间接访问！需要注意的是，这类指令的操作数对象长度为 1 字节，所以 <code>setl</code> 指的是 <code>set less</code>，而不是<code>long word</code>。还有些<code>set</code> 指令会有多个名字，汇编器 / 反汇编器随便选一个名字。</p>

@@ -422,7 +422,7 @@ mjx-container[display="true"] + br {
 </tbody>
 </table>
 <h3 id="文件归属">文件归属</h3>
-<p>第 5、6 部分分别代表归属用户、归属群组，也就是 vagrant:vagrant。<br>
+<p>第 5、6 部分分别代表归属用户、归属群组，也就是 vagrant:vagrant。
 其他部分不在讨论范围内。。</p>
 <h3 id="权限管理">权限管理</h3>
 <p>重点来了，如果用户没有执行权限，那么他执行的时候会提示：</p>
@@ -479,7 +479,7 @@ total <span class="token number">4</span>
 <p>以上表示所有人都有 <code>rwx</code> 权限。</p>
 <h3 id="SUID、SGID、Sticky-bit">SUID、SGID、Sticky bit</h3>
 <p>某些情况下，需要以可执行文件归属用户的身份执行该文件，可以为该文件设置 <code>SUID</code>。同样，设置<code>SGID</code> 能够以该文件归属群组的身份执行它。</p>
-<p>例如：用户自行设定密码。出于安全方面的考虑，<code>/etc/shadow</code>只能由 <code>root</code> 用户直接修改。<br>
+<p>例如：用户自行设定密码。出于安全方面的考虑，<code>/etc/shadow</code>只能由 <code>root</code> 用户直接修改。
 <code>-rw------- root root /etc/shadow</code></p>
 <p>这个时候，可以为程序 <code>/usr/bin/passwd</code> 设置 <code>SUID</code>，当普通用户执行<code>passwd</code> 命令时，便能够以该程序归属用户 <code>root</code> 的身份修改 <code>/etc/shadow</code> 文件。而 <code>passwd</code> 程序自身带有身份验证机制，不能通过验证时拒绝执行，从而保证了安全。</p>
 <pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">ls</span> -l /usr/bin/passwd
