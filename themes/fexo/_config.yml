@@ -186,8 +186,8 @@ about:
     icon: icon-user
     text_value:
     - "Netcan, 1996, Summer."
-    - "喜欢设计，爱好Coding"
-    - "软件工程师，擅长C/C++/Rust/Lisp"
+    - "Software Engineer，Love C/C++/Rust/Lisp/Haskell"
+    - "Interests: OO, FP, Design, Coding"
   - type: Github
     icon: icon-github
     text_key: Github

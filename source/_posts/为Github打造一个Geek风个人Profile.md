@@ -9,7 +9,7 @@ categories:
 - 随笔
 ---
 
-最近在Hacker News[https://news.ycombinator.com/item?id=23807881](https://news.ycombinator.com/item?id=23807881)看到一个很有意思的讨论，给Github个人主页打造一个炫酷风格的介绍，比如我这个效果：[https://github.com/netcan/netcan](https://github.com/netcan/netcan)
+最近在Hacker News [https://news.ycombinator.com/item?id=23807881](https://news.ycombinator.com/item?id=23807881) 看到一个很有意思的讨论，给Github个人主页打造一个炫酷风格的介绍，比如我这个效果：[https://github.com/netcan/netcan](https://github.com/netcan/netcan)
 
 ![github profile.png](github_profile.png)
 
