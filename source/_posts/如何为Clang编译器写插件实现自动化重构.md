@@ -312,7 +312,7 @@ static FrontendPluginRegistry::Add<RewriteDecl> X
 ```
 
 ## 工程构建
-新建一个CMakeLists.txt用于构建这项工程，更多细节请参考：[https://github.com/netcan/Practice/tree/master/cpp/clang-plugin](https://github.com/netcan/Practice/tree/master/cpp/clang-plugin)
+新建一个CMakeLists.txt用于构建这项工程，更多细节请参考：[https://github.com/netcan/recipes/tree/master/cpp/clang-plugin](https://github.com/netcan/recipes/tree/master/cpp/clang-plugin)
 
 ```cmake
 find_package(LLVM REQUIRED CONFIG)

@@ -6,6 +6,7 @@ original: true
 date: 2020-08-01 18:49:31
 tags:
 - C/C++
+- 模板元编程
 categories:
 - 编程
 ---
@@ -160,8 +161,8 @@ dumpObj(rect);
 
 后者和通常结构体定义方式非常接近，不需要再写`begin/end`原语了。完整的代码请见：
 
-- [https://github.com/netcan/Practice/blob/master/cpp/metaproggramming/reflection/StaticRefl.hpp](https://github.com/netcan/Practice/blob/master/cpp/metaproggramming/reflection/StaticRefl.hpp)
-- [https://github.com/netcan/Practice/blob/master/cpp/metaproggramming/reflection/StaticRefl.cpp](https://github.com/netcan/Practice/blob/master/cpp/metaproggramming/reflection/StaticRefl.cpp)
+- [https://github.com/netcan/recipes/blob/master/cpp/metaproggramming/reflection/StaticRefl.hpp](https://github.com/netcan/recipes/blob/master/cpp/metaproggramming/reflection/StaticRefl.hpp)
+- [https://github.com/netcan/recipes/blob/master/cpp/metaproggramming/reflection/StaticRefl.cpp](https://github.com/netcan/recipes/blob/master/cpp/metaproggramming/reflection/StaticRefl.cpp)
 
 接下来我们一步步看看是如何实现这个的。
 
