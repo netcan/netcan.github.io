@@ -23,7 +23,7 @@
 <meta property="og:description" content="背景 最近在重构项目，项目主要和图有关，图描述了各个节点的连接关系，这些连接关系有条件选中，图也会局部变化，而各个具体节点则承载了实际业务。 由于之前的设计的代码通过可视化工具生成表，将连接的边和条件都存到一个表中，运行时根据条件选中节点和边，从而拼凑成一幅完整的图。而这部分代码比较难读，各种容器遍历迭代，才得到最终的图数据结构，而想要知道最终图长啥样，需要运行时抓日志获得。 考虑图结构是静态的，">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-08-15T06:01:08.000Z">
-<meta property="article:modified_time" content="2020-08-15T15:15:38.768Z">
+<meta property="article:modified_time" content="2020-08-15T15:53:17.168Z">
 <meta property="article:author" content="Netcan">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="模板元编程">
@@ -362,10 +362,10 @@ mjx-container[display="true"] + br {
 <p>于是我们设计了一套 DSL，通过 DSL 来描述一副图，图的连接关系也能有条件，本文为了简单起见，这里记录一下我设计实现的用于解决 <strong> 拓扑排序 </strong> 问题的 Demo（参考过大师给的 Demo 思路），虽整个 IDEA 比较粗糙简陋，但大方向确定了，更多细节需要在项目中逐步实现。</p>
 <h2 id="用户界面">用户界面</h2>
 <p>我设计的 TaskDSL 的用户界面如下，整个拓扑关系在编译期计算完成：</p>
-<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token function">__task</span><span class="token punctuation">(</span><span class="token function">__job</span><span class="token punctuation">(</span>Meat<span class="token punctuation">)</span>    <span class="token operator">-></span> <span class="token function">__job</span><span class="token punctuation">(</span>Plating<span class="token punctuation">)</span><span class="token punctuation">,</span>
-       <span class="token function">__job</span><span class="token punctuation">(</span>Garnish<span class="token punctuation">)</span> <span class="token operator">-></span> <span class="token function">__job</span><span class="token punctuation">(</span>Plating<span class="token punctuation">)</span><span class="token punctuation">,</span>
-       <span class="token function">__job</span><span class="token punctuation">(</span>Plating<span class="token punctuation">)</span> <span class="token operator">-></span> <span class="token function">__job</span><span class="token punctuation">(</span>Servce1<span class="token punctuation">)</span><span class="token punctuation">,</span>
-       <span class="token function">__job</span><span class="token punctuation">(</span>Plating<span class="token punctuation">)</span> <span class="token operator">-></span> <span class="token function">__job</span><span class="token punctuation">(</span>Servce2<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Run</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token function">__task</span><span class="token punctuation">(</span><span class="token function">__job</span><span class="token punctuation">(</span>Plating<span class="token punctuation">)</span> <span class="token operator">-></span> <span class="token function">__job</span><span class="token punctuation">(</span>Servce1<span class="token punctuation">)</span><span class="token punctuation">,</span>
+       <span class="token function">__job</span><span class="token punctuation">(</span>Meat<span class="token punctuation">)</span>    <span class="token operator">-></span> <span class="token function">__job</span><span class="token punctuation">(</span>Plating<span class="token punctuation">)</span><span class="token punctuation">,</span>
+       <span class="token function">__job</span><span class="token punctuation">(</span>Plating<span class="token punctuation">)</span> <span class="token operator">-></span> <span class="token function">__job</span><span class="token punctuation">(</span>Servce2<span class="token punctuation">)</span><span class="token punctuation">,</span>
+       <span class="token function">__job</span><span class="token punctuation">(</span>Garnish<span class="token punctuation">)</span> <span class="token operator">-></span> <span class="token function">__job</span><span class="token punctuation">(</span>Plating<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Run</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
 <p>而各个 Job 的实现如下：</p>
 <pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">void</span> <span class="token function">Meat</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 <span class="token punctuation">&#123;</span> <span class="token function">puts</span><span class="token punctuation">(</span><span class="token string">"肉..."</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
@@ -507,7 +507,7 @@ mjx-container[display="true"] + br {
         <li>本文字数：1.8k</li>
         <li>本文作者：Netcan</li>
         <li>发布时间：2020年08月15日 - 14时01分</li>
-        <li>最后更新：2020年08月15日 - 23时15分</li>
+        <li>最后更新：2020年08月15日 - 23时53分</li>
         <li>原始链接：<a href="https://netcan.github.io/2020/08/15/%E8%AE%BE%E8%AE%A1%E5%B9%B6%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8FDSL/">https://netcan.github.io/2020/08/15/设计并实现一个拓扑排序DSL/</a></li>
         <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
     </ul>
