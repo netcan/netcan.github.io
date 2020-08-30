@@ -159,3 +159,4 @@ markdown:
     typographer: true
     quotes: '“”‘’'
   plugins:
+    - markdown-it-footnote
