@@ -24,7 +24,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://netcan.github.io/2020/08/30/C-%E5%85%83%E7%BC%96%E7%A8%8B%E4%B9%8B%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90%EF%BC%9A%E8%AE%BE%E8%AE%A1%E5%B9%B6%E5%AE%9E%E7%8E%B0%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84DSL/visual_demo.svg">
 <meta property="article:published_time" content="2020-08-30T12:02:07.000Z">
-<meta property="article:modified_time" content="2020-08-30T14:24:18.143Z">
+<meta property="article:modified_time" content="2020-08-30T14:28:05.685Z">
 <meta property="article:author" content="Netcan">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="模板元编程">
@@ -499,7 +499,9 @@ B<span class="token punctuation">.</span><span class="token function">precede</s
     <span class="token keyword">using</span> BiggerSorted <span class="token operator">=</span> QuickSort_t<span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">P</span><span class="token operator">::</span>rest<span class="token punctuation">,</span> CMP<span class="token operator">></span><span class="token punctuation">;</span>
 <span class="token keyword">public</span><span class="token operator">:</span>
 	<span class="token comment">// smallerSorted ++ [x] ++ biggerSorted</span>
-    <span class="token keyword">using</span> type <span class="token operator">=</span> Concat_t<span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">SmallerSorted</span><span class="token operator">::</span><span class="token keyword">template</span> appendTo<span class="token operator">&lt;</span>H<span class="token operator">></span><span class="token punctuation">,</span> BiggerSorted<span class="token operator">></span><span class="token punctuation">;</span>
+    <span class="token keyword">using</span> type <span class="token operator">=</span> Concat_t<span class="token operator">&lt;</span>
+        <span class="token keyword">typename</span> <span class="token class-name">SmallerSorted</span><span class="token operator">::</span><span class="token keyword">template</span> appendTo<span class="token operator">&lt;</span>H<span class="token operator">></span><span class="token punctuation">,</span> BiggerSorted
+    <span class="token operator">></span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
 <p>这也是玩 C++ 的乐趣所在，很自由的表达一切。</p>
 
@@ -516,7 +518,7 @@ B<span class="token punctuation">.</span><span class="token function">precede</s
         <li>本文字数：1.7k</li>
         <li>本文作者：Netcan</li>
         <li>发布时间：2020年08月30日 - 20时02分</li>
-        <li>最后更新：2020年08月30日 - 22时24分</li>
+        <li>最后更新：2020年08月30日 - 22时28分</li>
         <li>原始链接：<a href="https://netcan.github.io/2020/08/30/C-%E5%85%83%E7%BC%96%E7%A8%8B%E4%B9%8B%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90%EF%BC%9A%E8%AE%BE%E8%AE%A1%E5%B9%B6%E5%AE%9E%E7%8E%B0%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84DSL/">https://netcan.github.io/2020/08/30/C-元编程之代码生成：设计并实现拓扑结构DSL/</a></li>
         <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
     </ul>
