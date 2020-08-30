@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://netcan.github.io/"/>
-  <updated>2020-08-15T15:53:17.168Z</updated>
+  <updated>2020-08-30T14:24:18.143Z</updated>
   <id>https://netcan.github.io/</id>
   
   <author>
@@ -15,6 +15,37 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>C++ 元编程之代码生成：设计并实现拓扑结构 DSL</title>
+    <link href="https://netcan.github.io/2020/08/30/C-%E5%85%83%E7%BC%96%E7%A8%8B%E4%B9%8B%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90%EF%BC%9A%E8%AE%BE%E8%AE%A1%E5%B9%B6%E5%AE%9E%E7%8E%B0%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84DSL/"/>
+    <id>https://netcan.github.io/2020/08/30/C-%E5%85%83%E7%BC%96%E7%A8%8B%E4%B9%8B%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90%EF%BC%9A%E8%AE%BE%E8%AE%A1%E5%B9%B6%E5%AE%9E%E7%8E%B0%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84DSL/</id>
+    <published>2020-08-30T12:02:07.000Z</published>
+    <updated>2020-08-30T14:24:18.143Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;动机&quot;&gt;动机&lt;/h2&gt;
+&lt;p&gt;最近项目设计了不少 DSL，用 DSL 来直观描述领域代码，背后生成 C++ 代码，得益于模板元编程，这个想法得以实现。&lt;/p&gt;
+&lt;p&gt;之前写了一篇&lt;a
+        
+      
+    
+    </summary>
+    
+    
+      <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
+    
+      <category term="模板元编程" scheme="https://netcan.github.io/tags/%E6%A8%A1%E6%9D%BF%E5%85%83%E7%BC%96%E7%A8%8B/"/>
+    
+  </entry>
   
   <entry>
     <title>设计并实现一个拓扑排序 DSL</title>
