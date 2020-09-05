@@ -62,3 +62,10 @@ code {
     list-style: none;
 }
 
+.footnote-item p {
+    line-height: 0;
+}
+
+.article-content li {
+    line-height: 2em;
+}
