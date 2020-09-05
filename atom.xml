@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://netcan.github.io/"/>
-  <updated>2020-09-04T11:06:29.531Z</updated>
+  <updated>2020-09-05T13:22:17.662Z</updated>
   <id>https://netcan.github.io/</id>
   
   <author>
@@ -15,6 +15,37 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>C++20 协程</title>
+    <link href="https://netcan.github.io/2020/09/05/C-20%E5%8D%8F%E7%A8%8B/"/>
+    <id>https://netcan.github.io/2020/09/05/C-20%E5%8D%8F%E7%A8%8B/</id>
+    <published>2020-09-05T06:36:19.000Z</published>
+    <updated>2020-09-05T13:22:17.662Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;C++20 终于引入了协程特性，给库作者提供了一个实现协程的机制，让用户方便使用协程来编写异步逻辑，降低了异步并发编程的难度。结合我最近协程的学习，在这里记录一下相关内容。&lt;/p&gt;
+&lt;h2 id=&quot;使用场景&quot;&gt;使用场景&lt;/h2&gt;
+&lt;p&gt;协程和普通函数相比，多了个中途随时
+        
+      
+    
+    </summary>
+    
+    
+      <category term="学习笔记" scheme="https://netcan.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
+    
+      <category term="协程" scheme="https://netcan.github.io/tags/%E5%8D%8F%E7%A8%8B/"/>
+    
+  </entry>
   
   <entry>
     <title>C++ 元编程之代码生成：设计并实现图 DSL</title>

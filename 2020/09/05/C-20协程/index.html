@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>C++20 协程 | Netcan on Programming</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="C/C++,协程," />
+  
+
+  <meta name="description" content="C++20 终于引入了协程特性，给库作者提供了一个实现协程的机制，让用户方便使用协程来编写异步逻辑，降低了异步并发编程的难度。结合我最近协程的学习，在这里记录一下相关内容。 使用场景 协程和普通函数相比，多了个中途随时  挂起 ，随后 恢复  的过程，当用户调用一个阻塞请求接口，从而让出控制权，当响应时，恢复之前的控制流，从而大大提高线程复用率，这也注意了协程只是并发的，并不是真正意义上的并行，在">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++20 协程">
+<meta property="og:url" content="https://netcan.github.io/2020/09/05/C-20%E5%8D%8F%E7%A8%8B/index.html">
+<meta property="og:site_name" content="Netcan on Programming">
+<meta property="og:description" content="C++20 终于引入了协程特性，给库作者提供了一个实现协程的机制，让用户方便使用协程来编写异步逻辑，降低了异步并发编程的难度。结合我最近协程的学习，在这里记录一下相关内容。 使用场景 协程和普通函数相比，多了个中途随时  挂起 ，随后 恢复  的过程，当用户调用一个阻塞请求接口，从而让出控制权，当响应时，恢复之前的控制流，从而大大提高线程复用率，这也注意了协程只是并发的，并不是真正意义上的并行，在">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-09-05T06:36:19.000Z">
+<meta property="article:modified_time" content="2020-09-05T13:22:17.662Z">
+<meta property="article:author" content="Netcan">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="协程">
+<meta name="twitter:card" content="summary">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/site.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-174901164-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d2c292719a76d8c0fa7f9874379cfd25";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 5.0.0"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"] > svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body>
+
+
+  
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+  
+
+  <link rel="stylesheet" href="/css/prism.css">
+
+<div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">ROOT</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-text">使用场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5%E6%A8%A1%E5%9E%8B"><span class="toc-text">概念模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Promise"><span class="toc-text">Promise</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Future"><span class="toc-text">Future</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Awaitable"><span class="toc-text">Awaitable</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B7%E4%BD%93%E6%9C%BA%E5%88%B6"><span class="toc-text">具体机制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Promise-Future%20%E5%AF%B9%E8%B1%A1"><span class="toc-text">Promise&#x2F;Future 对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Awaitable%20%E5%AF%B9%E8%B1%A1"><span class="toc-text">Awaitable 对象</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%8F%E7%A8%8B%E5%AE%9E%E6%88%98"><span class="toc-text">协程实战</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-C-20协程" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">C++20 协程</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2020.09.05</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Netcan</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p>C++20 终于引入了协程特性，给库作者提供了一个实现协程的机制，让用户方便使用协程来编写异步逻辑，降低了异步并发编程的难度。结合我最近协程的学习，在这里记录一下相关内容。</p>
+<h2 id="使用场景">使用场景</h2>
+<p>协程和普通函数相比，多了个中途随时 <strong> 挂起 </strong>，随后<strong> 恢复 </strong> 的过程，当用户调用一个阻塞请求接口，从而让出控制权，当响应时，恢复之前的控制流，从而大大提高线程复用率，这也注意了协程只是并发的，并不是真正意义上的并行，在 IO 密集型场景下，协程能够很好的提高资源利用率，用少数的线程达到并发成百上万个协程的效果。</p>
+<p>而相对传统的线程池 + 回调模式，每发起一个请求，为了避免阻塞当前线程，需要挂一个回调函数处理后续过程，而回调函数又可能产生竞争，导致得加锁处理。而协程却能够以同步方式写实现异步，后续过程直接挂起，当响应的时候恢复执行。</p>
+<p>我参与的项目中，对象随时都可能起个线程干活，或者常驻于对象生命周期里，统计下来整个项目居然开了几百个线程，由于多线程编程难免导致竞争，从而需要锁这种很低级的机制做同步，而一旦引入了锁，就不可避免的扩散开来，大家看到这里加把锁，那我也加把锁，统计下来代码里面居然也有几百把锁。。真是维护的噩梦啊🤣</p>
+<p>由于协程能够随时挂起，后续恢复，这就能实现一些延迟计算的特性，例如生成器。</p>
+<p>扯远了，本文主题是关于 C++20 的协程，在 C++20 还没稳定之前，先来学习一下相关知识，读完本文后你应该能利用这个机制实现一些想要的协程了。</p>
+<h2 id="概念模型">概念模型</h2>
+<p>C++20 的协程设计为无栈协程，相对于有栈协程，省掉了上下文切换开销<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>，只能手动切换，效率更高，也不用管理复杂的寄存器状态，移植性更好，但这同时也导致了不能被非协程函数嵌套调用。</p>
+<p>同时引入了 3 个关键字：</p>
+<ul>
+<li>co_yield: 挂起并返回值</li>
+<li>co_await: 挂起</li>
+<li>co_return: 结束协程</li>
+</ul>
+<p>当一个函数出现了上面的关键字，则该函数是个协程。</p>
+<h3 id="Promise">Promise</h3>
+<p>当 caller 调用一个 callee 协程的时候，协程自身的状态信息 <sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>（形参，局部变量，自带数据，各个阶段点执行点）会被保存在堆上的 Promise 对象中，这也是编译器会在协程里面插入 Promise 相关代码，以及一些执行点。由于 Promise 的大小可以在编译期计算出来，从而避免了内存浪费。而 Promise 对象所有权可由<code>coroutine_handle</code> 句柄持有。</p>
+<h3 id="Future">Future</h3>
+<p>而 Future 对象主要是与 Promise 对象交互的桥梁，既 caller 与 callee 之间的通信：</p>
+<ul>
+<li>callee 挂起时，将值返回给 caller: yield 语义</li>
+<li>callee 执行结束时，将值返回给 caller: return 语义</li>
+<li>callee 恢复时，caller 将值带给 callee</li>
+</ul>
+<p>需要注意的是，这些概念和标准库的 <code>std::promise/std::future</code> 不是同一个东西，后者用于做同步用，<code>std::future</code>会阻塞等待直到 <code>std::promise</code> 提供值，可以看做是条件变量的封装，同样地，和其他语言的 Promise/Future 概念也不一样。</p>
+<h3 id="Awaitable">Awaitable</h3>
+<p>如果一个对象是 Awaitable 对象，那么可以用 co_await 操作符去触发该对象的动作 ready/suspend/resume，从而转移、恢复控制权，co_await 细节留到后面在介绍。</p>
+<h2 id="具体机制">具体机制</h2>
+<p>了解了概念模型后，我们可以进一步探讨背后的机制了。</p>
+<h3 id="Promise-Future 对象">Promise/Future 对象</h3>
+<p>当一个协程被调用时，会创建 Promise 对象，然后编译器会在各个阶段插入一些代码<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup>：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token punctuation">&#123;</span>
+  <span class="token keyword">co_await</span> promise<span class="token punctuation">.</span><span class="token function">initial_suspend</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">try</span>
+  <span class="token punctuation">&#123;</span>
+    <span class="token operator">&lt;</span>body<span class="token operator">-</span>statements<span class="token operator">></span>
+  <span class="token punctuation">&#125;</span>
+  <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span>
+  <span class="token punctuation">&#123;</span>
+    promise<span class="token punctuation">.</span><span class="token function">unhandled_exception</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+FinalSuspend<span class="token operator">:</span>
+  <span class="token keyword">co_await</span> promise<span class="token punctuation">.</span><span class="token function">final_suspend</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre>
+<p>可以看到一个协程函数，分为如下几个步骤：</p>
+<ol>
+<li>从堆上 (operator new) 创建 Promise 对象，保存协程的状态信息</li>
+<li>initial_suspend 阶段，用于在执行协程主体 <code>&lt;body-statements&gt;</code> 代码前做些事情</li>
+<li><code>&lt;body-statements&gt;</code>阶段，执行协程的主体代码</li>
+<li>unhandled_exception 阶段，若抛异常，处理异常</li>
+<li>final_suspend 阶段，协程结束收尾动作，在这阶段的 <code>coroutine_handle&lt;Promise&gt;::done</code> 方法为 true，caller 可以通过这个方法判断协程是否结束，从而不再调用 resume 恢复协程</li>
+</ol>
+<p>而协程返回类型则是一个 Future 对象，这一步编译器通过 <code>Promise::get_return_object()</code> 来创建 Future 对象。而 Future 对象一般持有 Promise 的句柄：<code>coroutine_handle&lt;Promise&gt;</code>，这样 caller 可以通过 Future 与 Promise 交互，从而恢复协程。</p>
+<p>而 Promise 对象释放的时间点有两个，避免重复执行，否则会 double free：</p>
+<ul>
+<li>final_suspend 阶段 resume 后</li>
+<li>调用 <code>coroutine_handle&lt;Promise&gt;::destroy()</code> 方法</li>
+</ul>
+<p>比较好的做法是在 final_suspend 阶段挂起，这时候就不可 resume 了，在 caller 通过调用 Future 持有的句柄 <code>destroy()</code> 方法释放 Promise 对象。</p>
+<p>综上，一个 Promise 对象需要实现如下方法：</p>
+<ul>
+<li>initial_suspend: 返回一个 Awaitable 对象</li>
+<li>final_suspend: 返回一个 Awaitable 对象</li>
+<li>get_return_object: 返回一个 Future 对象给 caller</li>
+<li>unhandled_exception: 处理异常</li>
+<li>return_value/return_void: co_return 时返回值给 caller</li>
+<li>yield_value: 挂起时返回值给 caller</li>
+</ul>
+<p>再来看看其 <code>coroutine_handle&lt;Promise&gt;</code> 句柄编译器提供了哪些主要方法：</p>
+<ul>
+<li>destroy: 销毁 Promise 对象</li>
+<li>from_promise: 静态方法，从 Promise 对象返回其 <code>coroutine_handle</code> 句柄</li>
+<li>done: 是否处于 final_suspend 阶段</li>
+<li>promise: 返回 Promise 对象引用</li>
+<li>resume/operator(): 恢复到协程</li>
+</ul>
+<h3 id="Awaitable 对象">Awaitable 对象</h3>
+<p>前面提到的 co_await 关键字<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup>，其操作的对象其实是 Awaiter 对象，若对象实现如下方法，则说明该对象是 Awaitable 的：</p>
+<ul>
+<li>await_ready</li>
+<li>await_suspend(<code>coroutine_handle&lt;&gt;</code>)</li>
+<li>await_resume</li>
+</ul>
+<p>那么当执行 <code>co_await &lt;expr&gt;</code> 表达式时，编译器会生成如下代码：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token punctuation">&#123;</span>
+  <span class="token keyword">auto</span><span class="token operator">&amp;&amp;</span> value <span class="token operator">=</span> <span class="token operator">&lt;</span>expr<span class="token operator">></span><span class="token punctuation">;</span>
+  <span class="token keyword">auto</span><span class="token operator">&amp;&amp;</span> awaitable <span class="token operator">=</span> <span class="token function">get_awaitable</span><span class="token punctuation">(</span>promise<span class="token punctuation">,</span> <span class="token keyword">static_cast</span><span class="token operator">&lt;</span><span class="token keyword">decltype</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token operator">></span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">auto</span><span class="token operator">&amp;&amp;</span> awaiter <span class="token operator">=</span> <span class="token function">get_awaiter</span><span class="token punctuation">(</span><span class="token keyword">static_cast</span><span class="token operator">&lt;</span><span class="token keyword">decltype</span><span class="token punctuation">(</span>awaitable<span class="token punctuation">)</span><span class="token operator">></span><span class="token punctuation">(</span>awaitable<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>awaiter<span class="token punctuation">.</span><span class="token function">await_ready</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">&#123;</span>
+    <span class="token operator">&lt;</span>suspend<span class="token operator">-</span>coroutine<span class="token operator">></span>
+
+    <span class="token comment">//if await_suspend returns void</span>
+    <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+        awaiter<span class="token punctuation">.</span><span class="token function">await_suspend</span><span class="token punctuation">(</span>coroutine_handle<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">return_to_the_caller</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        exception <span class="token operator">=</span> std<span class="token operator">::</span><span class="token function">current_exception</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">goto</span> resume_point<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token comment">//endif</span>
+    <span class="token comment">//if await_suspend returns bool</span>
+    <span class="token keyword">bool</span> await_suspend_result<span class="token punctuation">;</span>
+    <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+        await_suspend_result <span class="token operator">=</span> awaiter<span class="token punctuation">.</span><span class="token function">await_suspend</span><span class="token punctuation">(</span>coroutine_handle<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        exception <span class="token operator">=</span> std<span class="token operator">::</span><span class="token function">current_exception</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">goto</span> resume_point<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">not</span> await_suspend_result<span class="token punctuation">)</span>
+        <span class="token keyword">goto</span> resume_point<span class="token punctuation">;</span>
+    <span class="token function">return_to_the_caller</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">//endif</span>
+    <span class="token comment">//if await_suspend returns another coroutine_handle</span>
+    <span class="token keyword">decltype</span><span class="token punctuation">(</span>awaiter<span class="token punctuation">.</span><span class="token function">await_suspend</span><span class="token punctuation">(</span>std<span class="token operator">::</span>declval<span class="token operator">&lt;</span>coro_handle_t<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> another_coro_handle<span class="token punctuation">;</span>
+    <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+        another_coro_handle <span class="token operator">=</span> awaiter<span class="token punctuation">.</span><span class="token function">await_suspend</span><span class="token punctuation">(</span>coroutine_handle<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        exception <span class="token operator">=</span> std<span class="token operator">::</span><span class="token function">current_exception</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">goto</span> resume_point<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    another_coro_handle<span class="token punctuation">.</span><span class="token function">resume</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">return_to_the_caller</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">//endif</span>
+  <span class="token punctuation">&#125;</span>
+  resume_point<span class="token operator">:</span>
+<span class="token keyword">if</span><span class="token punctuation">(</span>exception<span class="token punctuation">)</span>
+  std<span class="token operator">::</span><span class="token function">rethrow_exception</span><span class="token punctuation">(</span>exception<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token string">"return"</span> awaiter<span class="token punctuation">.</span><span class="token function">await_resume</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre>
+<p>也就是：</p>
+<ol>
+<li>通过 <code>&lt;expr&gt;</code> 拿到 Awaiter 对象</li>
+<li>通过 Awaiter.await_ready()方法判断是否需要挂起，若为 true 则无需挂起</li>
+<li>判断 Awaiter.await_suspend()的返回值类型：
+<ul>
+<li>void，无返回值，直接挂起返回 caller</li>
+<li>bool，若为 true，则返挂起返回 caller，否则不挂起，直接 resume</li>
+<li><code>coroutine_handle&lt;&gt;</code>, 则挂起并将控制权转移到另一个协程上，另一个协程可以再 resume 回来，到达<code>resume_point</code>。</li>
+</ul>
+</li>
+<li>Awaiter.await_resume()的返回值即为 co_await 的结果</li>
+</ol>
+<p>那么问题来了，谁来创建 Awaiter 对象呢？有两种方法：</p>
+<ol>
+<li>通过 Promise 对象的 <code>await_transform(&lt;expr&gt;)</code> 方法，得到 Awaiter 对象</li>
+<li>通过重载 operator co_await 操作符，得到 Awaiter 对象</li>
+<li>直接用 Awaitable 对象</li>
+</ol>
+<p>标准库里面实现了两种 Awaiter，分别如下：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">struct</span> <span class="token class-name">suspend_never</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">bool</span> <span class="token function">await_ready</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">const</span> <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+  <span class="token keyword">void</span> <span class="token function">await_suspend</span><span class="token punctuation">(</span>coroutine_handle<span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">)</span> <span class="token keyword">const</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+  <span class="token keyword">void</span> <span class="token function">await_resume</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">const</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+<span class="token keyword">struct</span> <span class="token class-name">suspend_always</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">bool</span> <span class="token function">await_ready</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">const</span> <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+  <span class="token keyword">void</span> <span class="token function">await_suspend</span><span class="token punctuation">(</span>coroutine_handle<span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">)</span> <span class="token keyword">const</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+  <span class="token keyword">void</span> <span class="token function">await_resume</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">const</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+</code></pre>
+<p>主要在 <code>await_ready</code> 阶段判断是否需要挂起协程。</p>
+<p>最后 <code>co_yield &lt;expr&gt;</code> 其实是 co_await 的语法糖，生成如下代码：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">co_await</span> promise<span class="token punctuation">.</span><span class="token function">yield_value</span><span class="token punctuation">(</span>expression<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>而 co_return 则会调用 Promise 对象的 return_void/return_value 方法。</p>
+<h2 id="协程实战">协程实战</h2>
+<p>有了以上知识，应该足够实现一些协程了。</p>
+<p>为了简单起见，这里我实现一个 Fibonacci 的生成器，完整代码可以见：
+<a target="_blank" rel="noopener" href="https://github.com/netcan/recipes/blob/master/cpp/coroutine/FibonacciGen.cpp">https://github.com/netcan/recipes/blob/master/cpp/coroutine/FibonacciGen.cpp</a></p>
+<p>首先先写协程函数，并在 main caller 中调用，内容如下：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp">FiboFuture <span class="token function">generate_fibo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> j <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">co_yield</span> j<span class="token punctuation">;</span>
+        std<span class="token operator">::</span><span class="token function">tie</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> j<span class="token punctuation">)</span> <span class="token operator">=</span> std<span class="token operator">::</span><span class="token function">make_pair</span><span class="token punctuation">(</span>j<span class="token punctuation">,</span> i <span class="token operator">+</span> j<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">auto</span> x <span class="token operator">=</span> <span class="token function">generate_fibo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> x <span class="token operator">&lt;</span> <span class="token number">1000</span><span class="token punctuation">;</span> x<span class="token punctuation">.</span><span class="token function">resume</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"fibo:"</span> <span class="token operator">&lt;&lt;</span> x <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre>
+<p>接着实现我们所需要的 Proimse 对象，用于将结果传给 caller：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">struct</span> <span class="token class-name">promise_type</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">int</span> value_<span class="token punctuation">;</span> <span class="token comment">// 返回结果给 caller</span>
+    <span class="token keyword">auto</span> <span class="token function">initial_suspend</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> suspend_never<span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+    <span class="token keyword">auto</span> <span class="token function">final_suspend</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">noexcept</span> <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> suspend_always<span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span> <span class="token comment">// final_suspend 挂起，由 FiboFuture 释放 promise 对象</span>
+    FiboFuture <span class="token function">get_return_object</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> <span class="token punctuation">&#123;</span><span class="token class-name">coroutine_handle</span><span class="token operator">&lt;</span>promise_type<span class="token operator">></span><span class="token operator">::</span><span class="token function">from_promise</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span> <span class="token comment">// 返回 FiboFuture 对象</span>
+    <span class="token keyword">void</span> <span class="token function">unhandled_exception</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> std<span class="token operator">::</span><span class="token function">terminate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">auto</span> <span class="token function">yield_value</span><span class="token punctuation">(</span><span class="token keyword">int</span> value<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// yield 一个值并挂起返回 caller</span>
+        value_ <span class="token operator">=</span> value<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> suspend_always<span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">void</span> <span class="token function">return_void</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
+<p>还有对应的 Future：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">struct</span> <span class="token class-name">FiboFuture</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">struct</span> <span class="token class-name">promise_type</span><span class="token punctuation">;</span>
+    <span class="token function">FiboFuture</span><span class="token punctuation">(</span>coroutine_handle<span class="token operator">&lt;</span>promise_type<span class="token operator">></span> handle<span class="token punctuation">)</span><span class="token operator">:</span> <span class="token function">handle_</span><span class="token punctuation">(</span>handle<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">operator</span> <span class="token keyword">int</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> handle_<span class="token punctuation">.</span><span class="token function">promise</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>value_<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+    <span class="token keyword">void</span> <span class="token function">resume</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span> handle_<span class="token punctuation">.</span><span class="token function">done</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> handle_<span class="token punctuation">.</span><span class="token function">resume</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+    <span class="token operator">~</span><span class="token function">FiboFuture</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> handle_<span class="token punctuation">.</span><span class="token function">destroy</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+<span class="token keyword">private</span><span class="token operator">:</span>
+    coroutine_handle<span class="token operator">&lt;</span>promise_type<span class="token operator">></span> handle_<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
+<p>一切搞定，这就是目前生成器的实现，待后续集成到标准库中去，方便使用。</p>
+<p>还有一个例子是 caller/callee 相互协作，互相通信完成任务，具体见：
+<a target="_blank" rel="noopener" href="https://github.com/netcan/recipes/blob/master/cpp/coroutine/DoubleClick.cpp">https://github.com/netcan/recipes/blob/master/cpp/coroutine/DoubleClick.cpp</a></p>
+<h2 id="总结">总结</h2>
+<p>期待 C++20 协程的稳定成熟，这样写业务代码就简单多了，心智负担没那么重了。</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p><a target="_blank" rel="noopener" href="https://mthli.xyz/stackful-stackless/">有栈协程与无栈协程</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p><a target="_blank" rel="noopener" href="https://github.com/CppCon/CppCon2016/blob/master/Presentations/Introduction%20to%20C%2B%2B%20Coroutines/Introduction%20to%20C%2B%2B%20Coroutines%20-%20James%20McNellis%20-%20CppCon%202016.pdf">Introduction to C++ Coroutines - James McNellis</a> <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p><a target="_blank" rel="noopener" href="https://lewissbaker.github.io/2018/09/05/understanding-the-promise-type">C++ Coroutines: Understanding the promise type</a> <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p><a target="_blank" rel="noopener" href="https://blog.panicsoftware.com/co_awaiting-coroutines/">CO_AWAITING COROUTINES</a> <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+    
+  </div>
+
+</article>
+
+
+   
+       <div class="original">
+    <ul>
+        <li>本文标题：C++20 协程</li>
+        <li>本文字数：2.4k</li>
+        <li>本文作者：Netcan</li>
+        <li>发布时间：2020年09月05日 - 14时36分</li>
+        <li>最后更新：2020年09月05日 - 21时22分</li>
+        <li>原始链接：<a href="https://netcan.github.io/2020/09/05/C-20%E5%8D%8F%E7%A8%8B/">https://netcan.github.io/2020/09/05/C-20协程/</a></li>
+        <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
+    </ul>
+</div>
+
+   
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持Netcan</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2020/08/30/C-%E5%85%83%E7%BC%96%E7%A8%8B%E4%B9%8B%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90%EF%BC%9A%E8%AE%BE%E8%AE%A1%E5%B9%B6%E5%AE%9E%E7%8E%B0%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84DSL/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="hide pull-right" href="/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '893a4103795fc66cd8e7',
+  clientSecret: '35c92c3dca938831b67dc22e46d64bc9073ebacf',
+  repo: 'netcan.github.io',
+  owner: 'Netcan',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: md5(location.pathname),
+  admin: ['Netcan'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>
