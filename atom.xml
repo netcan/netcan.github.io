@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://netcan.github.io/"/>
-  <updated>2020-09-05T13:22:17.662Z</updated>
+  <updated>2020-09-16T13:41:45.281Z</updated>
   <id>https://netcan.github.io/</id>
   
   <author>
@@ -15,6 +15,36 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>C++ 元编程之 Parser Combinator</title>
+    <link href="https://netcan.github.io/2020/09/16/C-%E5%85%83%E7%BC%96%E7%A8%8B%E4%B9%8BParser-Combinator/"/>
+    <id>https://netcan.github.io/2020/09/16/C-%E5%85%83%E7%BC%96%E7%A8%8B%E4%B9%8BParser-Combinator/</id>
+    <published>2020-09-16T10:26:25.000Z</published>
+    <updated>2020-09-16T13:41:45.281Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;引子&quot;&gt;引子&lt;/h2&gt;
+&lt;p&gt;前不久在 CppCon 上看到一个 Talk：&lt;a href=&quot;https://www.youtube.com/watch?v=PJwd4JLYJJY&quot;&gt;constexpr All the
+        
+      
+    
+    </summary>
+    
+    
+      <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
+    
+      <category term="元编程" scheme="https://netcan.github.io/tags/%E5%85%83%E7%BC%96%E7%A8%8B/"/>
+    
+  </entry>
   
   <entry>
     <title>C++20 协程</title>
@@ -52,7 +82,7 @@
     <link href="https://netcan.github.io/2020/08/30/C-%E5%85%83%E7%BC%96%E7%A8%8B%E4%B9%8B%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90%EF%BC%9A%E8%AE%BE%E8%AE%A1%E5%B9%B6%E5%AE%9E%E7%8E%B0%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84DSL/"/>
     <id>https://netcan.github.io/2020/08/30/C-%E5%85%83%E7%BC%96%E7%A8%8B%E4%B9%8B%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90%EF%BC%9A%E8%AE%BE%E8%AE%A1%E5%B9%B6%E5%AE%9E%E7%8E%B0%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84DSL/</id>
     <published>2020-08-30T12:02:07.000Z</published>
-    <updated>2020-09-04T11:06:29.531Z</updated>
+    <updated>2020-09-16T13:26:24.505Z</updated>
     
     <summary type="html">
     
@@ -74,7 +104,7 @@
     
       <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
     
-      <category term="模板元编程" scheme="https://netcan.github.io/tags/%E6%A8%A1%E6%9D%BF%E5%85%83%E7%BC%96%E7%A8%8B/"/>
+      <category term="元编程" scheme="https://netcan.github.io/tags/%E5%85%83%E7%BC%96%E7%A8%8B/"/>
     
   </entry>
   
@@ -83,7 +113,7 @@
     <link href="https://netcan.github.io/2020/08/15/%E8%AE%BE%E8%AE%A1%E5%B9%B6%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8FDSL/"/>
     <id>https://netcan.github.io/2020/08/15/%E8%AE%BE%E8%AE%A1%E5%B9%B6%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8FDSL/</id>
     <published>2020-08-15T06:01:08.000Z</published>
-    <updated>2020-08-15T15:53:17.168Z</updated>
+    <updated>2020-09-16T13:27:09.078Z</updated>
     
     <summary type="html">
     
@@ -103,7 +133,7 @@
     
       <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
     
-      <category term="模板元编程" scheme="https://netcan.github.io/tags/%E6%A8%A1%E6%9D%BF%E5%85%83%E7%BC%96%E7%A8%8B/"/>
+      <category term="元编程" scheme="https://netcan.github.io/tags/%E5%85%83%E7%BC%96%E7%A8%8B/"/>
     
   </entry>
   
@@ -167,7 +197,7 @@
     <link href="https://netcan.github.io/2020/08/01/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E7%9A%84%E5%AE%9E%E7%8E%B0C-%E7%BC%96%E8%AF%91%E6%9C%9F%E9%9D%99%E6%80%81%E5%8F%8D%E5%B0%84/"/>
     <id>https://netcan.github.io/2020/08/01/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E7%9A%84%E5%AE%9E%E7%8E%B0C-%E7%BC%96%E8%AF%91%E6%9C%9F%E9%9D%99%E6%80%81%E5%8F%8D%E5%B0%84/</id>
     <published>2020-08-01T10:49:31.000Z</published>
-    <updated>2020-08-15T14:54:37.706Z</updated>
+    <updated>2020-09-16T13:26:53.575Z</updated>
     
     <summary type="html">
     
@@ -188,7 +218,7 @@
     
       <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
     
-      <category term="模板元编程" scheme="https://netcan.github.io/tags/%E6%A8%A1%E6%9D%BF%E5%85%83%E7%BC%96%E7%A8%8B/"/>
+      <category term="元编程" scheme="https://netcan.github.io/tags/%E5%85%83%E7%BC%96%E7%A8%8B/"/>
     
   </entry>
   
