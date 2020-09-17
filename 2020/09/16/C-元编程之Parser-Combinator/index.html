@@ -23,7 +23,7 @@
 <meta property="og:description" content="引子 前不久在 CppCon 上看到一个 Talk：constexpr All the things，这个演讲主题令我非常震撼，在编译期解析 json 字符串，进而提出了编译期构造正则表达式（编译期构建 FSM），现场掌声一片，而背后依靠的是 C++ 强大的 constexpr 特性，从而大大提高了编译期计算威力。 早在 C++11 的时候就有 constexpr 特性，那时候约束比较多，只能有一">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-09-16T10:26:25.000Z">
-<meta property="article:modified_time" content="2020-09-16T13:41:45.281Z">
+<meta property="article:modified_time" content="2020-09-17T11:56:01.583Z">
 <meta property="article:author" content="Netcan">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="元编程">
@@ -211,7 +211,7 @@ mjx-container[display="true"] {
 mjx-container[display="true"] + br {
   display: none;
 }
-</style><!-- hexo-inject:begin --><!-- hexo-inject:end --><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+</style><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body>
@@ -308,7 +308,7 @@ mjx-container[display="true"] + br {
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E5%AD%90"><span class="toc-text">引子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%20Parser"><span class="toc-text">什么是 Parser</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%20Parser-Combinator"><span class="toc-text">什么是 Parser Combinator</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E6%88%98"><span class="toc-text">实战</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E6%9E%90%E6%95%B0%E5%80%BC"><span class="toc-text">解析数值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Json%20%E8%A7%A3%E6%9E%90%E5%AF%BC%E8%AF%BB"><span class="toc-text">Json 解析导读</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E5%AD%90"><span class="toc-text">引子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%20Parser"><span class="toc-text">什么是 Parser</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%20Parser-Combinator"><span class="toc-text">什么是 Parser Combinator</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E6%88%98"><span class="toc-text">实战</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E6%9E%90%E6%95%B0%E5%80%BC"><span class="toc-text">解析数值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Json%20%E8%A7%A3%E6%9E%90%E5%AF%BC%E8%AF%BB"><span class="toc-text">Json 解析导读</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E8%AE%B0"><span class="toc-text">后记</span></a></li></ol>
   </div>
 
 
@@ -525,6 +525,9 @@ mjx-container[display="true"] + br {
 <p>这次的 CppCon 主题是编译期解析 <code>json</code> 字符串，当然直接用 <code>string_view</code> 承载字符串即可。然后构造一些 constexpr 容器，例如固定长度的 constexpr vector，由于是 17 年的 talk 了，在还不支持 constexpr new 的情况下，只能这么做。有了 constexpr vector，进而可以构造 map 容器，也是很简单的 pair vector 集合。</p>
 <p>进而提出 Parser Combinator，解析字符串，<code>fmap</code>到 json 数据结构中。</p>
 <p>最初实现的时候，json 数据结构也是一个大的 <code>template&lt;size_t Depth&gt; struct Json_Value;</code> 模板承载，导致只能指定最大递归层数，那就不够实用了。然后 talker 想了个很巧妙的办法去掉层数约束，就是先递归 <code>sizes()</code> 扫描一遍，计算出所有值个数，这样就能确定需要多少个 <code>Value</code> 容器来存储，其次计算出字符串长度，由于 <code>UTF8</code>、转义字符串的影响，最终要解析的长度其实是可能小于输入长度的。有了确定空间后，进行第二遍递归<code>value_recur&lt;NumObjects, StringSize&gt;::value_parser()</code> 扫描，每次解析完整值时候填一下 <code>Value</code> 数据结构。而由于数组和对象类似，可能嵌套，这时候进行第三遍递归 <code>extent_recur&lt;&gt;::value_parser()</code> 扫描，相当于做一次宽度优先搜索，确定最外层的元素个数，从而依次解析填值。</p>
+<h2 id="后记">后记</h2>
+<p>关于编译速度，很多人觉得可能会很慢，实际上不会，talker 用他 5 年前的笔记本电脑编译解析那么复杂的 json，才花了 5 秒时间，而在我的 MBP 编译，也是秒级。何况牺牲编译速度换来零成本运行时，是值得的。</p>
+<p>这也是 C++ 多年来的进步，据说曾经的 boost.sprit 库解析一个简单的 url 字符串都需要编译 1 分多钟，可想而知这个进步速度多大了。</p>
 
     
   </div>
@@ -536,10 +539,10 @@ mjx-container[display="true"] + br {
        <div class="original">
     <ul>
         <li>本文标题：C++ 元编程之 Parser Combinator</li>
-        <li>本文字数：2.2k</li>
+        <li>本文字数：2.4k</li>
         <li>本文作者：Netcan</li>
         <li>发布时间：2020年09月16日 - 18时26分</li>
-        <li>最后更新：2020年09月16日 - 21时41分</li>
+        <li>最后更新：2020年09月17日 - 19时56分</li>
         <li>原始链接：<a href="https://netcan.github.io/2020/09/16/C-%E5%85%83%E7%BC%96%E7%A8%8B%E4%B9%8BParser-Combinator/">https://netcan.github.io/2020/09/16/C-元编程之Parser-Combinator/</a></li>
         <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
     </ul>
