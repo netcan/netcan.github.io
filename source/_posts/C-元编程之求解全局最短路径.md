@@ -77,6 +77,7 @@ int main(int argc, char** argv) {
 图的所有节点之间最短路径其实有成熟算法，比如[Floyd–Warshall](https://en.wikipedia.org/wiki/Floyd%E2%80%93Warshall_algorithm)算法，可以在$O(V^3)$的时间复杂度内求出所有节点的最短路径；还有[Dijkstra](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm)算法，可以求出单源最短路径；朴素实现会考虑图的深度、广度优先算法，遍历每个节点并对每个节点求出最短路径。
 
 考虑编译时计算，可选择的就不那么多了，毕竟编译时一切都是常量计算。而编译时计算有两种做法：
+
 - constexpr，参考我之前一篇文章[C++元编程之Parser Combinator](/2020/09/16/C-元编程之Parser-Combinator/)，构造一个容器存放最短路径结果
 - 模板元编程，退而求其次
 
