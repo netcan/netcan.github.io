@@ -23,7 +23,7 @@
 <meta property="og:description" content="前言 最近终于搞清楚了 Monad 的本质，趁热记录下来，相信大家或多或少在编程语言中见过并用过，只不过不知道那是 Monad 罢了，也为了方便大家理解 Monad，后面我会用各种主流语言中具有代表性的 Monad 作为例子，如果对理论不感兴趣可以直接跳到后面，寻找你熟悉语言的例子进行理解后，再回头看看理论。 何为 Monad Monad 概念最初来自于范畴论，后来引入进函数式编程语言，由函数式编">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-09-30T13:06:07.000Z">
-<meta property="article:modified_time" content="2020-10-01T06:17:50.805Z">
+<meta property="article:modified_time" content="2020-10-01T06:50:35.817Z">
 <meta property="article:author" content="Netcan">
 <meta property="article:tag" content="函数式编程">
 <meta name="twitter:card" content="summary">
@@ -93,8 +93,7 @@ ga('send', 'pageview');
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
   
 
-<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
-<style>mjx-container[jax="SVG"] {
+<meta name="generator" content="Hexo 5.0.0"><style>mjx-container[jax="SVG"] {
   direction: ltr;
 }
 
@@ -211,7 +210,8 @@ mjx-container[display="true"] {
 mjx-container[display="true"] + br {
   display: none;
 }
-</style><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+</style><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
 
 <body>
 
@@ -523,7 +523,7 @@ mjx-container[display="true"] + br {
 <span class="token function">pipelog</span><span class="token punctuation">(</span><span class="token function">unit</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span> doubled<span class="token punctuation">,</span> doubled<span class="token punctuation">,</span> doubled<span class="token punctuation">,</span> halved<span class="token punctuation">)</span>
 <span class="token comment">// [8, "2 was doubled.↵4 was doubled.↵8 was doubled.↵16 was halved.↵"]</span></code></pre>
 <h3 id="Parser-Combinator">Parser Combinator</h3>
-<p>再来看看一个比较复杂的例子，Parser 也是一个 Monad，经过 bind 操作可以将各种类型的 Parser 串起来，解析字符串输出不同的结构。而 Paser 定义并不是像前面一样是个类型容器结构，而是一个函数：</p>
+<p>再来看看一个比较复杂的例子，Parser 也是一个 Monad，经过 bind 操作可以将各种类型的 Parser 串起来，解析字符串输出不同的结构。而 Parser 定义并不是像前面一样是个类型容器结构，而是一个函数：</p>
 <pre class="language-haskell" data-language="haskell"><code class="language-haskell"><span class="token constant">Parser</span> <span class="token hvariable">a</span> <span class="token operator">::</span> <span class="token constant">String</span> <span class="token operator">-></span> <span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token hvariable">a</span><span class="token punctuation">,</span> <span class="token constant">String</span><span class="token punctuation">)</span><span class="token punctuation">]</span></code></pre>
 <p>Parser 包裹了要得到的类型，通过执行 Parser 函数，解析输入一个字符串，输出所需要的类型，具体细节可以看我之前写的一篇文章：<a href="/2020/09/16/C-%E5%85%83%E7%BC%96%E7%A8%8B%E4%B9%8BParser-Combinator/">C++ 元编程之 Parser Combinator</a>，其中的 <code>makeCharParser/oneOf</code> 就是不同种类的 unit 操作，同时定义了个类似 bind 操作的 <code>combine</code> 和二元操作符<code>operator&gt;/operator&lt;</code>。</p>
 <h3 id="Promise-Future">Promise/Future</h3>
@@ -540,27 +540,24 @@ mjx-container[display="true"] + br {
 <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
 <p>而 bind 二元操作，对应于 Promise 的 then 接口，传递一个动作执行，返回一个 Promise，从而能将各个 Promise 串起来。</p>
 <p>看一个例子感受下用 Monad 前后怎么将异步代码同步化的：</p>
-<pre class="language-javascript" data-language="javascript"><code class="language-javascript"><span class="token function">firstRequest</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">response</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token function">secondRequest</span><span class="token punctuation">(</span>response<span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">nextResponse</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token function">thirdRequest</span><span class="token punctuation">(</span>nextResponse<span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">finalResponse</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+<pre class="language-javascript" data-language="javascript"><code class="language-javascript"><span class="token function">firstRequest</span><span class="token punctuation">(</span><span class="token parameter">response</span> <span class="token operator">=></span>
+    <span class="token function">secondRequest</span><span class="token punctuation">(</span>response<span class="token punctuation">,</span> <span class="token parameter">nextResponse</span> <span class="token operator">=></span>
+        <span class="token function">thirdRequest</span><span class="token punctuation">(</span>nextResponse<span class="token punctuation">,</span> <span class="token parameter">finalResponse</span> <span class="token operator">=></span>
             console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Final response:'</span> <span class="token operator">+</span> finalResponse<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> failureCallback<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> failureCallback<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span> failureCallback<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+            <span class="token punctuation">,</span> failureCallback<span class="token punctuation">)</span><span class="token punctuation">,</span>
+        failureCallback<span class="token punctuation">)</span><span class="token punctuation">,</span>
+    failureCallback<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
 <p>使用 Monad 后，大大简化回调接口：</p>
 <pre class="language-javascript" data-language="javascript"><code class="language-javascript"><span class="token function">firstRequest</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-  <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">response</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">return</span> <span class="token function">secondRequest</span><span class="token punctuation">(</span>response<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">nextResponse</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">return</span> <span class="token function">thirdRequest</span><span class="token punctuation">(</span>nextResponse<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">finalResponse</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Final response:'</span> <span class="token operator">+</span> finalResponse<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">catch</span><span class="token punctuation">(</span>failureCallback<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+    <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">response</span>      <span class="token operator">=></span> <span class="token function">secondRequest</span><span class="token punctuation">(</span>response<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">nextResponse</span>  <span class="token operator">=></span> <span class="token function">thirdRequest</span><span class="token punctuation">(</span>nextResponse<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">finalResponse</span> <span class="token operator">=></span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Final response:'</span> <span class="token operator">+</span> finalResponse<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">catch</span><span class="token punctuation">(</span>failureCallback<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
 <p>最后再引入 await 语法糖，看上去更加串行了，这也是协程的提供的手段：</p>
 <pre class="language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
-    res      <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">firstRequest</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    nextRes  <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">secondRequest</span><span class="token punctuation">(</span>res<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    finalRes <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">thirdRequest</span><span class="token punctuation">(</span>nextRes<span class="token punctuation">)</span><span class="token operator">:</span>
+    response      <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">firstRequest</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    nextResponse  <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">secondRequest</span><span class="token punctuation">(</span>response<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    finalResponse <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">thirdRequest</span><span class="token punctuation">(</span>nextResponse<span class="token punctuation">)</span><span class="token operator">:</span>
     console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Final response:'</span> <span class="token operator">+</span> finalResponse<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
     <span class="token function">failureCallback</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -591,10 +588,10 @@ mjx-container[display="true"] + br {
        <div class="original">
     <ul>
         <li>本文标题：详解函数式编程之 Monad</li>
-        <li>本文字数：3.6k</li>
+        <li>本文字数：3.5k</li>
         <li>本文作者：Netcan</li>
         <li>发布时间：2020年09月30日 - 21时06分</li>
-        <li>最后更新：2020年10月01日 - 14时17分</li>
+        <li>最后更新：2020年10月01日 - 14时50分</li>
         <li>原始链接：<a href="https://netcan.github.io/2020/09/30/%E8%AF%A6%E8%A7%A3%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%E4%B9%8BMonad/">https://netcan.github.io/2020/09/30/详解函数式编程之Monad/</a></li>
         <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
     </ul>
