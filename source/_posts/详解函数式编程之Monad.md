@@ -42,6 +42,10 @@ class Monad m where
     - 右单位元：`m a >>= unit ↔ m a`
 3. `>>=`操作满足结合律：`m a >>= \x -> (f x >>= g) ↔ (m a >>= f) >>= g`
 
+其中后两条性质也是么半群（Monoid）的定义，这也是那句名言所说的：
+
+> A monad is just a monoid in the category of endofunctors, what's the problem?
+> 一个单子（Monad）说白了不过就是自函子范畴上的一个幺半群而已，有啥难理解的？
 
 ## 主流语言的常见Monad
 ### Maybe
@@ -300,7 +304,7 @@ try {
 ```
 
 ## 尾声
-终于写到最后了，其实我们用了很久的Monad，不同的Monad背后高度一致性，将控制流封装起来，从而提高代码的可读性。应用多了回头理解抽象的Monad概念，其实也不是那么难了，之后理解这类概念就更加得心应手了，这也是抽象之美。
+终于写到最后了，其实我们用了很久的Monad，不同的Monad背后高度一致性，将控制流封装起来，抽象掉对上下文环境的处理，从而提高代码的可读性。应用多了回头理解抽象的Monad概念，其实也不是那么难了，之后理解这类概念就更加得心应手了，这也是抽象之美。
 
 [^2]: [http://blog.sigfpe.com/2006/08/you-could-have-invented-monads-and.html](http://blog.sigfpe.com/2006/08/you-could-have-invented-monads-and.html)
 [^3]: [https://hackage.haskell.org/package/base-4.14.0.0/docs/src/GHC.Base.html#%3E%3E%3D](https://hackage.haskell.org/package/base-4.14.0.0/docs/src/GHC.Base.html#%3E%3E%3D)
