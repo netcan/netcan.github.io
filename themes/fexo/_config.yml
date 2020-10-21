@@ -16,6 +16,9 @@ home_nav:
   - name: Blog
     url: /archives
     target_blank: false #不在新页面打开
+  - name: Talks
+    url: /talks
+    target_blank: false #不在新页面打开
   - name: Project
     url: /project/
     target_blank: true #在新页面打开
