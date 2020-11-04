@@ -19,15 +19,18 @@ home_nav:
   - name: Talks
     url: /talks
     target_blank: false #不在新页面打开
+  - name: About
+    url: /about
+    target_blank: false #不在新页面打开
   - name: Project
     url: /project/
     target_blank: true #在新页面打开
-  - name: Github
-    url: https://github.com/netcan
-    target_blank: true
-  - name: Zhihu
-    url: https://www.zhihu.com/people/netcan
-    target_blank: true
+  # - name: Github
+    # url: https://github.com/netcan
+    # target_blank: true
+  # - name: Zhihu
+    # url: https://www.zhihu.com/people/netcan
+    # target_blank: true
 
 # config page nav
 page_nav:
@@ -196,6 +199,11 @@ about:
     text_key: Github
     text_value: "@netcan"
     text_value_url: https://github.com/netcan
+  - type: Zhihu
+    icon: icon-user
+    text_key: Zhihu
+    text_value: "@netcan"
+    text_value_url: https://www.zhihu.com/people/netcan
   - type: mail
     icon: icon-mail
     text_key: Gmail
