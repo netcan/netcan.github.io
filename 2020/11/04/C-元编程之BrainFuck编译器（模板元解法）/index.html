@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>C++ 元编程之 BrainFuck 编译器（模板元解法） | Netcan on Programming</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="C/C++,元编程," />
+  
+
+  <meta name="description" content="引子 昨天在逼乎看到一个有意思的问题：怎么使 C++ 用最复杂的方法打 hello world？，既然要用最有格调、最复杂的方式，那就不要考虑直接打印 hello world 这种方式了，而是用元编程这种手段，编译期  生成 hello world 字符串，运行时打印。 编译期怎么生成字符串呢？这里我想到了 BrainFuck 语言 [1]，它是图灵完备的，同时其 hello world 程序又足">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++ 元编程之 BrainFuck 编译器（模板元解法）">
+<meta property="og:url" content="https://netcan.github.io/2020/11/04/C-%E5%85%83%E7%BC%96%E7%A8%8B%E4%B9%8BBrainFuck%E7%BC%96%E8%AF%91%E5%99%A8%EF%BC%88%E6%A8%A1%E6%9D%BF%E5%85%83%E8%A7%A3%E6%B3%95%EF%BC%89/index.html">
+<meta property="og:site_name" content="Netcan on Programming">
+<meta property="og:description" content="引子 昨天在逼乎看到一个有意思的问题：怎么使 C++ 用最复杂的方法打 hello world？，既然要用最有格调、最复杂的方式，那就不要考虑直接打印 hello world 这种方式了，而是用元编程这种手段，编译期  生成 hello world 字符串，运行时打印。 编译期怎么生成字符串呢？这里我想到了 BrainFuck 语言 [1]，它是图灵完备的，同时其 hello world 程序又足">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-11-04T13:56:49.000Z">
+<meta property="article:modified_time" content="2020-11-04T15:24:10.687Z">
+<meta property="article:author" content="Netcan">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="元编程">
+<meta name="twitter:card" content="summary">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/site.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-174901164-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d2c292719a76d8c0fa7f9874379cfd25";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 5.0.0"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"] > svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body>
+
+
+  
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+  
+
+  <link rel="stylesheet" href="/css/prism.css">
+
+<div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">ROOT</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E5%AD%90"><span class="toc-text">引子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#BrainFuck%20%E7%BC%96%E8%AF%91%E5%99%A8%E8%AE%BE%E8%AE%A1"><span class="toc-text">BrainFuck 编译器设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="toc-text">实现</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-C-元编程之BrainFuck编译器（模板元解法）" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">C++ 元编程之 BrainFuck 编译器（模板元解法）</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2020.11.04</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Netcan</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h2 id="引子">引子</h2>
+<p>昨天在逼乎看到一个有意思的问题：<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/334884938/answer/1557544809">怎么使 C++ 用最复杂的方法打 hello world？</a>，既然要用最有格调、最复杂的方式，那就不要考虑直接打印 hello world 这种方式了，而是用元编程这种手段，<strong>编译期 </strong> 生成 hello world 字符串，运行时打印。</p>
+<p>编译期怎么生成字符串呢？这里我想到了 BrainFuck 语言 <sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>，它是图灵完备的，同时其 hello world 程序又足够唬人（<code>;</code> 为注释）：</p>
+<pre class="language-brainfuck" data-language="brainfuck"><code class="language-brainfuck"><span class="token comment">std::cout</span> <span class="token pointer keyword">&lt;</span><span class="token pointer keyword">&lt;</span> <span class="token comment">R"(</span>
+<span class="token pointer keyword">></span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token branching important">[</span><span class="token pointer keyword">&lt;</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token pointer keyword">></span><span class="token decrement deleted">-</span><span class="token branching important">]</span><span class="token pointer keyword">&lt;</span><span class="token operator">.</span>                 <span class="token comment">;</span> <span class="token comment">H</span>
+<span class="token pointer keyword">></span><span class="token pointer keyword">></span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token branching important">[</span><span class="token pointer keyword">&lt;</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token pointer keyword">></span><span class="token decrement deleted">-</span><span class="token branching important">]</span><span class="token pointer keyword">&lt;</span><span class="token increment inserted">+</span><span class="token operator">.</span>            <span class="token comment">;</span> <span class="token comment">e</span>
+<span class="token pointer keyword">></span><span class="token pointer keyword">></span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token branching important">[</span><span class="token pointer keyword">&lt;</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token pointer keyword">></span><span class="token decrement deleted">-</span><span class="token branching important">]</span><span class="token pointer keyword">&lt;</span><span class="token operator">.</span>            <span class="token comment">;</span> <span class="token comment">l</span>
+<span class="token pointer keyword">></span><span class="token pointer keyword">></span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token branching important">[</span><span class="token pointer keyword">&lt;</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token pointer keyword">></span><span class="token decrement deleted">-</span><span class="token branching important">]</span><span class="token pointer keyword">&lt;</span><span class="token operator">.</span>            <span class="token comment">;</span> <span class="token comment">l</span>
+<span class="token pointer keyword">></span><span class="token pointer keyword">></span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token branching important">[</span><span class="token pointer keyword">&lt;</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token pointer keyword">></span><span class="token decrement deleted">-</span><span class="token branching important">]</span><span class="token pointer keyword">&lt;</span><span class="token increment inserted">+</span><span class="token operator">.</span>           <span class="token comment">;</span> <span class="token comment">o</span>
+<span class="token pointer keyword">></span><span class="token pointer keyword">></span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token branching important">[</span><span class="token pointer keyword">&lt;</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token pointer keyword">></span><span class="token decrement deleted">-</span><span class="token branching important">]</span><span class="token pointer keyword">&lt;</span><span class="token operator">.</span>                     <span class="token comment">;</span>
+<span class="token pointer keyword">></span><span class="token pointer keyword">></span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token branching important">[</span><span class="token pointer keyword">&lt;</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token pointer keyword">></span><span class="token decrement deleted">-</span><span class="token branching important">]</span><span class="token pointer keyword">&lt;</span><span class="token decrement deleted">-</span><span class="token operator">.</span>             <span class="token comment">;</span> <span class="token comment">W</span>
+<span class="token pointer keyword">></span><span class="token pointer keyword">></span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token branching important">[</span><span class="token pointer keyword">&lt;</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token pointer keyword">></span><span class="token decrement deleted">-</span><span class="token branching important">]</span><span class="token pointer keyword">&lt;</span><span class="token increment inserted">+</span><span class="token operator">.</span>           <span class="token comment">;</span> <span class="token comment">o</span>
+<span class="token pointer keyword">></span><span class="token pointer keyword">></span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token branching important">[</span><span class="token pointer keyword">&lt;</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token pointer keyword">></span><span class="token decrement deleted">-</span><span class="token branching important">]</span><span class="token pointer keyword">&lt;</span><span class="token decrement deleted">-</span><span class="token decrement deleted">-</span><span class="token decrement deleted">-</span><span class="token decrement deleted">-</span><span class="token decrement deleted">-</span><span class="token decrement deleted">-</span><span class="token operator">.</span>     <span class="token comment">;</span> <span class="token comment">r</span>
+<span class="token pointer keyword">></span><span class="token pointer keyword">></span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token branching important">[</span><span class="token pointer keyword">&lt;</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token pointer keyword">></span><span class="token decrement deleted">-</span><span class="token branching important">]</span><span class="token pointer keyword">&lt;</span><span class="token operator">.</span>            <span class="token comment">;</span> <span class="token comment">l</span>
+<span class="token pointer keyword">></span><span class="token pointer keyword">></span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token branching important">[</span><span class="token pointer keyword">&lt;</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token pointer keyword">></span><span class="token decrement deleted">-</span><span class="token branching important">]</span><span class="token pointer keyword">&lt;</span><span class="token operator">.</span>             <span class="token comment">;</span> <span class="token comment">d</span>
+<span class="token pointer keyword">></span><span class="token pointer keyword">></span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token branching important">[</span><span class="token pointer keyword">&lt;</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token increment inserted">+</span><span class="token pointer keyword">></span><span class="token decrement deleted">-</span><span class="token branching important">]</span><span class="token pointer keyword">&lt;</span><span class="token decrement deleted">-</span><span class="token decrement deleted">-</span><span class="token decrement deleted">-</span><span class="token operator">.</span>                  <span class="token comment">;</span> <span class="token comment">!</span>
+<span class="token comment">)"_brain_fuck</span> <span class="token pointer keyword">&lt;</span><span class="token pointer keyword">&lt;</span> <span class="token comment">std::endl;</span></code></pre>
+<p>若元编程实现一个 BrainFuck 编译期，在 <strong> 编译时 </strong> 解析执行上述代码，并生成结果字符串（hello world），那多有意思🤔</p>
+<p>上述代码执行过程可以看看这个链接感受下 <a target="_blank" rel="noopener" href="https://fatiherikli.github.io/brainfuck-visualizer/#PisrKysrKysrWzwrKysrKysrKys+LV08LiAgICAgICAgICAgICAgICAgOyBICj4+KysrKysrKysrK1s8KysrKysrKysrKz4tXTwrLiAgICAgICAgICAgIDsgZQo+PisrKysrKysrK1s8KysrKysrKysrKysrPi1dPC4gICAgICAgICAgICA7IGwKPj4rKysrKysrKytbPCsrKysrKysrKysrKz4tXTwuICAgICAgICAgICAgOyBsCj4+KysrKysrKysrK1s8KysrKysrKysrKys+LV08Ky4gICAgICAgICAgIDsgbwo+PisrKytbPCsrKysrKysrPi1dPC4gICAgICAgICAgICAgICAgICAgICA7Cj4+KysrKysrKysrKytbPCsrKysrKysrPi1dPC0uICAgICAgICAgICAgIDsgVwo+PisrKysrKysrKytbPCsrKysrKysrKysrPi1dPCsuICAgICAgICAgICA7IG8KPj4rKysrKysrKysrWzwrKysrKysrKysrKys+LV08LS0tLS0tLiAgICAgOyByCj4+KysrKysrKysrWzwrKysrKysrKysrKys+LV08LiAgICAgICAgICAgIDsgbAo+PisrKysrKysrKytbPCsrKysrKysrKys+LV08LiAgICAgICAgICAgICA7IGQKPj4rKysrKytbPCsrKysrKz4tXTwtLS0uICAgICAgICAgICAgICAgICAgOyAhCg==">brainfuck-visualizer</a></p>
+<h2 id="BrainFuck 编译器设计">BrainFuck 编译器设计</h2>
+<p>如果点赞数足够多，我会考虑换纯 constexpr 方式实现，这篇采用传统的模板元方式。</p>
+<p>我们需要 C++ 在 <strong> 编译期 </strong> 解析执行 BrainFuck 代码，所以无法进行 IO，这里忽略掉 <code>,/.</code> 运算符，执行完 BrainFuck 代码后，需要将单元结果保存起来。</p>
+<p>我们需要抽象出如下几个概念：</p>
+<ul>
+<li><code>Cell</code>单元格，用于存放一个 char 值</li>
+<li><code>Machine</code>，BrainFuck 图灵机，包含一组<code>Cell</code>，一个指针指明当前操作第几个<code>Cell</code></li>
+</ul>
+<p>由于在编译期计算操作的都是常量，模板元编程采用的是函数式编程思想，那就需要用递归解决问题。</p>
+<p>而循环有如下几种情况，一一分析</p>
+<ul>
+<li><code>[</code>操作符
+<ul>
+<li>若当前单元格值不为零，进入循环</li>
+<li>否则跳过该循环，执行 <code>]</code> 后的代码</li>
+</ul>
+</li>
+<li><code>]</code>操作符
+<ul>
+<li>若当前单元格值不为零，进入下一轮循环，从之前 <code>[</code> 的代码开始执行</li>
+<li>否则跳过该循环，执行 <code>]</code> 后的代码</li>
+</ul>
+</li>
+</ul>
+<p>而递归解析到操作符 <code>[</code> 时，有两条路可走，要么进入循环，要么跳到 <code>]</code>，由于当前递归解析无法知道下一个<code>]</code> 位置，那么可以通过标记位 <code>skip</code> 来判断是否继续执行，若 <code>skip</code> 为真则不执行代码，直到 <code>]</code> 复位 <code>skip</code> 标记位为止（即跳过本次循环）。</p>
+<p>同样地，递归解析到 <code>]</code> 时，也有两条路可走，要么进入下一轮循环，跳到前面的 <code>[</code> 位置，要么结束本次循环继续执行后面代码。而递归解析没有记录之前 <code>[</code> 的位置，那么可以通过回溯到 <code>[</code> 位置进行决策要不要进入下一轮循环，同样思路，可以通过标记位 <code>InLoop</code> 判断是否需要进入循环。</p>
+<p>完整实现可看：<a target="_blank" rel="noopener" href="https://github.com/netcan/recipes/blob/master/cpp/metaproggramming/BrainFuck.cpp">Brainfuck.cpp</a>，运行结果：<a target="_blank" rel="noopener" href="https://godbolt.org/z/sd6vK5">https://godbolt.org/z/sd6vK5</a></p>
+<h2 id="实现">实现</h2>
+<p>定义 <code>Cell</code> 单元格存放 char 值：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">char</span> c<span class="token operator">></span>
+<span class="token keyword">using</span> Cell <span class="token operator">=</span> std<span class="token operator">::</span>integral_constant<span class="token operator">&lt;</span><span class="token keyword">char</span><span class="token punctuation">,</span> c<span class="token operator">></span><span class="token punctuation">;</span></code></pre>
+<p>定义 BrainFuck 图灵机：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span><span class="token operator">&lt;</span>size_t P <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token keyword">bool</span> INLOOP <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>Cells<span class="token operator">></span>
+<span class="token keyword">struct</span> <span class="token class-name">Machine</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">using</span> type <span class="token operator">=</span> Machine<span class="token operator">&lt;</span>P<span class="token punctuation">,</span> INLOOP<span class="token punctuation">,</span> Cells<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">></span><span class="token punctuation">;</span>
+    <span class="token keyword">constexpr</span> <span class="token keyword">static</span> size_t PC <span class="token operator">=</span> P<span class="token punctuation">;</span> <span class="token comment">// 当前单元格指针</span>
+    <span class="token keyword">constexpr</span> <span class="token keyword">static</span> size_t InLoop <span class="token operator">=</span> INLOOP<span class="token punctuation">;</span> <span class="token comment">// ]是否进入下一轮循环</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
+<p>然后需要一些元函数对图灵机进行操作：</p>
+<ul>
+<li>初始化图灵机：<code>InitMachine</code></li>
+<li>判断当前单元格是否为零：<code>IsZero</code></li>
+<li>对单元格<code>+1/-1</code>：<code>Inc/Dec</code></li>
+<li>左移右移单元格指针：<code>Left/Right</code></li>
+<li>置位、复位 InLoop 标记位：<code>EnableLoop/DisableLoop</code></li>
+<li>结果转存到字符串：<code>ToStr</code></li>
+</ul>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">namespace</span> MachineTrait <span class="token punctuation">&#123;</span>
+    <span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">T</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">U</span><span class="token operator">></span>
+    <span class="token keyword">struct</span> <span class="token class-name">Concat</span><span class="token punctuation">;</span>
+    <span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">T</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">U</span><span class="token operator">></span>
+    <span class="token keyword">using</span> Concat_t <span class="token operator">=</span> <span class="token keyword">typename</span> <span class="token class-name">Concat</span><span class="token operator">&lt;</span>T<span class="token punctuation">,</span> U<span class="token operator">></span><span class="token operator">::</span>type<span class="token punctuation">;</span>
+    <span class="token keyword">template</span><span class="token operator">&lt;</span>size_t P<span class="token punctuation">,</span> <span class="token keyword">bool</span> Q<span class="token punctuation">,</span> size_t L<span class="token punctuation">,</span> <span class="token keyword">bool</span> R<span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>Ts<span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>Us<span class="token operator">></span>
+    <span class="token keyword">struct</span> <span class="token class-name">Concat</span><span class="token operator">&lt;</span>Machine<span class="token operator">&lt;</span>P<span class="token punctuation">,</span> Q<span class="token punctuation">,</span> Ts<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">></span><span class="token punctuation">,</span> Machine<span class="token operator">&lt;</span>L<span class="token punctuation">,</span> R<span class="token punctuation">,</span> Us<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">>></span><span class="token operator">:</span> Machine<span class="token operator">&lt;</span>P<span class="token punctuation">,</span> Q<span class="token punctuation">,</span> Ts<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> Us<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">></span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">template</span><span class="token operator">&lt;</span>size_t N<span class="token operator">></span>
+    <span class="token keyword">struct</span> <span class="token class-name">InitMachine</span><span class="token operator">:</span> <span class="token base-clause"><span class="token class-name">Concat_t</span><span class="token operator">&lt;</span><span class="token class-name">Machine</span><span class="token operator">&lt;</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token class-name">Cell</span><span class="token operator">&lt;</span><span class="token number">0</span><span class="token operator">>></span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">InitMachine</span><span class="token operator">&lt;</span><span class="token class-name">N</span><span class="token operator">-</span><span class="token number">1</span><span class="token operator">></span><span class="token operator">::</span><span class="token class-name">type</span><span class="token operator">></span></span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+    <span class="token keyword">template</span><span class="token operator">&lt;</span>size_t N<span class="token operator">></span>
+    <span class="token keyword">using</span> InitMachine_t <span class="token operator">=</span> <span class="token keyword">typename</span> <span class="token class-name">InitMachine</span><span class="token operator">&lt;</span>N<span class="token operator">></span><span class="token operator">::</span>type<span class="token punctuation">;</span>
+    <span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token operator">></span>
+    <span class="token keyword">struct</span> <span class="token class-name">InitMachine</span><span class="token operator">&lt;</span><span class="token number">0</span><span class="token operator">></span><span class="token operator">:</span> Machine<span class="token operator">&lt;</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> Cell<span class="token operator">&lt;</span><span class="token number">0</span><span class="token operator">>></span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">MACHINE</span><span class="token operator">></span>
+    <span class="token keyword">struct</span> <span class="token class-name">IsZero</span><span class="token punctuation">;</span>
+    <span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">MACHINE</span><span class="token operator">></span>
+    <span class="token keyword">using</span> IsZero_t <span class="token operator">=</span> <span class="token keyword">typename</span> <span class="token class-name">IsZero</span><span class="token operator">&lt;</span>MACHINE<span class="token operator">></span><span class="token operator">::</span>type<span class="token punctuation">;</span>
+    <span class="token keyword">template</span><span class="token operator">&lt;</span>size_t PC<span class="token punctuation">,</span> <span class="token keyword">bool</span> INLOOP<span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">C</span><span class="token punctuation">,</span> <span class="token keyword">typename</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> Cells<span class="token operator">></span>
+    <span class="token keyword">struct</span> <span class="token class-name">IsZero</span><span class="token operator">&lt;</span>Machine<span class="token operator">&lt;</span>PC<span class="token punctuation">,</span> INLOOP<span class="token punctuation">,</span> C<span class="token punctuation">,</span> Cells<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">>></span><span class="token operator">:</span> IsZero<span class="token operator">&lt;</span>Machine<span class="token operator">&lt;</span>PC <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">,</span> INLOOP<span class="token punctuation">,</span> Cells<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">>></span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+    <span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">bool</span> INLOOP<span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">C</span><span class="token punctuation">,</span> <span class="token keyword">typename</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> Cells<span class="token operator">></span>
+    <span class="token keyword">struct</span> <span class="token class-name">IsZero</span><span class="token operator">&lt;</span>Machine<span class="token operator">&lt;</span><span class="token number">0</span><span class="token punctuation">,</span> INLOOP<span class="token punctuation">,</span> C<span class="token punctuation">,</span> Cells<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">>></span><span class="token operator">:</span> std<span class="token operator">::</span>bool_constant<span class="token operator">&lt;</span>C<span class="token operator">::</span>value <span class="token operator">==</span> <span class="token number">0</span><span class="token operator">></span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">MACHINE</span><span class="token operator">></span>
+    <span class="token keyword">struct</span> <span class="token class-name">Inc</span><span class="token punctuation">;</span>
+    <span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">MACHINE</span><span class="token operator">></span>
+    <span class="token keyword">using</span> Inc_t <span class="token operator">=</span> <span class="token keyword">typename</span> <span class="token class-name">Inc</span><span class="token operator">&lt;</span>MACHINE<span class="token operator">></span><span class="token operator">::</span>type<span class="token punctuation">;</span>
+    <span class="token keyword">template</span><span class="token operator">&lt;</span>size_t PC<span class="token punctuation">,</span> <span class="token keyword">bool</span> INLOOP<span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">C</span><span class="token punctuation">,</span> <span class="token keyword">typename</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> Cells<span class="token operator">></span>
+    <span class="token keyword">struct</span> <span class="token class-name">Inc</span><span class="token operator">&lt;</span>Machine<span class="token operator">&lt;</span>PC<span class="token punctuation">,</span> INLOOP<span class="token punctuation">,</span> C<span class="token punctuation">,</span> Cells<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">>></span><span class="token operator">:</span>
+        Concat_t<span class="token operator">&lt;</span>Machine<span class="token operator">&lt;</span>PC<span class="token punctuation">,</span> INLOOP<span class="token punctuation">,</span> C<span class="token operator">></span><span class="token punctuation">,</span> Inc_t<span class="token operator">&lt;</span>Machine<span class="token operator">&lt;</span>PC <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">,</span> INLOOP<span class="token punctuation">,</span> Cells<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">>></span><span class="token operator">></span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+    <span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">bool</span> INLOOP<span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">C</span><span class="token punctuation">,</span> <span class="token keyword">typename</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> Cells<span class="token operator">></span>
+    <span class="token keyword">struct</span> <span class="token class-name">Inc</span><span class="token operator">&lt;</span>Machine<span class="token operator">&lt;</span><span class="token number">0</span><span class="token punctuation">,</span> INLOOP<span class="token punctuation">,</span> C<span class="token punctuation">,</span> Cells<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">>></span><span class="token operator">:</span>
+        Machine<span class="token operator">&lt;</span><span class="token number">0</span><span class="token punctuation">,</span> INLOOP<span class="token punctuation">,</span> Cell<span class="token operator">&lt;</span>C<span class="token operator">::</span>value <span class="token operator">+</span> <span class="token number">1</span><span class="token operator">></span><span class="token punctuation">,</span> Cells<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">></span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">MACHINE</span><span class="token operator">></span>
+    <span class="token keyword">struct</span> <span class="token class-name">Dec</span><span class="token punctuation">;</span>
+    <span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">MACHINE</span><span class="token operator">></span>
+    <span class="token keyword">using</span> Dec_t <span class="token operator">=</span> <span class="token keyword">typename</span> <span class="token class-name">Dec</span><span class="token operator">&lt;</span>MACHINE<span class="token operator">></span><span class="token operator">::</span>type<span class="token punctuation">;</span>
+    <span class="token keyword">template</span><span class="token operator">&lt;</span>size_t PC<span class="token punctuation">,</span> <span class="token keyword">bool</span> INLOOP<span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">C</span><span class="token punctuation">,</span> <span class="token keyword">typename</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> Cells<span class="token operator">></span>
+    <span class="token keyword">struct</span> <span class="token class-name">Dec</span><span class="token operator">&lt;</span>Machine<span class="token operator">&lt;</span>PC<span class="token punctuation">,</span> INLOOP<span class="token punctuation">,</span> C<span class="token punctuation">,</span> Cells<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">>></span><span class="token operator">:</span>
+        Concat_t<span class="token operator">&lt;</span>Machine<span class="token operator">&lt;</span>PC<span class="token punctuation">,</span> INLOOP<span class="token punctuation">,</span> C<span class="token operator">></span><span class="token punctuation">,</span> Dec_t<span class="token operator">&lt;</span>Machine<span class="token operator">&lt;</span>PC <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">,</span> INLOOP<span class="token punctuation">,</span> Cells<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">>></span><span class="token operator">></span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+    <span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">bool</span> INLOOP<span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">C</span><span class="token punctuation">,</span> <span class="token keyword">typename</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> Cells<span class="token operator">></span>
+    <span class="token keyword">struct</span> <span class="token class-name">Dec</span><span class="token operator">&lt;</span>Machine<span class="token operator">&lt;</span><span class="token number">0</span><span class="token punctuation">,</span> INLOOP<span class="token punctuation">,</span> C<span class="token punctuation">,</span> Cells<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">>></span><span class="token operator">:</span>
+        Machine<span class="token operator">&lt;</span><span class="token number">0</span><span class="token punctuation">,</span> INLOOP<span class="token punctuation">,</span> Cell<span class="token operator">&lt;</span>C<span class="token operator">::</span>value <span class="token operator">-</span> <span class="token number">1</span><span class="token operator">></span><span class="token punctuation">,</span> Cells<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">></span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">MACHINE</span><span class="token operator">></span>
+    <span class="token keyword">struct</span> <span class="token class-name">Right</span><span class="token punctuation">;</span>
+    <span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">MACHINE</span><span class="token operator">></span>
+    <span class="token keyword">using</span> Right_t <span class="token operator">=</span> <span class="token keyword">typename</span> <span class="token class-name">Right</span><span class="token operator">&lt;</span>MACHINE<span class="token operator">></span><span class="token operator">::</span>type<span class="token punctuation">;</span>
+    <span class="token keyword">template</span><span class="token operator">&lt;</span>size_t PC<span class="token punctuation">,</span> <span class="token keyword">bool</span> INLOOP<span class="token punctuation">,</span> <span class="token keyword">typename</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> Cells<span class="token operator">></span>
+    <span class="token keyword">struct</span> <span class="token class-name">Right</span><span class="token operator">&lt;</span>Machine<span class="token operator">&lt;</span>PC<span class="token punctuation">,</span> INLOOP<span class="token punctuation">,</span> Cells<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">>></span><span class="token operator">:</span>
+        Machine<span class="token operator">&lt;</span>PC<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">,</span> INLOOP<span class="token punctuation">,</span> Cells<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">></span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">MACHINE</span><span class="token operator">></span>
+    <span class="token keyword">struct</span> <span class="token class-name">Left</span><span class="token punctuation">;</span>
+    <span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">MACHINE</span><span class="token operator">></span>
+    <span class="token keyword">using</span> Left_t <span class="token operator">=</span> <span class="token keyword">typename</span> <span class="token class-name">Left</span><span class="token operator">&lt;</span>MACHINE<span class="token operator">></span><span class="token operator">::</span>type<span class="token punctuation">;</span>
+    <span class="token keyword">template</span><span class="token operator">&lt;</span>size_t PC<span class="token punctuation">,</span> <span class="token keyword">bool</span> INLOOP<span class="token punctuation">,</span> <span class="token keyword">typename</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> Cells<span class="token operator">></span>
+    <span class="token keyword">struct</span> <span class="token class-name">Left</span><span class="token operator">&lt;</span>Machine<span class="token operator">&lt;</span>PC<span class="token punctuation">,</span> INLOOP<span class="token punctuation">,</span> Cells<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">>></span><span class="token operator">:</span>
+        Machine<span class="token operator">&lt;</span>PC<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> INLOOP<span class="token punctuation">,</span> Cells<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">></span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">MACHINE</span><span class="token operator">></span>
+    <span class="token keyword">struct</span> <span class="token class-name">EnableLoop</span><span class="token punctuation">;</span>
+    <span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">MACHINE</span><span class="token operator">></span>
+    <span class="token keyword">using</span> EnableLoop_t <span class="token operator">=</span> <span class="token keyword">typename</span> <span class="token class-name">EnableLoop</span><span class="token operator">&lt;</span>MACHINE<span class="token operator">></span><span class="token operator">::</span>type<span class="token punctuation">;</span>
+    <span class="token keyword">template</span><span class="token operator">&lt;</span>size_t PC<span class="token punctuation">,</span> <span class="token keyword">bool</span> INLOOP<span class="token punctuation">,</span> <span class="token keyword">typename</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> Cells<span class="token operator">></span>
+    <span class="token keyword">struct</span> <span class="token class-name">EnableLoop</span><span class="token operator">&lt;</span>Machine<span class="token operator">&lt;</span>PC<span class="token punctuation">,</span> INLOOP<span class="token punctuation">,</span> Cells<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">>></span><span class="token operator">:</span>
+        Machine<span class="token operator">&lt;</span>PC<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">,</span> Cells<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">></span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">MACHINE</span><span class="token operator">></span>
+    <span class="token keyword">struct</span> <span class="token class-name">DisableLoop</span><span class="token punctuation">;</span>
+    <span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">MACHINE</span><span class="token operator">></span>
+    <span class="token keyword">using</span> DisableLoop_t <span class="token operator">=</span> <span class="token keyword">typename</span> <span class="token class-name">DisableLoop</span><span class="token operator">&lt;</span>MACHINE<span class="token operator">></span><span class="token operator">::</span>type<span class="token punctuation">;</span>
+    <span class="token keyword">template</span><span class="token operator">&lt;</span>size_t PC<span class="token punctuation">,</span> <span class="token keyword">bool</span> INLOOP<span class="token punctuation">,</span> <span class="token keyword">typename</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> Cells<span class="token operator">></span>
+    <span class="token keyword">struct</span> <span class="token class-name">DisableLoop</span><span class="token operator">&lt;</span>Machine<span class="token operator">&lt;</span>PC<span class="token punctuation">,</span> INLOOP<span class="token punctuation">,</span> Cells<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">>></span><span class="token operator">:</span>
+        Machine<span class="token operator">&lt;</span>PC<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">,</span> Cells<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">></span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">template</span><span class="token operator">&lt;</span>size_t PC<span class="token punctuation">,</span> <span class="token keyword">bool</span> INLOOP<span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>Cells<span class="token operator">></span>
+    <span class="token keyword">inline</span> <span class="token keyword">const</span> <span class="token keyword">auto</span> <span class="token function">ToStr</span><span class="token punctuation">(</span>Machine<span class="token operator">&lt;</span>PC<span class="token punctuation">,</span> INLOOP<span class="token punctuation">,</span> Cells<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">></span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">constexpr</span> <span class="token keyword">const</span> <span class="token keyword">static</span> <span class="token keyword">char</span> str<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span> Cells<span class="token operator">::</span>value <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>  <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> str<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
+<p>接下来是解析器部分，输入图灵机和 BrainFuck 代码，输出结果。基本就是模式匹配各种操作符，递归解析。</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">MACHINE</span><span class="token punctuation">,</span> <span class="token keyword">bool</span> skip<span class="token punctuation">,</span> <span class="token keyword">char</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>cs<span class="token operator">></span>
+<span class="token keyword">struct</span> <span class="token class-name">BrainFuck</span><span class="token operator">:</span> <span class="token base-clause"><span class="token class-name">MACHINE</span></span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">MACHINE</span><span class="token punctuation">,</span> <span class="token keyword">bool</span> skip<span class="token punctuation">,</span> <span class="token keyword">char</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>cs<span class="token operator">></span>
+<span class="token keyword">using</span> BrainFuck_t <span class="token operator">=</span> <span class="token keyword">typename</span> <span class="token class-name">BrainFuck</span><span class="token operator">&lt;</span>MACHINE<span class="token punctuation">,</span> skip<span class="token punctuation">,</span> cs<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">></span><span class="token operator">::</span>type<span class="token punctuation">;</span>
+
+<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">MACHINE</span><span class="token punctuation">,</span> <span class="token keyword">char</span> c<span class="token punctuation">,</span> <span class="token keyword">char</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>cs<span class="token operator">></span>
+<span class="token keyword">struct</span> <span class="token class-name">BrainFuck</span><span class="token operator">&lt;</span>MACHINE<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">,</span> c<span class="token punctuation">,</span> cs<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">></span><span class="token operator">:</span> BrainFuck_t<span class="token operator">&lt;</span>MACHINE<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">,</span> cs<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">></span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">MACHINE</span><span class="token punctuation">,</span> <span class="token keyword">bool</span> skip<span class="token punctuation">,</span> <span class="token keyword">char</span> c<span class="token punctuation">,</span> <span class="token keyword">char</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>cs<span class="token operator">></span>
+<span class="token keyword">struct</span> <span class="token class-name">BrainFuck</span><span class="token operator">&lt;</span>MACHINE<span class="token punctuation">,</span> skip<span class="token punctuation">,</span> c<span class="token punctuation">,</span> cs<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">></span><span class="token operator">:</span> BrainFuck_t<span class="token operator">&lt;</span>MACHINE<span class="token punctuation">,</span> skip<span class="token punctuation">,</span> cs<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">></span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">MACHINE</span><span class="token punctuation">,</span> <span class="token keyword">char</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>cs<span class="token operator">></span>
+<span class="token keyword">struct</span> <span class="token class-name">BrainFuck</span><span class="token operator">&lt;</span>MACHINE<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token string">'+'</span><span class="token punctuation">,</span> cs<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">></span><span class="token operator">:</span>
+    BrainFuck_t<span class="token operator">&lt;</span>MachineTrait<span class="token operator">::</span>Inc_t<span class="token operator">&lt;</span>MACHINE<span class="token operator">></span><span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">,</span> cs<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">></span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">MACHINE</span><span class="token punctuation">,</span> <span class="token keyword">char</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>cs<span class="token operator">></span>
+<span class="token keyword">struct</span> <span class="token class-name">BrainFuck</span><span class="token operator">&lt;</span>MACHINE<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token string">'-'</span><span class="token punctuation">,</span> cs<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">></span><span class="token operator">:</span>
+    BrainFuck_t<span class="token operator">&lt;</span>MachineTrait<span class="token operator">::</span>Dec_t<span class="token operator">&lt;</span>MACHINE<span class="token operator">></span><span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">,</span> cs<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">></span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">MACHINE</span><span class="token punctuation">,</span> <span class="token keyword">char</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>cs<span class="token operator">></span>
+<span class="token keyword">struct</span> <span class="token class-name">BrainFuck</span><span class="token operator">&lt;</span>MACHINE<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token string">'&lt;'</span><span class="token punctuation">,</span> cs<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">></span><span class="token operator">:</span>
+    BrainFuck_t<span class="token operator">&lt;</span>MachineTrait<span class="token operator">::</span>Left_t<span class="token operator">&lt;</span>MACHINE<span class="token operator">></span><span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">,</span> cs<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">></span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">MACHINE</span><span class="token punctuation">,</span> <span class="token keyword">char</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>cs<span class="token operator">></span>
+<span class="token keyword">struct</span> <span class="token class-name">BrainFuck</span><span class="token operator">&lt;</span>MACHINE<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token string">'>'</span><span class="token punctuation">,</span> cs<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">></span><span class="token operator">:</span>
+    BrainFuck_t<span class="token operator">&lt;</span>MachineTrait<span class="token operator">::</span>Right_t<span class="token operator">&lt;</span>MACHINE<span class="token operator">></span><span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">,</span> cs<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">></span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">MACHINE</span><span class="token punctuation">,</span> <span class="token keyword">char</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>cs<span class="token operator">></span>
+<span class="token keyword">struct</span> <span class="token class-name">BrainFuck</span><span class="token operator">&lt;</span>MACHINE<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token string">'['</span><span class="token punctuation">,</span> cs<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">using</span> EnableLoopedMachine <span class="token operator">=</span> MachineTrait<span class="token operator">::</span>EnableLoop_t<span class="token operator">&lt;</span>MACHINE<span class="token operator">></span><span class="token punctuation">;</span>
+
+    <span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">IN</span><span class="token punctuation">,</span> <span class="token keyword">bool</span> <span class="token operator">=</span> MachineTrait<span class="token operator">::</span>IsZero_t<span class="token operator">&lt;</span>IN<span class="token operator">></span><span class="token operator">::</span>value<span class="token operator">></span>
+    <span class="token keyword">struct</span> <span class="token class-name">Select</span><span class="token punctuation">;</span>
+    <span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">IN</span><span class="token operator">></span> <span class="token comment">// skip</span>
+    <span class="token keyword">struct</span> <span class="token class-name">Select</span><span class="token operator">&lt;</span>IN<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token operator">></span><span class="token operator">:</span> BrainFuck_t<span class="token operator">&lt;</span>IN<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">,</span> cs<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">></span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+    <span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">IN</span><span class="token operator">></span> <span class="token comment">// loop</span>
+    <span class="token keyword">struct</span> <span class="token class-name">Select</span><span class="token operator">&lt;</span>IN<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token operator">></span><span class="token operator">:</span> BrainFuck_t<span class="token operator">&lt;</span>IN<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">,</span> cs<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">></span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">using</span> Result <span class="token operator">=</span> <span class="token keyword">typename</span> <span class="token class-name">Select</span><span class="token operator">&lt;</span>EnableLoopedMachine<span class="token operator">></span><span class="token operator">::</span>type<span class="token punctuation">;</span>
+
+    <span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">IN</span><span class="token punctuation">,</span> <span class="token keyword">bool</span> <span class="token operator">=</span>
+        <span class="token punctuation">(</span><span class="token operator">!</span> MachineTrait<span class="token operator">::</span>IsZero_t<span class="token operator">&lt;</span>IN<span class="token operator">></span><span class="token operator">::</span>value <span class="token operator">&amp;&amp;</span> EnableLoopedMachine<span class="token operator">::</span>InLoop <span class="token operator">==</span> IN<span class="token operator">::</span>InLoop<span class="token punctuation">)</span><span class="token operator">></span>
+    <span class="token keyword">struct</span> <span class="token class-name">Loop</span><span class="token punctuation">;</span>
+    <span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">IN</span><span class="token operator">></span> <span class="token comment">// continue</span>
+    <span class="token keyword">struct</span> <span class="token class-name">Loop</span><span class="token operator">&lt;</span>IN<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token operator">></span><span class="token operator">:</span> BrainFuck_t<span class="token operator">&lt;</span>IN<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token string">'['</span><span class="token punctuation">,</span> cs<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">></span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+    <span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">IN</span><span class="token operator">></span> <span class="token comment">// skip</span>
+    <span class="token keyword">struct</span> <span class="token class-name">Loop</span><span class="token operator">&lt;</span>IN<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token operator">></span><span class="token operator">:</span> IN <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">using</span> type <span class="token operator">=</span> <span class="token keyword">typename</span> <span class="token class-name">Loop</span><span class="token operator">&lt;</span>Result<span class="token operator">></span><span class="token operator">::</span>type<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">MACHINE</span><span class="token punctuation">,</span> <span class="token keyword">char</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>cs<span class="token operator">></span>
+<span class="token keyword">struct</span> <span class="token class-name">BrainFuck</span><span class="token operator">&lt;</span>MACHINE<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token string">']'</span><span class="token punctuation">,</span> cs<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">using</span> DisableLoopMachine <span class="token operator">=</span> MachineTrait<span class="token operator">::</span>DisableLoop_t<span class="token operator">&lt;</span>MACHINE<span class="token operator">></span><span class="token punctuation">;</span>
+
+    <span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">IN</span><span class="token punctuation">,</span> <span class="token keyword">bool</span> <span class="token operator">=</span> MachineTrait<span class="token operator">::</span>IsZero_t<span class="token operator">&lt;</span>IN<span class="token operator">></span><span class="token operator">::</span>value<span class="token operator">></span>
+    <span class="token keyword">struct</span> <span class="token class-name">Select</span><span class="token punctuation">;</span>
+    <span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">IN</span><span class="token operator">></span> <span class="token comment">// skip</span>
+    <span class="token keyword">struct</span> <span class="token class-name">Select</span><span class="token operator">&lt;</span>IN<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token operator">></span><span class="token operator">:</span> BrainFuck_t<span class="token operator">&lt;</span>DisableLoopMachine<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">,</span> cs<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">></span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">IN</span><span class="token operator">></span> <span class="token comment">// goback</span>
+    <span class="token keyword">struct</span> <span class="token class-name">Select</span><span class="token operator">&lt;</span>IN<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token operator">></span><span class="token operator">:</span> MACHINE <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">using</span> type <span class="token operator">=</span> <span class="token keyword">typename</span> <span class="token class-name">Select</span><span class="token operator">&lt;</span>MACHINE<span class="token operator">></span><span class="token operator">::</span>type<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
+<p>最后就是通过自定义字符串模板操作符，输入 BrainFuck 代码，得到解析执行后的结果：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">T</span><span class="token punctuation">,</span> T<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> cs<span class="token operator">></span>
+<span class="token keyword">const</span> <span class="token keyword">auto</span> <span class="token keyword">operator</span> <span class="token string">""</span><span class="token function">_brain_fuck</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">using</span> Machine <span class="token operator">=</span> MachineTrait<span class="token operator">::</span>InitMachine_t<span class="token operator">&lt;</span><span class="token number">15</span><span class="token operator">></span><span class="token punctuation">;</span>
+    <span class="token keyword">using</span> Result <span class="token operator">=</span> BrainFuck_t<span class="token operator">&lt;</span>Machine<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">,</span> cs<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">></span><span class="token punctuation">;</span>
+
+    <span class="token keyword">return</span> <span class="token class-name">MachineTrait</span><span class="token operator">::</span><span class="token function">ToStr</span><span class="token punctuation">(</span>Result<span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/Brainfuck">https://zh.wikipedia.org/wiki/Brainfuck</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+    
+  </div>
+
+</article>
+
+
+   
+       <div class="original">
+    <ul>
+        <li>本文标题：C++ 元编程之 BrainFuck 编译器（模板元解法）</li>
+        <li>本文字数：1.9k</li>
+        <li>本文作者：Netcan</li>
+        <li>发布时间：2020年11月04日 - 21时56分</li>
+        <li>最后更新：2020年11月04日 - 23时24分</li>
+        <li>原始链接：<a href="https://netcan.github.io/2020/11/04/C-%E5%85%83%E7%BC%96%E7%A8%8B%E4%B9%8BBrainFuck%E7%BC%96%E8%AF%91%E5%99%A8%EF%BC%88%E6%A8%A1%E6%9D%BF%E5%85%83%E8%A7%A3%E6%B3%95%EF%BC%89/">https://netcan.github.io/2020/11/04/C-元编程之BrainFuck编译器（模板元解法）/</a></li>
+        <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
+    </ul>
+</div>
+
+   
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持Netcan</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2020/09/30/%E8%AF%A6%E8%A7%A3%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%E4%B9%8BMonad/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="hide pull-right" href="/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '893a4103795fc66cd8e7',
+  clientSecret: '35c92c3dca938831b67dc22e46d64bc9073ebacf',
+  repo: 'netcan.github.io',
+  owner: 'Netcan',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: md5(location.pathname),
+  admin: ['Netcan'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>
