@@ -23,7 +23,7 @@
 <meta property="og:description" content="引子 昨天在逼乎看到一个有意思的问题：怎么使 C++ 用最复杂的方法打 hello world？，既然要用最有格调、最复杂的方式，那就不要考虑直接打印 hello world 这种方式了，而是用元编程这种手段，编译期  生成 hello world 字符串，运行时打印。 编译期怎么生成字符串呢？这里我想到了 BrainFuck 语言 [1]，它是图灵完备的，同时其 hello world 程序又足">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-11-04T13:56:49.000Z">
-<meta property="article:modified_time" content="2020-11-04T16:14:02.712Z">
+<meta property="article:modified_time" content="2020-11-05T13:13:10.506Z">
 <meta property="article:author" content="Netcan">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="元编程">
@@ -399,7 +399,20 @@ mjx-container[display="true"] + br {
 </ul>
 <p>而递归解析到操作符 <code>[</code> 时，有两条路可走，要么进入循环，要么跳到 <code>]</code>，由于当前递归解析无法知道下一个<code>]</code> 位置，那么可以通过标记位 <code>skip</code> 来判断是否继续执行，若 <code>skip</code> 为真则不执行代码，直到 <code>]</code> 复位 <code>skip</code> 标记位为止（即跳过本次循环）。</p>
 <p>同样地，递归解析到 <code>]</code> 时，也有两条路可走，要么进入下一轮循环，跳到前面的 <code>[</code> 位置，要么结束本次循环继续执行后面代码。而递归解析没有记录之前 <code>[</code> 的位置，那么可以通过回溯到 <code>[</code> 位置进行决策要不要进入下一轮循环，同样思路，可以通过标记位 <code>InLoop</code> 判断是否需要进入循环。</p>
-<p>完整实现可看：<a target="_blank" rel="noopener" href="https://github.com/netcan/recipes/blob/master/cpp/metaproggramming/BrainFuck.cpp">Brainfuck.cpp</a>，运行结果：<a target="_blank" rel="noopener" href="https://godbolt.org/z/sd6vK5">https://godbolt.org/z/sd6vK5</a></p>
+<p>完整实现可看：<a target="_blank" rel="noopener" href="https://github.com/netcan/recipes/blob/master/cpp/metaproggramming/BrainFuck.cpp">Brainfuck.cpp</a>，运行结果：<a target="_blank" rel="noopener" href="https://godbolt.org/z/GTKxhc">https://godbolt.org/z/GTKxhc</a></p>
+<p>从汇编结果来看，仅仅生成 12 行汇编代码，相当紧凑简洁了：</p>
+<pre class="language-asm" data-language="asm"><code class="language-asm">main:
+        subq    $8, %rsp
+        movl    $MachineTrait::ToStr&lt;11ul, false, std::integral_constant&lt;char, (char)72&gt;, std::integral_constant&lt;char, (char)101&gt;, std::integral_constant&lt;char, (char)108&gt;, std::integral_constant&lt;char, (char)108&gt;, std::integral_constant&lt;char, (char)111&gt;, std::integral_constant&lt;char, (char)32&gt;, std::integral_constant&lt;char, (char)87&gt;, std::integral_constant&lt;char, (char)111&gt;, std::integral_constant&lt;char, (char)114&gt;, std::integral_constant&lt;char, (char)108&gt;, std::integral_constant&lt;char, (char)100&gt;, std::integral_constant&lt;char, (char)33&gt;, std::integral_constant&lt;char, (char)0&gt;, std::integral_constant&lt;char, (char)0&gt;, std::integral_constant&lt;char, (char)0&gt;, std::integral_constant&lt;char, (char)0&gt; &gt;(Machine&lt;11ul, false, std::integral_constant&lt;char, (char)72&gt;, std::integral_constant&lt;char, (char)101&gt;, std::integral_constant&lt;char, (char)108&gt;, std::integral_constant&lt;char, (char)108&gt;, std::integral_constant&lt;char, (char)111&gt;, std::integral_constant&lt;char, (char)32&gt;, std::integral_constant&lt;char, (char)87&gt;, std::integral_constant&lt;char, (char)111&gt;, std::integral_constant&lt;char, (char)114&gt;, std::integral_constant&lt;char, (char)108&gt;, std::integral_constant&lt;char, (char)100&gt;, std::integral_constant&lt;char, (char)33&gt;, std::integral_constant&lt;char, (char)0&gt;, std::integral_constant&lt;char, (char)0&gt;, std::integral_constant&lt;char, (char)0&gt;, std::integral_constant&lt;char, (char)0&gt; &gt;)::str, %edi
+        call    puts
+        xorl    %eax, %eax
+        addq    $8, %rsp
+        ret
+MachineTrait::ToStr&lt;11ul, false, std::integral_constant&lt;char, (char)72&gt;, std::integral_constant&lt;char, (char)101&gt;, std::integral_constant&lt;char, (char)108&gt;, std::integral_constant&lt;char, (char)108&gt;, std::integral_constant&lt;char, (char)111&gt;, std::integral_constant&lt;char, (char)32&gt;, std::integral_constant&lt;char, (char)87&gt;, std::integral_constant&lt;char, (char)111&gt;, std::integral_constant&lt;char, (char)114&gt;, std::integral_constant&lt;char, (char)108&gt;, std::integral_constant&lt;char, (char)100&gt;, std::integral_constant&lt;char, (char)33&gt;, std::integral_constant&lt;char, (char)0&gt;, std::integral_constant&lt;char, (char)0&gt;, std::integral_constant&lt;char, (char)0&gt;, std::integral_constant&lt;char, (char)0&gt; &gt;(Machine&lt;11ul, false, std::integral_constant&lt;char, (char)72&gt;, std::integral_constant&lt;char, (char)101&gt;, std::integral_constant&lt;char, (char)108&gt;, std::integral_constant&lt;char, (char)108&gt;, std::integral_constant&lt;char, (char)111&gt;, std::integral_constant&lt;char, (char)32&gt;, std::integral_constant&lt;char, (char)87&gt;, std::integral_constant&lt;char, (char)111&gt;, std::integral_constant&lt;char, (char)114&gt;, std::integral_constant&lt;char, (char)108&gt;, std::integral_constant&lt;char, (char)100&gt;, std::integral_constant&lt;char, (char)33&gt;, std::integral_constant&lt;char, (char)0&gt;, std::integral_constant&lt;char, (char)0&gt;, std::integral_constant&lt;char, (char)0&gt;, std::integral_constant&lt;char, (char)0&gt; &gt;)::str:
+        .string &quot;Hello World!&quot;
+        .string &quot;&quot;
+        .string &quot;&quot;
+        .string &quot;&quot;</code></pre>
 <h2 id="实现">实现</h2>
 <p>定义 <code>Cell</code> 单元格存放 char 值：</p>
 <pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">char</span> c<span class="token operator">></span>
@@ -597,10 +610,10 @@ mjx-container[display="true"] + br {
        <div class="original">
     <ul>
         <li>本文标题：C++ 元编程之 BrainFuck 编译器（模板元解法）</li>
-        <li>本文字数：1.9k</li>
+        <li>本文字数：2.4k</li>
         <li>本文作者：Netcan</li>
         <li>发布时间：2020年11月04日 - 21时56分</li>
-        <li>最后更新：2020年11月05日 - 00时14分</li>
+        <li>最后更新：2020年11月05日 - 21时13分</li>
         <li>原始链接：<a href="https://netcan.github.io/2020/11/04/C-%E5%85%83%E7%BC%96%E7%A8%8B%E4%B9%8BBrainFuck%E7%BC%96%E8%AF%91%E5%99%A8%EF%BC%88%E6%A8%A1%E6%9D%BF%E5%85%83%E8%A7%A3%E6%B3%95%EF%BC%89/">https://netcan.github.io/2020/11/04/C-元编程之BrainFuck编译器（模板元解法）/</a></li>
         <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
     </ul>
