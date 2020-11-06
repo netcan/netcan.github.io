@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://netcan.github.io/"/>
-  <updated>2020-11-06T13:56:59.250Z</updated>
+  <updated>2020-11-06T15:32:53.794Z</updated>
   <id>https://netcan.github.io/</id>
   
   <author>
@@ -15,6 +15,36 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>C++/Rust 元编程之 BrainFuck 编译器（constexpr/ 过程宏解法）</title>
+    <link href="https://netcan.github.io/2020/11/06/C-Rust%E5%85%83%E7%BC%96%E7%A8%8B%E4%B9%8BBrainFuck%E7%BC%96%E8%AF%91%E5%99%A8%EF%BC%88constexpr-%E8%BF%87%E7%A8%8B%E5%AE%8F%E8%A7%A3%E6%B3%95%EF%BC%89/"/>
+    <id>https://netcan.github.io/2020/11/06/C-Rust%E5%85%83%E7%BC%96%E7%A8%8B%E4%B9%8BBrainFuck%E7%BC%96%E8%AF%91%E5%99%A8%EF%BC%88constexpr-%E8%BF%87%E7%A8%8B%E5%AE%8F%E8%A7%A3%E6%B3%95%EF%BC%89/</id>
+    <published>2020-11-06T14:42:40.000Z</published>
+    <updated>2020-11-06T15:32:53.794Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;引子&quot;&gt;引子&lt;/h2&gt;
+&lt;p&gt;接上一篇 &lt;a
+        
+      
+    
+    </summary>
+    
+    
+      <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
+    
+      <category term="Rust" scheme="https://netcan.github.io/tags/Rust/"/>
+    
+  </entry>
   
   <entry>
     <title>C++ 元编程之 BrainFuck 编译器（模板元解法）</title>
