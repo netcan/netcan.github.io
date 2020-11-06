@@ -61,7 +61,7 @@ std::cout << R"(
 
 同样地，递归解析到`]`时，也有两条路可走，要么进入下一轮循环，跳到前面的`[`位置，要么结束本次循环继续执行后面代码。而递归解析没有记录之前`[`的位置，那么可以通过回溯到`[`位置进行决策要不要进入下一轮循环，同样思路，可以通过标记位`InLoop`判断是否需要进入循环。
 
-完整实现可看：[Brainfuck.cpp](https://github.com/netcan/recipes/blob/master/cpp/metaproggramming/BrainFuck.cpp)，运行结果：[https://godbolt.org/z/GTKxhc](https://godbolt.org/z/GTKxhc)
+完整实现可看：[Brainfuck.cpp](https://github.com/netcan/recipes/blob/master/cpp/metaproggramming/brain_fuck/BrainFuckTemplateMeta.cpp)，运行结果：[https://godbolt.org/z/GTKxhc](https://godbolt.org/z/GTKxhc)
 
 从汇编结果来看，仅仅生成12行汇编代码，相当紧凑简洁了：
 
