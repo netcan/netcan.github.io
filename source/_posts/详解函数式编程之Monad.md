@@ -42,11 +42,6 @@ class Monad m where
     - 右单位元：`m a >>= unit ↔ m a`
 3. `>>=`操作满足结合律：`m a >>= \x -> (f x >>= g) ↔ (m a >>= f) >>= g`
 
-其中后两条性质也是么半群（Monoid）的定义，这也是那句名言所说的：
-
-> A monad is just a monoid in the category of endofunctors, what's the problem?
-> 一个单子（Monad）说白了不过就是自函子范畴上的一个幺半群而已，有啥难理解的？
-
 ## 主流语言的常见Monad
 ### Maybe
 Maybe其实是一种非常简单的Monad，它的概念是表达一个值可有可无，当值被封装到Maybe的世界里，它其实有两种可能：要么拥有值即Just，要么没有即Nothing。根据Monad的性质，Maybe应该有如下操作：
