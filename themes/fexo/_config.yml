@@ -191,9 +191,10 @@ about:
   - type: me
     icon: icon-user
     text_value:
-    - "Netcan, 1996, Summer."
-    - "Software Engineer，Love C/C++/Rust/Lisp/Haskell"
-    - "Interests: OO, FP, Design, Coding"
+    - "Netcan, 1996, Summer"
+    - "Senior Software Engineer"
+    - "Skills: C/C++/Rust, Haskell/Scheme, Bash/Python/Javascript/PHP"
+    - "Interests: CS, OO, FP, Design, Coding, Writing"
   - type: Github
     icon: icon-github
     text_key: Github
