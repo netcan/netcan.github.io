@@ -23,7 +23,7 @@
 <meta property="og:description" content="引子 接上一篇 C++ 元编程之 BrainFuck 编译器（模板元解法） 挖了个坑：用 constexpr 方式实现，我发现更容易实现了，代码不到 100 行搞定，同时也尝试了一下用 Rust 过程宏来做元编程，最后我会对这两者进行比较。 之前模板元方式解法不支持嵌套循环，同时也不支持输入输出，在这次实现中，支持嵌套循环、输出。 C++ 版本： &#x2F;&#x2F; compile time constexpr">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-11-06T14:42:40.000Z">
-<meta property="article:modified_time" content="2020-11-06T15:36:04.879Z">
+<meta property="article:modified_time" content="2020-11-29T03:04:18.264Z">
 <meta property="article:author" content="Netcan">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="Rust">
@@ -211,7 +211,7 @@ mjx-container[display="true"] {
 mjx-container[display="true"] + br {
   display: none;
 }
-</style><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</style><!-- hexo-inject:begin --><!-- hexo-inject:end --><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
 </head>
 
 <body>
@@ -489,6 +489,9 @@ constexpr <span class="token keyword">auto</span> res <span class="token operato
 <p>对比 C++ 和 Rust 版本，实现代价一样。</p>
 <p>C++ 版本实现过程中可以先不加 constexpr 关键字，通过打印等 debug 手段调试通过后，最终加上 constexpr 关键字即可，最后既可以在运行时使用，也可以在编译时使用。如果在编译期出现内存越界（cells 越界）情况下，编译报错，即避免了 ub。</p>
 <p>Rust 实现过程宏只能通过 lib 方式做，同样地也可以直接加打印，在编译的时候输出，最终将打印去掉。输出结果可以直接用 <code>Vec</code> 这种动态容器存，C++20 之前暂时得通过定长（预留长度或提前计算）数组搞。而 Rust 的过程宏只能用在编译时，无法用在运行时，而且只支持字面量方式，不支持变量传参给过程宏。</p>
+<p>而本质上 Rust 宏是在预处理期做替换，而不是在编译期，能做的事有限。例如过程宏无法组合，实现如下效果：</p>
+<pre class="language-rust" data-language="rust"><code class="language-rust"><span class="token macro property">decode!</span><span class="token punctuation">(</span><span class="token macro property">encode!</span><span class="token punctuation">(</span><span class="token string">"hello world"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>而 C++ 的 constexpr 函数是可以随意组合的，这点只能期待 Rust 的 const fn 发力了。</p>
 <p>从生成的汇编结果来看，C++ 版本更加简单粗暴，g++ 编译器生成的汇编字符串结果直接存到 8 字节整型中，clang 则比较直观，main 和数据只有 15 行：</p>
 <pre class="language-nasm" data-language="nasm"><code class="language-nasm"><span class="token label function">main:</span>                                   # @main
         subq    <span class="token number">$24</span>, <span class="token operator">%</span><span class="token register variable">rsp</span>
@@ -517,10 +520,10 @@ constexpr <span class="token keyword">auto</span> res <span class="token operato
        <div class="original">
     <ul>
         <li>本文标题：C++/Rust 元编程之 BrainFuck 编译器（constexpr/ 过程宏解法）</li>
-        <li>本文字数：1.4k</li>
+        <li>本文字数：1.5k</li>
         <li>本文作者：Netcan</li>
         <li>发布时间：2020年11月06日 - 22时42分</li>
-        <li>最后更新：2020年11月06日 - 23时36分</li>
+        <li>最后更新：2020年11月29日 - 11时04分</li>
         <li>原始链接：<a href="https://netcan.github.io/2020/11/06/C-Rust%E5%85%83%E7%BC%96%E7%A8%8B%E4%B9%8BBrainFuck%E7%BC%96%E8%AF%91%E5%99%A8%EF%BC%88constexpr-%E8%BF%87%E7%A8%8B%E5%AE%8F%E8%A7%A3%E6%B3%95%EF%BC%89/">https://netcan.github.io/2020/11/06/C-Rust元编程之BrainFuck编译器（constexpr-过程宏解法）/</a></li>
         <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
     </ul>
