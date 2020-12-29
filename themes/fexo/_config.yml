@@ -22,12 +22,9 @@ home_nav:
   - name: About
     url: /about
     target_blank: false #不在新页面打开
-  - name: Project
-    url: /project/
-    target_blank: true #在新页面打开
-  # - name: Github
-    # url: https://github.com/netcan
-    # target_blank: true
+  - name: Github
+    url: https://github.com/netcan
+    target_blank: true
   # - name: Zhihu
     # url: https://www.zhihu.com/people/netcan
     # target_blank: true
@@ -200,6 +197,11 @@ about:
     text_key: Github
     text_value: "@netcan"
     text_value_url: https://github.com/netcan
+  - type: 微信公众号
+    icon: icon-wechat
+    text_key: 微信公众号
+    text_value: "高级开发者"
+    text_value_url: /images/netcan_wechat.png
   - type: Zhihu
     icon: icon-user
     text_key: Zhihu
