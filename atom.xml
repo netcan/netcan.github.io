@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://netcan.github.io/"/>
-  <updated>2021-01-08T14:32:13.530Z</updated>
+  <updated>2021-07-10T09:04:16.660Z</updated>
   <id>https://netcan.github.io/</id>
   
   <author>
@@ -15,6 +15,36 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>一个 C++ 静态反射框架：ConfigLoader</title>
+    <link href="https://netcan.github.io/2021/07/10/%E4%B8%80%E4%B8%AAC-%E9%9D%99%E6%80%81%E5%8F%8D%E5%B0%84%E6%A1%86%E6%9E%B6%EF%BC%9AConfigLoader/"/>
+    <id>https://netcan.github.io/2021/07/10/%E4%B8%80%E4%B8%AAC-%E9%9D%99%E6%80%81%E5%8F%8D%E5%B0%84%E6%A1%86%E6%9E%B6%EF%BC%9AConfigLoader/</id>
+    <published>2021-07-10T08:37:11.000Z</published>
+    <updated>2021-07-10T09:04:16.660Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;框架地址：&lt;a href=&quot;https://github.com/netcan/config-loader&quot;&gt;https://github.com/netcan/config-loader&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;相关技术：&lt;a
+        
+      
+    
+    </summary>
+    
+    
+      <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
+    
+      <category term="元编程" scheme="https://netcan.github.io/tags/%E5%85%83%E7%BC%96%E7%A8%8B/"/>
+    
+  </entry>
   
   <entry>
     <title>再见 2020，2021 你好</title>
