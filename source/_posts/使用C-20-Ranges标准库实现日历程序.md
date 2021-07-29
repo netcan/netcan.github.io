@@ -15,7 +15,9 @@ categories:
 
 通过自定义views组合子并完成一个相对复杂的程序，对于理解Ranges库的机制与原理是相当有帮助的。
 
-完整可编译可运行的日历程序请见：[https://godbolt.org/z/overc6q51](https://godbolt.org/z/overc6q51)，效果如下（2021年）：
+完整可编译可运行的日历程序请见：[https://godbolt.org/z/overc6q51](https://godbolt.org/z/overc6q51)，如果关注后续的代码更新，请见[Calendar.cpp](https://github.com/netcan/recipes/blob/master/cpp/metaproggramming/ranges/Calendar.cpp#L585)
+
+效果如下（2021年）
 
 ```text
        January               February               March
@@ -163,6 +165,24 @@ auto join_months()
 正因为Ranges标准库的实现使用了元编程技术，性能并不比命令式的编程风格差。参考最终的汇编代码生成部分，只有少数几行代码涉及生成，其他代码都被优化掉了（开启O2优化，高亮部分为参与代码生成的部分）。
 
 ![只有少数几行代码涉及生成](generated-code.png)
+
+使用系统自带的日历程序输出2000年到12000年之间的日历信息，总耗时0m3.555s，而使用我这个Ranges程序，总耗时0m2.779s。
+
+```sh
+$ time cal 2000 -A 120000
+real	0m3.555s
+user	0m0.658s
+sys	0m1.799s
+```
+
+```sh
+$ time ./a.out
+real	0m2.779s
+user	0m1.169s
+sys	0m0.617s
+```
+
+看输出可以推测出系统自带的日历程序可能是边计算边输出，而Ranges版本的日历程序是全部计算出结果后一次性输出。
 
 另一个优势在于Range的实现是延迟计算的，并且多次组合的背后可能仅仅迭代一次Range。
 
