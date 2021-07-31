@@ -204,6 +204,8 @@ sys	0m0.617s
 
 日期Date类的实现比较tricky，我的实现细节如下。回头考虑使用C++20标准库`std::chrono::year_month_day`来做。
 
+<details>
+
 ```cpp
 // Date
 struct Date {
@@ -287,8 +289,11 @@ private:
     long days;
 };
 ```
+</details>
 
 由于Ranges标准库支持的views适配器组合子比较少，最后附上自己实现的几个组合子，目前没有标准方式去定义组合子，所以实现比较tricky。但对于一个views有标准的方式去定义，通过奇异递归模板模式继承`view_interface`接口即可，感兴趣的可以细看。
+
+<details>
 
 ```cpp
 ///////////////////////////////////////////////////////////////////////////////
@@ -702,3 +707,5 @@ inline constexpr views::__adaptor::_RangeAdaptorClosure transpose
 };
 #endif
 ```
+
+</details>
