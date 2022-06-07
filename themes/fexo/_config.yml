@@ -197,11 +197,11 @@ about:
     text_key: Github
     text_value: "@netcan"
     text_value_url: https://github.com/netcan
-  - type: 微信公众号
-    icon: icon-wechat
-    text_key: 微信公众号
-    text_value: "高级开发者"
-    text_value_url: /images/netcan_wechat.png
+  # - type: 微信公众号
+    # icon: icon-wechat
+    # text_key: 微信公众号
+    # text_value: "高级开发者"
+    # text_value_url: /images/netcan_wechat.png
   - type: Zhihu
     icon: icon-user
     text_key: Zhihu
