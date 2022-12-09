@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>数据库的备份和还原 | Netcan on Programming</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="MySQL,数据库," />
+  
+
+  <meta name="description" content="数据的备份(mysqldump) 使用 mysqldump 命令备份 mysqldump -h host -u user -p[password] dbname [tbname [tbname...]] &gt; filename.sql  先来看看 test 数据库下有哪些表， mysql&gt; use test; Database changed mysql&gt; show tables;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库的备份和还原">
+<meta property="og:url" content="https://netcan.github.io/2015/03/21/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%A4%87%E4%BB%BD%E5%92%8C%E8%BF%98%E5%8E%9F/index.html">
+<meta property="og:site_name" content="Netcan on Programming">
+<meta property="og:description" content="数据的备份(mysqldump) 使用 mysqldump 命令备份 mysqldump -h host -u user -p[password] dbname [tbname [tbname...]] &gt; filename.sql  先来看看 test 数据库下有哪些表， mysql&gt; use test; Database changed mysql&gt; show tables;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://7xibui.com1.z0.glb.clouddn.com/2015/03/blob9.png">
+<meta property="article:published_time" content="2015-03-21T07:00:08.000Z">
+<meta property="article:modified_time" content="2015-03-21T07:00:08.000Z">
+<meta property="article:author" content="Netcan">
+<meta property="article:tag" content="MySQL">
+<meta property="article:tag" content="数据库">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://7xibui.com1.z0.glb.clouddn.com/2015/03/blob9.png">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/site.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-174901164-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d2c292719a76d8c0fa7f9874379cfd25";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"] > svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body>
+
+
+  
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+  
+
+  <link rel="stylesheet" href="/css/prism.css">
+
+<div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">ROOT</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%9A%84%E5%A4%87%E4%BB%BD%20-mysqldump"><span class="toc-text">数据的备份(mysqldump)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%20mysqldump%20%E5%91%BD%E4%BB%A4%E5%A4%87%E4%BB%BD"><span class="toc-text">使用 mysqldump 命令备份</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#test%20%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E6%89%80%E6%9C%89%E8%A1%A8%EF%BC%8C"><span class="toc-text">test 数据库中所有表，</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%87%E4%BB%BD%20test%20%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E6%9F%90%E4%B8%AA%E8%A1%A8%EF%BC%8C"><span class="toc-text">备份 test 数据库中某个表，</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%87%E4%BB%BD%E5%A4%9A%E4%B8%AA%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-text">备份多个数据库</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E8%BF%98%E5%8E%9F"><span class="toc-text">数据还原</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%20mysql%20%E8%BF%98%E5%8E%9F"><span class="toc-text">使用 mysql 还原</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E8%BF%81%E7%A7%BB"><span class="toc-text">数据迁移</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%A8%E7%9A%84%E5%AF%BC%E5%87%BA"><span class="toc-text">表的导出</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%94%A8%20SELECT-INTO-OUTFILE-%20%E5%AF%BC%E5%87%BA%E6%96%87%E6%9C%AC%E6%96%87%E4%BB%B6"><span class="toc-text">用SELECT ... INTO OUTFILE 导出文本文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%20mysqldump%20%E5%AF%BC%E5%87%BA%E6%96%87%E6%9C%AC%E6%96%87%E4%BB%B6"><span class="toc-text">使用 mysqldump 导出文本文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%20mysql%20%E6%8C%87%E4%BB%A4%E5%AF%BC%E5%87%BA%E6%96%87%E6%9C%AC%E6%96%87%E4%BB%B6"><span class="toc-text">使用 mysql 指令导出文本文件</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%A8%E7%9A%84%E5%AF%BC%E5%85%A5"><span class="toc-text">表的导入</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%20LOAD-DATA-INFILE%20%E6%96%B9%E5%BC%8F%E5%AF%BC%E5%85%A5%E6%96%87%E4%BB%B6"><span class="toc-text">使用 LOAD DATA INFILE 方式导入文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%94%A8%20mysqlimport%20%E5%91%BD%E4%BB%A4%E5%AF%BC%E5%85%A5%E6%96%87%E6%9C%AC%E6%96%87%E4%BB%B6"><span class="toc-text">用 mysqlimport 命令导入文本文件</span></a></li></ol></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-数据库的备份和还原" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">数据库的备份和还原</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2015.03.21</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Netcan</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h3 id="数据的备份 -mysqldump">数据的备份(<code>mysqldump</code>)</h3>
+<h4 id="使用 mysqldump 命令备份">使用 mysqldump 命令备份</h4>
+<pre><code>mysqldump -h host -u user -p[password] dbname [tbname [tbname...]] &gt; filename.sql
+</code></pre>
+<p>先来看看 test 数据库下有哪些表，</p>
+<pre><code>mysql&gt; use test;
+Database changed
+mysql&gt; show tables;
++----------------+
+| Tables_in_test |
++----------------+
+| books          |
+| fruits         |
++----------------+
+2 rows in set (0.00 sec)
+</code></pre>
+<p>表中记录，</p>
+<pre><code>mysql&gt; select * from books;
++---------+---------------------------+-----------+
+| book_id | bk_title                  | copyright |
++---------+---------------------------+-----------+
+|   11026 | Guide to MySQL 5.5        |      2008 |
+|   11028 | C++ Primer                |      2009 |
+|   11033 | Study Html                |      2011 |
+|   11035 | How to use php            |      2003 |
+|   11041 | Inside vc++               |      2011 |
+|   11072 | Teach yourself javascript |      2005 |
+|   11078 | Learning MySQL            |      2010 |
++---------+---------------------------+-----------+
+7 rows in set (0.00 sec)
+
+mysql&gt; select * from fruits;
++------+------+------------+---------+
+| f_id | s_id | f_name     | f_price |
++------+------+------------+---------+
+| a1   |  101 | apple      |    5.20 |
+| a2   |  103 | apricot    |    2.20 |
+| b1   |  101 | blackberry |   10.20 |
+| b2   |  104 | berry      |    7.60 |
+| b5   |  107 | xxxx       |    3.60 |
+| bs1  |  102 | orange     |   11.20 |
+| bs2  |  105 | melon      |    8.20 |
+| c0   |  101 | cherry     |    3.20 |
+| l2   |  104 | lemon      |    6.40 |
+| m1   |  106 | mango      |   15.60 |
+| m2   |  105 | xbabay     |    2.60 |
+| m3   |  105 | xxtt       |   11.60 |
+| o2   |  103 | coconut    |    9.20 |
+| t1   |  102 | banana     |   10.30 |
+| t2   |  102 | grape      |    5.30 |
+| t4   |  107 | xbababa    |    3.60 |
++------+------+------------+---------+
+16 rows in set (0.00 sec)
+</code></pre>
+<h4 id="test 数据库中所有表，">test 数据库中所有表，</h4>
+<pre><code>F:\workspace\MySQL&gt;mysqldump -h localhost -u root -p test &gt; test.sql
+</code></pre>
+<p>文件 test.sql 内容如下，</p>
+<pre><code>-- MySQL dump 10.13  Distrib 5.5.40, for Win32 (x86)
+--
+-- Host: localhost    Database: test
+-- ------------------------------------------------------
+-- Server version	5.5.40
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `books`
+--
+
+DROP TABLE IF EXISTS `books`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `books` (`book_id` int(11) NOT NULL,
+`bk_title` varchar(60) NOT NULL,
+`copyright` year(4) NOT NULL,
+PRIMARY KEY (`book_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `books`
+--
+
+LOCK TABLES `books` WRITE;
+/*!40000 ALTER TABLE `books` DISABLE KEYS */;
+INSERT INTO `books` VALUES (11026,'Guide to MySQL 5.5',2008),(11028,'C++ Primer',2009),(11033,'Study Html',2011),(11035,'How to use php',2003),(11041,'Inside vc++',2011),(11072,'Teach yourself javascript',2005),(11078,'Learning MySQL',2010);
+/*!40000 ALTER TABLE `books` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `fruits`
+--
+
+DROP TABLE IF EXISTS `fruits`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `fruits` (`f_id` char(10) NOT NULL,
+`s_id` int(11) DEFAULT NULL,
+`f_name` char(255) NOT NULL,
+`f_price` decimal(8,2) NOT NULL,
+PRIMARY KEY (`f_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `fruits`
+--
+
+LOCK TABLES `fruits` WRITE;
+/*!40000 ALTER TABLE `fruits` DISABLE KEYS */;
+INSERT INTO `fruits` VALUES ('a1',101,'apple',5.20),('a2',103,'apricot',2.20),('b1',101,'blackberry',10.20),('b2',104,'berry',7.60),('b5',107,'xxxx',3.60),('bs1',102,'orange',11.20),('bs2',105,'melon',8.20),('c0',101,'cherry',3.20),('l2',104,'lemon',6.40),('m1',106,'mango',15.60),('m2',105,'xbabay',2.60),('m3',105,'xxtt',11.60),('o2',103,'coconut',9.20),('t1',102,'banana',10.30),('t2',102,'grape',5.30),('t4',107,'xbababa',3.60);
+/*!40000 ALTER TABLE `fruits` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2015-03-21 15:12:07
+</code></pre>
+<h4 id="备份 test 数据库中某个表，">备份 test 数据库中某个表，</h4>
+<pre><code>F:\workspace\MySQL&gt;mysqldump -h localhost -u root -p test fruits &gt; fruits.sql
+</code></pre>
+<p>文件 fruits.sql 内容如下：</p>
+<pre><code>-- MySQL dump 10.13  Distrib 5.5.40, for Win32 (x86)
+--
+-- Host: localhost    Database: test
+-- ------------------------------------------------------
+-- Server version	5.5.40
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `fruits`
+--
+
+DROP TABLE IF EXISTS `fruits`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `fruits` (`f_id` char(10) NOT NULL,
+`s_id` int(11) DEFAULT NULL,
+`f_name` char(255) NOT NULL,
+`f_price` decimal(8,2) NOT NULL,
+PRIMARY KEY (`f_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `fruits`
+--
+
+LOCK TABLES `fruits` WRITE;
+/*!40000 ALTER TABLE `fruits` DISABLE KEYS */;
+INSERT INTO `fruits` VALUES ('a1',101,'apple',5.20),('a2',103,'apricot',2.20),('b1',101,'blackberry',10.20),('b2',104,'berry',7.60),('b5',107,'xxxx',3.60),('bs1',102,'orange',11.20),('bs2',105,'melon',8.20),('c0',101,'cherry',3.20),('l2',104,'lemon',6.40),('m1',106,'mango',15.60),('m2',105,'xbabay',2.60),('m3',105,'xxtt',11.60),('o2',103,'coconut',9.20),('t1',102,'banana',10.30),('t2',102,'grape',5.30),('t4',107,'xbababa',3.60);
+/*!40000 ALTER TABLE `fruits` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2015-03-21 15:14:43
+</code></pre>
+<h4 id="备份多个数据库">备份多个数据库</h4>
+<pre><code>mysqldump -h host -u user -p[password] --databases [dbname [dbname...]]&gt; filename.sql
+</code></pre>
+<p><code>--all-databases</code>可备份所有数据库。</p>
+<p>备份数据库 <code>test</code> 和<code>test_db</code>，</p>
+<pre><code>F:\workspace\MySQL&gt;mysqldump -h localhost -u root -p --databases test test_db &gt; test.sql
+</code></pre>
+<p>test.sql 内容就不贴了，篇幅过大。</p>
+<h3 id="数据还原">数据还原</h3>
+<h4 id="使用 mysql 还原">使用 mysql 还原</h4>
+<pre><code>mysql -h host -u user -p[password] &lt; filename.sql
+</code></pre>
+<p>或者登陆数据库使用, 需要先 use 选定数据库</p>
+<pre><code>source filename.sql;
+</code></pre>
+<h3 id="数据迁移">数据迁移</h3>
+<p>将 www.abc.com 主机上的 MySQL 数据库全部迁移到 www.bcd.com 主机上。</p>
+<pre><code>mysqldump -h www.abc.com -u root -ppassword dbname | mysql -h www.bcd.com -u root -ppassword;
+</code></pre>
+<h3 id="表的导出">表的导出</h3>
+<h4 id="用 SELECT-INTO-OUTFILE- 导出文本文件">用<code>SELECT ... INTO OUTFILE</code> 导出文本文件</h4>
+<pre><code>SELECT columnlist FROM table WHERE condition INTO OUTFILE 'filename' [OPTION]
+
+[OPTION] 选项
+    FIELDS TERMINATED BY 'value’
+    FIELDS [OPTIONALLY] ENCLOSED BY 'value'
+    FIELDS ESCAPED BY 'value'
+    LINES STARTING BY 'value'
+    LINES TERMINATED BY 'value'
+</code></pre>
+<p>例如，将 fruits 表数据导出到 fruits.txt,</p>
+<pre><code>mysql&gt; select * from fruits into outfile 'C:/fruits.txt';
+Query OK, 16 rows affected (0.00 sec)
+fruits.txt 内容如下，
+
+a1	101	apple	5.20
+a2	103	apricot	2.20
+b1	101	blackberry	10.20
+b2	104	berry	7.60
+b5	107	xxxx	3.60
+bs1	102	orange	11.20
+bs2	105	melon	8.20
+c0	101	cherry	3.20
+l2	104	lemon	6.40
+m1	106	mango	15.60
+m2	105	xbabay	2.60
+m3	105	xxtt	11.60
+o2	103	coconut	9.20
+t1	102	banana	10.30
+t2	102	grape	5.30
+t4	107	xbababa	3.60
+</code></pre>
+<p>也可以设置导出的格式，比如字段之间用逗号隔开，字符串用引号括起来，转义符用? 表示，每行以 &lt; 开头，以 &gt; 结尾。</p>
+<pre><code>mysql&gt; select * from fruits into outfile 'C:/fruits.txt'
+	-&gt; fields
+	-&gt;  terminated by ','
+	-&gt;  optionally enclosed by '\&quot;'
+	-&gt;  escaped by '\?'
+	-&gt; lines
+	-&gt;  starting by '&lt;'
+	-&gt;  terminated by '&gt;\n';
+Query OK, 16 rows affected (0.02 sec)
+</code></pre>
+<p>导出结果如下，</p>
+<pre><code>&lt;&quot;a1&quot;,101,&quot;apple&quot;,5.20&gt;
+&lt;&quot;a2&quot;,103,&quot;apricot&quot;,2.20&gt;
+&lt;&quot;b1&quot;,101,&quot;blackberry&quot;,10.20&gt;
+&lt;&quot;b2&quot;,104,&quot;berry&quot;,7.60&gt;
+&lt;&quot;b5&quot;,107,&quot;xxxx&quot;,3.60&gt;
+&lt;&quot;bs1&quot;,102,&quot;orange&quot;,11.20&gt;
+&lt;&quot;bs2&quot;,105,&quot;melon&quot;,8.20&gt;
+&lt;&quot;c0&quot;,101,&quot;cherry&quot;,3.20&gt;
+&lt;&quot;l2&quot;,104,&quot;lemon&quot;,6.40&gt;
+&lt;&quot;m1&quot;,106,&quot;mango&quot;,15.60&gt;
+&lt;&quot;m2&quot;,105,&quot;xbabay&quot;,2.60&gt;
+&lt;&quot;m3&quot;,105,&quot;xxtt&quot;,11.60&gt;
+&lt;&quot;o2&quot;,103,&quot;coconut&quot;,9.20&gt;
+&lt;&quot;t1&quot;,102,&quot;banana&quot;,10.30&gt;
+&lt;&quot;t2&quot;,102,&quot;grape&quot;,5.30&gt;
+&lt;&quot;t4&quot;,107,&quot;xbababa&quot;,3.60&gt;
+</code></pre>
+<h4 id="使用 mysqldump 导出文本文件">使用 mysqldump 导出文本文件</h4>
+<pre><code>mysqldump -T out_dir -h host -u root -p dbname [tables][OPTIONS]
+
+OPTIONS 选项：
+    --fields-terminated-by=value
+    --fields-enclosed-by=value
+    --fields-optionally-enclosed-by=value
+    --fields-escaped-by=value
+    --lines-terminated-by=value
+</code></pre>
+<p>导出 fruits 表字段之间用逗号隔开，字符串用引号括起来，转义符用? 表示。</p>
+<pre><code>F:\workspace\MySQL&gt;mysqldump -h localhost -u root -p test fruits -T . --fields-terminated-by=, --fields-optionally-enclosed-by=\&quot; --fields-escaped-by=\? --lines-terminated-by=\n
+</code></pre>
+<p>将在当前目录生成 fruits.sql 和 fruits.txt，内容分别为</p>
+<pre><code>-- MySQL dump 10.13  Distrib 5.5.40, for Win32 (x86)
+--
+-- Host: localhost    Database: test
+-- ------------------------------------------------------
+-- Server version	5.5.40
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `fruits`
+--
+
+DROP TABLE IF EXISTS `fruits`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `fruits` (`f_id` char(10) NOT NULL,
+`s_id` int(11) DEFAULT NULL,
+`f_name` char(255) NOT NULL,
+`f_price` decimal(8,2) NOT NULL,
+PRIMARY KEY (`f_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2015-03-21 16:17:50
+&quot;a1&quot;,101,&quot;apple&quot;,5.20
+&quot;a2&quot;,103,&quot;apricot&quot;,2.20
+&quot;b1&quot;,101,&quot;blackberry&quot;,10.20
+&quot;b2&quot;,104,&quot;berry&quot;,7.60
+&quot;b5&quot;,107,&quot;xxxx&quot;,3.60
+&quot;bs1&quot;,102,&quot;orange&quot;,11.20
+&quot;bs2&quot;,105,&quot;melon&quot;,8.20
+&quot;c0&quot;,101,&quot;cherry&quot;,3.20
+&quot;l2&quot;,104,&quot;lemon&quot;,6.40
+&quot;m1&quot;,106,&quot;mango&quot;,15.60
+&quot;m2&quot;,105,&quot;xbabay&quot;,2.60
+&quot;m3&quot;,105,&quot;xxtt&quot;,11.60
+&quot;o2&quot;,103,&quot;coconut&quot;,9.20
+&quot;t1&quot;,102,&quot;banana&quot;,10.30
+&quot;t2&quot;,102,&quot;grape&quot;,5.30
+&quot;t4&quot;,107,&quot;xbababa&quot;,3.60
+</code></pre>
+<h4 id="使用 mysql 指令导出文本文件">使用 mysql 指令导出文本文件</h4>
+<pre><code>mysql -h host -u root -p --execute=&quot;SELECT 语句 &quot; dbname &gt; filename.txt
+--vertical 参数可把记录分为多行显示
+--html 保存成 html
+--xml 保存成 xml
+</code></pre>
+<p>导出 fruits 表数据。</p>
+<pre><code>F:\workspace\MySQL&gt;mysql -h localhost -u root -p test --execute=&quot;select * from fruits;&quot; &gt; fruits.txt
+</code></pre>
+<p>fruits.txt 文件内容如下，</p>
+<pre><code>f_id	s_id	f_name	f_price
+a1	101	apple	5.20
+a2	103	apricot	2.20
+b1	101	blackberry	10.20
+b2	104	berry	7.60
+b5	107	xxxx	3.60
+bs1	102	orange	11.20
+bs2	105	melon	8.20
+c0	101	cherry	3.20
+l2	104	lemon	6.40
+m1	106	mango	15.60
+m2	105	xbabay	2.60
+m3	105	xxtt	11.60
+o2	103	coconut	9.20
+t1	102	banana	10.30
+t2	102	grape	5.30
+t4	107	xbababa	3.60
+</code></pre>
+<p>记录分行显示，</p>
+<pre><code>F:\workspace\MySQL&gt;mysql -h localhost -u root -p test --vertical --execute=&quot;select * from fruits;&quot; &gt; fruits.txt
+</code></pre>
+<p>fruits.txt 文件内容如下，</p>
+<pre><code>*************************** 1. row ***************************
+f_id: a1
+s_id: 101
+f_name: apple
+f_price: 5.20
+*************************** 2. row ***************************
+f_id: a2
+s_id: 103
+f_name: apricot
+f_price: 2.20
+*************************** 3. row ***************************
+f_id: b1
+s_id: 101
+f_name: blackberry
+f_price: 10.20
+*************************** 4. row ***************************
+f_id: b2
+s_id: 104
+f_name: berry
+f_price: 7.60
+*************************** 5. row ***************************
+f_id: b5
+s_id: 107
+f_name: xxxx
+f_price: 3.60
+*************************** 6. row ***************************
+f_id: bs1
+s_id: 102
+f_name: orange
+f_price: 11.20
+*************************** 7. row ***************************
+f_id: bs2
+s_id: 105
+f_name: melon
+f_price: 8.20
+*************************** 8. row ***************************
+f_id: c0
+s_id: 101
+f_name: cherry
+f_price: 3.20
+*************************** 9. row ***************************
+f_id: l2
+s_id: 104
+f_name: lemon
+f_price: 6.40
+*************************** 10. row ***************************
+f_id: m1
+s_id: 106
+f_name: mango
+f_price: 15.60
+*************************** 11. row ***************************
+f_id: m2
+s_id: 105
+f_name: xbabay
+f_price: 2.60
+*************************** 12. row ***************************
+f_id: m3
+s_id: 105
+f_name: xxtt
+f_price: 11.60
+*************************** 13. row ***************************
+f_id: o2
+s_id: 103
+f_name: coconut
+f_price: 9.20
+*************************** 14. row ***************************
+f_id: t1
+s_id: 102
+f_name: banana
+f_price: 10.30
+*************************** 15. row ***************************
+f_id: t2
+s_id: 102
+f_name: grape
+f_price: 5.30
+*************************** 16. row ***************************
+f_id: t4
+s_id: 107
+f_name: xbababa
+f_price: 3.60
+</code></pre>
+<p>保存为 html，</p>
+<pre><code>F:\workspace\MySQL&gt;mysql -h localhost -u root -p test --html --execute=&quot;select * from fruits;&quot; &gt; fruits.html
+</code></pre>
+<p>fruits.html 内容如下，
+<img src="http://7xibui.com1.z0.glb.clouddn.com/2015/03/blob9.png" alt="http://7xibui.com1.z0.glb.clouddn.com/2015/03/blob9.png"></p>
+<p>最后试试保存成 xml 的，</p>
+<pre><code>F:\workspace\MySQL&gt;mysql -h localhost -u root -p test --xml --execute=&quot;select * from fruits;&quot; &gt; fruits.xml
+</code></pre>
+<p>fruits.xml 文件内容如下，</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot;?&gt;
+
+&lt;resultset statement=&quot;select * from fruits&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&gt;
+&lt;row&gt;
+	&lt;field name=&quot;f_id&quot;&gt;a1&lt;/field&gt;
+	&lt;field name=&quot;s_id&quot;&gt;101&lt;/field&gt;
+	&lt;field name=&quot;f_name&quot;&gt;apple&lt;/field&gt;
+	&lt;field name=&quot;f_price&quot;&gt;5.20&lt;/field&gt;
+&lt;/row&gt;
+
+&lt;row&gt;
+	&lt;field name=&quot;f_id&quot;&gt;a2&lt;/field&gt;
+	&lt;field name=&quot;s_id&quot;&gt;103&lt;/field&gt;
+	&lt;field name=&quot;f_name&quot;&gt;apricot&lt;/field&gt;
+	&lt;field name=&quot;f_price&quot;&gt;2.20&lt;/field&gt;
+&lt;/row&gt;
+
+&lt;row&gt;
+	&lt;field name=&quot;f_id&quot;&gt;b1&lt;/field&gt;
+	&lt;field name=&quot;s_id&quot;&gt;101&lt;/field&gt;
+	&lt;field name=&quot;f_name&quot;&gt;blackberry&lt;/field&gt;
+	&lt;field name=&quot;f_price&quot;&gt;10.20&lt;/field&gt;
+&lt;/row&gt;
+
+&lt;row&gt;
+	&lt;field name=&quot;f_id&quot;&gt;b2&lt;/field&gt;
+	&lt;field name=&quot;s_id&quot;&gt;104&lt;/field&gt;
+	&lt;field name=&quot;f_name&quot;&gt;berry&lt;/field&gt;
+	&lt;field name=&quot;f_price&quot;&gt;7.60&lt;/field&gt;
+&lt;/row&gt;
+
+&lt;row&gt;
+	&lt;field name=&quot;f_id&quot;&gt;b5&lt;/field&gt;
+	&lt;field name=&quot;s_id&quot;&gt;107&lt;/field&gt;
+	&lt;field name=&quot;f_name&quot;&gt;xxxx&lt;/field&gt;
+	&lt;field name=&quot;f_price&quot;&gt;3.60&lt;/field&gt;
+&lt;/row&gt;
+
+&lt;row&gt;
+	&lt;field name=&quot;f_id&quot;&gt;bs1&lt;/field&gt;
+	&lt;field name=&quot;s_id&quot;&gt;102&lt;/field&gt;
+	&lt;field name=&quot;f_name&quot;&gt;orange&lt;/field&gt;
+	&lt;field name=&quot;f_price&quot;&gt;11.20&lt;/field&gt;
+&lt;/row&gt;
+
+&lt;row&gt;
+	&lt;field name=&quot;f_id&quot;&gt;bs2&lt;/field&gt;
+	&lt;field name=&quot;s_id&quot;&gt;105&lt;/field&gt;
+	&lt;field name=&quot;f_name&quot;&gt;melon&lt;/field&gt;
+	&lt;field name=&quot;f_price&quot;&gt;8.20&lt;/field&gt;
+&lt;/row&gt;
+
+&lt;row&gt;
+	&lt;field name=&quot;f_id&quot;&gt;c0&lt;/field&gt;
+	&lt;field name=&quot;s_id&quot;&gt;101&lt;/field&gt;
+	&lt;field name=&quot;f_name&quot;&gt;cherry&lt;/field&gt;
+	&lt;field name=&quot;f_price&quot;&gt;3.20&lt;/field&gt;
+&lt;/row&gt;
+
+&lt;row&gt;
+	&lt;field name=&quot;f_id&quot;&gt;l2&lt;/field&gt;
+	&lt;field name=&quot;s_id&quot;&gt;104&lt;/field&gt;
+	&lt;field name=&quot;f_name&quot;&gt;lemon&lt;/field&gt;
+	&lt;field name=&quot;f_price&quot;&gt;6.40&lt;/field&gt;
+&lt;/row&gt;
+
+&lt;row&gt;
+	&lt;field name=&quot;f_id&quot;&gt;m1&lt;/field&gt;
+	&lt;field name=&quot;s_id&quot;&gt;106&lt;/field&gt;
+	&lt;field name=&quot;f_name&quot;&gt;mango&lt;/field&gt;
+	&lt;field name=&quot;f_price&quot;&gt;15.60&lt;/field&gt;
+&lt;/row&gt;
+
+&lt;row&gt;
+	&lt;field name=&quot;f_id&quot;&gt;m2&lt;/field&gt;
+	&lt;field name=&quot;s_id&quot;&gt;105&lt;/field&gt;
+	&lt;field name=&quot;f_name&quot;&gt;xbabay&lt;/field&gt;
+	&lt;field name=&quot;f_price&quot;&gt;2.60&lt;/field&gt;
+&lt;/row&gt;
+
+&lt;row&gt;
+	&lt;field name=&quot;f_id&quot;&gt;m3&lt;/field&gt;
+	&lt;field name=&quot;s_id&quot;&gt;105&lt;/field&gt;
+	&lt;field name=&quot;f_name&quot;&gt;xxtt&lt;/field&gt;
+	&lt;field name=&quot;f_price&quot;&gt;11.60&lt;/field&gt;
+&lt;/row&gt;
+
+&lt;row&gt;
+	&lt;field name=&quot;f_id&quot;&gt;o2&lt;/field&gt;
+	&lt;field name=&quot;s_id&quot;&gt;103&lt;/field&gt;
+	&lt;field name=&quot;f_name&quot;&gt;coconut&lt;/field&gt;
+	&lt;field name=&quot;f_price&quot;&gt;9.20&lt;/field&gt;
+&lt;/row&gt;
+
+&lt;row&gt;
+	&lt;field name=&quot;f_id&quot;&gt;t1&lt;/field&gt;
+	&lt;field name=&quot;s_id&quot;&gt;102&lt;/field&gt;
+	&lt;field name=&quot;f_name&quot;&gt;banana&lt;/field&gt;
+	&lt;field name=&quot;f_price&quot;&gt;10.30&lt;/field&gt;
+&lt;/row&gt;
+
+&lt;row&gt;
+	&lt;field name=&quot;f_id&quot;&gt;t2&lt;/field&gt;
+	&lt;field name=&quot;s_id&quot;&gt;102&lt;/field&gt;
+	&lt;field name=&quot;f_name&quot;&gt;grape&lt;/field&gt;
+	&lt;field name=&quot;f_price&quot;&gt;5.30&lt;/field&gt;
+&lt;/row&gt;
+
+&lt;row&gt;
+	&lt;field name=&quot;f_id&quot;&gt;t4&lt;/field&gt;
+	&lt;field name=&quot;s_id&quot;&gt;107&lt;/field&gt;
+	&lt;field name=&quot;f_name&quot;&gt;xbababa&lt;/field&gt;
+	&lt;field name=&quot;f_price&quot;&gt;3.60&lt;/field&gt;
+&lt;/row&gt;
+&lt;/resultset&gt;
+</code></pre>
+<h3 id="表的导入">表的导入</h3>
+<h4 id="使用 LOAD-DATA-INFILE 方式导入文件">使用 LOAD DATA INFILE 方式导入文件</h4>
+<pre><code>LOAD DATA INFILE 'filename.txt' INTO TABLE tablename [OPTIONS] [IGNORE number LINES]
+
+[OPTION] 选项
+        FIELDS TERMINATED BY 'value’
+        FIELDS [OPTIONALLY] ENCLOSED BY 'value'
+        FIELDS ESCAPED BY 'value'
+        LINES STARTING BY 'value'
+        LINES TERMINATED BY 'value'
+[IGNORE number LINES] 忽略前面 number 行
+</code></pre>
+<p>例如，将下面文件 fruits.txt 导入 fruits 表，</p>
+<pre><code>a1	101	apple	5.20
+a2	103	apricot	2.20
+b1	101	blackberry	10.20
+b2	104	berry	7.60
+b5	107	xxxx	3.60
+bs1	102	orange	11.20
+bs2	105	melon	8.20
+c0	101	cherry	3.20
+l2	104	lemon	6.40
+m1	106	mango	15.60
+m2	105	xbabay	2.60
+m3	105	xxtt	11.60
+o2	103	coconut	9.20
+t1	102	banana	10.30
+t2	102	grape	5.30
+t4	107	xbababa	3.60
+</code></pre>
+<p>先删除 fruits 表中数据，</p>
+<pre><code>mysql&gt; delete from test.fruits;
+Query OK, 16 rows affected (0.05 sec)
+</code></pre>
+<p>导入数据并查看，</p>
+<pre><code>mysql&gt; load data infile 'C:/fruits.txt' into table test.fruits;
+Query OK, 16 rows affected (0.06 sec)
+Records: 16  Deleted: 0  Skipped: 0  Warnings: 0
+
+mysql&gt; select * from test.fruits;
++------+------+------------+---------+
+| f_id | s_id | f_name     | f_price |
++------+------+------------+---------+
+| a1   |  101 | apple      |    5.20 |
+| a2   |  103 | apricot    |    2.20 |
+| b1   |  101 | blackberry |   10.20 |
+| b2   |  104 | berry      |    7.60 |
+| b5   |  107 | xxxx       |    3.60 |
+| bs1  |  102 | orange     |   11.20 |
+| bs2  |  105 | melon      |    8.20 |
+| c0   |  101 | cherry     |    3.20 |
+| l2   |  104 | lemon      |    6.40 |
+| m1   |  106 | mango      |   15.60 |
+| m2   |  105 | xbabay     |    2.60 |
+| m3   |  105 | xxtt       |   11.60 |
+| o2   |  103 | coconut    |    9.20 |
+| t1   |  102 | banana     |   10.30 |
+| t2   |  102 | grape      |    5.30 |
+| t4   |  107 | xbababa    |    3.60 |
++------+------+------------+---------+
+16 rows in set (0.00 sec)
+</code></pre>
+<p>忽略前 6 行导入，</p>
+<pre><code>mysql&gt; load data infile 'C:/fruits.txt' into table test.fruits ignore 6 lines;
+Query OK, 10 rows affected (0.13 sec)
+Records: 10  Deleted: 0  Skipped: 0  Warnings: 0
+
+mysql&gt; select * from test.fruits;
++------+------+---------+---------+
+| f_id | s_id | f_name  | f_price |
++------+------+---------+---------+
+| bs2  |  105 | melon   |    8.20 |
+| c0   |  101 | cherry  |    3.20 |
+| l2   |  104 | lemon   |    6.40 |
+| m1   |  106 | mango   |   15.60 |
+| m2   |  105 | xbabay  |    2.60 |
+| m3   |  105 | xxtt    |   11.60 |
+| o2   |  103 | coconut |    9.20 |
+| t1   |  102 | banana  |   10.30 |
+| t2   |  102 | grape   |    5.30 |
+| t4   |  107 | xbababa |    3.60 |
++------+------+---------+---------+
+10 rows in set (0.00 sec)
+</code></pre>
+<h4 id="用 mysqlimport 命令导入文本文件">用 mysqlimport 命令导入文本文件</h4>
+<pre><code>mysqlimport -h host -u root -p dbname filename.txt [OPTIONS]
+
+[OPTIONS]参数
+    --fields-terminated-by=value
+    --fields-enclosed-by=value
+    --fields-optionally-enclosed-by=value
+    --fields-escaped-by=value
+    --lines-terminated-by=value
+    --ignore-lines=n
+</code></pre>
+<p>例如导入 fruits.txt 到表 fruits 中。</p>
+<pre><code>F:\workspace\MySQL&gt;mysqlimport -h localhost -u root -p test fruits.txt
+Enter password: ********
+test.fruits: Records: 16  Deleted: 0  Skipped: 0  Warnings: 0
+</code></pre>
+
+    
+  </div>
+
+</article>
+
+
+   
+       <div class="original">
+    <ul>
+        <li>本文标题：数据库的备份和还原</li>
+        <li>本文字数：3.7k</li>
+        <li>本文作者：Netcan</li>
+        <li>发布时间：2015年03月21日 - 15时00分</li>
+        <li>最后更新：2015年03月21日 - 15时00分</li>
+        <li>原始链接：<a href="https://netcan.github.io/2015/03/21/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%A4%87%E4%BB%BD%E5%92%8C%E8%BF%98%E5%8E%9F/">https://netcan.github.io/2015/03/21/数据库的备份和还原/</a></li>
+        <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
+    </ul>
+</div>
+
+   
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持Netcan</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2015/03/20/%E6%95%B0%E6%8D%AE%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2015/03/21/PHP%E6%93%8D%E4%BD%9CMySQL%E6%95%B0%E6%8D%AE%E5%BA%93/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '893a4103795fc66cd8e7',
+  clientSecret: '35c92c3dca938831b67dc22e46d64bc9073ebacf',
+  repo: 'netcan.github.io',
+  owner: 'Netcan',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: md5(location.pathname),
+  admin: ['Netcan'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

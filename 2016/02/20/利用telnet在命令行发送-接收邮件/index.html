@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>利用 telnet 在命令行发送 / 接收邮件 | Netcan on Programming</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="计算机网络," />
+  
+
+  <meta name="description" content="明天就要去学校了。。有点不舍，本来今天就要去的，因为玉林到合肥有票了，就改签到明天，因为学生票还省下了 100。。。 废话不多说，这几天在学《计算机网络》，发现 telnet 其实是个很万能的东西，我曾对它的印象仅仅停留在远程控制，那时候在机房叫老师打开机房的网络，老师在 cmd 就用 telnet 远程控制来打开网络。 比如用 telnet 发送邮件，就可以深刻理解协议的含义：语义 、 语法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="利用 telnet 在命令行发送 &#x2F; 接收邮件">
+<meta property="og:url" content="https://netcan.github.io/2016/02/20/%E5%88%A9%E7%94%A8telnet%E5%9C%A8%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%8F%91%E9%80%81-%E6%8E%A5%E6%94%B6%E9%82%AE%E4%BB%B6/index.html">
+<meta property="og:site_name" content="Netcan on Programming">
+<meta property="og:description" content="明天就要去学校了。。有点不舍，本来今天就要去的，因为玉林到合肥有票了，就改签到明天，因为学生票还省下了 100。。。 废话不多说，这几天在学《计算机网络》，发现 telnet 其实是个很万能的东西，我曾对它的印象仅仅停留在远程控制，那时候在机房叫老师打开机房的网络，老师在 cmd 就用 telnet 远程控制来打开网络。 比如用 telnet 发送邮件，就可以深刻理解协议的含义：语义 、 语法">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://7xibui.com1.z0.glb.clouddn.com/%40%2F2016%2F02%2Fscreenshot-area-2016-02-20-103534.png">
+<meta property="article:published_time" content="2016-02-20T02:09:42.000Z">
+<meta property="article:modified_time" content="2022-12-09T11:02:08.588Z">
+<meta property="article:author" content="Netcan">
+<meta property="article:tag" content="计算机网络">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://7xibui.com1.z0.glb.clouddn.com/%40%2F2016%2F02%2Fscreenshot-area-2016-02-20-103534.png">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/site.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-174901164-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d2c292719a76d8c0fa7f9874379cfd25";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"] > svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body>
+
+
+  
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+  
+
+  <link rel="stylesheet" href="/css/prism.css">
+
+<div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">ROOT</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%91%E9%82%AE%E4%BB%B6"><span class="toc-text">发邮件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%94%B6%E9%82%AE%E4%BB%B6"><span class="toc-text">收邮件</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-利用telnet在命令行发送-接收邮件" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">利用 telnet 在命令行发送 / 接收邮件</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2016.02.20</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Netcan</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p>明天就要去学校了。。有点不舍，本来今天就要去的，因为玉林到合肥有票了，就改签到明天，因为学生票还省下了 100。。。</p>
+<p>废话不多说，这几天在学《计算机网络》，发现 <code>telnet</code> 其实是个很万能的东西，我曾对它的印象仅仅停留在远程控制，那时候在机房叫老师打开机房的网络，老师在 <code>cmd</code> 就用 <code>telnet</code> 远程控制来打开网络。</p>
+<p>比如用 <code>telnet</code> 发送邮件，就可以深刻理解协议的含义：<strong>语义 </strong>、<strong> 语法 </strong> 和<strong>时序 </strong>，以后<code>socket</code> 编程的时候就知道怎么设计协议了，其实和设计指令差不多。</p>
+<p>因为 <em>QQ 邮箱</em> 加密传输了，不好测试，这里用 <em>139 移动邮箱</em> 发送到 <em>QQ 邮箱</em> 来测试。</p>
+<p>注意退出 <code>telnet</code> 的话，先按 <code>CTRL+J</code>，然后输入<code>quit</code> 即可退出。</p>
+<p><code>base64</code>加密的话：</p>
+<pre><code>echo -n 待加密的内容 | base64
+</code></pre>
+<p>先看看发送图(<code>smtp</code>)：
+<img src="http://7xibui.com1.z0.glb.clouddn.com/%40%2F2016%2F02%2Fscreenshot-area-2016-02-20-103534.png" alt="发邮件"></p>
+<p>再来看看收邮件的(<code>pop3</code>)：</p>
+<pre><code>✘  ~/WorkSpace/Netcan_Web/blog/source/Timeline  telnet pop.139.com 110
+Trying 221.176.9.169...
+Connected to pop.mail.10086.cn.
+Escape character is '^]'.
++OK richmail system v10(32d256c7d202533-1a2ff)
+USER netcan
++OK
+PASS xxxxxx
++OK login success
+LIST
++OK
+1 11481
+2 20476
+3 22995
+4 17824
+5 16520
+6 48992
+7 50115
+8 51141
+9 50336
+10 18149
+11 51062
+12 12116
+13 20278
+14 26734
+15 51260
+16 21147
+17 51499
+18 11584
+19 20796
+20 12594
+21 52576
+22 16798
+.
+RETR 1
++OK
+Received:from mail139@139.com (unknown[172.16.202.6])
+	by rmoda-17132 (RichMail) with ODA id 42ec5409b9d04b8-050cc;
+	Fri, 05 Sep 2014 21:25:36 +0800 (CST)
+X-RM-TRANSID:42ec5409b9d04b8-050cc
+From: =?gb2312?B?1tC5+tLGtq8xMznTys/k?= &lt;mail139@139.com&gt;
+Message-ID: &lt;744425079.27371409923191498.JavaMail.hadoop@q201-o06-9&gt;
+Subject: =?GB2312?B?1tC5+tLGtq/M4dDRo7rH68T6udjXorG+u/q6xQ==?=
+=?GB2312?B?wuu1scewu7C30dPgtu6jrM/qx+nH67Xju/ey6b+0?=
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+boundary=&quot;----=_Part_2737_1393666244.1409923191496&quot;
+X-RICHINFO:CATEGORY:4326;PRODUCTOPERATIONMAIL:2001;SELFCLOSED:1;M:;TEMPLATELIST:2_4;MAILORDERID:141956;NOTIFYTYPE:14;ISMULTITEMPLATE:1;BUSSINESSID:1443;MJ:0;ISWAPNOTIFY:0;CHANNEL:30
+X-TDZXINFO: ODACHANNEL:30;ODACATEGORY:4326
+X-OP_RICHINFO_MAILTYPE:0
+Date:
+To:netcan
+
+------=_Part_2737_1393666244.1409923191496
+Content-Type: text/plain;charset=&quot;gbk&quot;
+Content-Transfer-Encoding: base64
+
+oaHX8L60tcS/zbuno7pbsunT4LbuXWh0dHA6Ly93YXBtYWlsLjEwMDg2LmNuL2ahoQqhoczh0NHE
++qO6yta7+sno1sNDTVdBUL3TyOuju8H3wb+wtNbQufrSxravR1BSU7Hq17y8xsvjoaMKCQkJCQkJ
+CQkKCQkJCQkJCQkKCQkJCQkJCQkKCQkJCQkJCQkKCQkJCQkJCQkKCQkJCQkJICAJIAkgCgkJCgkJ
+CQkJCQkJCgkJCQkJCgkJCQkJCQkJCiAJCQkJCQkgICAJIAogICAgICAgICAJCQo=
+------=_Part_2737_1393666244.1409923191496
+Content-Type: text/html;charset=&quot;gbk&quot;
+Content-Transfer-Encoding: base64
+
+PGh0bWw+PGhlYWQ+PHRpdGxlPqGhPC90aXRsZT48bWV0YSBodHRwLWVxdWl2PSJDb250ZW50LVR5
+cGUiIGNvbnRlbnQ9InRleHQvaHRtbDsgY2hhcnNldD1nYjIzMTIiLz48L2hlYWQ+PGJvZHkgYmdj
+b2xvcj0iI0ZGRkZGRiIgbGVmdG1hcmdpbj0iMCIgdG9wbWFyZ2luPSIwIiBtYXJnaW53aWR0aD0i
+MCIgbWFyZ2luaGVpZ2h0PSIwIj48c3BhbiBzdHlsZT0iIGZvbnQ6MHB4LzBweCAny87M5Sc7IGRp
+c3BsYXk6bm9uZTsiPtfwvrS1xL/Nu6ejuluy6dPgtu5dPGEgaHJlZj0iaHR0cDovL3dhcG1haWwu
+MTAwODYuY24vZiIgdGFyZ2V0PSJfYmxhbmsiPmh0dHA6Ly93YXBtYWlsLjEwMDg2LmNuL2ahoTwv
+YT48YnIvPqGhzOHQ0cT6o7rK1rv6yejWw0NNV0FQvdPI66O7wffBv7C01tC5+tLGtq9HUFJTserX
+vLzGy+Ohozxici8+PC9zcGFuPjx0YWJsZSB3aWR0aD0iNzgwIiBib3JkZXI9IjAiIGFsaWduPSJj
+ZW50ZXIiIGNlbGxwYWRkaW5nPSIwIiBjZWxsc3BhY2luZz0iMCIgaWQ9Il9fMDEiIHN0eWxlPSJi
+b3JkZXItY29sbGFwc2U6Y29sbGFwc2U7IHdpZHRoOjc4MHB4OyBib3JkZXItc3BhY2luZzowO3Bh
+ZGRpbmc6MDsgbWFyZ2luOjAgYXV0bzsiPjx0cj48dGQ+CQkJPGltZyBzcmM9Imh0dHA6Ly9mdW4u
+bWFpbC4xMDA4Ni5jbi9jbi8xNDA3LzA4MjIvaW1hZ2VzL2luZGV4XzAxLmpwZyIgd2lkdGg9Ijc4
+MCIgaGVpZ2h0PSI4OCIgYWx0PSIiIGJvcmRlcj0iMCIgc3R5bGU9ImRpc3BsYXk6YmxvY2s7Ii8+
+PC90ZD4JPC90cj48dHI+PHRkPgkJCTxpbWcgc3JjPSJodHRwOi8vZnVuLm1haWwuMTAwODYuY24v
+Y24vMTQwNy8wODIyL2ltYWdlcy9pbmRleF8wMi5qcGciIHdpZHRoPSI3ODAiIGhlaWdodD0iMTA3
+IiBhbHQ9IiIgYm9yZGVyPSIwIiBzdHlsZT0iZGlzcGxheTpibG9jazsiLz48L3RkPgk8L3RyPjx0
+cj48dGQ+CQkJPGltZyBzcmM9Imh0dHA6Ly9mdW4ubWFpbC4xMDA4Ni5jbi9jbi8xNDA3LzA4MjIv
+aW1hZ2VzL2luZGV4XzAzLmpwZyIgd2lkdGg9Ijc4MCIgaGVpZ2h0PSI4MiIgYWx0PSIiIGJvcmRl
+cj0iMCIgc3R5bGU9ImRpc3BsYXk6YmxvY2s7Ii8+PC90ZD4JPC90cj48dHI+PHRkPgkJCTxpbWcg
+
+------=_Part_2737_1393666244.1409923191496--
+.
+</code></pre>
+<p>下面是步骤：</p>
+<h2 id="发邮件">发邮件</h2>
+<ol>
+<li>使用 <code>telnet SMTP 地址 端口</code> 连接</li>
+<li>发送<code>HELO 邮箱服务器名称</code></li>
+<li>发送 <code>AUTH LOGIN</code> 进行登陆，第一次输入的是 <code>base64</code> 加密过的用户名，第二次是 <code>base64</code> 加密过的密码。</li>
+<li>发送 <code>MAIL FROM: &lt;xxx@xx.com&gt;</code> 准备发邮件</li>
+<li>发送 <code>RCPT TO: &lt;xx@xx.com&gt;</code> 指定目标邮箱地址</li>
+<li>发送 <code>DATA</code> 开始输入邮件内容，一行用 <code>.</code> 结束。</li>
+<li>发送 <code>QUIT</code> 退出</li>
+</ol>
+<h2 id="收邮件">收邮件</h2>
+<ol>
+<li>使用 <code>telnet POP3 地址 端口</code> 连接</li>
+<li>发送 <code>USER 用户名</code> 进行登陆</li>
+<li>发送 <code>PASS 密码</code> 确定登陆</li>
+<li>发送 <code>LIST</code> 查看邮件列表</li>
+<li>发送 <code>RETR 编号</code> 查看邮件信息</li>
+<li>发送 <code>DELE 编号</code> 删除邮件</li>
+<li>发送 <code>QUIT</code> 退出</li>
+</ol>
+
+    
+  </div>
+
+</article>
+
+
+   
+       <div class="original">
+    <ul>
+        <li>本文标题：利用 telnet 在命令行发送 / 接收邮件</li>
+        <li>本文字数：713</li>
+        <li>本文作者：Netcan</li>
+        <li>发布时间：2016年02月20日 - 10时09分</li>
+        <li>最后更新：2022年12月09日 - 19时02分</li>
+        <li>原始链接：<a href="https://netcan.github.io/2016/02/20/%E5%88%A9%E7%94%A8telnet%E5%9C%A8%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%8F%91%E9%80%81-%E6%8E%A5%E6%94%B6%E9%82%AE%E4%BB%B6/">https://netcan.github.io/2016/02/20/利用telnet在命令行发送-接收邮件/</a></li>
+        <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
+    </ul>
+</div>
+
+   
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持Netcan</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2016/02/04/%E6%95%B0%E5%AD%97%E7%94%B5%E8%B7%AF%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2016/03/09/%E3%80%8A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E3%80%8B%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '893a4103795fc66cd8e7',
+  clientSecret: '35c92c3dca938831b67dc22e46d64bc9073ebacf',
+  repo: 'netcan.github.io',
+  owner: 'Netcan',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: md5(location.pathname),
+  admin: ['Netcan'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

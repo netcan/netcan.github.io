@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>详解函数式编程之 Monad | Netcan on Programming</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="函数式编程," />
+  
+
+  <meta name="description" content="前言 最近终于搞清楚了 Monad 的本质，趁热记录下来，相信大家或多或少在编程语言中见过并用过，只不过不知道那是 Monad 罢了，也为了方便大家理解 Monad，后面我会用各种主流语言中具有代表性的 Monad 作为例子，如果对理论不感兴趣可以直接跳到后面，寻找你熟悉语言的例子进行理解后，再回头看看理论。 何为 Monad Monad 概念最初来自于范畴论，后来引入进函数式编程语言，由函数式编">
+<meta property="og:type" content="article">
+<meta property="og:title" content="详解函数式编程之 Monad">
+<meta property="og:url" content="https://netcan.github.io/2020/09/30/%E8%AF%A6%E8%A7%A3%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%E4%B9%8BMonad/index.html">
+<meta property="og:site_name" content="Netcan on Programming">
+<meta property="og:description" content="前言 最近终于搞清楚了 Monad 的本质，趁热记录下来，相信大家或多或少在编程语言中见过并用过，只不过不知道那是 Monad 罢了，也为了方便大家理解 Monad，后面我会用各种主流语言中具有代表性的 Monad 作为例子，如果对理论不感兴趣可以直接跳到后面，寻找你熟悉语言的例子进行理解后，再回头看看理论。 何为 Monad Monad 概念最初来自于范畴论，后来引入进函数式编程语言，由函数式编">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-09-30T13:06:07.000Z">
+<meta property="article:modified_time" content="2022-12-09T11:02:08.604Z">
+<meta property="article:author" content="Netcan">
+<meta property="article:tag" content="函数式编程">
+<meta name="twitter:card" content="summary">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/site.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-174901164-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d2c292719a76d8c0fa7f9874379cfd25";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"] > svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body>
+
+
+  
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+  
+
+  <link rel="stylesheet" href="/css/prism.css">
+
+<div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">ROOT</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%95%E4%B8%BA%20Monad"><span class="toc-text">何为 Monad</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Monad%20%E5%AE%9A%E4%B9%89"><span class="toc-text">Monad 定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BB%E6%B5%81%E8%AF%AD%E8%A8%80%E7%9A%84%E5%B8%B8%E8%A7%81%20Monad"><span class="toc-text">主流语言的常见 Monad</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Maybe"><span class="toc-text">Maybe</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Rust"><span class="toc-text">Rust</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Haskell"><span class="toc-text">Haskell</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C"><span class="toc-text">C++</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IO-Monad"><span class="toc-text">IO Monad</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Writer-Monad"><span class="toc-text">Writer Monad</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Parser-Combinator"><span class="toc-text">Parser Combinator</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Promise-Future"><span class="toc-text">Promise&#x2F;Future</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Javascript"><span class="toc-text">Javascript</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%BE%E5%A3%B0"><span class="toc-text">尾声</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-详解函数式编程之Monad" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">详解函数式编程之 Monad</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2020.09.30</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Netcan</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h2 id="前言">前言</h2>
+<p>最近终于搞清楚了 Monad 的本质，趁热记录下来，相信大家或多或少在编程语言中见过并用过，只不过不知道那是 Monad 罢了，也为了方便大家理解 Monad，后面我会用各种主流语言中具有代表性的 Monad 作为例子，如果对理论不感兴趣可以直接跳到后面，寻找你熟悉语言的例子进行理解后，再回头看看理论。</p>
+<h2 id="何为 Monad">何为 Monad</h2>
+<p>Monad 概念最初来自于范畴论，后来引入进函数式编程语言，由函数式编程发扬光大，渐渐渗透到其他主流语言中。</p>
+<p>FP 中具有代表性的语言是 Haskell，其特点是函数是第一公民，延迟计算、引用透明 <sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>。正因为是延迟计算，所以对表达式求值时顺序是不确定的，然而在需要确定顺序的场合，比如 IO，在屏幕中打印字符串要求用户输入，然后等待用户输入，若顺序不确定，很有可能颠倒顺序，即先等待用户输入，然后打印字符串要求用户输入<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>。而 Monad 能做到确定顺序即确定控制流，像<strong> 过程式 </strong> 语言一条条语句按顺序执行那样；其次是 Monad 能屏蔽副作用，例如在 IO Monad 中，所有对 IO 操作都被屏蔽在 Monad 上下文中，从而确定了一个边界，也没违背 FP 的无副作用性质。</p>
+<p>关于确定控制流，其实不只有 Monad 这条路，还有经典的 Continuation passing style(CPS)风格，经过 CPS 变换可以实现函数在任意点挂起，后续恢复执行，没错，这也是协程的特性，C++20 协程的 <code>await_suspend</code> 接口传递的就是 Continuation 供后续恢复上下文；然而 CPS 风格代码可读性过差，回调嵌套回调，层数一多智商不够用了。好在 Monad 提供了一种友好的方式，毕竟程序猿更加能接受的是符合直觉的串行代码，而不是回调嵌套代码。</p>
+<h2 id="Monad 定义">Monad 定义</h2>
+<p>这部分是关于 Monad 的理论，Monad 是一个类型构造子（下面简称<code>M</code>），定义了两个操作：</p>
+<ol>
+<li><code>unit :: t -&gt; M t</code>，将类型 T <strong>包装 </strong> 成 Monad 类型，也被常常称为 <code>return/pure/lift</code> 操作</li>
+<li><code>bind :: M a -&gt; (a -&gt; M b) -&gt; M b</code>，bind 组合子，输入一个 <code>M a</code> 和一个函数然后返回 <code>M b</code>，输入的函数可以拿到<strong> 被包装 </strong> 的类型 <code>a</code>，进行变换返回<code>M b</code>。这个操作定义了二元操作符，在 haskell 里用<code>&gt;&gt;=</code> 操作符表示。</li>
+</ol>
+<p>这两个操作可以这样理解，定义个 Monad 类型用于 <strong> 包裹 </strong> 另一个类型 <code>T</code>，同时定义一个二元操作，左边对象是个 <code>Monad&lt;T&gt;</code>，右边对象是个函数接受被包裹的 <code>T</code> 值并返回一个 <code>Monad&lt;U&gt;</code> 对象，这样就能不断通过这个二元操作串起来。</p>
+<p>在 haskell 中定义 <sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup> 就是：</p>
+<pre class="language-haskell" data-language="haskell"><code class="language-haskell"><span class="token keyword">class</span> <span class="token constant">Monad</span> <span class="token hvariable">m</span> <span class="token keyword">where</span>
+  <span class="token builtin">return</span> <span class="token operator">::</span> <span class="token hvariable">a</span> <span class="token operator">-></span> <span class="token hvariable">m</span> <span class="token hvariable">a</span>
+  <span class="token punctuation">(</span><span class="token operator">>>=</span><span class="token punctuation">)</span> <span class="token operator">::</span> <span class="token hvariable">forall</span> <span class="token hvariable">a</span> <span class="token hvariable">b</span><span class="token operator"> . </span><span class="token hvariable">m</span> <span class="token hvariable">a</span> <span class="token operator">-></span> <span class="token punctuation">(</span><span class="token hvariable">a</span> <span class="token operator">-></span> <span class="token hvariable">m</span> <span class="token hvariable">b</span><span class="token punctuation">)</span> <span class="token operator">-></span> <span class="token hvariable">m</span> <span class="token hvariable">b</span></code></pre>
+<p>只要满足这两个定义，就可以看做是 Monad，其有些比较有趣的性质：</p>
+<ol>
+<li><code>join :: M (M a) -&gt; M a</code>，join 操作可以看做是去掉一层 Monad，这样性质比较重要，可以 <strong> 去掉嵌套</strong>。</li>
+<li><code>unit</code>是 <code>&gt;&gt;=</code> 运算的单位元
+<ul>
+<li>左单位元：<code>unit t &gt;&gt;= f(t) ↔ f(t)</code></li>
+<li>右单位元：<code>m a &gt;&gt;= unit ↔ m a</code></li>
+</ul>
+</li>
+<li><code>&gt;&gt;=</code>操作满足结合律：<code>m a &gt;&gt;= \x -&gt; (f x &gt;&gt;= g) ↔ (m a &gt;&gt;= f) &gt;&gt;= g</code></li>
+</ol>
+<h2 id="主流语言的常见 Monad">主流语言的常见 Monad</h2>
+<h3 id="Maybe">Maybe</h3>
+<p>Maybe 其实是一种非常简单的 Monad，它的概念是表达一个值可有可无，当值被封装到 Maybe 的世界里，它其实有两种可能：要么拥有值即 Just，要么没有即 Nothing。根据 Monad 的性质，Maybe 应该有如下操作：</p>
+<ul>
+<li>将值包装成 Maybe 类型</li>
+<li>二元操作，将 Maybe 类型与操作它的函数串起来，产生新的 Maybe 类型</li>
+</ul>
+<p>前者用于构造 Maybe Monad，后者用于串联一系列 Maybe 类型，避免写一堆 if/match、取值语句，况且从 Maybe 取出其不存在的值是有可能抛异常的。</p>
+<p>既然 Maybe 可以包装一个值，那么该值可能也是 Maybe 的，即 <code>Maybe&lt;Maybe&lt;T&gt;&gt;</code>，这种情况下实际取值情况有 3 种：最外层的<code>Just&lt;Maybe&lt;T&gt;&gt;</code> 和<code>Nothing</code>，而 <code>Just&lt;Maybe&lt;T&gt;&gt;</code> 取值又有两种：<code>Just&lt;Just&lt;T&gt;&gt;</code>和 <code>Just&lt;Nothing&gt;</code>，逻辑上讲其实应该只有两种取值的：<code>Just&lt;T&gt;</code> 和<code>Nothing</code>。那么需要一层层判断取值么？这种情况就得写两个嵌套 if/match，若类型为<code>Maybe&lt;Maybe&lt;Maybe&lt;T&gt;&gt;&gt;</code>，难道需要写嵌套 3 个 if/match 么？还记得 Monad 有个有趣的性质是 join 操作么，可以通过不断 join 去除外层的 Monad，最终 flatten 成一个 Monad 即：<code>join Maybe&lt;Maybe&lt;T&gt;&gt; -&gt; Maybe&lt;T&gt;</code>，从而减少 if/match 嵌套判断。</p>
+<p>很多语言都提供了这种概念，比如 Haskell 的 Maybe，Rust 的 Option，C++ 的 std::optional。</p>
+<h4 id="Rust">Rust</h4>
+<p>Rust 的 Option 其实做的相当完备，我们看看其定义：</p>
+<pre class="language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">enum</span> <span class="token type-definition class-name">Option</span><span class="token operator">&lt;</span><span class="token class-name">T</span><span class="token operator">></span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">None</span><span class="token punctuation">,</span>
+    <span class="token class-name">Some</span><span class="token punctuation">(</span><span class="token class-name">T</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span></code></pre>
+<p>和关键的 Monad 操作：</p>
+<ul>
+<li><code>None/Some&lt;T&gt;</code>提供了将值包装成 <code>Option&lt;T&gt;</code> 的可能，即 <code>unit</code> 操作</li>
+<li><code>fn and_then&lt;U, F&gt;(self, f: F) -&gt; Option&lt;U&gt;</code>实现了二元操作，即 <code>bind</code> 操作</li>
+</ul>
+<p>根据例子看看这两个操作是怎么结合的：</p>
+<pre class="language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">fn</span> <span class="token function-definition function">sq</span><span class="token punctuation">(</span>x<span class="token punctuation">:</span> <span class="token keyword">u32</span><span class="token punctuation">)</span> <span class="token punctuation">-></span> <span class="token class-name">Option</span><span class="token operator">&lt;</span><span class="token keyword">u32</span><span class="token operator">></span> <span class="token punctuation">&#123;</span> <span class="token class-name">Some</span><span class="token punctuation">(</span>x <span class="token operator">*</span> x<span class="token punctuation">)</span> <span class="token punctuation">&#125;</span>
+<span class="token keyword">fn</span> <span class="token function-definition function">nope</span><span class="token punctuation">(</span>_<span class="token punctuation">:</span> <span class="token keyword">u32</span><span class="token punctuation">)</span> <span class="token punctuation">-></span> <span class="token class-name">Option</span><span class="token operator">&lt;</span><span class="token keyword">u32</span><span class="token operator">></span> <span class="token punctuation">&#123;</span> <span class="token class-name">None</span> <span class="token punctuation">&#125;</span>
+
+<span class="token macro property">assert_eq!</span><span class="token punctuation">(</span><span class="token class-name">Some</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">and_then</span><span class="token punctuation">(</span>sq<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">and_then</span><span class="token punctuation">(</span>sq<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token class-name">Some</span><span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 串联操作</span>
+<span class="token macro property">assert_eq!</span><span class="token punctuation">(</span><span class="token class-name">Some</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">and_then</span><span class="token punctuation">(</span>sq<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">and_then</span><span class="token punctuation">(</span>nope<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token class-name">None</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token macro property">assert_eq!</span><span class="token punctuation">(</span><span class="token class-name">Some</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">and_then</span><span class="token punctuation">(</span>nope<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">and_then</span><span class="token punctuation">(</span>sq<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token class-name">None</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 串联操作，避免判断 None</span>
+<span class="token macro property">assert_eq!</span><span class="token punctuation">(</span><span class="token class-name">None</span><span class="token punctuation">.</span><span class="token function">and_then</span><span class="token punctuation">(</span>sq<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">and_then</span><span class="token punctuation">(</span>sq<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token class-name">None</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>可惜 Rust 不支持操作符重载，只能显式的 <code>and_then</code>。顺便一提，Rust 的 Option 也提供了 join 操作，即 <code>fn flatten(self) -&gt; Option&lt;T&gt;</code> 函数。</p>
+<h4 id="Haskell">Haskell</h4>
+<p>Haskell 的 Maybe 定义如下：</p>
+<pre class="language-haskell" data-language="haskell"><code class="language-haskell"><span class="token keyword">data</span> <span class="token constant">Maybe</span> <span class="token hvariable">a</span> <span class="token operator">=</span> <span class="token constant">Just</span> <span class="token hvariable">a</span> <span class="token operator">|</span> <span class="token constant">Nothing</span></code></pre>
+<p>而 Maybe 又是 Monad，定义了 unit 和 bind 操作：</p>
+<pre class="language-haskell" data-language="haskell"><code class="language-haskell"><span class="token keyword">instance</span> <span class="token constant">Monad</span> <span class="token constant">Maybe</span> <span class="token keyword">where</span>
+    <span class="token builtin">return</span>  <span class="token hvariable">a</span>           <span class="token operator">=</span> <span class="token constant">Just</span> <span class="token hvariable">a</span>
+    <span class="token punctuation">(</span><span class="token constant">Just</span> <span class="token hvariable">x</span><span class="token punctuation">)</span> <span class="token operator">>>=</span> <span class="token hvariable">f</span>      <span class="token operator">=</span> <span class="token hvariable">f</span> <span class="token hvariable">x</span>
+    <span class="token constant">Nothing</span>  <span class="token operator">>>=</span> <span class="token hvariable">_</span>      <span class="token operator">=</span> <span class="token constant">Nothing</span></code></pre>
+<p>看看例子：</p>
+<pre class="language-haskell" data-language="haskell"><code class="language-haskell"><span class="token hvariable">sq</span> <span class="token hvariable">x</span>   <span class="token operator">=</span> <span class="token constant">Just</span> <span class="token punctuation">(</span><span class="token hvariable">x</span> <span class="token operator">*</span> <span class="token hvariable">x</span><span class="token punctuation">)</span>
+<span class="token hvariable">nope</span> <span class="token hvariable">_</span> <span class="token operator">=</span> <span class="token constant">Nothing</span>
+<span class="token operator">*</span><span class="token constant">Main</span><span class="token operator">></span> <span class="token constant">Just</span> <span class="token number">2</span> <span class="token operator">>>=</span> <span class="token hvariable">sq</span> <span class="token operator">>>=</span> <span class="token hvariable">sq</span>
+<span class="token constant">Just</span> <span class="token number">16</span>
+
+<span class="token operator">*</span><span class="token constant">Main</span><span class="token operator">></span> <span class="token constant">Just</span> <span class="token number">2</span> <span class="token operator">>>=</span> <span class="token hvariable">sq</span> <span class="token operator">>>=</span> <span class="token hvariable">nope</span>
+<span class="token constant">Nothing</span>
+
+<span class="token operator">*</span><span class="token constant">Main</span><span class="token operator">></span> <span class="token constant">Just</span> <span class="token number">2</span> <span class="token operator">>>=</span> <span class="token hvariable">nope</span> <span class="token operator">>>=</span> <span class="token hvariable">sq</span>
+<span class="token constant">Nothing</span>
+
+<span class="token operator">*</span><span class="token constant">Main</span><span class="token operator">></span> <span class="token constant">Nothing</span> <span class="token operator">>>=</span> <span class="token hvariable">sq</span> <span class="token operator">>>=</span> <span class="token hvariable">sq</span>
+<span class="token constant">Nothing</span></code></pre>
+<p>和 Rust 那个例子一模一样，除了用 <code>&gt;&gt;=</code> 代替<code>and_then</code>。Haskell 还提供了一种语法糖 do，看起来更加直观，就和命令式语言写法差不多：</p>
+<pre class="language-haskell" data-language="haskell"><code class="language-haskell"><span class="token keyword">do</span>
+    <span class="token hvariable">v1</span> <span class="token operator">&lt;-</span> <span class="token constant">Just</span> <span class="token number">2</span>
+    <span class="token hvariable">v2</span> <span class="token operator">&lt;-</span> <span class="token hvariable">sq</span> <span class="token hvariable">v1</span>
+    <span class="token hvariable">v3</span> <span class="token operator">&lt;-</span> <span class="token hvariable">sq</span> <span class="token hvariable">v2</span>
+    <span class="token builtin">return</span> <span class="token hvariable">v3</span> <span class="token comment">-- Just 16</span></code></pre>
+<h4 id="C">C++</h4>
+<p>C++17 提供的 <code>std::optional</code> 其实不够完备，得自己封装一下，不适合拿出来当 Monad 讲，所以我用 C++ 实现了一个 <a target="_blank" rel="noopener" href="https://github.com/netcan/recipes/blob/master/cpp/metaproggramming/Maybe.cpp">Maybe.cpp</a> 用于展示 Monad 的概念。</p>
+<p>Maybe 定义如下：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">T</span><span class="token operator">></span>
+<span class="token keyword">struct</span> <span class="token class-name">Just</span> <span class="token punctuation">&#123;</span>
+    T value<span class="token punctuation">;</span>
+    <span class="token keyword">operator</span> <span class="token keyword">const</span> T<span class="token operator">&amp;</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">const</span> <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> value<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+    <span class="token function">Just</span><span class="token punctuation">(</span><span class="token keyword">const</span> T<span class="token operator">&amp;</span> value<span class="token punctuation">)</span><span class="token operator">:</span> <span class="token function">value</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token keyword">struct</span> <span class="token class-name">Nothing</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">T</span><span class="token operator">></span>
+<span class="token keyword">struct</span> <span class="token class-name">Maybe</span> <span class="token punctuation">&#123;</span>
+    std<span class="token operator">::</span>variant<span class="token operator">&lt;</span>Just<span class="token operator">&lt;</span>T<span class="token operator">></span><span class="token punctuation">,</span> Nothing<span class="token operator">></span> value<span class="token punctuation">;</span>
+    <span class="token function">Maybe</span><span class="token punctuation">(</span><span class="token keyword">const</span> T<span class="token operator">&amp;</span> value<span class="token punctuation">)</span><span class="token operator">:</span> <span class="token function">value</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+    <span class="token function">Maybe</span><span class="token punctuation">(</span><span class="token keyword">const</span> Nothing<span class="token operator">&amp;</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token function">value</span><span class="token punctuation">(</span>Nothing<span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
+<p>构造函数即 <code>unit</code> 操作，再来定义一个 <code>bind</code> 操作：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">T</span><span class="token operator">></span>
+<span class="token keyword">auto</span> <span class="token function">just</span><span class="token punctuation">(</span>T x<span class="token punctuation">)</span> <span class="token operator">-></span> Maybe<span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> x<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+
+<span class="token keyword">struct</span> <span class="token class-name">AnyType</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">T</span><span class="token operator">></span> <span class="token keyword">operator</span> <span class="token function">T</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">friend</span> std<span class="token operator">::</span>ostream<span class="token operator">&amp;</span> <span class="token keyword">operator</span><span class="token operator">&lt;&lt;</span>
+    <span class="token punctuation">(</span>std<span class="token operator">::</span>ostream<span class="token operator">&amp;</span> os<span class="token punctuation">,</span> <span class="token keyword">const</span> AnyType<span class="token operator">&amp;</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> os<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token keyword">auto</span> <span class="token function">nothing</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-></span> Maybe<span class="token operator">&lt;</span>AnyType<span class="token operator">></span> <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> Nothing<span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+
+<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">T</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">F</span><span class="token operator">></span>
+<span class="token keyword">auto</span> <span class="token keyword">operator</span><span class="token operator">>>=</span><span class="token punctuation">(</span><span class="token keyword">const</span> Maybe<span class="token operator">&lt;</span>T<span class="token operator">></span><span class="token operator">&amp;</span> ma<span class="token punctuation">,</span> F<span class="token operator">&amp;&amp;</span> f<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">using</span> R <span class="token operator">=</span> std<span class="token operator">::</span>invoke_result_t<span class="token operator">&lt;</span>F<span class="token punctuation">,</span> T<span class="token operator">></span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> std<span class="token operator">::</span><span class="token function">visit</span><span class="token punctuation">(</span>overloaded <span class="token punctuation">&#123;</span>
+        <span class="token punctuation">[</span><span class="token operator">&amp;</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token keyword">const</span> Just<span class="token operator">&lt;</span>T<span class="token operator">></span><span class="token operator">&amp;</span> v<span class="token punctuation">)</span> <span class="token operator">-></span> R
+        <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> <span class="token function">f</span><span class="token punctuation">(</span><span class="token keyword">static_cast</span><span class="token operator">&lt;</span>T<span class="token operator">></span><span class="token punctuation">(</span>v<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+        <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">(</span>Nothing<span class="token punctuation">)</span> <span class="token operator">-></span> R <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> Nothing<span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> ma<span class="token punctuation">.</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre>
+<p>同样提供例子看看，可以发现和 Haskell 很相似。</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token function">show</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token function">just</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span> <span class="token operator">>>=</span>
+    <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token keyword">int</span> v<span class="token punctuation">)</span> <span class="token operator">-></span> Maybe<span class="token operator">&lt;</span><span class="token keyword">double</span><span class="token operator">></span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token punctuation">&#123;</span>v <span class="token operator">*</span> <span class="token number">1.5</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span> <span class="token operator">>>=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token keyword">double</span> v<span class="token punctuation">)</span> <span class="token operator">-></span> Maybe<span class="token operator">&lt;</span><span class="token keyword">double</span><span class="token operator">></span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token punctuation">&#123;</span>v <span class="token operator">*</span> <span class="token number">1.5</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Just 6.75</span>
+
+<span class="token function">show</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token function">nothing</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">>>=</span>
+    <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token keyword">int</span> v<span class="token punctuation">)</span> <span class="token operator">-></span> Maybe<span class="token operator">&lt;</span><span class="token keyword">double</span><span class="token operator">></span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token punctuation">&#123;</span>v <span class="token operator">*</span> <span class="token number">1.5</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span> <span class="token operator">>>=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token keyword">double</span> v<span class="token punctuation">)</span> <span class="token operator">-></span> Maybe<span class="token operator">&lt;</span><span class="token keyword">double</span><span class="token operator">></span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token punctuation">&#123;</span>v <span class="token operator">*</span> <span class="token number">1.5</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Nothing</span></code></pre>
+<h3 id="IO-Monad">IO Monad</h3>
+<p>在 FP 中一切都是纯函数，那么对于 IO 这种拥有副作用的功能，怎么融入到 FP 的世界中去呢？有了 IO Monad 包裹了对 IO 的操作动作，副作用被约束在 Monad 中，同时也提供了与外界环境交互的边界。</p>
+<p>Haskell 提供了最基本的两个 IO 操作：</p>
+<ul>
+<li><code>getLine :: IO String</code>，从 stdin 读取一行，unit 操作</li>
+<li><code>print :: Show a =&gt; a -&gt; IO ()</code>，输出一行到 stdout</li>
+</ul>
+<p>观察 <code>getLine</code> 发现函数返回类型是个<code>IO String</code>，也就是读到的字符串被包裹在了 IO Monad 中，用户没法直接操作 Monad 里面的值，那么若要对读到的字符串进行操作，就得通过 bind 操作，将动作隔离在 Monad 的世界里，同时该操作返回类型也必须是个 IO Monad，这样就不会将副作用带出来了。</p>
+<p>举个例子，要求用户输入一个数，然后将该数乘以二，最后打印在屏幕上，代码这样写：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp">putStrLn <span class="token string">"input a number"</span>
+<span class="token operator">>>=</span> \_ <span class="token operator">-></span> getLine
+<span class="token operator">>>=</span> \str <span class="token operator">-></span> print $ <span class="token punctuation">(</span>read str <span class="token operator">::</span> Int<span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">2</span></code></pre>
+<p>这个表达式的类型是<code>IO ()</code>，对输入的数乘以二操作也被隔离在 IO Monad 的世界里了，普通函数没法直接拿到 IO 世界里的值，必须得将函数 lift 到这个世界里与其共舞。同样的由于 Monad 确定了控制流，保证了按代码顺序执行，先 getLine 后 print。</p>
+<h3 id="Writer-Monad">Writer Monad</h3>
+<p>有时候我们需要对每一步操作进行日志记录，简单起见，但是不想每次操作后进行日志拼接工作，若抽象成 Monad，可以让 bind 帮我们完成这个操作，这节我打算用 Javascript 来快速实现个原型，方便熟悉 Javascript 的同学理解。</p>
+<p>Writer 定义为一个序对，第一个存放函数执行结果，第二个存日志：<code>[value, string]</code>。</p>
+<p>unit 操作定义如下：</p>
+<pre class="language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">const</span> <span class="token function-variable function">unit</span> <span class="token operator">=</span> <span class="token parameter">value</span> <span class="token operator">=></span> <span class="token punctuation">[</span>value<span class="token punctuation">,</span> <span class="token string">""</span><span class="token punctuation">]</span><span class="token punctuation">;</span></code></pre>
+<p>bind 操作对 value 执行函数 f，接着拼接日志，然后返回一个 Writer。</p>
+<pre class="language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">const</span> <span class="token function-variable function">bind</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">writer<span class="token punctuation">,</span> f</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">const</span> <span class="token punctuation">[</span>value<span class="token punctuation">,</span> log<span class="token punctuation">]</span> <span class="token operator">=</span> writer
+    <span class="token keyword">const</span> <span class="token punctuation">[</span>result<span class="token punctuation">,</span> updates<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">f</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> <span class="token punctuation">[</span>result<span class="token punctuation">,</span> log <span class="token operator">+</span> updates<span class="token punctuation">]</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
+<p>由于 bind 操作输入一个 Writer 最终输出的也是 Writer，那么可以考虑写个函数将一系列操作串起来：</p>
+<pre class="language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">const</span> <span class="token function-variable function">pipelog</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">writer<span class="token punctuation">,</span> <span class="token operator">...</span>fs</span><span class="token punctuation">)</span> <span class="token operator">=></span>
+    fs<span class="token punctuation">.</span><span class="token function">reduce</span><span class="token punctuation">(</span>bind<span class="token punctuation">,</span> writer<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>最后看看例子：</p>
+<pre class="language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">const</span> <span class="token function-variable function">doubled</span> <span class="token operator">=</span> <span class="token parameter">x</span> <span class="token operator">=></span> <span class="token punctuation">[</span>x<span class="token operator">*</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span>x<span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token string"> was doubled.\n</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">]</span>
+<span class="token keyword">const</span> <span class="token function-variable function">halved</span> <span class="token operator">=</span> <span class="token parameter">x</span> <span class="token operator">=></span> <span class="token punctuation">[</span>x<span class="token operator">/</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span>x<span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token string"> was halved.\n</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">]</span>
+<span class="token function">pipelog</span><span class="token punctuation">(</span><span class="token function">unit</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span> doubled<span class="token punctuation">,</span> doubled<span class="token punctuation">,</span> doubled<span class="token punctuation">,</span> halved<span class="token punctuation">)</span>
+<span class="token comment">// [8, "2 was doubled.↵4 was doubled.↵8 was doubled.↵16 was halved.↵"]</span></code></pre>
+<h3 id="Parser-Combinator">Parser Combinator</h3>
+<p>再来看看一个比较复杂的例子，Parser 也是一个 Monad，经过 bind 操作可以将各种类型的 Parser 串起来，解析字符串输出不同的结构。而 Parser 定义并不是像前面一样是个类型容器结构，而是一个函数：</p>
+<pre class="language-haskell" data-language="haskell"><code class="language-haskell"><span class="token constant">Parser</span> <span class="token hvariable">a</span> <span class="token operator">::</span> <span class="token constant">String</span> <span class="token operator">-></span> <span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token hvariable">a</span><span class="token punctuation">,</span> <span class="token constant">String</span><span class="token punctuation">)</span><span class="token punctuation">]</span></code></pre>
+<p>Parser 包裹了要得到的类型，通过执行 Parser 函数，解析输入一个字符串，输出所需要的类型，具体细节可以看我之前写的一篇文章：<a href="/2020/09/16/C-%E5%85%83%E7%BC%96%E7%A8%8B%E4%B9%8BParser-Combinator/">C++ 元编程之 Parser Combinator</a>，其中的 <code>makeCharParser/oneOf</code> 就是不同种类的 unit 操作，同时定义了个类似 bind 操作的 <code>combine</code> 和二元操作符<code>operator&gt;/operator&lt;</code>。</p>
+<h3 id="Promise-Future">Promise/Future</h3>
+<p>最后一个例子，也是主流的概念，相当重要，几乎是写异步编程必须要掌握的概念，通过 Monad 操作，以同步（串行）方式写异步代码！</p>
+<p>Promise/Future<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup>是上个世纪七十年代就提出来的概念，顾名思义，就是我给你的承诺 Promise，将来 Future 某个时间点履行承诺。通过 Promise 可以得到一个 Future，而 Future 包裹了未来的值，直到 Promise 将值设定，Future 最终可以取出值，在这之前是拿不到值的（毕竟都没有，怎么拿）。</p>
+<p>那么 Future 做成一个 Monad 会怎么样？unit 操作就是通过 Promise 得到 <code>Future&lt;T&gt;</code>，而 bind 二元操作就是输入一个<code>Future&lt;T&gt;</code> 和动作，该动作可以拿到未来的值<code>T</code>，进行处理后返回一个新<code>Future</code>，这样就能将各个 Future 串起来。</p>
+<p>既然 Future 是对未来的预期，当下可能没有值，自然拿不到值，但是我们可以通过 bind 操作将处理值的动作串起来带入 Future 的世界里，将来某个时间点执行这个动作，这也是以同步方式写异步代码！FP 的 Monad 概念完美解决了传统语言异步编程需要挂各种回调的难处。</p>
+<p>若像 Haskell 的 do 语法糖那样引入 await 关键字，异步代码看起来就更加串行了。</p>
+<h4 id="Javascript">Javascript</h4>
+<p>最初我是通过 Javascript 了解异步编程方式，回过头来一看，其 Promise 也是一个 Monad，然而 Future 概念也收到 Promise 里去了。</p>
+<p>对于 unit 操作，其实是 Promise 的构造函数，传递一个动作，得到一个 Promise，表示将来会执行这个动作：</p>
+<pre class="language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">const</span> myPromise <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Promise</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">resolve<span class="token punctuation">,</span> reject</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">// condition</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>而 bind 二元操作，对应于 Promise 的 then 接口，传递一个动作执行，返回一个 Promise，从而能将各个 Promise 串起来。</p>
+<p>看一个例子感受下用 Monad 前后怎么将异步代码同步化的：</p>
+<pre class="language-javascript" data-language="javascript"><code class="language-javascript"><span class="token function">firstRequest</span><span class="token punctuation">(</span><span class="token parameter">response</span> <span class="token operator">=></span>
+    <span class="token function">secondRequest</span><span class="token punctuation">(</span>response<span class="token punctuation">,</span> <span class="token parameter">nextResponse</span> <span class="token operator">=></span>
+        <span class="token function">thirdRequest</span><span class="token punctuation">(</span>nextResponse<span class="token punctuation">,</span> <span class="token parameter">finalResponse</span> <span class="token operator">=></span>
+            console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Final response:'</span> <span class="token operator">+</span> finalResponse<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">,</span> failureCallback<span class="token punctuation">)</span><span class="token punctuation">,</span>
+        failureCallback<span class="token punctuation">)</span><span class="token punctuation">,</span>
+    failureCallback<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>使用 Monad 后，大大简化回调接口：</p>
+<pre class="language-javascript" data-language="javascript"><code class="language-javascript"><span class="token function">firstRequest</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">response</span>      <span class="token operator">=></span> <span class="token function">secondRequest</span><span class="token punctuation">(</span>response<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">nextResponse</span>  <span class="token operator">=></span> <span class="token function">thirdRequest</span><span class="token punctuation">(</span>nextResponse<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">finalResponse</span> <span class="token operator">=></span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Final response:'</span> <span class="token operator">+</span> finalResponse<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">catch</span><span class="token punctuation">(</span>failureCallback<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>最后再引入 await 语法糖，看上去更加串行了，这也是协程的提供的手段：</p>
+<pre class="language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+    response      <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">firstRequest</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    nextResponse  <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">secondRequest</span><span class="token punctuation">(</span>response<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    finalResponse <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">thirdRequest</span><span class="token punctuation">(</span>nextResponse<span class="token punctuation">)</span><span class="token operator">:</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Final response:'</span> <span class="token operator">+</span> finalResponse<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token function">failureCallback</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre>
+<h2 id="尾声">尾声</h2>
+<p>终于写到最后了，其实我们用了很久的 Monad，不同的 Monad 背后高度一致性，将控制流封装起来，抽象掉对上下文环境的处理，从而提高代码的可读性。应用多了回头理解抽象的 Monad 概念，其实也不是那么难了，之后理解这类概念就更加得心应手了，这也是抽象之美。</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>函数无副作用，输出完全由输入决定 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p><a target="_blank" rel="noopener" href="http://blog.sigfpe.com/2006/08/you-could-have-invented-monads-and.html">http://blog.sigfpe.com/2006/08/you-could-have-invented-monads-and.html</a> <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p><a target="_blank" rel="noopener" href="https://hackage.haskell.org/package/base-4.14.0.0/docs/src/GHC.Base.html#%3E%3E%3D">https://hackage.haskell.org/package/base-4.14.0.0/docs/src/GHC.Base.html#%3E%3E%3D</a> <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Futures_and_promises">https://en.wikipedia.org/wiki/Futures_and_promises</a> <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+    
+  </div>
+
+</article>
+
+
+   
+       <div class="original">
+    <ul>
+        <li>本文标题：详解函数式编程之 Monad</li>
+        <li>本文字数：3.6k</li>
+        <li>本文作者：Netcan</li>
+        <li>发布时间：2020年09月30日 - 21时06分</li>
+        <li>最后更新：2022年12月09日 - 19时02分</li>
+        <li>原始链接：<a href="https://netcan.github.io/2020/09/30/%E8%AF%A6%E8%A7%A3%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%E4%B9%8BMonad/">https://netcan.github.io/2020/09/30/详解函数式编程之Monad/</a></li>
+        <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
+    </ul>
+</div>
+
+   
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持Netcan</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2020/09/23/C-%E5%85%83%E7%BC%96%E7%A8%8B%E4%B9%8B%E6%B1%82%E8%A7%A3%E5%85%A8%E5%B1%80%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2020/11/04/C-%E5%85%83%E7%BC%96%E7%A8%8B%E4%B9%8BBrainFuck%E7%BC%96%E8%AF%91%E5%99%A8%EF%BC%88%E6%A8%A1%E6%9D%BF%E5%85%83%E8%A7%A3%E6%B3%95%EF%BC%89/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '893a4103795fc66cd8e7',
+  clientSecret: '35c92c3dca938831b67dc22e46d64bc9073ebacf',
+  repo: 'netcan.github.io',
+  owner: 'Netcan',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: md5(location.pathname),
+  admin: ['Netcan'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

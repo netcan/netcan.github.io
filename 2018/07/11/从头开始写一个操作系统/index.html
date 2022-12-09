@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>从头开始写一个操作系统 | Netcan on Programming</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="C/C++," />
+  
+
+  <meta name="description" content="在前几天生日之际，趁着心血来潮，打算实现一个操作系统，算是实现大学毕业的最后一个目标了，在入职的前的火车上，记录下来这几天的工作。 目前实现的部分有：  从 BIOS 启动 Bootloader 在 Bootloader 中利用中断来调用 BIOS 提供的打印程序、加载磁盘扇区数据程序 将 C 语言编写的内核程序加载到内存，Bootloader 从 16 位实模式进入 32 位保护模式 执行内核程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从头开始写一个操作系统">
+<meta property="og:url" content="https://netcan.github.io/2018/07/11/%E4%BB%8E%E5%A4%B4%E5%BC%80%E5%A7%8B%E5%86%99%E4%B8%80%E4%B8%AA%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/index.html">
+<meta property="og:site_name" content="Netcan on Programming">
+<meta property="og:description" content="在前几天生日之际，趁着心血来潮，打算实现一个操作系统，算是实现大学毕业的最后一个目标了，在入职的前的火车上，记录下来这几天的工作。 目前实现的部分有：  从 BIOS 启动 Bootloader 在 Bootloader 中利用中断来调用 BIOS 提供的打印程序、加载磁盘扇区数据程序 将 C 语言编写的内核程序加载到内存，Bootloader 从 16 位实模式进入 32 位保护模式 执行内核程">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://netcan.github.io/2018/07/11/%E4%BB%8E%E5%A4%B4%E5%BC%80%E5%A7%8B%E5%86%99%E4%B8%80%E4%B8%AA%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/NetcanOS.png">
+<meta property="og:image" content="https://netcan.github.io/2018/07/11/%E4%BB%8E%E5%A4%B4%E5%BC%80%E5%A7%8B%E5%86%99%E4%B8%80%E4%B8%AA%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/gdbgui.png">
+<meta property="article:published_time" content="2018-07-11T03:57:49.000Z">
+<meta property="article:modified_time" content="2022-12-09T11:02:08.586Z">
+<meta property="article:author" content="Netcan">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://netcan.github.io/2018/07/11/%E4%BB%8E%E5%A4%B4%E5%BC%80%E5%A7%8B%E5%86%99%E4%B8%80%E4%B8%AA%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/NetcanOS.png">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/site.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-174901164-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d2c292719a76d8c0fa7f9874379cfd25";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"] > svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body>
+
+
+  
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+  
+
+  <link rel="stylesheet" href="/css/prism.css">
+
+<div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">ROOT</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Bootloader"><span class="toc-text">Bootloader</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E6%A8%A1%E5%BC%8F%20vs%20%E4%BF%9D%E6%8A%A4%E6%A8%A1%E5%BC%8F"><span class="toc-text">实模式 vs 保护模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A9%B1%E5%8A%A8%E7%A8%8B%E5%BA%8F"><span class="toc-text">驱动程序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E7%BD%AE%20GDT%20%E8%A1%A8"><span class="toc-text">重置 GDT 表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%20IDT%20%E8%A1%A8"><span class="toc-text">设置 IDT 表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%88%20push-pop"><span class="toc-text">栈 push&#x2F;pop</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91%E5%99%A8"><span class="toc-text">交叉编译器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B0%83%E8%AF%95"><span class="toc-text">调试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-text">参考资料</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-从头开始写一个操作系统" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">从头开始写一个操作系统</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2018.07.11</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Netcan</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p>在前几天生日之际，趁着心血来潮，打算实现一个操作系统，算是实现大学毕业的最后一个目标了，在入职的前的火车上，记录下来这几天的工作。</p>
+<p>目前实现的部分有：</p>
+<ul>
+<li>从 BIOS 启动 Bootloader</li>
+<li>在 Bootloader 中利用中断来调用 BIOS 提供的打印程序、加载磁盘扇区数据程序</li>
+<li>将 C 语言编写的内核程序加载到内存，Bootloader 从 16 位实模式进入 32 位保护模式</li>
+<li>执行内核程序</li>
+<li>实现一些库函数：vsprintf/printf/memcpy/memset</li>
+<li>重置 GDT 段表和 IDT 中断向量表。</li>
+</ul>
+<p>项目地址：<a target="_blank" rel="noopener" href="https://github.com/netcan/NetcanOS">https://github.com/netcan/NetcanOS</a></p>
+<p>实现一个操作系统只是为了加深自己的基础，所以我使用了模拟器 qemu/bochs 来仿真 x86 环境。（写到 U 盘拿到真机上试了一下，并未启动起来 = = 后面有时间再试试吧）</p>
+<p><img src="NetcanOS.png" alt="NetcanOS.png"></p>
+<h2 id="Bootloader">Bootloader</h2>
+<p>计算机启动的时候，首先启动 BIOS 程序进行自检，然后将磁盘的启动扇区 (512 字节) 加载到内存 <code>0x7c00</code> 位置，没问题后会跳转到内存 <code>0x7c00</code> 位置执行指令。 所以在用 C 语言编写内核之前，首先需要用汇编实现 Bootloader 让 BIOS 运行，再将内核程序加载到内存执行。</p>
+<p>至于启动扇区，BIOS 很简单的判断，就是扇区最后两个字节是否为 <code>0xaa55</code>。与此同时，BIOS 还提供了一些中断处理程序供调用，例如<code>int 0x10</code> 触发打印字符的中断，<code>int 0x13</code>触发读取扇区的中断。</p>
+<p>需要注意一点的是，由于历史原因，在 Bootloader 中，CPU 处于 16 位实模式，而后面要是想调用 C 语言编写的内核，那么需要切换到 32 位保护模式，在 32 位保护模式下，BIOS 将失效，也就是无法使用 BIOS 提供的功能了，所以进入 32 位保护模式之前，需要关中断（BIOS 的中断也没用了），设置 GDT 段表，然后告诉 CPU 段表的位置，设置 cr0 寄存器进入保护模式，最后 jump far（处理掉 CPU 流水线残留的任务）到内核代码处。</p>
+<h2 id="实模式 vs 保护模式">实模式 vs 保护模式</h2>
+<p>32 位保护模式相对于 16 位实模式来说，不同点有：</p>
+<ul>
+<li>寄存器宽度从 16 位扩展到 32 位</li>
+<li>增加了几个通用段寄存器，<code>fs</code>和<code>gs</code></li>
+<li>内存地址扩展到 32 位，能够寻址 4G 内存空间</li>
+<li>在内存管理方面，也有很大不同
+<ul>
+<li>代码有权限，能够设置 ring 0-3 四种级别</li>
+<li>CPU 实现了虚拟内存技术</li>
+</ul>
+</li>
+</ul>
+<p>还有一个不同的是，在实模式下，内存地址计算为(段寄存器 * 0x10 + 偏移量)，而在保护模式下，段寄存器为 GDT 表的索引，索引指向的元素包含了该段的基址。</p>
+<h2 id="驱动程序">驱动程序</h2>
+<p>在实模式下，可以直接触发 <code>0x10</code> 中断来打印一个个字符，而在保护模式下，由于显示设备映射到内存，可以通过对显存（位于<code>0xb8000</code>）写，来显示一个字符。显示设备有控制端口、数据端口，通过它们可以获取当前光标的位置，从而实现滚屏。</p>
+<h2 id="重置 GDT 表">重置 GDT 表</h2>
+<p>虽然在 Bootloader 中已经设置过 GDT 段表了，考虑代码除了内核态运行，还有用户态，所以实现了一下设置 GDT 段表的函数（位于 descriptor_tables.c:init_gdt），增加了两个段：</p>
+<ol>
+<li>NULL 段（必须）</li>
+<li>内核态代码段</li>
+<li>内核态数据段</li>
+<li>用户模式代码段</li>
+<li>用户模式数据段</li>
+</ol>
+<h2 id="设置 IDT 表">设置 IDT 表</h2>
+<p>CPU 一共能处理 256 种中断，保留了前 32 种系统中断（ISR）。需要定义一个 IDT 表，存放这些中断的信息，例如中断向量（中断处理程序地址），中断属性。而系统保留的 32 种中断中，有些中断会将错误码入栈，有些不会，为了统一栈结构，所以定义这 32 种中断处理程序的时候，不会入栈错误码的那些中断手动 push 一个数据，然后交给 C 语言版本的 isr_handler 统一处理这些中断，根据不同的中断码来辨别不同的中断，还需要在汇编程序 push 一个中断号。</p>
+<h2 id="栈 push-pop">栈 push/pop</h2>
+<p>栈结构在 x86 中非常重要，毕竟寄存器数量有限，所以需要将一些数据暂存到栈中来腾出空间。同时在函数调用中，C 语言使用栈来传递参数。每个栈元素大小都是固定为一个机器字长，所以在后面 C 调用汇编程序的时候，直接读取栈内容，就能获取参数，非常方便。例如在中断处理程序中，中断程序执行前会将寄存器入栈以保存环境，同时调用 isr_handler，利用这个特性就能在 C 语言 isr_handler 函数中轻而易举地获取中断程序保存的寄存器信息。</p>
+<h2 id="交叉编译器">交叉编译器</h2>
+<p>由于我的开发环境是 Mac OSX，内置的 llvm 编译器无法正常工作（例如链接器无法生成纯二进制文件，也没有 binutils 提供 objcopy 等方便工具）。所以需要用 brew 安装 gcc 编译器，接着下载 gcc/gdb/binutils 源码包，用 brew 的 gcc 编译它们(i386 版本)，然后安装。</p>
+<h2 id="调试">调试</h2>
+<p>对于 OS 开发，调试也是一件非常重要的事情，不然出现什么问题都很难定位了。在编译内核代码的时候，通过 <code>-g</code> 选项将符号信息包含进 elf 文件中，最后利用 objcopy 从 elf 文件抽出存二进制文件，然后让 qemu 运行 OS，配合 gdb 就能调试了，下图为我采用 gdbgui 调试的情况：</p>
+<p><img src="gdbgui.png" alt="gdbgui.png"></p>
+<p>曾经我分别生成带符号的 elf 内核文件，和生成存二进制内核文件，后来调试的时候发现全局变量地址不对，一度怀疑是 <code>ld</code> 把符号信息搞错了，后来查资料发现，正确调试姿势是，用 objcopy 从带符号信息的 elf 文件中抽出纯二进制文件。</p>
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://mikeos.sourceforge.net/write-your-own-os.html">http://mikeos.sourceforge.net/write-your-own-os.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cs.bham.ac.uk/~exr/lectures/opsys/10_11/lectures/os-dev.pdf">https://www.cs.bham.ac.uk/~exr/lectures/opsys/10_11/lectures/os-dev.pdf</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.jamesmolloy.co.uk/index.html">http://www.jamesmolloy.co.uk/index.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://wiki.osdev.org/Kernel_Debugging">https://wiki.osdev.org/Kernel_Debugging</a></li>
+</ul>
+
+    
+  </div>
+
+</article>
+
+
+   
+       <div class="original">
+    <ul>
+        <li>本文标题：从头开始写一个操作系统</li>
+        <li>本文字数：1.6k</li>
+        <li>本文作者：Netcan</li>
+        <li>发布时间：2018年07月11日 - 11时57分</li>
+        <li>最后更新：2022年12月09日 - 19时02分</li>
+        <li>原始链接：<a href="https://netcan.github.io/2018/07/11/%E4%BB%8E%E5%A4%B4%E5%BC%80%E5%A7%8B%E5%86%99%E4%B8%80%E4%B8%AA%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">https://netcan.github.io/2018/07/11/从头开始写一个操作系统/</a></li>
+        <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
+    </ul>
+</div>
+
+   
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持Netcan</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2018/05/29/%E4%BB%8E%E5%A4%B4%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E5%BA%93%EF%BC%9APython%E6%A8%A1%E5%9D%97%E7%AF%87/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2019/11/16/%E8%A7%A3%E5%86%B3C-%E6%8F%92%E4%BB%B6%E5%8C%96%E8%AE%BE%E8%AE%A1%E4%B9%8B%E5%8D%95%E4%BE%8B%E5%A4%9A%E5%AE%9E%E4%BE%8B%E9%97%AE%E9%A2%98/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '893a4103795fc66cd8e7',
+  clientSecret: '35c92c3dca938831b67dc22e46d64bc9073ebacf',
+  repo: 'netcan.github.io',
+  owner: 'Netcan',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: md5(location.pathname),
+  admin: ['Netcan'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

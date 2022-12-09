@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>C++ 元编程之代码生成：设计并实现图 DSL | Netcan on Programming</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="C/C++,元编程," />
+  
+
+  <meta name="description" content="动机 最近项目设计了不少 DSL，用 DSL 来直观描述领域代码，背后生成 C++ 代码，得益于模板元编程，这个想法得以实现。 之前写了一篇《设计并实现一个拓扑排序 DSL》，展示了 C++ 强大的编译时计算的能力，同时生成最终代码。 不过我想更进一步实战，之前看到一个 C++ 并发框架 taskflow，对标 Intel TBB&#x2F;OpenMB，性能最强，不过图描述方式通过节点的precede&#x2F;s">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++ 元编程之代码生成：设计并实现图 DSL">
+<meta property="og:url" content="https://netcan.github.io/2020/08/30/C-%E5%85%83%E7%BC%96%E7%A8%8B%E4%B9%8B%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90%EF%BC%9A%E8%AE%BE%E8%AE%A1%E5%B9%B6%E5%AE%9E%E7%8E%B0%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84DSL/index.html">
+<meta property="og:site_name" content="Netcan on Programming">
+<meta property="og:description" content="动机 最近项目设计了不少 DSL，用 DSL 来直观描述领域代码，背后生成 C++ 代码，得益于模板元编程，这个想法得以实现。 之前写了一篇《设计并实现一个拓扑排序 DSL》，展示了 C++ 强大的编译时计算的能力，同时生成最终代码。 不过我想更进一步实战，之前看到一个 C++ 并发框架 taskflow，对标 Intel TBB&#x2F;OpenMB，性能最强，不过图描述方式通过节点的precede&#x2F;s">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://netcan.github.io/2020/08/30/C-%E5%85%83%E7%BC%96%E7%A8%8B%E4%B9%8B%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90%EF%BC%9A%E8%AE%BE%E8%AE%A1%E5%B9%B6%E5%AE%9E%E7%8E%B0%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84DSL/visual_demo.svg">
+<meta property="article:published_time" content="2020-08-30T12:02:07.000Z">
+<meta property="article:modified_time" content="2022-12-09T11:02:08.581Z">
+<meta property="article:author" content="Netcan">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="元编程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://netcan.github.io/2020/08/30/C-%E5%85%83%E7%BC%96%E7%A8%8B%E4%B9%8B%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90%EF%BC%9A%E8%AE%BE%E8%AE%A1%E5%B9%B6%E5%AE%9E%E7%8E%B0%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84DSL/visual_demo.svg">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/site.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-174901164-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d2c292719a76d8c0fa7f9874379cfd25";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"] > svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body>
+
+
+  
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+  
+
+  <link rel="stylesheet" href="/css/prism.css">
+
+<div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">ROOT</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A8%E6%9C%BA"><span class="toc-text">动机</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9%E6%AF%94"><span class="toc-text">对比</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E5%AE%9E%E7%8E%B0"><span class="toc-text">关键实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#TasksCB"><span class="toc-text">TasksCB</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OneToOneLinkInstances"><span class="toc-text">OneToOneLinkInstances</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AE%BA"><span class="toc-text">结论</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-C-元编程之代码生成：设计并实现拓扑结构DSL" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">C++ 元编程之代码生成：设计并实现图 DSL</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2020.08.30</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Netcan</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h2 id="动机">动机</h2>
+<p>最近项目设计了不少 DSL，用 DSL 来直观描述领域代码，背后生成 C++ 代码，得益于模板元编程，这个想法得以实现。</p>
+<p>之前写了一篇<a href="/2020/08/15/%E8%AE%BE%E8%AE%A1%E5%B9%B6%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8FDSL/">《设计并实现一个拓扑排序 DSL》</a>，展示了 C++ 强大的编译时计算的能力，同时生成最终代码。</p>
+<p>不过我想更进一步实战，之前看到一个 C++ 并发框架 <a target="_blank" rel="noopener" href="https://github.com/taskflow/taskflow">taskflow</a>，对标 Intel TBB/OpenMB，性能最强，不过图描述方式通过节点的<code>precede/succeed</code> 接口建立，虽然够简单，个人觉得仍不够直观，于是就实现了一套 DSL 来更清晰的描述图，同时在这里记录一下关键点。</p>
+<p>目前 PR 链接在：<a target="_blank" rel="noopener" href="https://github.com/taskflow/taskflow/pull/222">https://github.com/taskflow/taskflow/pull/222</a>，原型代码可见<a target="_blank" rel="noopener" href="https://github.com/netcan/recipes/blob/master/cpp/metaproggramming/task_dsl_v2/main.cpp">https://github.com/netcan/recipes/blob/master/cpp/metaproggramming/task_dsl_v2/main.cpp</a></p>
+<h2 id="对比">对比</h2>
+<p>来看看这幅图，</p>
+<p><img src="visual_demo.svg" alt="visual_demo"></p>
+<p>原先方式是需要这样描述：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp">tf<span class="token operator">::</span>Taskflow taskflow<span class="token punctuation">;</span>
+tf<span class="token operator">::</span>Task A <span class="token operator">=</span> taskflow<span class="token punctuation">.</span><span class="token function">emplace</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">name</span><span class="token punctuation">(</span><span class="token string">"A"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+tf<span class="token operator">::</span>Task B <span class="token operator">=</span> taskflow<span class="token punctuation">.</span><span class="token function">emplace</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">name</span><span class="token punctuation">(</span><span class="token string">"B"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+tf<span class="token operator">::</span>Task C <span class="token operator">=</span> taskflow<span class="token punctuation">.</span><span class="token function">emplace</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">name</span><span class="token punctuation">(</span><span class="token string">"C"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+tf<span class="token operator">::</span>Task D <span class="token operator">=</span> taskflow<span class="token punctuation">.</span><span class="token function">emplace</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">name</span><span class="token punctuation">(</span><span class="token string">"D"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+tf<span class="token operator">::</span>Task E <span class="token operator">=</span> taskflow<span class="token punctuation">.</span><span class="token function">emplace</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">name</span><span class="token punctuation">(</span><span class="token string">"E"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+A<span class="token punctuation">.</span><span class="token function">precede</span><span class="token punctuation">(</span>B<span class="token punctuation">,</span> C<span class="token punctuation">,</span> E<span class="token punctuation">)</span><span class="token punctuation">;</span>
+C<span class="token punctuation">.</span><span class="token function">precede</span><span class="token punctuation">(</span>D<span class="token punctuation">)</span><span class="token punctuation">;</span>
+B<span class="token punctuation">.</span><span class="token function">precede</span><span class="token punctuation">(</span>D<span class="token punctuation">,</span> E<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>用 DSL 之后只需要这样，代码更直观：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token function">def_task</span><span class="token punctuation">(</span>A<span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"TaskA\n"</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">def_task</span><span class="token punctuation">(</span>B<span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"TaskB\n"</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">def_task</span><span class="token punctuation">(</span>C<span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"TaskC\n"</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">def_task</span><span class="token punctuation">(</span>D<span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"TaskD\n"</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">def_task</span><span class="token punctuation">(</span>E<span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"TaskE\n"</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token function">taskbuild</span><span class="token punctuation">(</span>
+  <span class="token function">task</span><span class="token punctuation">(</span>A<span class="token punctuation">)</span>
+    <span class="token operator">-></span> <span class="token function">fork</span><span class="token punctuation">(</span>B<span class="token punctuation">,</span> C<span class="token punctuation">)</span>
+    <span class="token operator">-></span> <span class="token function">task</span><span class="token punctuation">(</span>D<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">merge</span><span class="token punctuation">(</span>A<span class="token punctuation">,</span> B<span class="token punctuation">)</span>
+    <span class="token operator">-></span> <span class="token function">task</span><span class="token punctuation">(</span>E<span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">(</span>tf<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>目前支持的特性、原语如下：</p>
+<ul>
+<li><code>def_task</code>定义一个 task</li>
+<li><code>def_taskc</code>定义一个带 context 数据的 task</li>
+<li><code>taskbuild</code>描述 task 间的连接关系，按需传递 context 数据</li>
+<li><code>fork</code>/<code>merge</code>表示任意多个 task，而 <code>task()</code> 表示一个 task</li>
+<li><code>fork(a,b,c,d) -&gt; merge(e,f,g,h)</code>会生成 <strong> 笛卡尔积 </strong> 一共 16 条连接关系</li>
+<li><code>__task(a) -&gt; __task(b) -&gt; __task(c) -&gt; ...</code>能够通过 <code>-&gt;</code> 描述任意长度的连接关系</li>
+</ul>
+<h2 id="关键实现">关键实现</h2>
+<p>DSL 文法如下：</p>
+<pre class="language-bnf" data-language="bnf"><code class="language-bnf"><span class="token definition rule keyword"><span class="token punctuation">&lt;</span>def_task<span class="token punctuation">></span></span>  <span class="token operator">::=</span> <span class="token rule"><span class="token punctuation">&lt;</span>TaskSignature<span class="token punctuation">></span></span>
+<span class="token definition rule keyword"><span class="token punctuation">&lt;</span>taskbuild<span class="token punctuation">></span></span> <span class="token operator">::=</span> <span class="token rule"><span class="token punctuation">&lt;</span>Chains<span class="token punctuation">></span></span>
+<span class="token definition rule keyword"><span class="token punctuation">&lt;</span>fork<span class="token punctuation">></span></span>      <span class="token operator">::=</span> <span class="token rule"><span class="token punctuation">&lt;</span>SomeTask<span class="token punctuation">></span></span>
+<span class="token definition rule keyword"><span class="token punctuation">&lt;</span>merge<span class="token punctuation">></span></span>     <span class="token operator">::=</span> <span class="token rule"><span class="token punctuation">&lt;</span>SomeTask<span class="token punctuation">></span></span>
+
+<span class="token definition rule keyword"><span class="token punctuation">&lt;</span>Chains<span class="token punctuation">></span></span>    <span class="token operator">::=</span> <span class="token rule"><span class="token punctuation">&lt;</span>Chain<span class="token punctuation">></span></span>
+              <span class="token operator">|</span> <span class="token rule"><span class="token punctuation">&lt;</span>Chain<span class="token punctuation">></span></span>, <span class="token rule"><span class="token punctuation">&lt;</span>Chains<span class="token punctuation">></span></span>
+<span class="token definition rule keyword"><span class="token punctuation">&lt;</span>Chain<span class="token punctuation">></span></span>      <span class="token operator">::=</span> <span class="token rule"><span class="token punctuation">&lt;</span>Tasks<span class="token punctuation">></span></span> -> <span class="token rule"><span class="token punctuation">&lt;</span>Tasks<span class="token punctuation">></span></span>
+              <span class="token operator">|</span> <span class="token rule"><span class="token punctuation">&lt;</span>Tasks<span class="token punctuation">></span></span> -> <span class="token rule"><span class="token punctuation">&lt;</span>Chain<span class="token punctuation">></span></span>
+<span class="token definition rule keyword"><span class="token punctuation">&lt;</span>Tasks<span class="token punctuation">></span></span>     <span class="token operator">::=</span> <span class="token rule"><span class="token punctuation">&lt;</span>SomeTask<span class="token punctuation">></span></span>
+<span class="token definition rule keyword"><span class="token punctuation">&lt;</span>SomeTask<span class="token punctuation">></span></span>  <span class="token operator">::=</span> <span class="token rule"><span class="token punctuation">&lt;</span>TaskSignature<span class="token punctuation">></span></span>
+              <span class="token operator">|</span> <span class="token rule"><span class="token punctuation">&lt;</span>TaskSignature<span class="token punctuation">></span></span>, <span class="token rule"><span class="token punctuation">&lt;</span>SomeTask<span class="token punctuation">></span></span>
+              <span class="token operator">|</span> <span class="token rule"><span class="token punctuation">&lt;</span>SomeTask<span class="token punctuation">></span></span></code></pre>
+<p>通过上述规则可以构建 <code>TaskDSL</code> 对象，其对象主要主要由两大成员组成：</p>
+<ul>
+<li><code>TasksCB</code>异构容器，用于存放每个 <code>TaskSignature</code>，而<code>TaskSignature</code> 的职责就是 Task 工厂，用于创建具体的 task，然后存放于传递的 <code>Taskflow</code> 对象中，其拥有 task 的所有权。</li>
+<li><code>OneToOneLinkInstances</code>异构容器，由 <code>TaskAnalyzer</code> 模块推断出来的 task 一对一关系，其方法 <code>build</code> 用于生成 <code>From.precede(To)</code> 代码。</li>
+</ul>
+<h3 id="TasksCB">TasksCB</h3>
+<p>这里需要考虑一个问题，如何将 context 数据通过 <code>TaskSignature</code> 工厂传递给 task 呢？而 task 运行时不需要看到 context 变量就好了，就像 lambda 捕获那种效果？</p>
+<p>这里就需要发挥多继承的威力了，我将 Context 类和 <code>TaskSignature</code> 通过多继承拼装到一块去来解决这个问题：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token expression"><span class="token function">def_taskc</span><span class="token punctuation">(</span>name<span class="token punctuation">,</span> Context<span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span>                  </span><span class="token punctuation">\</span>
+  <span class="token expression"><span class="token keyword">struct</span> <span class="token class-name">name</span> <span class="token operator">:</span> <span class="token base-clause"><span class="token class-name">TaskSignature</span><span class="token punctuation">,</span> <span class="token class-name">Context</span></span> <span class="token punctuation">&#123;</span>               </span><span class="token punctuation">\</span>
+    <span class="token expression"><span class="token function">name</span><span class="token punctuation">(</span><span class="token keyword">const</span> Context <span class="token operator">&amp;</span>context<span class="token punctuation">)</span> <span class="token operator">:</span> <span class="token function">Context</span><span class="token punctuation">(</span>context<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span> </span><span class="token punctuation">\</span>
+    <span class="token expression"><span class="token keyword">auto</span> <span class="token keyword">operator</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>                                </span><span class="token punctuation">\</span>
+      <span class="token comment">/* copy *this(copy CONTEXT to lambda) */</span>         <span class="token punctuation">\</span>
+      <span class="token expression"><span class="token keyword">return</span> <span class="token punctuation">[</span><span class="token operator">*</span><span class="token keyword">this</span><span class="token punctuation">]</span> __VA_ARGS__<span class="token punctuation">;</span>                      </span><span class="token punctuation">\</span>
+    <span class="token expression"><span class="token punctuation">&#125;</span>                                                  </span><span class="token punctuation">\</span>
+  <span class="token expression"><span class="token punctuation">&#125;</span><span class="token punctuation">;</span></span></span></code></pre>
+<p>创建 task 的时候，捕获了 <code>*this</code>，而<code>*this</code> 蕴含着 Context 数据。之所以需要 <code>*this</code> 而不是 <code>this</code>，是因为需要将 Context 数据拷贝到 task 这个 lambda 中，因为一旦 task 创建完成后，<code>TaskSignature</code> 对象就析构，从而导致悬挂指针，而拷贝避免了这个问题，这也要求 Context 类是 Copyable 的。</p>
+<h3 id="OneToOneLinkInstances">OneToOneLinkInstances</h3>
+<p>之所以能得到 <code>task(A)-&gt;task(B)-&gt;task(C)-&gt;task(D)...</code> 的 chain 效果，其本质背后是函数签名 <strong> 类型 </strong>：<code>auto(*)(A) -&gt; auto(*)(B) -&gt; auto(*)(C) -&gt; auto(*)(D) -&gt; void</code>，这是一个高阶函数，输入 A 得到一个函数，输入其参数 B 得到一个函数，以此类推，最终得到 void。而最终的 void 是必不可少的，因为 C++ 规范要求模板参数不能全为 auto，在 clang11 支持这个特性，而 clang12 把这个 bug 修好了 = = 为了避免用户需要每次在最后指明<code>-&gt;void</code>，我用 Map 宏<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup> 自动给每条 chain 后面加上<code>-&gt;void</code>。</p>
+<p>这个一连串的效果还是我突然得到的灵感，给了我很大的惊喜，这样就可以用深度优先的方式描述了，而不仅仅局限于广度优先。C++ 实在是太有意思了😂。</p>
+<p>得到 chain 后，需要将其解构成一个个 <code>(Connection, -&gt;)</code> 的偏序集。这里很巧妙的用了模板萃取技术得到：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">// 输入 Chain，输出偏序集 OUT: (Connection, ->)</span>
+<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">T</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">OUT</span> <span class="token operator">=</span> TypeList<span class="token operator">&lt;</span><span class="token operator">>></span>
+<span class="token keyword">struct</span> <span class="token class-name">Chain</span><span class="token punctuation">;</span>
+
+<span class="token comment">// 模式匹配，边界情况，返回结果</span>
+<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">F</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">OUT</span><span class="token operator">></span>
+<span class="token keyword">struct</span> <span class="token class-name">Chain</span><span class="token operator">&lt;</span><span class="token keyword">auto</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span><span class="token punctuation">(</span>F<span class="token punctuation">)</span> <span class="token operator">-></span> <span class="token keyword">void</span><span class="token punctuation">,</span> OUT<span class="token operator">></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">using</span> From <span class="token operator">=</span> F<span class="token punctuation">;</span>
+    <span class="token keyword">using</span> type <span class="token operator">=</span> OUT<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+<span class="token comment">// 从头往后取 Tasks，构成一个个 Connection</span>
+<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">F</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">T</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">OUT</span><span class="token operator">></span>
+<span class="token keyword">struct</span> <span class="token class-name">Chain</span><span class="token operator">&lt;</span><span class="token keyword">auto</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span><span class="token punctuation">(</span>F<span class="token punctuation">)</span> <span class="token operator">-></span> T<span class="token punctuation">,</span> OUT<span class="token operator">></span> <span class="token punctuation">&#123;</span>
+<span class="token keyword">private</span><span class="token operator">:</span>
+    <span class="token keyword">using</span> To <span class="token operator">=</span> <span class="token keyword">typename</span> <span class="token class-name">Chain</span><span class="token operator">&lt;</span>T<span class="token punctuation">,</span> OUT<span class="token operator">></span><span class="token operator">::</span>From<span class="token punctuation">;</span>
+<span class="token keyword">public</span><span class="token operator">:</span>
+    <span class="token keyword">using</span> From <span class="token operator">=</span> F<span class="token punctuation">;</span>
+    <span class="token keyword">using</span> type <span class="token operator">=</span> <span class="token keyword">typename</span> <span class="token class-name">Chain</span>
+        <span class="token operator">&lt;</span>T<span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">OUT</span><span class="token operator">::</span><span class="token keyword">template</span> appendTo<span class="token operator">&lt;</span>Connection<span class="token operator">&lt;</span>From<span class="token punctuation">,</span> To<span class="token operator">>></span><span class="token operator">></span><span class="token operator">::</span>type<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
+<p>有了 <code>(Connection, -&gt;)</code> 偏序集，还需要从中得到一对一的关系，比如 <code>Connection&lt;SomeTask&lt;A, B&gt;, SomeTask&lt;C&gt;&gt;</code> 应该得到笛卡尔积关系：<code>OneToOneLink&lt;A, C&gt;</code>, <code>OneToOneLink&lt;B, C&gt;</code>，下面是求笛卡尔积代码：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">// 输入 &lt;FromTasks, ToTasks>, 输出 OneToOneLinkSet</span>
+<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">FROMs</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">TOs</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token operator">=</span> <span class="token keyword">void</span><span class="token operator">></span>
+<span class="token keyword">struct</span> <span class="token class-name">BuildOneToOneLink</span><span class="token punctuation">;</span>
+
+<span class="token comment">// 外层循环</span>
+<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>Fs<span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">Ts</span><span class="token operator">></span>
+<span class="token keyword">struct</span> <span class="token class-name">BuildOneToOneLink</span><span class="token operator">&lt;</span>TypeList<span class="token operator">&lt;</span>Fs<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">></span><span class="token punctuation">,</span> Ts<span class="token operator">></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">using</span> type <span class="token operator">=</span> Concat_t<span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">BuildOneToOneLink</span><span class="token operator">&lt;</span>Fs<span class="token punctuation">,</span> Ts<span class="token operator">></span><span class="token operator">::</span>type<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">></span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+<span class="token comment">// 内层循环</span>
+<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">F</span><span class="token punctuation">,</span> <span class="token keyword">typename</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> Ts<span class="token operator">></span>
+<span class="token keyword">struct</span> <span class="token class-name">BuildOneToOneLink</span><span class="token operator">&lt;</span>F<span class="token punctuation">,</span> TypeList<span class="token operator">&lt;</span>Ts<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">></span><span class="token punctuation">,</span>
+                        std<span class="token operator">::</span>enable_if_t<span class="token operator">&lt;</span><span class="token operator">!</span>IsTypeList_v<span class="token operator">&lt;</span>F<span class="token operator">>></span><span class="token operator">></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">using</span> type <span class="token operator">=</span> TypeList<span class="token operator">&lt;</span>OneToOneLink<span class="token operator">&lt;</span>F<span class="token punctuation">,</span> Ts<span class="token operator">></span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">></span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
+<p>最后去重得到 <code>OneToOneLinkInstances</code>，从而生成一条条<code>precede</code> 语句，而这些都是在编译期完成的。</p>
+<h2 id="结论">结论</h2>
+<p>从以上探索、实现过程发现，C++ 其实是一门很有意思的语言，没有约束能给人很多想象空间，可玩性也更强，这也对程序猿有极高的要求，才能 hold 得住这么一个怪物😀</p>
+<p>而由于其编译期元编程是偶然发现的，没有经过专门设计，导致语法过于复杂，但是其实和 FP 语言思路写法很相似，比如实现一个快排，不考虑优化，在 Haskell 我会这么写：</p>
+<pre class="language-haskell" data-language="haskell"><code class="language-haskell"><span class="token hvariable">quicksort</span> <span class="token operator">::</span> <span class="token punctuation">(</span><span class="token constant">Ord</span> <span class="token hvariable">a</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">[</span><span class="token hvariable">a</span><span class="token punctuation">]</span> <span class="token operator">-></span> <span class="token punctuation">[</span><span class="token hvariable">a</span><span class="token punctuation">]</span>
+<span class="token hvariable">quicksort</span> <span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+<span class="token hvariable">quicksort</span> <span class="token punctuation">(</span><span class="token hvariable">x</span><span class="token operator">:</span><span class="token hvariable">xs</span><span class="token punctuation">)</span> <span class="token operator">=</span>
+  <span class="token keyword">let</span> <span class="token hvariable">smallerSorted</span> <span class="token operator">=</span> <span class="token hvariable">quicksort</span> <span class="token punctuation">[</span><span class="token hvariable">a</span> <span class="token operator">|</span> <span class="token hvariable">a</span> <span class="token operator">&lt;-</span> <span class="token hvariable">xs</span><span class="token punctuation">,</span> <span class="token hvariable">a</span> <span class="token operator">&lt;=</span> <span class="token hvariable">x</span><span class="token punctuation">]</span>
+      <span class="token hvariable">biggerSorted</span>  <span class="token operator">=</span> <span class="token hvariable">quicksort</span> <span class="token punctuation">[</span><span class="token hvariable">a</span> <span class="token operator">|</span> <span class="token hvariable">a</span> <span class="token operator">&lt;-</span> <span class="token hvariable">xs</span><span class="token punctuation">,</span> <span class="token hvariable">a</span> <span class="token operator">></span> <span class="token hvariable">x</span><span class="token punctuation">]</span>
+  <span class="token keyword">in</span>  <span class="token hvariable">smallerSorted</span> <span class="token operator">++</span> <span class="token punctuation">[</span><span class="token hvariable">x</span><span class="token punctuation">]</span> <span class="token operator">++</span> <span class="token hvariable">biggerSorted</span></code></pre>
+<p>而在 C++ 中，思路是一样的，这么实现：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">IN</span><span class="token punctuation">,</span> <span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span><span class="token punctuation">,</span> <span class="token keyword">typename</span><span class="token operator">></span> <span class="token keyword">class</span> <span class="token class-name">CMP</span><span class="token operator">></span>
+<span class="token keyword">struct</span> <span class="token class-name">QuickSort</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">using</span> type <span class="token operator">=</span> TypeList<span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">IN</span><span class="token punctuation">,</span> <span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span><span class="token punctuation">,</span> <span class="token keyword">typename</span><span class="token operator">></span> <span class="token keyword">class</span> <span class="token class-name">CMP</span><span class="token operator">></span>
+<span class="token keyword">using</span> QuickSort_t <span class="token operator">=</span> <span class="token keyword">typename</span> <span class="token class-name">QuickSort</span><span class="token operator">&lt;</span>IN<span class="token punctuation">,</span> CMP<span class="token operator">></span><span class="token operator">::</span>type<span class="token punctuation">;</span>
+
+<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span><span class="token punctuation">,</span> <span class="token keyword">typename</span><span class="token operator">></span> <span class="token keyword">class</span> <span class="token class-name">CMP</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">H</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>Ts<span class="token operator">></span>
+<span class="token keyword">class</span> <span class="token class-name">QuickSort</span><span class="token operator">&lt;</span>TypeList<span class="token operator">&lt;</span>H<span class="token punctuation">,</span> Ts<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">></span><span class="token punctuation">,</span> CMP<span class="token operator">></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">E</span><span class="token operator">></span>
+    <span class="token keyword">struct</span> <span class="token class-name">LT</span> <span class="token punctuation">&#123;</span> <span class="token keyword">static</span> <span class="token keyword">constexpr</span> <span class="token keyword">bool</span> value <span class="token operator">=</span> CMP<span class="token operator">&lt;</span>E<span class="token punctuation">,</span> H<span class="token operator">></span><span class="token operator">::</span>value<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+    <span class="token keyword">using</span> P <span class="token operator">=</span> Partition_t<span class="token operator">&lt;</span>TypeList<span class="token operator">&lt;</span>Ts<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">></span><span class="token punctuation">,</span> LT<span class="token operator">></span><span class="token punctuation">;</span>
+	<span class="token comment">// smallerSorted = quicksort [a | a &lt;- xs, a &lt;= x]</span>
+    <span class="token keyword">using</span> SmallerSorted <span class="token operator">=</span> QuickSort_t<span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">P</span><span class="token operator">::</span>satisfied<span class="token punctuation">,</span> CMP<span class="token operator">></span><span class="token punctuation">;</span>
+	<span class="token comment">// biggerSorted  = quicksort [a | a &lt;- xs, a> x]</span>
+    <span class="token keyword">using</span> BiggerSorted <span class="token operator">=</span> QuickSort_t<span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">P</span><span class="token operator">::</span>rest<span class="token punctuation">,</span> CMP<span class="token operator">></span><span class="token punctuation">;</span>
+<span class="token keyword">public</span><span class="token operator">:</span>
+	<span class="token comment">// smallerSorted ++ [x] ++ biggerSorted</span>
+    <span class="token keyword">using</span> type <span class="token operator">=</span> Concat_t<span class="token operator">&lt;</span>
+        <span class="token keyword">typename</span> <span class="token class-name">SmallerSorted</span><span class="token operator">::</span><span class="token keyword">template</span> appendTo<span class="token operator">&lt;</span>H<span class="token operator">></span><span class="token punctuation">,</span> BiggerSorted
+    <span class="token operator">></span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
+<p>这也是玩 C++ 的乐趣所在，很自由的表达一切。</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p><a target="_blank" rel="noopener" href="https://github.com/Erlkoenig90/map-macro/">https://github.com/Erlkoenig90/map-macro/</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+    
+  </div>
+
+</article>
+
+
+   
+       <div class="original">
+    <ul>
+        <li>本文标题：C++ 元编程之代码生成：设计并实现图 DSL</li>
+        <li>本文字数：1.7k</li>
+        <li>本文作者：Netcan</li>
+        <li>发布时间：2020年08月30日 - 20时02分</li>
+        <li>最后更新：2022年12月09日 - 19时02分</li>
+        <li>原始链接：<a href="https://netcan.github.io/2020/08/30/C-%E5%85%83%E7%BC%96%E7%A8%8B%E4%B9%8B%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90%EF%BC%9A%E8%AE%BE%E8%AE%A1%E5%B9%B6%E5%AE%9E%E7%8E%B0%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84DSL/">https://netcan.github.io/2020/08/30/C-元编程之代码生成：设计并实现拓扑结构DSL/</a></li>
+        <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
+    </ul>
+</div>
+
+   
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持Netcan</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2020/08/15/%E8%AE%BE%E8%AE%A1%E5%B9%B6%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8FDSL/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2020/09/05/C-20%E5%8D%8F%E7%A8%8B/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '893a4103795fc66cd8e7',
+  clientSecret: '35c92c3dca938831b67dc22e46d64bc9073ebacf',
+  repo: 'netcan.github.io',
+  owner: 'Netcan',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: md5(location.pathname),
+  admin: ['Netcan'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

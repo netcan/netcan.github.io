@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>线性表的顺序储存与链式储存 | Netcan on Programming</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="C/C++,数据结构," />
+  
+
+  <meta name="description" content="线性表   简称表，是由零个或多个具有相同类型的数据元素构成的有限序列。元素的个数称为线性表的长度。长度为零的称作空表，对于非空表，通常记为  L&#x3D;(a1,a2,...,an)   其中 n 为线性表长度，ai 为线性表结点（数据元素），i 为该元素在线性表中的位置或序号。a1 是线性表的第一个元素或开始结点，an 为最后一个元素或者终端结点。对于 ai(1&lt;i&lt;n)，称 a(i-1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="线性表的顺序储存与链式储存">
+<meta property="og:url" content="https://netcan.github.io/2015/04/12/%E7%BA%BF%E6%80%A7%E8%A1%A8%E7%9A%84%E9%A1%BA%E5%BA%8F%E5%82%A8%E5%AD%98%E4%B8%8E%E9%93%BE%E5%BC%8F%E5%82%A8%E5%AD%98/index.html">
+<meta property="og:site_name" content="Netcan on Programming">
+<meta property="og:description" content="线性表   简称表，是由零个或多个具有相同类型的数据元素构成的有限序列。元素的个数称为线性表的长度。长度为零的称作空表，对于非空表，通常记为  L&#x3D;(a1,a2,...,an)   其中 n 为线性表长度，ai 为线性表结点（数据元素），i 为该元素在线性表中的位置或序号。a1 是线性表的第一个元素或开始结点，an 为最后一个元素或者终端结点。对于 ai(1&lt;i&lt;n)，称 a(i-1">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2015-04-12T09:56:29.000Z">
+<meta property="article:modified_time" content="2015-04-12T09:56:29.000Z">
+<meta property="article:author" content="Netcan">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="数据结构">
+<meta name="twitter:card" content="summary">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/site.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-174901164-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d2c292719a76d8c0fa7f9874379cfd25";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"] > svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body>
+
+
+  
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+  
+
+  <link rel="stylesheet" href="/css/prism.css">
+
+<div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">ROOT</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E6%80%A7%E8%A1%A8"><span class="toc-text"> 线性表 </span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A1%BA%E5%BA%8F%E8%A1%A8"><span class="toc-text"> 顺序表 </span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%BE%E8%A1%A8"><span class="toc-text"> 链表 </span></a></li></ol></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-线性表的顺序储存与链式储存" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">线性表的顺序储存与链式储存</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2015.04.12</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Netcan</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h2 id="线性表"> 线性表 </h2>
+<p> 简称表，是由零个或多个具有相同类型的数据元素构成的有限序列。元素的个数称为线性表的长度。长度为零的称作空表，对于非空表，通常记为 </p>
+<pre><code>L=(a1,a2,...,an)
+</code></pre>
+<p> 其中 n 为线性表长度，ai 为线性表结点（数据元素），i 为该元素在线性表中的位置或序号。a1 是线性表的第一个元素或开始结点，an 为最后一个元素或者终端结点。对于 ai(1&lt;i&lt;n)，称 a(i-1) 为 ai 的直接前驱，a(i+1) 为 ai 的直接后继。</p>
+<p> 线性表的运算如下，（下面是顺序结构储存的线性表）</p>
+<pre><code>const int MAXSIZE = 1000; // 声明顺序表最大程度
+template &lt;class T&gt; // 模板类
+class SeqList &#123;
+	public:
+		SeqList() &#123; // 无参构造函数
+			length = 0;
+		&#125;
+		SeqList(const T *a, int n); // 构造函数，用数组 a 赋初值。
+		int GetLength() &#123;
+			return length;
+		&#125;
+		void PrintList(); // 打印顺序表
+		void Insert(int i, T x); // 插入 x 到顺序表第 i 个位置
+		T Delete(int i); // 删除顺序表第 i 个位置的值
+		T Get(int i); // 得到顺序表第 i 个位置的值
+		int Locate(T x); // 根据值 x 来查找其在顺序表的位置
+	private:
+		T data[MAXSIZE]; // 顺序表储存数组
+		int length; // 顺序表长度
+&#125;;
+</code></pre>
+<h3 id="顺序表"> 顺序表 </h3>
+<p> 将线性表储存在计算机中可以采用多种不同方法，其中最简单的是顺序储存的方法，即把线性表的数据元素按照逻辑秩序依次存放在一组地址连续的储存空间中，用顺序存储方法储存的线性表称为顺序表。</p>
+<p> 下面是实现。</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">/*************************************************************************
+    > File Name: SeqList.cpp
+    > Author: Netcan
+    > Mail: 1469709759@qq.com 
+    > Created Time: 2015/4/10 22:05:43
+ ************************************************************************/</span>
+ 
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span><span class="token string">&lt;iostream></span></span>
+<span class="token keyword">using</span> <span class="token keyword">namespace</span> std<span class="token punctuation">;</span>
+ 
+<span class="token keyword">const</span> <span class="token keyword">int</span> MAXSIZE <span class="token operator">=</span> <span class="token number">1000</span><span class="token punctuation">;</span> <span class="token comment">// 声明顺序表最大程度 </span>
+<span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">class</span> <span class="token class-name">T</span><span class="token operator">></span> <span class="token comment">// 模板类 </span>
+<span class="token keyword">class</span> <span class="token class-name">SeqList</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span><span class="token operator">:</span>
+        <span class="token function">SeqList</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 无参构造函数 </span>
+            length <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token function">SeqList</span><span class="token punctuation">(</span><span class="token keyword">const</span> T <span class="token operator">*</span>a<span class="token punctuation">,</span> <span class="token keyword">int</span> n<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 构造函数，用数组 a 赋初值。</span>
+        <span class="token keyword">int</span> <span class="token function">GetLength</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">return</span> length<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">void</span> <span class="token function">PrintList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 打印顺序表 </span>
+        <span class="token keyword">void</span> <span class="token function">Insert</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token punctuation">,</span> T x<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 插入 x 到顺序表第 i 个位置 </span>
+        T <span class="token function">Delete</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 删除顺序表第 i 个位置的值 </span>
+        T <span class="token function">Get</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 得到顺序表第 i 个位置的值 </span>
+        <span class="token keyword">int</span> <span class="token function">Locate</span><span class="token punctuation">(</span>T x<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 根据值 x 来查找其在顺序表的位置 </span>
+    <span class="token keyword">private</span><span class="token operator">:</span>
+        T data<span class="token punctuation">[</span>MAXSIZE<span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment">// 顺序表储存数组 </span>
+        <span class="token keyword">int</span> length<span class="token punctuation">;</span> <span class="token comment">// 顺序表长度 </span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+ 
+<span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">class</span> <span class="token class-name">T</span><span class="token operator">></span>
+<span class="token keyword">void</span> <span class="token class-name">SeqList</span><span class="token operator">&lt;</span>T<span class="token operator">></span><span class="token operator">::</span><span class="token function">PrintList</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> 
+    <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">&lt;</span>length<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token comment">// 遍历输出 </span>
+        cout <span class="token operator">&lt;&lt;</span> data<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">&lt;&lt;</span> <span class="token string">""</span><span class="token punctuation">;</span>
+    cout <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">class</span> <span class="token class-name">T</span><span class="token operator">></span>
+<span class="token class-name">SeqList</span><span class="token operator">&lt;</span>T<span class="token operator">></span><span class="token operator">::</span><span class="token function">SeqList</span><span class="token punctuation">(</span><span class="token keyword">const</span> T <span class="token operator">*</span>a<span class="token punctuation">,</span> <span class="token keyword">int</span> n<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span>n<span class="token operator">></span>MAXSIZE<span class="token punctuation">)</span> <span class="token keyword">throw</span> <span class="token string">"赋值数组过大！"</span><span class="token punctuation">;</span>
+    length <span class="token operator">=</span> n<span class="token punctuation">;</span>
+    <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">&lt;</span>length<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token comment">// 遍历赋值 </span>
+        data<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> a<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">class</span> <span class="token class-name">T</span><span class="token operator">></span>
+<span class="token keyword">void</span> <span class="token class-name">SeqList</span><span class="token operator">&lt;</span>T<span class="token operator">></span><span class="token operator">::</span><span class="token function">Insert</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token punctuation">,</span> T x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span>length<span class="token operator">>=</span>MAXSIZE<span class="token punctuation">)</span> <span class="token keyword">throw</span> <span class="token string">"溢出！"</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span>i<span class="token operator">></span>length<span class="token operator">+</span><span class="token number">1</span> <span class="token operator">||</span> i<span class="token operator">&lt;</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token keyword">throw</span> <span class="token string">"位置异常！"</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> j<span class="token operator">=</span>length<span class="token punctuation">;</span> j<span class="token operator">>=</span>i<span class="token punctuation">;</span> <span class="token operator">--</span>j<span class="token punctuation">)</span> <span class="token comment">// 数据右挪 </span>
+        data<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> data<span class="token punctuation">[</span>j<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    data<span class="token punctuation">[</span>i<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> x<span class="token punctuation">;</span>
+    <span class="token operator">++</span>length<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">class</span> <span class="token class-name">T</span><span class="token operator">></span>
+T <span class="token class-name">SeqList</span><span class="token operator">&lt;</span>T<span class="token operator">></span><span class="token operator">::</span><span class="token function">Delete</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span>i<span class="token operator">></span>length <span class="token operator">||</span> i<span class="token operator">&lt;</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token keyword">throw</span> <span class="token string">"位置异常！"</span><span class="token punctuation">;</span>
+    T x <span class="token operator">=</span> data<span class="token punctuation">[</span>i<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> j<span class="token operator">=</span>i<span class="token punctuation">;</span> j<span class="token operator">&lt;</span>length<span class="token punctuation">;</span> <span class="token operator">++</span>j<span class="token punctuation">)</span> <span class="token comment">// 数据左挪 </span>
+        data<span class="token punctuation">[</span>j<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> data<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token operator">--</span>length<span class="token punctuation">;</span>
+    <span class="token keyword">return</span> x<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">class</span> <span class="token class-name">T</span><span class="token operator">></span>
+T <span class="token class-name">SeqList</span><span class="token operator">&lt;</span>T<span class="token operator">></span><span class="token operator">::</span><span class="token function">Get</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span>i<span class="token operator">></span>length <span class="token operator">||</span> i<span class="token operator">&lt;</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token keyword">throw</span> <span class="token string">"位置异常！"</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> data<span class="token punctuation">[</span>i<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment">// 返回第 i 个值 </span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">class</span> <span class="token class-name">T</span><span class="token operator">></span>
+<span class="token keyword">int</span> <span class="token class-name">SeqList</span><span class="token operator">&lt;</span>T<span class="token operator">></span><span class="token operator">::</span><span class="token function">Locate</span><span class="token punctuation">(</span>T x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">&lt;</span>length<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>x <span class="token operator">==</span> data<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span>
+            <span class="token keyword">return</span> i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">;</span> <span class="token comment">// 返回 x 的位置 </span>
+    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+ 
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">int</span> a<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token punctuation">&#123;</span>
+        <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">9</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+    SeqList<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> <span class="token function">list</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> <span class="token keyword">sizeof</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token operator">/</span><span class="token keyword">sizeof</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    cout <span class="token operator">&lt;&lt;</span> <span class="token string">"顺序表值："</span><span class="token punctuation">;</span>
+    list<span class="token punctuation">.</span><span class="token function">PrintList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    cout <span class="token operator">&lt;&lt;</span> <span class="token string">"顺序表长度："</span> <span class="token operator">&lt;&lt;</span> list<span class="token punctuation">.</span><span class="token function">GetLength</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+    cout <span class="token operator">&lt;&lt;</span> <span class="token string">"删除元素："</span> <span class="token operator">&lt;&lt;</span> list<span class="token punctuation">.</span><span class="token function">Delete</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+    cout <span class="token operator">&lt;&lt;</span> <span class="token string">"顺序表值："</span><span class="token punctuation">;</span>
+    list<span class="token punctuation">.</span><span class="token function">PrintList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    cout <span class="token operator">&lt;&lt;</span> <span class="token string">"第 3 个元素是："</span> <span class="token operator">&lt;&lt;</span> list<span class="token punctuation">.</span><span class="token function">Get</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+    cout <span class="token operator">&lt;&lt;</span> <span class="token string">"元素 8 在："</span> <span class="token operator">&lt;&lt;</span> list<span class="token punctuation">.</span><span class="token function">Locate</span><span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+    cout <span class="token operator">&lt;&lt;</span> <span class="token string">"插入 11 到第 4 个元素"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span> 
+    list<span class="token punctuation">.</span><span class="token function">Insert</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">11</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    cout <span class="token operator">&lt;&lt;</span> <span class="token string">"顺序表值："</span><span class="token punctuation">;</span>
+    list<span class="token punctuation">.</span><span class="token function">PrintList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    cout <span class="token operator">&lt;&lt;</span> <span class="token string">"顺序表长度："</span> <span class="token operator">&lt;&lt;</span> list<span class="token punctuation">.</span><span class="token function">GetLength</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre>
+<p> 运行结果：</p>
+<pre><code>C:\Windows\SysWOW64\cmd.exe /c (SeqList)
+顺序表值：1 2 3 4 5 6 7 8 9
+顺序表长度：9
+删除元素：5
+顺序表值：1 2 3 4 6 7 8 9
+第 3 个元素是：3
+元素 8 在：7
+插入 11 到第 4 个元素
+顺序表值：1 2 3 11 4 6 7 8 9
+顺序表长度：9
+Hit any key to close this window...
+</code></pre>
+<h3 id="链表"> 链表 </h3>
+<p> 采用链式储存的方式储存线性表，这种方法采用动态储存分配方式，即在程序运行中根据实际需要随时申请内存，在不需要时释放内存。通常将链式储存的线性表称为链表。</p>
+<p> 下面是单链表（数据类型为自定义的 Complex 类）的实现。</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">/*************************************************************************
+    > File Name: LinkList.cpp
+    > Author: Netcan
+    > Mail: 1469709759@qq.com 
+    > Created Time: 2015/4/12 14:47:14
+ ************************************************************************/</span>
+ 
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span><span class="token string">&lt;iostream></span></span>
+<span class="token keyword">using</span> <span class="token keyword">namespace</span> std<span class="token punctuation">;</span>
+ 
+<span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">class</span> <span class="token class-name">T</span><span class="token operator">></span>
+<span class="token keyword">struct</span> <span class="token class-name">Node</span> <span class="token punctuation">&#123;</span>
+    T data<span class="token punctuation">;</span>
+    <span class="token keyword">struct</span> <span class="token class-name">Node</span><span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token operator">*</span> next<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+ 
+<span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">class</span> <span class="token class-name">T</span><span class="token operator">></span>
+<span class="token keyword">class</span> <span class="token class-name">LinkList</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span><span class="token operator">:</span>
+        <span class="token function">LinkList</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>   <span class="token comment">// 无参构造函数 </span>
+            front <span class="token operator">=</span> <span class="token keyword">new</span> Node<span class="token operator">&lt;</span>T<span class="token operator">></span><span class="token punctuation">;</span>
+            front<span class="token operator">-></span>next <span class="token operator">=</span> <span class="token constant">NULL</span><span class="token punctuation">;</span>   
+        <span class="token punctuation">&#125;</span>
+        <span class="token function">LinkList</span><span class="token punctuation">(</span>T <span class="token operator">*</span> a<span class="token punctuation">,</span> <span class="token keyword">int</span> n<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 有参构造函数，将数组 a 构造成链表 </span>
+        <span class="token operator">~</span><span class="token function">LinkList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 析构函数 </span>
+        <span class="token keyword">void</span> <span class="token function">PrintList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 输出链表的值 </span>
+        <span class="token keyword">int</span> <span class="token function">GetLength</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 返回链表长度 </span>
+        Node<span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token operator">*</span> <span class="token function">Get</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 返回第 i 个节点的地址 </span>
+        <span class="token keyword">int</span> <span class="token function">Locate</span><span class="token punctuation">(</span>T x<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 返回节点的值为 x 的位置 </span>
+        <span class="token keyword">void</span> <span class="token function">Insert</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token punctuation">,</span> T x<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 插入 x 到链表第 i 个位置 </span>
+        T <span class="token function">Delete</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 删除第 i 个节点，并返回该节点的值 </span>
+    <span class="token keyword">private</span><span class="token operator">:</span>
+        Node<span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token operator">*</span> front<span class="token punctuation">;</span> <span class="token comment">// 头指针 </span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+ 
+<span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">class</span> <span class="token class-name">T</span><span class="token operator">></span>
+<span class="token class-name">LinkList</span><span class="token operator">&lt;</span>T<span class="token operator">></span><span class="token operator">::</span><span class="token function">LinkList</span><span class="token punctuation">(</span>T <span class="token operator">*</span>a<span class="token punctuation">,</span> <span class="token keyword">int</span> n<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 采用“头插法”插入数据 </span>
+    front <span class="token operator">=</span> <span class="token keyword">new</span> Node<span class="token operator">&lt;</span>T<span class="token operator">></span><span class="token punctuation">;</span>
+    front<span class="token operator">-></span>next <span class="token operator">=</span> <span class="token constant">NULL</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span>n<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span> i<span class="token operator">>=</span><span class="token number">0</span><span class="token punctuation">;</span> <span class="token operator">--</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        Node<span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token operator">*</span>s <span class="token operator">=</span> <span class="token keyword">new</span> Node<span class="token operator">&lt;</span>T<span class="token operator">></span><span class="token punctuation">;</span>
+        s<span class="token operator">-></span>data <span class="token operator">=</span> a<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        s<span class="token operator">-></span>next <span class="token operator">=</span> front<span class="token operator">-></span>next<span class="token punctuation">;</span>
+        front<span class="token operator">-></span>next <span class="token operator">=</span> s<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">class</span> <span class="token class-name">T</span><span class="token operator">></span>
+LinkList<span class="token operator">&lt;</span>T<span class="token operator">></span><span class="token operator">::</span><span class="token operator">~</span><span class="token function">LinkList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span> <span class="token comment">// 析构函数，用于释放链表 </span>
+    Node<span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token operator">*</span>p<span class="token operator">=</span>front<span class="token punctuation">;</span>
+    <span class="token keyword">while</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        front <span class="token operator">=</span> p<span class="token punctuation">;</span>
+        p <span class="token operator">=</span> front<span class="token operator">-></span>next<span class="token punctuation">;</span>
+        <span class="token keyword">delete</span> front<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">class</span> <span class="token class-name">T</span><span class="token operator">></span>
+<span class="token keyword">void</span> <span class="token class-name">LinkList</span><span class="token operator">&lt;</span>T<span class="token operator">></span><span class="token operator">::</span><span class="token function">PrintList</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 输出链表的节点值 </span>
+    Node<span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token operator">*</span>p <span class="token operator">=</span> front<span class="token operator">-></span>next<span class="token punctuation">;</span>
+    <span class="token keyword">while</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        cout <span class="token operator">&lt;&lt;</span> p<span class="token operator">-></span>data <span class="token operator">&lt;&lt;</span> <span class="token string">""</span><span class="token punctuation">;</span>
+        p <span class="token operator">=</span> p<span class="token operator">-></span>next<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    cout <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">class</span> <span class="token class-name">T</span><span class="token operator">></span>
+<span class="token keyword">int</span> <span class="token class-name">LinkList</span><span class="token operator">&lt;</span>T<span class="token operator">></span><span class="token operator">::</span><span class="token function">GetLength</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 返回链表长度 </span>
+    Node<span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token operator">*</span>p <span class="token operator">=</span> front<span class="token operator">-></span>next<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> length <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">while</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token operator">++</span>length<span class="token punctuation">;</span>
+        p <span class="token operator">=</span> p<span class="token operator">-></span>next<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">return</span> length<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">class</span> <span class="token class-name">T</span><span class="token operator">></span>
+Node<span class="token operator">&lt;</span>T<span class="token operator">></span><span class="token operator">*</span> <span class="token class-name">LinkList</span><span class="token operator">&lt;</span>T<span class="token operator">></span><span class="token operator">::</span><span class="token function">Get</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token punctuation">)</span>  <span class="token punctuation">&#123;</span> <span class="token comment">// 获取第 i 个节点的地址 </span>
+    Node<span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token operator">*</span>p <span class="token operator">=</span> front<span class="token operator">-></span>next<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> j<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token keyword">while</span><span class="token punctuation">(</span>i<span class="token operator">!=</span>j <span class="token operator">&amp;&amp;</span> p<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        p<span class="token operator">=</span>p<span class="token operator">-></span>next<span class="token punctuation">;</span>
+        <span class="token operator">++</span>j<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">return</span> p<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">class</span> <span class="token class-name">T</span><span class="token operator">></span>
+<span class="token keyword">int</span> <span class="token class-name">LinkList</span><span class="token operator">&lt;</span>T<span class="token operator">></span><span class="token operator">::</span><span class="token function">Locate</span><span class="token punctuation">(</span>T x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 返回节点值为 x 的元素位置 </span>
+    Node<span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token operator">*</span>p <span class="token operator">=</span> front<span class="token operator">-></span>next<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> j <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token keyword">while</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>p<span class="token operator">-></span>data <span class="token operator">==</span> x<span class="token punctuation">)</span>
+            <span class="token keyword">return</span> j<span class="token punctuation">;</span>
+        <span class="token operator">++</span>j<span class="token punctuation">;</span>
+        p <span class="token operator">=</span> p<span class="token operator">-></span>next<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">class</span> <span class="token class-name">T</span><span class="token operator">></span>
+<span class="token keyword">void</span> <span class="token class-name">LinkList</span><span class="token operator">&lt;</span>T<span class="token operator">></span><span class="token operator">::</span><span class="token function">Insert</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token punctuation">,</span> T x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 插入节点值为 x 到第 i 个位置 </span>
+    Node<span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token operator">*</span>p <span class="token operator">=</span> front<span class="token punctuation">;</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span>i<span class="token operator">></span><span class="token number">1</span><span class="token punctuation">)</span>  p <span class="token operator">=</span> <span class="token function">Get</span><span class="token punctuation">(</span>i <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Node<span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token operator">*</span>s <span class="token operator">=</span> <span class="token keyword">new</span> Node<span class="token operator">&lt;</span>T<span class="token operator">></span><span class="token punctuation">;</span>
+    s<span class="token operator">-></span>data <span class="token operator">=</span> x<span class="token punctuation">;</span>
+    s<span class="token operator">-></span>next <span class="token operator">=</span> p<span class="token operator">-></span>next<span class="token punctuation">;</span>
+    p<span class="token operator">-></span>next <span class="token operator">=</span> s<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">class</span> <span class="token class-name">T</span><span class="token operator">></span>
+T <span class="token class-name">LinkList</span><span class="token operator">&lt;</span>T<span class="token operator">></span><span class="token operator">::</span><span class="token function">Delete</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 删除第 i 个节点 </span>
+    Node<span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token operator">*</span>p <span class="token operator">=</span> front<span class="token punctuation">;</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span>i<span class="token operator">></span><span class="token number">1</span><span class="token punctuation">)</span>  p <span class="token operator">=</span> <span class="token function">Get</span><span class="token punctuation">(</span>i <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Node<span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token operator">*</span>q <span class="token operator">=</span> p<span class="token operator">-></span>next<span class="token punctuation">;</span>
+    T x <span class="token operator">=</span> q<span class="token operator">-></span>data<span class="token punctuation">;</span>
+    p<span class="token operator">-></span>next <span class="token operator">=</span> q<span class="token operator">-></span>next<span class="token punctuation">;</span>
+    <span class="token keyword">delete</span> q<span class="token punctuation">;</span>
+    <span class="token keyword">return</span> x<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+ 
+<span class="token keyword">class</span> <span class="token class-name">Complex</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 复数类，演示复合数据类型 </span>
+    <span class="token keyword">public</span><span class="token operator">:</span>
+        <span class="token function">Complex</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            a <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+            b <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token function">Complex</span><span class="token punctuation">(</span><span class="token keyword">double</span> a<span class="token punctuation">,</span> <span class="token keyword">double</span> b<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">bool</span> <span class="token keyword">operator</span> <span class="token operator">==</span> <span class="token punctuation">(</span><span class="token keyword">const</span> Complex <span class="token operator">&amp;</span>C<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 重载 == 操作符 </span>
+        <span class="token keyword">friend</span> ostream<span class="token operator">&amp;</span> <span class="token keyword">operator</span> <span class="token operator">&lt;&lt;</span> <span class="token punctuation">(</span>ostream <span class="token operator">&amp;</span>os<span class="token punctuation">,</span> <span class="token keyword">const</span> Complex <span class="token operator">&amp;</span>C<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 重载 &lt;&lt; 操作符 </span>
+    <span class="token keyword">private</span><span class="token operator">:</span>
+        <span class="token keyword">double</span> a<span class="token punctuation">,</span>b<span class="token punctuation">;</span> 
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token class-name">Complex</span><span class="token operator">::</span><span class="token function">Complex</span><span class="token punctuation">(</span><span class="token keyword">double</span> a<span class="token punctuation">,</span> <span class="token keyword">double</span> b<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">this</span><span class="token operator">-></span>a <span class="token operator">=</span> a<span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token operator">-></span>b <span class="token operator">=</span> b<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">inline</span> <span class="token keyword">bool</span> Complex<span class="token operator">::</span><span class="token keyword">operator</span> <span class="token operator">==</span> <span class="token punctuation">(</span><span class="token keyword">const</span> Complex <span class="token operator">&amp;</span>C<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> a <span class="token operator">==</span> C<span class="token punctuation">.</span>a <span class="token operator">&amp;&amp;</span> b <span class="token operator">==</span> C<span class="token punctuation">.</span>b<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+ostream<span class="token operator">&amp;</span> <span class="token keyword">operator</span> <span class="token operator">&lt;&lt;</span> <span class="token punctuation">(</span>ostream <span class="token operator">&amp;</span>os<span class="token punctuation">,</span> <span class="token keyword">const</span> Complex <span class="token operator">&amp;</span>C<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            os <span class="token operator">&lt;&lt;</span> C<span class="token punctuation">.</span>a <span class="token operator">&lt;&lt;</span> <span class="token string">"+"</span> <span class="token operator">&lt;&lt;</span> C<span class="token punctuation">.</span>b <span class="token operator">&lt;&lt;</span> <span class="token string">"i"</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> os<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+ 
+ 
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">/*
+    int a[]=&#123;
+        1, 2, 3, 4, 5, 6, 7, 8, 9
+    &#125;;
+    LinkList&lt;int> list(a, sizeof(a)/sizeof(int));
+    cout &lt;&lt; "链表值：";
+    list.PrintList();
+    cout &lt;&lt; "链表长度：" &lt;&lt; list.GetLength() &lt;&lt; endl;
+    cout &lt;&lt; "删除第 5 个元素：" &lt;&lt; list.Delete(5) &lt;&lt; endl;
+    cout &lt;&lt; "链表值：";
+    list.PrintList();
+    cout &lt;&lt; "第 3 个元素的地址是：" &lt;&lt; list.Get(3) &lt;&lt; endl;
+    cout &lt;&lt; "元素 8 在：" &lt;&lt; list.Locate(8) &lt;&lt; endl;
+    cout &lt;&lt; "插入 11 到第 4 个元素" &lt;&lt; endl; 
+    list.Insert(4, 11);
+    cout &lt;&lt; "链表值：";
+    list.PrintList();
+    cout &lt;&lt; "链表长度：" &lt;&lt; list.GetLength() &lt;&lt; endl;
+    */</span>
+ 
+    <span class="token comment">// 测试复合数据类型作为链表的节点值 </span>
+    Complex c<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+        <span class="token function">Complex</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">Complex</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">Complex</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">Complex</span><span class="token punctuation">(</span><span class="token number">7</span><span class="token punctuation">,</span><span class="token number">8</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">Complex</span><span class="token punctuation">(</span><span class="token number">9</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+    LinkList<span class="token operator">&lt;</span>Complex<span class="token operator">></span> <span class="token function">list_c</span><span class="token punctuation">(</span>c<span class="token punctuation">,</span> <span class="token keyword">sizeof</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token operator">/</span><span class="token keyword">sizeof</span><span class="token punctuation">(</span>Complex<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    cout <span class="token operator">&lt;&lt;</span> <span class="token string">"链表值："</span><span class="token punctuation">;</span>
+    list_c<span class="token punctuation">.</span><span class="token function">PrintList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    cout <span class="token operator">&lt;&lt;</span> <span class="token string">"链表长度："</span> <span class="token operator">&lt;&lt;</span> list_c<span class="token punctuation">.</span><span class="token function">GetLength</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+    cout <span class="token operator">&lt;&lt;</span> <span class="token string">"删除第 3 个元素："</span> <span class="token operator">&lt;&lt;</span> list_c<span class="token punctuation">.</span><span class="token function">Delete</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+    cout <span class="token operator">&lt;&lt;</span> <span class="token string">"链表值："</span><span class="token punctuation">;</span>
+    list_c<span class="token punctuation">.</span><span class="token function">PrintList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    cout <span class="token operator">&lt;&lt;</span> <span class="token string">"第 3 个元素的地址是："</span> <span class="token operator">&lt;&lt;</span> list_c<span class="token punctuation">.</span><span class="token function">Get</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+    cout <span class="token operator">&lt;&lt;</span> <span class="token string">"元素 7+8i 在："</span> <span class="token operator">&lt;&lt;</span> list_c<span class="token punctuation">.</span><span class="token function">Locate</span><span class="token punctuation">(</span><span class="token function">Complex</span><span class="token punctuation">(</span><span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+    cout <span class="token operator">&lt;&lt;</span> <span class="token string">"插入 2+3i 到第 4 个元素"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span> 
+    list_c<span class="token punctuation">.</span><span class="token function">Insert</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token function">Complex</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    cout <span class="token operator">&lt;&lt;</span> <span class="token string">"链表值："</span><span class="token punctuation">;</span>
+    list_c<span class="token punctuation">.</span><span class="token function">PrintList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    cout <span class="token operator">&lt;&lt;</span> <span class="token string">"链表长度："</span> <span class="token operator">&lt;&lt;</span> list_c<span class="token punctuation">.</span><span class="token function">GetLength</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+     
+    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre>
+<p> 运行结果：</p>
+<pre><code>C:\Windows\SysWOW64\cmd.exe /c (LinkList)
+链表值：1+2i 3+4i 5+6i 7+8i 9+10i
+链表长度：5
+删除第 3 个元素：5+6i
+链表值：1+2i 3+4i 7+8i 9+10i
+第 3 个元素的地址是：0x4f2dd8
+元素 7+8i 在：3
+插入 2+3i 到第 4 个元素
+链表值：1+2i 3+4i 7+8i 2+3i 9+10i
+链表长度：5
+</code></pre>
+
+    
+  </div>
+
+</article>
+
+
+   
+       <div class="original">
+    <ul>
+        <li>本文标题：线性表的顺序储存与链式储存</li>
+        <li>本文字数：2.3k</li>
+        <li>本文作者：Netcan</li>
+        <li>发布时间：2015年04月12日 - 17时56分</li>
+        <li>最后更新：2015年04月12日 - 17时56分</li>
+        <li>原始链接：<a href="https://netcan.github.io/2015/04/12/%E7%BA%BF%E6%80%A7%E8%A1%A8%E7%9A%84%E9%A1%BA%E5%BA%8F%E5%82%A8%E5%AD%98%E4%B8%8E%E9%93%BE%E5%BC%8F%E5%82%A8%E5%AD%98/">https://netcan.github.io/2015/04/12/线性表的顺序储存与链式储存/</a></li>
+        <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
+    </ul>
+</div>
+
+   
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持Netcan</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2015/04/09/%E8%AF%95%E7%9D%80%E7%94%A8yacc%E5%92%8Clex%E7%BC%96%E5%86%99%E4%B8%80%E4%B8%AA%E8%AE%A1%E7%AE%97%E5%99%A8/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2015/04/23/STL%E6%A8%A1%E6%9D%BF%E7%B1%BBvector%E4%B8%8Elist/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '893a4103795fc66cd8e7',
+  clientSecret: '35c92c3dca938831b67dc22e46d64bc9073ebacf',
+  repo: 'netcan.github.io',
+  owner: 'Netcan',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: md5(location.pathname),
+  admin: ['Netcan'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

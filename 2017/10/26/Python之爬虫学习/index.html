@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>Python 之爬虫学习 | Netcan on Programming</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Python,爬虫," />
+  
+
+  <meta name="description" content="前言 最近想做一个关于爬虫的项目，就学了一下 Python 爬虫方面的，把《Python Web Scraping 2nd》这本书看完了，内容比较浅，能够了解实现一个爬虫需要涉及哪些方面。以下是整理的思维导图：  书上采用爬取自建网站 http:&#x2F;&#x2F;example.webscraping.com&#x2F; 的形式来介绍，要是以真实网站作为爬取对象的话，很有可能因为网站更新，导致书上内容失效，所以这样可以将">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python 之爬虫学习">
+<meta property="og:url" content="https://netcan.github.io/2017/10/26/Python%E4%B9%8B%E7%88%AC%E8%99%AB%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="Netcan on Programming">
+<meta property="og:description" content="前言 最近想做一个关于爬虫的项目，就学了一下 Python 爬虫方面的，把《Python Web Scraping 2nd》这本书看完了，内容比较浅，能够了解实现一个爬虫需要涉及哪些方面。以下是整理的思维导图：  书上采用爬取自建网站 http:&#x2F;&#x2F;example.webscraping.com&#x2F; 的形式来介绍，要是以真实网站作为爬取对象的话，很有可能因为网站更新，导致书上内容失效，所以这样可以将">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://netcan.github.io/2017/10/26/Python%E4%B9%8B%E7%88%AC%E8%99%AB%E5%AD%A6%E4%B9%A0/Python_Web_Scraping.png">
+<meta property="article:published_time" content="2017-10-26T11:31:41.000Z">
+<meta property="article:modified_time" content="2022-12-09T11:02:08.584Z">
+<meta property="article:author" content="Netcan">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="爬虫">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://netcan.github.io/2017/10/26/Python%E4%B9%8B%E7%88%AC%E8%99%AB%E5%AD%A6%E4%B9%A0/Python_Web_Scraping.png">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/site.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-174901164-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d2c292719a76d8c0fa7f9874379cfd25";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"] > svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body>
+
+
+  
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+  
+
+  <link rel="stylesheet" href="/css/prism.css">
+
+<div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">ROOT</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%8C%E6%99%AF%E8%B0%83%E6%9F%A5"><span class="toc-text">背景调查</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%88%AC%E5%8F%96%E7%BD%91%E7%AB%99"><span class="toc-text">爬取网站</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sitemap-xml%20%E6%96%B9%E6%B3%95"><span class="toc-text">sitemap.xml 方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%81%8D%E5%8E%86%E6%96%B9%E6%B3%95"><span class="toc-text">遍历方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%90%E5%8F%96%E6%95%B0%E6%8D%AE"><span class="toc-text">提取数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%93%E5%AD%98%E4%B8%8B%E8%BD%BD%E5%86%85%E5%AE%B9"><span class="toc-text">缓存下载内容</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B9%B6%E5%8F%91%E5%A4%84%E7%90%86"><span class="toc-text">并发处理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B"><span class="toc-text">多线程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E8%BF%9B%E7%A8%8B"><span class="toc-text">多进程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E5%86%85%E5%AE%B9%E5%A4%84%E7%90%86"><span class="toc-text">动态内容处理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Javascript%20%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B"><span class="toc-text">Javascript 逆向工程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B8%B2%E6%9F%93%20Javascript"><span class="toc-text">渲染 Javascript</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A1%A8%E5%8D%95%E4%BA%A4%E4%BA%92"><span class="toc-text">表单交互</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E9%AA%8C%E8%AF%81%E7%A0%81"><span class="toc-text">解决验证码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%88%AC%E8%99%AB%E6%A1%86%E6%9E%B6"><span class="toc-text">爬虫框架</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-Python之爬虫学习" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">Python 之爬虫学习</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2017.10.26</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Netcan</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h2 id="前言">前言</h2>
+<p>最近想做一个关于爬虫的项目，就学了一下 Python 爬虫方面的，把《Python Web Scraping 2nd》这本书看完了，内容比较浅，能够了解实现一个爬虫需要涉及哪些方面。以下是整理的思维导图：</p>
+<p><img src="Python_Web_Scraping.png" alt="Python_Web_Scraping.png"></p>
+<p>书上采用爬取自建网站 <a target="_blank" rel="noopener" href="http://example.webscraping.com/">http://example.webscraping.com/</a> 的形式来介绍，要是以真实网站作为爬取对象的话，很有可能因为网站更新，导致书上内容失效，所以这样可以将注意力集中在编写一个爬虫的流程。不过书上的 url 与她给的自建网站 url 还是有点出入的，需要注意，拿个最明显的例子，<code>sitemap.xml</code>，书上的位于 <a target="_blank" rel="noopener" href="http://example.webscraping.com/sitemap.xml">http://example.webscraping.com/sitemap.xml</a>，可实际上是<a target="_blank" rel="noopener" href="http://example.webscraping.com/places/default/sitemap.xml">http://example.webscraping.com/places/default/sitemap.xml</a>，也就是说书上的 url 都少了<code>/places/default/</code> 这部分。</p>
+<p>以下提到的网站，若没特别说明，都是指 <a target="_blank" rel="noopener" href="http://example.webscraping.com/">http://example.webscraping.com/</a> 这个网站，书上的代码地址<a target="_blank" rel="noopener" href="https://github.com/PacktPublishing/Python-Web-Scraping-Second-Edition">https://github.com/PacktPublishing/Python-Web-Scraping-Second-Edition</a></p>
+<p>书上提到了可以自己托管那个网站，跑到本地上，可是网站代码已经找不着了，然后我就看看这本书第一版提到的网站，也有代码，下到电脑上却跑不起来，就懒得折腾了，直接用在线的吧。</p>
+<p>爬取网站的时候，需要注意每次请求的时间间隔，若小于一秒，就会被临时 Blocked，还有可以注册登录网站，用来修改国家的信息，不过网站会每隔一小时恢复，所以怎么改都没关系。</p>
+<p>现在我就大概写写做一个爬虫需要哪些步骤吧。</p>
+<h2 id="背景调查">背景调查</h2>
+<p>首先是调查网站背景，比如网站主人、架构、规模等等。</p>
+<ul>
+<li>网站主人可以 <code>python-whois</code> 这个包进行查询</li>
+<li>架构（技术栈）可以用 <code>detectem</code>, <code>Wappalyzer</code> 等工具查询</li>
+<li>规模可以在 Google 用 site 关键字进行检索。</li>
+</ul>
+<p>然后需要关注的是 <code>sitemap.xml</code> 和<code>robots.txt</code>这两个特殊的文件，</p>
+<ul>
+<li><code>sitemap.xml</code>，顾名思义，网站地图，也就是网站各个页面的索引，不能太依赖这个，因为有可能会漏掉一些页面的</li>
+<li><code>robots.txt</code>，这个文件主要定义了一些规则，例如哪些页面不能被爬取，需要注意，违反可能会被 Blocked</li>
+</ul>
+<h2 id="爬取网站">爬取网站</h2>
+<h3 id="sitemap-xml 方法">sitemap.xml 方法</h3>
+<p>这个方法比较简单，提取 <code>sitemap.xml</code> 中的链接，然后依次下载 / 提取即可。</p>
+<h3 id="遍历方法">遍历方法</h3>
+<p>这里有两个名词，<em>scraping</em>和<em>crawling</em>，主要区别是前者针对具体的网站，而后者比较通用。</p>
+<p>进入网站主页，可以看到一堆国家名与国旗，然后下面有分页，所以可以采用宽度优先搜索的方法，就能对整个网站进行遍历了。</p>
+<ol>
+<li>准备一个队列</li>
+<li>将起始页 url（主页）入队</li>
+<li>从队头取出一个 url</li>
+<li>下载 url 的内容，提取内容中的 url，若 url 符合规则，且未爬过，则入队</li>
+<li>重复 2，直到队列为空</li>
+</ol>
+<p>这里我再补充一点，在同等的时间下，也可以采用深度优先搜索的方法，这样得到的信息比较深，而广度优先搜索得到的信息比较广 = =</p>
+<p>遍历的时候需要注意陷阱（例如无限爬取，可以设置一个深度，当达到这个深度就跳出，在网站中体现的就是最多爬取的页数了），再添加一个回调函数接口用于处理爬取的内容（用于收集数据）。</p>
+<h2 id="提取数据">提取数据</h2>
+<p>遍历的过程中，只下载的话没啥意义，那么需要提取页面中的数据，然后收集起来。</p>
+<p>每次下载页面的时候，将页面内容传给一个回调函数用于提取数据。</p>
+<p>提取有以下方法：</p>
+<ul>
+<li>lxml</li>
+<li>regex 表达式</li>
+<li>BeautifulSoup</li>
+</ul>
+<p>有以下关系：</p>
+<table>
+<thead>
+<tr>
+<th>速度</th>
+<th>难度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>lxml</td>
+<td>快</td>
+</tr>
+<tr>
+<td>regex 表达式</td>
+<td>快</td>
+</tr>
+<tr>
+<td>BeautifulSoup</td>
+<td>慢</td>
+</tr>
+</tbody>
+</table>
+<p>lxml 提取数据可以采用选择器的方法：</p>
+<ul>
+<li>css selector</li>
+<li>XPath</li>
+</ul>
+<p>据说 XPath 比较万能，能提取 css 选择器做不到的内容，但是比较复杂，而且 css 选择器语句内部也会转换成 XPath 语句。</p>
+<p>数据提取后，需要保存到磁盘上，比如选择保存到 csv 文件中，待今后使用。</p>
+<h2 id="缓存下载内容">缓存下载内容</h2>
+<p>缓冲下载的内容，这样当需要重新提取额外数据的时候就不用重新下载了。</p>
+<p>书上介绍了以下方法：</p>
+<ul>
+<li>HashMap（dict，内存中）</li>
+<li>磁盘文件中</li>
+<li>Redis</li>
+</ul>
+<p>简而言之，其实就是用一个 Key-Value 数据结构（KV 对象）来存储，下载内容的时候，先检查 KV 对象中是否有 url 这个 Key，有的话直接读取其 Value，没的话，下载好内容，将 url 作为 Key，内容作为 Value 进行存储即可。</p>
+<p>关于存储到磁盘文件中，定义一个 Dict-like 的类，实现 <code>__getitem__</code> 和<code>__setitem__</code>方法，分别用于从 url 文件中读取数据、写入数据到 url 文件。书上以 url 作为文件名进行保存，所以需要对字符进行特殊处理，也就是说需要关注文件系统对文件名的支持性，太麻烦了，我直接对 url 进行 hash 运算作为文件名进行保存。</p>
+<p>可以考虑压缩数据以节省空间。也可以保存时间戳，这样就可以实现每隔一段时间进行更新。</p>
+<p>最后一种方法就是利用 Redis 了，因为 Redis 是一种 KV 数据库，所以可以很容易地用上，编写一个 Dict-like 类进行封装就行了。</p>
+<p>如果用 requests 库进行请求的话，那么有一个包可以用到：<code>requests-cache</code>，它可以缓存 requests 库的请求（选择保存到 Redis），就不用自己实现缓存模块了。</p>
+<h2 id="并发处理">并发处理</h2>
+<p>并发处理，大大提高速度，需要注意的是，若对一个域名进行并发下载，很容易被封，建议同一个域名下载间隔至少 1s。</p>
+<p>关于并发处理，书上说的也很简陋，没有考虑到竞争机制，比如加锁来解决。不过提到一个 <code>Celery</code> 工具，可能很好的解决竞争问题。</p>
+<h3 id="多线程">多线程</h3>
+<p>因为线程间很好的共享变量，爬虫主要用到的就是待下载的 urls 队列了，线程间直接共享 urls 队列。</p>
+<p>一个线程从 urls 队列中不断取出一个 url 并下载，然后提取内容中的符合的 url 再入队，直到 urls 队列为空，这个过程和前面提到的 <a href="#%E9%81%8D%E5%8E%86%E6%96%B9%E6%B3%95"> 遍历方法 </a> 一致。</p>
+<p>再用一个线程队列来维护多个线程。</p>
+<h3 id="多进程">多进程</h3>
+<p>由于是多进程，也需要共享队列，那么这时候可以考虑采用 Redis 来保存 urls 队列，可以分布式运行。</p>
+<p>每个进程绑定（运行）在一个 cpu 上，一个进程又运行多个线程，大大提高了效率。</p>
+<h2 id="动态内容处理">动态内容处理</h2>
+<p>这主要是网站用 <code>AJAX</code> 这类技术进行数据渲染，提高用户友好性。</p>
+<p>虽然处理起来比静态页面要复杂的多，但是数据层与渲染层分离，反而更容易的 <strong> 提取 </strong> 数据。</p>
+<p>有以下方法：</p>
+<ul>
+<li>Javascript 逆向工程</li>
+<li>渲染 Javascript</li>
+</ul>
+<h3 id="Javascript 逆向工程">Javascript 逆向工程</h3>
+<p>利用 Chrome 的开发者工具，通过对网络请求进行观察，找到相关请求进行分析，难度较大，有时候 js 还是压缩混淆过了的。</p>
+<p>如果网站提供了开放接口，那么就比较轻松了，查阅相关文档来做。</p>
+<h3 id="渲染 Javascript">渲染 Javascript</h3>
+<p>这个方法简单粗暴，利用浏览器方式对 Javascript 渲染过后的 html 进行数据提取。</p>
+<p>有以下工具可以做到：</p>
+<ul>
+<li>QtWebKit</li>
+<li>Selenium</li>
+<li>PhantomJS</li>
+</ul>
+<p>QtWebKit 这个工具略繁琐，跳过。 而且书上介绍的是 Qt4，到 Qt5 已经没这个模块了。</p>
+<p>Selenium 可以对浏览器进行自动化操作（交互），直接可视化渲染结果，方便 max，调试起来也是很方便的。也正是因为运行的时候会弹出浏览器，不适合跑在服务器上，这时候 PhantomJS 派上用场了，配合 Selenium 使用。</p>
+<p>PhantomJS 是一款 headless browser，可以跑在服务器上。因为看不到浏览器窗口，可以用 save_screenshot()截取当前页面截图或者 page_source 查看源码来调试。</p>
+<p>采用浏览器方式可以很好的对抗反爬虫机制。</p>
+<h2 id="表单交互">表单交互</h2>
+<p>处理表单。需要注意 Cookies，还有 Session 的保持。</p>
+<p>需要注意陷阱（隐藏字段），很容易被反爬虫机制搞掉。</p>
+<p>若采用 Selenium 的话，等待响应的时候需要注意判定条件（比如判断跳转页面的特定元素）。</p>
+<h2 id="解决验证码">解决验证码</h2>
+<p>因为网站的验证码比较简单，验证码字体都是黑色的，直接提取黑色的内容，然后用 OCR 模块进行识别就行了，OCR 用的是 Pytesseract 这个库。</p>
+<p>其次是采用人工识别的方法，例如 <a target="_blank" rel="noopener" href="https://9kw.eu/">https://9kw.eu/</a> 这种网站。</p>
+<h2 id="爬虫框架">爬虫框架</h2>
+<p>关于框架，书上介绍了以下几种：</p>
+<ul>
+<li>Scrapy</li>
+<li>Portia</li>
+<li>Scrapely</li>
+</ul>
+<p>这本书提到的方法，Scrapy 这个框架几乎都能解决，速度还非常快。</p>
+<p>而 Portia 是一种可视化爬虫框架，建立在 Scrapy 框架之上，鼠标点点点就能爬取数据。安装比较麻烦，没装成功，就没尝试了。</p>
+<p>Scrapely 是 Portia 使用的库，给出 html 和其中待提取的数据，就可以训练出解析器模型，用于提取同样结构 (html) 的数据。</p>
+<h2 id="总结">总结</h2>
+<p>关于爬虫的技巧，就介绍这么多了，最后书上再利用这些技巧爬取一些主流网站，例如 Google 搜索页面、Facebook 等等。</p>
+
+    
+  </div>
+
+</article>
+
+
+   
+       <div class="original">
+    <ul>
+        <li>本文标题：Python 之爬虫学习</li>
+        <li>本文字数：2.5k</li>
+        <li>本文作者：Netcan</li>
+        <li>发布时间：2017年10月26日 - 19时31分</li>
+        <li>最后更新：2022年12月09日 - 19时02分</li>
+        <li>原始链接：<a href="https://netcan.github.io/2017/10/26/Python%E4%B9%8B%E7%88%AC%E8%99%AB%E5%AD%A6%E4%B9%A0/">https://netcan.github.io/2017/10/26/Python之爬虫学习/</a></li>
+        <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
+    </ul>
+</div>
+
+   
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持Netcan</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2017/10/24/%E8%BF%91%E6%9C%9F%E7%8A%B6%E5%86%B5/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2017/12/25/Python%E4%B9%8B%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '893a4103795fc66cd8e7',
+  clientSecret: '35c92c3dca938831b67dc22e46d64bc9073ebacf',
+  repo: 'netcan.github.io',
+  owner: 'Netcan',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: md5(location.pathname),
+  admin: ['Netcan'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

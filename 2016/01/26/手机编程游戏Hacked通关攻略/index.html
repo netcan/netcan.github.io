@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>手机编程游戏 Hacked 通关攻略 | Netcan on Programming</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="经验," />
+  
+
+  <meta name="description" content=".article img {width: 45%;}   介绍 最近玩通了手游Hacked，现在安利给大家。 该游戏Hacked，利用内置的 H 语言观察每关的输入输出样例推测算法并编写程序通过任务。游戏涉及素数回文串判定，进制转换，手排，栈，树，递归等算法。还能自定义编写游戏，绘图。。内置 robot 机器人可互动，例如走迷宫最短路问题。。游戏还能联网下载其他人的游戏，或者发布自己的游戏，可">
+<meta property="og:type" content="article">
+<meta property="og:title" content="手机编程游戏 Hacked 通关攻略">
+<meta property="og:url" content="https://netcan.github.io/2016/01/26/%E6%89%8B%E6%9C%BA%E7%BC%96%E7%A8%8B%E6%B8%B8%E6%88%8FHacked%E9%80%9A%E5%85%B3%E6%94%BB%E7%95%A5/index.html">
+<meta property="og:site_name" content="Netcan on Programming">
+<meta property="og:description" content=".article img {width: 45%;}   介绍 最近玩通了手游Hacked，现在安利给大家。 该游戏Hacked，利用内置的 H 语言观察每关的输入输出样例推测算法并编写程序通过任务。游戏涉及素数回文串判定，进制转换，手排，栈，树，递归等算法。还能自定义编写游戏，绘图。。内置 robot 机器人可互动，例如走迷宫最短路问题。。游戏还能联网下载其他人的游戏，或者发布自己的游戏，可">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://7xibui.com1.z0.glb.clouddn.com/%40%2F2016%2F01%2F2968096_orig.png">
+<meta property="og:image" content="http://7xibui.com1.z0.glb.clouddn.com/%40%2F2016%2F01%2F6702899_orig.png">
+<meta property="article:published_time" content="2016-01-26T06:25:49.000Z">
+<meta property="article:modified_time" content="2022-12-09T11:02:08.589Z">
+<meta property="article:author" content="Netcan">
+<meta property="article:tag" content="经验">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://7xibui.com1.z0.glb.clouddn.com/%40%2F2016%2F01%2F2968096_orig.png">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/site.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-174901164-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d2c292719a76d8c0fa7f9874379cfd25";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"] > svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body>
+
+
+  
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+  
+
+  <link rel="stylesheet" href="/css/prism.css">
+
+<div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">ROOT</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%94%BB%E7%95%A5"><span class="toc-text">攻略</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#The-Hackpad"><span class="toc-text">The Hackpad</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Increment-me"><span class="toc-text">Increment me</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Positive"><span class="toc-text">Positive</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Absolute"><span class="toc-text">Absolute</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Absolute-2"><span class="toc-text">Absolute 2</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#High-School-Hack"><span class="toc-text">High School Hack</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Power"><span class="toc-text">Power</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Power-2"><span class="toc-text">Power 2</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Length"><span class="toc-text">Length</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Push-it"><span class="toc-text">Push it</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Jailbreak"><span class="toc-text">Jailbreak</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Max"><span class="toc-text">Max</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Maxxxx"><span class="toc-text">Maxxxx</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#This-is-odd"><span class="toc-text">This is odd</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#A-man-a-plan-%E2%80%A6"><span class="toc-text">A man, a plan, …</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Cheatcode"><span class="toc-text">Cheatcode</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Bring-some-order"><span class="toc-text">Bring some order</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Missing-numbers"><span class="toc-text">Missing numbers</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Anagrams"><span class="toc-text">Anagrams</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Corrupted"><span class="toc-text">Corrupted</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#11010111010100%E2%80%A6"><span class="toc-text">11010111010100…</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Prime"><span class="toc-text">Prime</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Number-in-order"><span class="toc-text">Number in order</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Cyber-Attack"><span class="toc-text">Cyber Attack</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Complete"><span class="toc-text">Complete</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Match"><span class="toc-text">Match</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Rotate"><span class="toc-text">Rotate</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Nuclear-Plant"><span class="toc-text">Nuclear Plant</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Add-one"><span class="toc-text">Add one</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Positivity"><span class="toc-text">Positivity</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Nearest-to-0-0"><span class="toc-text">Nearest to [0, 0]</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Killer-Robot"><span class="toc-text">Killer Robot</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Addition"><span class="toc-text">Addition</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Match-2"><span class="toc-text">Match 2</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Skynet"><span class="toc-text">Skynet</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Three"><span class="toc-text">Three</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Retirement"><span class="toc-text">Retirement</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Draw"><span class="toc-text">Draw</span></a></li></ol></li></ol></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-手机编程游戏Hacked通关攻略" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">手机编程游戏 Hacked 通关攻略</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2016.01.26</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Netcan</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      
+<style type="text/css">
+.article img {width: 45%;}
+</style>
+
+<h2 id="介绍">介绍</h2>
+<p>最近玩通了手游<a target="_blank" rel="noopener" href="http://www.hackedapp.com">Hacked</a>，现在安利给大家。</p>
+<p>该游戏<a target="_blank" rel="noopener" href="http://www.hackedapp.com/">Hacked</a>，利用内置的 H 语言观察每关的输入输出样例推测算法并编写程序通过任务。游戏涉及素数回文串判定，进制转换，手排，栈，树，递归等算法。还能自定义编写游戏，绘图。。内置 robot 机器人可互动，例如走迷宫最短路问题。。游戏还能联网下载其他人的游戏，或者发布自己的游戏，可惜需要<code>Twitter</code>，正在注册，卡在手机验证一步。</p>
+<p>下面是截图（来自官方）：
+<img src="http://7xibui.com1.z0.glb.clouddn.com/%40%2F2016%2F01%2F2968096_orig.png" alt="Hacked"> <img src="http://7xibui.com1.z0.glb.clouddn.com/%40%2F2016%2F01%2F6702899_orig.png" alt="自定义游戏"></p>
+<p>下面是吐槽：</p>
+<ul>
+<li>自定义函数不支持外部全局变量</li>
+<li>逻辑操作符 <code>&amp;&amp;</code> 当第一个表达式为假的时候还会计算第二个表达式。。作者 <code>C</code> 语言不过关啊。。</li>
+<li>支持 <code>Lambda</code> 函数。。</li>
+</ul>
+<h2 id="攻略">攻略</h2>
+<h3 id="The-Hackpad">The Hackpad</h3>
+<h4 id="Increment-me">Increment me</h4>
+<p>根据输入可知，输出为输入<code>+1</code></p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp">input <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span></code></pre>
+<h4 id="Positive">Positive</h4>
+<p>判断输入是否为非负。</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp">input <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">;</span></code></pre>
+<h4 id="Absolute">Absolute</h4>
+<p>求出输入的绝对值。</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">if</span> input <span class="token operator">&lt;</span> <span class="token number">0</span> <span class="token punctuation">&#123;</span>
+	input <span class="token operator">=</span> <span class="token operator">-</span>input<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">return</span> input<span class="token punctuation">;</span></code></pre>
+<h4 id="Absolute-2">Absolute 2</h4>
+<p>和上一题一样，只是利用函数<code>abs</code>。</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token function">abs</span><span class="token punctuation">(</span>input<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<h3 id="High-School-Hack">High School Hack</h3>
+<h4 id="Power">Power</h4>
+<p>求出输入的平方值。</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">while</span> var_a <span class="token operator">&lt;</span> input <span class="token punctuation">&#123;</span>
+	var_b <span class="token operator">=</span> var_b <span class="token operator">+</span> input<span class="token punctuation">;</span>
+	var_a<span class="token operator">++</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">return</span> var_b<span class="token punctuation">;</span></code></pre>
+<h4 id="Power-2">Power 2</h4>
+<p>同上，只是利用函数。</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token function">pow</span><span class="token punctuation">(</span>input<span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<h4 id="Length">Length</h4>
+<p>求出输入的表长。</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp">foreach var_a in input <span class="token punctuation">&#123;</span>
+	var_b<span class="token operator">++</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">return</span> var_b<span class="token punctuation">;</span></code></pre>
+<h4 id="Push-it">Push it</h4>
+<p>根据输入，输出表<code>[0, 1, ..., input-1]</code></p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp">var_b <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token keyword">while</span> var_a <span class="token operator">&lt;</span> input <span class="token punctuation">&#123;</span>
+	var_b<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>var_a<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	var_a<span class="token operator">++</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">return</span> var_b<span class="token punctuation">;</span></code></pre>
+<h3 id="Jailbreak">Jailbreak</h3>
+<h4 id="Max">Max</h4>
+<p>求出输入的两个数的最大值。</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">if</span> input<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">></span> input<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token punctuation">&#123;</span>
+	<span class="token keyword">return</span> input<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+	<span class="token keyword">return</span> input<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre>
+<h4 id="Maxxxx">Maxxxx</h4>
+<p>求出输入的表的最大值。</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp">foreach var_a in input <span class="token punctuation">&#123;</span>
+	var_b <span class="token operator">=</span> <span class="token function">max</span><span class="token punctuation">(</span>var_a<span class="token punctuation">,</span> var_b<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre>
+<h4 id="This-is-odd">This is odd</h4>
+<p>判断是不是奇数，是奇数输出 1 否则输出 0。</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp">input <span class="token operator">-</span> input <span class="token operator">/</span> <span class="token number">2</span> <span class="token operator">*</span> <span class="token number">2</span><span class="token punctuation">;</span></code></pre>
+<h4 id="A-man-a-plan-…">A man, a plan, …</h4>
+<p>判断是不是回文串。</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">while</span> var_a <span class="token operator">&lt;</span> input<span class="token punctuation">.</span>length <span class="token punctuation">&#123;</span>
+	<span class="token keyword">if</span> input<span class="token punctuation">[</span>var_a<span class="token punctuation">]</span> <span class="token operator">!=</span> input<span class="token punctuation">[</span>input<span class="token punctuation">.</span>length <span class="token operator">-</span> <span class="token number">1</span> <span class="token operator">-</span> var_a<span class="token punctuation">]</span> <span class="token punctuation">&#123;</span>
+		<span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	var_a<span class="token operator">++</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span></code></pre>
+<h3 id="Cheatcode">Cheatcode</h3>
+<h4 id="Bring-some-order">Bring some order</h4>
+<p>将输入的字符串升序。</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">while</span> var_a <span class="token operator">&lt;</span> input<span class="token punctuation">.</span>length <span class="token punctuation">&#123;</span>
+	var_b <span class="token operator">=</span> var_a <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>
+	<span class="token keyword">while</span> var_b <span class="token operator">&lt;</span> input<span class="token punctuation">.</span>length <span class="token punctuation">&#123;</span>
+		<span class="token keyword">if</span> input<span class="token punctuation">[</span>var_a<span class="token punctuation">]</span> <span class="token operator">></span> input<span class="token punctuation">[</span>var_b<span class="token punctuation">]</span> <span class="token punctuation">&#123;</span>
+			var_c <span class="token operator">=</span> input<span class="token punctuation">[</span>var_a<span class="token punctuation">]</span><span class="token punctuation">;</span>
+			input<span class="token punctuation">[</span>var_a<span class="token punctuation">]</span> <span class="token operator">=</span> input<span class="token punctuation">[</span>var_b<span class="token punctuation">]</span><span class="token punctuation">;</span>
+			input<span class="token punctuation">[</span>var_b<span class="token punctuation">]</span> <span class="token operator">=</span> var_c<span class="token punctuation">;</span>
+		<span class="token punctuation">&#125;</span>
+		var_b<span class="token operator">++</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	var_a<span class="token operator">++</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">return</span> input<span class="token punctuation">;</span></code></pre>
+<h4 id="Missing-numbers">Missing numbers</h4>
+<p>将表中缺的数字找出来。</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp">input<span class="token punctuation">.</span>sort<span class="token punctuation">;</span>
+var_c <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token keyword">while</span> var_a <span class="token operator">&lt;</span> input<span class="token punctuation">[</span>input<span class="token punctuation">.</span>length <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token punctuation">&#123;</span>
+	<span class="token keyword">if</span> var_a <span class="token operator">&lt;</span> input<span class="token punctuation">[</span>var_b<span class="token punctuation">]</span> <span class="token punctuation">&#123;</span>
+		var_c<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>var_a<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+		var_b<span class="token operator">++</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	var_a<span class="token operator">++</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">return</span> var_c<span class="token punctuation">;</span></code></pre>
+<h4 id="Anagrams">Anagrams</h4>
+<p>判断表中的每组字符集是否互相相等。</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">while</span> var_a <span class="token operator">&lt;</span> input<span class="token punctuation">.</span>length <span class="token operator">-</span> <span class="token number">1</span> <span class="token punctuation">&#123;</span>
+	var_b <span class="token operator">=</span> input<span class="token punctuation">[</span>var_a<span class="token punctuation">]</span><span class="token punctuation">.</span>sort<span class="token punctuation">;</span>
+	var_c <span class="token operator">=</span> input<span class="token punctuation">[</span>var_a<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">.</span>sort<span class="token punctuation">;</span>
+	<span class="token keyword">if</span> var_b<span class="token punctuation">.</span>length <span class="token operator">!=</span> var_c<span class="token punctuation">.</span>length <span class="token punctuation">&#123;</span>
+		<span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token keyword">while</span> var_d <span class="token operator">&lt;</span> var_b<span class="token punctuation">.</span>length <span class="token punctuation">&#123;</span>
+		<span class="token keyword">if</span> var_b<span class="token punctuation">[</span>var_d<span class="token punctuation">]</span> <span class="token operator">!=</span> var_c<span class="token punctuation">[</span>var_d<span class="token punctuation">]</span> <span class="token punctuation">&#123;</span>
+			<span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+		<span class="token punctuation">&#125;</span>
+		var_d<span class="token operator">++</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	var_a<span class="token operator">++</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span></code></pre>
+<h3 id="Corrupted">Corrupted</h3>
+<h4 id="11010111010100…">11010111010100…</h4>
+<p>将二进制转换为十进制。</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp">foreach var_a in input <span class="token punctuation">&#123;</span>
+	var_b <span class="token operator">=</span> var_b<span class="token operator">*</span><span class="token number">2</span> <span class="token operator">+</span> var_a<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre>
+<h4 id="Prime">Prime</h4>
+<p>判断输入是否为素数。</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">if</span> input <span class="token operator">==</span> <span class="token number">1</span> <span class="token punctuation">&#123;</span>
+	<span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+var_a <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">;</span>
+<span class="token keyword">while</span> var_a <span class="token operator">*</span> var_a <span class="token operator">&lt;</span> input <span class="token operator">+</span> <span class="token number">1</span> <span class="token punctuation">&#123;</span>
+	<span class="token keyword">if</span> <span class="token function">mod</span><span class="token punctuation">(</span>input<span class="token punctuation">,</span> var_a<span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">0</span> <span class="token punctuation">&#123;</span>
+		<span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	var_a<span class="token operator">++</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span></code></pre>
+<h4 id="Number-in-order">Number in order</h4>
+<p>判断输入的字符串是否升序。</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">while</span> var_a <span class="token operator">&lt;</span> input<span class="token punctuation">.</span>length <span class="token operator">-</span> <span class="token number">1</span> <span class="token punctuation">&#123;</span>
+	<span class="token keyword">if</span> input<span class="token punctuation">[</span>var_a<span class="token punctuation">]</span> <span class="token operator">></span> input<span class="token punctuation">[</span>var_a<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token punctuation">&#123;</span>
+		<span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	var_a<span class="token operator">++</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span></code></pre>
+<h3 id="Cyber-Attack">Cyber Attack</h3>
+<h4 id="Complete">Complete</h4>
+<p>补齐输入表中缺的数字。</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp">var_b <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token keyword">while</span> var_a <span class="token operator">&lt;</span> input<span class="token punctuation">[</span>input<span class="token punctuation">.</span>length <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">+</span> <span class="token number">1</span> <span class="token punctuation">&#123;</span>
+	var_b<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>var_a<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	var_a<span class="token operator">++</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">return</span> var_b<span class="token punctuation">;</span></code></pre>
+<h4 id="Match">Match</h4>
+<p>感谢 <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/lu-peng-hao-95">@堂堂卢鹏浩</a> 的提醒，<code>())(</code>的情况我的代码就是错的了，现已更正如下：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp">foreach var_a in input <span class="token punctuation">&#123;</span>
+	<span class="token keyword">if</span> var_a <span class="token operator">==</span> <span class="token string">"("</span> <span class="token punctuation">&#123;</span>
+		var_b<span class="token operator">++</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+		var_b<span class="token operator">--</span><span class="token punctuation">;</span>
+		<span class="token keyword">if</span> var_b <span class="token operator">&lt;</span> <span class="token number">0</span> <span class="token punctuation">&#123;</span>
+			<span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+		<span class="token punctuation">&#125;</span>
+	<span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">return</span> var_b <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">;</span></code></pre>
+<p><s>判断输入的括号是否匹配。很奇怪为什么要判断第一个是否为<code>)</code>，按照我的算法不判断也能过啊。</s></p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">if</span> input<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token string">")"</span> <span class="token punctuation">&#123;</span>
+	<span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+foreach var_a in input <span class="token punctuation">&#123;</span>
+	<span class="token keyword">if</span> var_a <span class="token operator">==</span> <span class="token string">"("</span> <span class="token punctuation">&#123;</span>
+		var_b<span class="token operator">++</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+		var_b<span class="token operator">--</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">return</span> var_b <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">;</span></code></pre>
+<h4 id="Rotate">Rotate</h4>
+<p>将输入表的所有元素向左移动一位。</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp">var_b <span class="token operator">=</span> input<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token keyword">while</span> var_a <span class="token operator">&lt;</span> input<span class="token punctuation">.</span>length <span class="token operator">-</span> <span class="token number">1</span> <span class="token punctuation">&#123;</span>
+	input<span class="token punctuation">[</span>var_a<span class="token punctuation">]</span> <span class="token operator">=</span> input<span class="token punctuation">[</span>var_a <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+	var_a<span class="token operator">++</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+input<span class="token punctuation">[</span>input<span class="token punctuation">.</span>length <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> var_b<span class="token punctuation">;</span>
+<span class="token keyword">return</span> input<span class="token punctuation">;</span></code></pre>
+<h3 id="Nuclear-Plant">Nuclear Plant</h3>
+<h4 id="Add-one">Add one</h4>
+<p>将表中所有元素值<code>+1</code>。</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">while</span> var_a <span class="token operator">&lt;</span> input<span class="token punctuation">.</span>length <span class="token punctuation">&#123;</span>
+	input<span class="token punctuation">[</span>var_a<span class="token punctuation">]</span><span class="token operator">++</span><span class="token punctuation">;</span>
+	var_a<span class="token operator">++</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">return</span> input<span class="token punctuation">;</span></code></pre>
+<h4 id="Positivity">Positivity</h4>
+<p>将表中非负数化为<code>true</code>，负数为<code>false</code>。</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp">var_b <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+foreach var_a in input <span class="token punctuation">&#123;</span>
+	var_b<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>var_a <span class="token operator">></span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre>
+<h4 id="Nearest-to-0-0">Nearest to [0, 0]</h4>
+<p>求出表中坐标谁更接近原点<code>[0, 0]</code>。自定义函数上场了。。</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp">function f1<span class="token operator">:</span> var_a<span class="token punctuation">,</span> var_b <span class="token punctuation">&#123;</span>
+	<span class="token keyword">if</span> <span class="token function">pow</span><span class="token punctuation">(</span>var_a<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token function">pow</span><span class="token punctuation">(</span>var_a<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token operator">></span> <span class="token function">pow</span><span class="token punctuation">(</span>var_b<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token function">pow</span><span class="token punctuation">(</span>var_b<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token keyword">return</span> var_b<span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+		<span class="token keyword">return</span> var_a<span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">while</span> var_a <span class="token operator">&lt;</span> input<span class="token punctuation">.</span>length <span class="token operator">-</span> <span class="token number">1</span> <span class="token punctuation">&#123;</span>
+	var_b <span class="token operator">=</span> <span class="token function">f1</span><span class="token punctuation">(</span>input<span class="token punctuation">[</span>var_a<span class="token punctuation">]</span><span class="token punctuation">,</span> input<span class="token punctuation">[</span>var_a <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	var_a<span class="token operator">++</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">return</span> var_b<span class="token punctuation">;</span></code></pre>
+<h3 id="Killer-Robot">Killer Robot</h3>
+<h4 id="Addition">Addition</h4>
+<p>将表中的两组数化为十进制形式并相加得到的结果一位一位地拆成表。例：</p>
+<pre><code>[[1, 2], [1, 9]] =&gt; 12+19=31 =&gt; [3, 1]
+</code></pre>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp">function f1<span class="token operator">:</span> var_a <span class="token punctuation">&#123;</span>
+	foreach var_b in var_a <span class="token punctuation">&#123;</span>
+		var_c <span class="token operator">=</span> var_c <span class="token operator">*</span> <span class="token number">10</span> <span class="token operator">+</span> var_b<span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token keyword">return</span> var_c<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+var_a <span class="token operator">=</span> <span class="token function">f1</span><span class="token punctuation">(</span>input<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token function">f1</span><span class="token punctuation">(</span>input<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+var_b <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token keyword">while</span> var_a <span class="token operator">></span> <span class="token number">0</span> <span class="token punctuation">&#123;</span>
+	var_b<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token function">mod</span><span class="token punctuation">(</span>var_a<span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	var_a <span class="token operator">=</span> var_a <span class="token operator">/</span> <span class="token number">10</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+var_c <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token keyword">while</span> var_b<span class="token punctuation">.</span>length <span class="token operator">></span> <span class="token number">0</span> <span class="token punctuation">&#123;</span>
+	var_c<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>var_b<span class="token punctuation">.</span><span class="token function">pop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">return</span> var_c<span class="token punctuation">;</span></code></pre>
+<h4 id="Match-2">Match 2</h4>
+<p>也是括号匹配问题。。同样很奇怪为啥要判断第一个括号的值。</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp">var_b <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token keyword">if</span> input<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token string">")"</span> <span class="token operator">||</span> input<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token string">"]"</span> <span class="token punctuation">&#123;</span>
+	<span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+foreach var_a in input <span class="token punctuation">&#123;</span>
+	<span class="token keyword">if</span> var_a <span class="token operator">==</span> <span class="token string">"("</span> <span class="token operator">||</span> var_a <span class="token operator">==</span> <span class="token string">"["</span> <span class="token punctuation">&#123;</span>
+		var_b<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>var_a<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token keyword">if</span> var_a <span class="token operator">==</span> <span class="token string">")"</span> <span class="token punctuation">&#123;</span>
+		<span class="token keyword">if</span> var_b<span class="token punctuation">.</span><span class="token function">pop</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token string">"("</span> <span class="token punctuation">&#123;</span>
+			<span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+		<span class="token punctuation">&#125;</span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token keyword">if</span> var_a <span class="token operator">==</span> <span class="token string">"]"</span> <span class="token punctuation">&#123;</span>
+		<span class="token keyword">if</span> var_b<span class="token punctuation">.</span><span class="token function">pop</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token string">"["</span> <span class="token punctuation">&#123;</span>
+			<span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+		<span class="token punctuation">&#125;</span>
+	<span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">return</span> var_b<span class="token punctuation">.</span>length <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">;</span></code></pre>
+<h3 id="Skynet">Skynet</h3>
+<h4 id="Three">Three</h4>
+<p>将表中所有数字提取出来组成一张新表。递归应用。。</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp">var_b <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+function f1<span class="token operator">:</span> var_a<span class="token punctuation">,</span> var_b <span class="token punctuation">&#123;</span>
+	<span class="token keyword">if</span> var_a<span class="token punctuation">.</span><span class="token function">is_list</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		foreach var_c in var_a <span class="token punctuation">&#123;</span>
+			<span class="token function">f1</span><span class="token punctuation">(</span>var_c<span class="token punctuation">,</span> var_b<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token punctuation">&#125;</span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+		var_b<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>var_a<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token function">f1</span><span class="token punctuation">(</span>input<span class="token punctuation">,</span> var_b<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">return</span> var_b<span class="token punctuation">;</span></code></pre>
+<h3 id="Retirement">Retirement</h3>
+<h4 id="Draw">Draw</h4>
+<p>根据输入的坐标绘制点。</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token function">draw</span><span class="token punctuation">(</span>input<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> input<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    
+  </div>
+
+</article>
+
+
+   
+       <div class="original">
+    <ul>
+        <li>本文标题：手机编程游戏 Hacked 通关攻略</li>
+        <li>本文字数：1.3k</li>
+        <li>本文作者：Netcan</li>
+        <li>发布时间：2016年01月26日 - 14时25分</li>
+        <li>最后更新：2022年12月09日 - 19时02分</li>
+        <li>原始链接：<a href="https://netcan.github.io/2016/01/26/%E6%89%8B%E6%9C%BA%E7%BC%96%E7%A8%8B%E6%B8%B8%E6%88%8FHacked%E9%80%9A%E5%85%B3%E6%94%BB%E7%95%A5/">https://netcan.github.io/2016/01/26/手机编程游戏Hacked通关攻略/</a></li>
+        <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
+    </ul>
+</div>
+
+   
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持Netcan</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2016/01/02/%E9%9B%86%E5%90%88%E7%9A%84%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%93%8D%E4%BD%9C/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2016/02/04/%E6%95%B0%E5%AD%97%E7%94%B5%E8%B7%AF%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '893a4103795fc66cd8e7',
+  clientSecret: '35c92c3dca938831b67dc22e46d64bc9073ebacf',
+  repo: 'netcan.github.io',
+  owner: 'Netcan',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: md5(location.pathname),
+  admin: ['Netcan'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

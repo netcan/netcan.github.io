@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>PHP 日期和时间 | Netcan on Programming</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="PHP," />
+  
+
+  <meta name="description" content="系统时区设置 date_default_timezone_set()设置时区，例如 &lt;?php date_default_timezone_set(&quot;Asiz&#x2F;Hong_Kong&quot;); &#x2F;&#x2F; 香港时区 date_default_timezone_set(&quot;RPC&quot;); &#x2F;&#x2F; 北京时区 ?&gt;  日期和时间函数 time()函数返回当前时间戳 ech">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP 日期和时间">
+<meta property="og:url" content="https://netcan.github.io/2015/03/11/PHP%E6%97%A5%E6%9C%9F%E5%92%8C%E6%97%B6%E9%97%B4/index.html">
+<meta property="og:site_name" content="Netcan on Programming">
+<meta property="og:description" content="系统时区设置 date_default_timezone_set()设置时区，例如 &lt;?php date_default_timezone_set(&quot;Asiz&#x2F;Hong_Kong&quot;); &#x2F;&#x2F; 香港时区 date_default_timezone_set(&quot;RPC&quot;); &#x2F;&#x2F; 北京时区 ?&gt;  日期和时间函数 time()函数返回当前时间戳 ech">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2015-03-11T14:59:13.000Z">
+<meta property="article:modified_time" content="2015-03-11T14:59:13.000Z">
+<meta property="article:author" content="Netcan">
+<meta property="article:tag" content="PHP">
+<meta name="twitter:card" content="summary">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/site.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-174901164-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d2c292719a76d8c0fa7f9874379cfd25";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"] > svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body>
+
+
+  
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+  
+
+  <link rel="stylesheet" href="/css/prism.css">
+
+<div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">ROOT</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E6%97%B6%E5%8C%BA%E8%AE%BE%E7%BD%AE"><span class="toc-text">系统时区设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A5%E6%9C%9F%E5%92%8C%E6%97%B6%E9%97%B4%E5%87%BD%E6%95%B0"><span class="toc-text">日期和时间函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#time-%20%E5%87%BD%E6%95%B0%E8%BF%94%E5%9B%9E%E5%BD%93%E5%89%8D%E6%97%B6%E9%97%B4%E6%88%B3"><span class="toc-text">time()函数返回当前时间戳</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#date-%20%E5%87%BD%E6%95%B0%E8%BF%94%E5%9B%9E%E6%97%A5%E6%9C%9F%EF%BC%8Cdate-format-timestamp-%EF%BC%8C%E8%8B%A5%E6%97%A0%20timestamp%20%E5%8F%82%E6%95%B0%E5%88%99%E8%BF%94%E5%9B%9E%E5%BD%93%E5%89%8D%E6%97%A5%E6%9C%9F%E3%80%82"><span class="toc-text">date()函数返回日期，date(format, timestamp)，若无 timestamp 参数则返回当前日期。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#getdate-timestamp-%20%E8%BF%94%E5%9B%9E%E4%B8%80%E4%B8%AA%E5%8C%85%E5%90%AB%E6%97%A5%E6%9C%9F%E6%97%B6%E9%97%B4%E5%90%84%E4%B8%AA%E9%83%A8%E5%88%86%E7%9A%84%E6%95%B0%E7%BB%84%EF%BC%8C%E8%8B%A5%E6%97%A0%E5%8F%82%E6%95%B0%E5%88%99%E8%BF%94%E5%9B%9E%E5%BD%93%E5%89%8D%E6%97%B6%E9%97%B4%E6%97%A5%E6%9C%9F%E7%9A%84%E6%95%B0%E7%BB%84%E3%80%82"><span class="toc-text">getdate(timestamp) 返回一个包含日期时间各个部分的数组，若无参数则返回当前时间日期的数组。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#checkdate-month-day-year-%20%E6%A3%80%E9%AA%8C%E6%97%A5%E6%9C%9F%E7%9A%84%E6%9C%89%E6%95%88%E6%80%A7"><span class="toc-text">checkdate(month, day, year)检验日期的有效性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#strftime-format-timestamp-%20%E5%B0%86%E6%97%B6%E9%97%B4%E6%88%B3%E8%BD%AC%E5%8C%96%E4%B8%BA%E6%97%A5%E6%9C%9F%E5%92%8C%E6%97%B6%E9%97%B4%EF%BC%8C%E8%8B%A5%E6%97%A0%20timestamp%20%E5%8F%82%E6%95%B0%E5%88%99%E4%BB%A5%E5%BD%93%E5%89%8D%E7%9A%84%E6%97%B6%E9%97%B4%E6%88%B3%E4%B8%BA%E5%87%86"><span class="toc-text">strftime(format, timestamp)将时间戳转化为日期和时间，若无 timestamp 参数则以当前的时间戳为准</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#setlocale-constant-location-%20%E5%87%BD%E6%95%B0%E6%94%B9%E5%8F%98%20PHP%20%E6%9C%AC%E5%9C%B0%E5%8C%96%E9%BB%98%E8%AE%A4%E5%80%BC%EF%BC%8C"><span class="toc-text">setlocale(constant,location)函数改变 PHP 本地化默认值，</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#mktime-hours-minutes-seconds-month-day-year-%20%E8%BF%94%E5%9B%9E%E5%AF%B9%E5%BA%94%E7%9A%84%E6%97%B6%E9%97%B4%E6%88%B3"><span class="toc-text">mktime(hours, minutes, seconds, month, day, year)返回对应的时间戳</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#microtime-true-%20%E5%8F%AF%E8%BF%94%E5%9B%9E%E5%BE%AE%E7%A7%92%E7%BA%A7%E6%97%B6%E9%97%B4%E6%88%B3%E3%80%82"><span class="toc-text">microtime(true)可返回微秒级时间戳。</span></a></li></ol></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-PHP日期和时间" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">PHP 日期和时间</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2015.03.11</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Netcan</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h3 id="系统时区设置">系统时区设置</h3>
+<p><code>date_default_timezone_set()</code>设置时区，例如</p>
+<pre><code>&lt;?php
+date_default_timezone_set(&quot;Asiz/Hong_Kong&quot;); // 香港时区
+date_default_timezone_set(&quot;RPC&quot;); // 北京时区
+?&gt;
+</code></pre>
+<h3 id="日期和时间函数">日期和时间函数</h3>
+<h4 id="time- 函数返回当前时间戳"><code>time()</code>函数返回当前时间戳</h4>
+<pre><code>echo time(); // 输出当前时间戳
+</code></pre>
+<p>输出：</p>
+<pre><code>1426083407
+</code></pre>
+<h4 id="date- 函数返回日期，date-format-timestamp-，若无 timestamp 参数则返回当前日期。"><code>date()</code>函数返回日期，<code>date(format, timestamp)</code>，若无 <code>timestamp</code> 参数则返回当前日期。</h4>
+<p>format:
+a - “am” 或是 “pm”
+A - “AM” 或是 “PM”
+d - 几日，二位数字，若不足二位则前面补零; 如: “01” 至 “31”
+D - 星期几，三个英文字母; 如: “Fri”
+F - 月份，英文全名; 如: “January”
+h - 12 小时制的小时; 如: “01” 至 “12”<br>
+H - 24 小时制的小时; 如: “00” 至 “23”
+g - 12 小时制的小时，不足二位不补零; 如: “1” 至 12&quot;
+G - 24 小时制的小时，不足二位不补零; 如: “0” 至 “23”
+i - 分钟; 如: “00” 至 “59”
+j - 几日，二位数字，若不足二位不补零; 如: “1” 至 “31”
+l - 星期几，英文全名; 如: “Friday”
+m - 月份，二位数字，若不足二位则在前面补零; 如: “01” 至 “12”
+n - 月份，二位数字，若不足二位则不补零; 如: “1” 至 “12”
+M - 月份，三个英文字母; 如: “Jan”
+s - 秒; 如: “00” 至 “59”
+S - 字尾加英文序数，二个英文字母; 如: “th”，“nd”
+t - 指定月份的天数; 如: “28” 至 “31”
+U - 总秒数
+w - 数字型的星期几，如: “0” (星期日) 至 “6” (星期六)
+Y - 年，四位数字; 如: “1999”
+y - 年，二位数字; 如: “99”
+z - 一年中的第几天; 如: “0” 至 “365”</p>
+<pre><code>echo date(&quot;Y-m-d H:i:s&quot;, 1426083407); // 输出时间戳对应的日期
+echo &quot;&lt;br&gt;&quot;;
+echo date(&quot;Y-m-d H:i:s&quot;); // 输出当前日期
+</code></pre>
+<p>输出：</p>
+<pre><code>2015-03-11 22:16:47
+2015-03-11 22:26:26
+</code></pre>
+<h4 id="getdate-timestamp- 返回一个包含日期时间各个部分的数组，若无参数则返回当前时间日期的数组。"><code>getdate(timestamp)</code> 返回一个包含日期时间各个部分的数组，若无参数则返回当前时间日期的数组。</h4>
+<pre><code>$t = getdate();
+echo $t['year'] . &quot; 年 &quot; . $t['mon'] . &quot; 月 &quot; . $t['mday'] . &quot; 日 &quot;;
+echo $t['hours'] . &quot; 时 &quot; . $t['minutes'] . &quot; 分 &quot; . $t['seconds'] . &quot; 秒 &quot;;
+</code></pre>
+<p>输出：</p>
+<pre><code>2015 年 3 月 11 日 22 时 31 分 58 秒
+</code></pre>
+<h4 id="checkdate-month-day-year- 检验日期的有效性"><code>checkdate(month, day, year)</code>检验日期的有效性</h4>
+<pre><code>if(checkdate(2, 31, 2015))
+	echo &quot;2 月有 31 号 &quot;;
+else
+	echo &quot;2 月无 31 号 &quot;;
+</code></pre>
+<p>输出：</p>
+<pre><code>2 月无 31 号
+</code></pre>
+<h4 id="strftime-format-timestamp- 将时间戳转化为日期和时间，若无 timestamp 参数则以当前的时间戳为准"><code>strftime(format, timestamp)</code>将时间戳转化为日期和时间，若无 <code>timestamp</code> 参数则以当前的时间戳为准</h4>
+<p>format:
+%a - 当前区域星期几的简写
+%A - 当前区域星期几的全称
+%b - 当前区域月份的简写
+%B - 当前区域月份的全称
+%c - 当前区域首选的日期时间表达
+%C - 世纪值（年份除以 100 后取整，范围从 00 到 99）
+%d - 月份中的第几天，十进制数字（范围从 01 到 31）
+%D - 和 %m/%d/%y 一样
+%e - 月份中的第几天，十进制数字，一位的数字前会加上一个空格（范围从 ’ 1’ 到 ‘31’）
+%g - 和 %G 一样，但是没有世纪
+%G - 4 位数的年份，符合 ISO 星期数（参见 %V）。和 %V 的格式和值一样，只除了如果 ISO 星期数属于前一年或者后一年，则使用那一年。
+%h - 和 %b 一样
+%H - 24 小时制的十进制小时数（范围从 00 到 23）
+%I - 12 小时制的十进制小时数（范围从 00 到 12）
+%j - 年份中的第几天，十进制数（范围从 001 到 366）
+%m - 十进制月份（范围从 01 到 12）
+%M - 十进制分钟数
+%n - 换行符
+%p - 根据给定的时间值为 <code>am' 或 </code>pm’，或者当前区域设置中的相应字符串
+%r - 用 a.m. 和 p.m. 符号的时间
+%R - 24 小时符号的时间
+%S - 十进制秒数
+%t - 制表符
+%T - 当前时间，和 %H:%M:%S 一样
+%u - 星期几的十进制数表达 [1,7]，1 表示星期一 Warning
+尽管 ISO 9889:1999（当前的 C 标准）明确指出一周从星期一开始，但是 Sun Solaris 的一周似乎从星期天开始并作为 1。
+%U - 本年的第几周，从第一周的第一个星期天作为第一天开始
+%V - 本年第几周的 ISO 8601:1988 格式，范围从 01 到 53，第 1 周是本年第一个至少还有 4 天的星期，星期一作为每周的第一天。（用 %G 或者 %g 作为指定时间戳相应周数的年份组成。）
+%W - 本年的第几周数，从第一周的第一个星期一作为第一天开始
+%w - 星期中的第几天，星期天为 0
+%x - 当前区域首选的时间表示法，不包括时间
+%X - 当前区域首选的时间表示法，不包括日期
+%y - 没有世纪数的十进制年份（范围从 00 到 99）
+%Y - 包括世纪数的十进制年份
+%Z 或 %z - 时区名或缩写
+%% - 文字上的 ‘%’ 字符</p>
+<pre><code>echo strftime(&quot;%Y-%b-%d %H:%M:%S&quot;, 1426083407);
+echo &quot;&lt;br&gt;&quot;;
+echo strftime(&quot;%Y-%b-%d %H:%M:%S&quot;);
+</code></pre>
+<p>输出：</p>
+<pre><code>2015-Mar-11 22:16:47
+2015-Mar-11 22:41:22
+</code></pre>
+<h4 id="setlocale-constant-location- 函数改变 PHP 本地化默认值，"><code>setlocale(constant,location)</code>函数改变 PHP 本地化默认值，</h4>
+<p>constant:
+LC_ALL - 包括下面的所有选项
+LC_COLLATE - 排序次序
+LC_CTYPE - 字符类别及转换（例如所有字符大写或小写）
+LC_MESSAGES - 系统消息格式
+LC_MONETARY - 货币格式
+LC_NUMERIC - 数字格式
+LC_TIME - 日期</p>
+<p>格式</p>
+<pre><code>echo setlocale(LC_TIME, &quot;zh_CN&quot;);
+echo strftime(&quot;%z&quot;);
+</code></pre>
+<p>输出：</p>
+<pre><code>中国标准时间
+</code></pre>
+<h4 id="mktime-hours-minutes-seconds-month-day-year- 返回对应的时间戳"><code>mktime(hours, minutes, seconds, month, day, year)</code>返回对应的时间戳</h4>
+<pre><code>echo mktime(22, 53, 20, 3, 11, 2015);
+</code></pre>
+<p>输出：</p>
+<pre><code>1426085600
+</code></pre>
+<h4 id="microtime-true- 可返回微秒级时间戳。"><code>microtime(true)</code>可返回微秒级时间戳。</h4>
+<pre><code>echo microtime(true);
+</code></pre>
+<p>输出：</p>
+<pre><code>1426085725.4697
+</code></pre>
+
+    
+  </div>
+
+</article>
+
+
+   
+       <div class="original">
+    <ul>
+        <li>本文标题：PHP 日期和时间</li>
+        <li>本文字数：1.4k</li>
+        <li>本文作者：Netcan</li>
+        <li>发布时间：2015年03月11日 - 22时59分</li>
+        <li>最后更新：2015年03月11日 - 22时59分</li>
+        <li>原始链接：<a href="https://netcan.github.io/2015/03/11/PHP%E6%97%A5%E6%9C%9F%E5%92%8C%E6%97%B6%E9%97%B4/">https://netcan.github.io/2015/03/11/PHP日期和时间/</a></li>
+        <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
+    </ul>
+</div>
+
+   
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持Netcan</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2015/03/11/PHP%E6%95%B0%E7%BB%84/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2015/03/15/PHP%E7%B1%BB%E4%B8%8E%E5%BC%82%E5%B8%B8/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '893a4103795fc66cd8e7',
+  clientSecret: '35c92c3dca938831b67dc22e46d64bc9073ebacf',
+  repo: 'netcan.github.io',
+  owner: 'Netcan',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: md5(location.pathname),
+  admin: ['Netcan'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

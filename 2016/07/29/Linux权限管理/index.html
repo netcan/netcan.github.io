@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>Linux 权限管理 | Netcan on Programming</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Linux," />
+  
+
+  <meta name="description" content="Linux 权限管理非常灵活，不像 windows 那一坨那么混乱。 现在来谈谈 Linux 下的权限管理吧。 vagrant@lucid32:&#x2F;tmp$ ls -l &#x2F;tmp&#x2F;vagrant-shell -(1)rwx(2)r-x(3)r-x(4) 1 vagrant(5) vagrant(6) 95 2016-07-29 04:49 &#x2F;tmp&#x2F;vagrant-shell 文件类型 首先来看第一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux 权限管理">
+<meta property="og:url" content="https://netcan.github.io/2016/07/29/Linux%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/index.html">
+<meta property="og:site_name" content="Netcan on Programming">
+<meta property="og:description" content="Linux 权限管理非常灵活，不像 windows 那一坨那么混乱。 现在来谈谈 Linux 下的权限管理吧。 vagrant@lucid32:&#x2F;tmp$ ls -l &#x2F;tmp&#x2F;vagrant-shell -(1)rwx(2)r-x(3)r-x(4) 1 vagrant(5) vagrant(6) 95 2016-07-29 04:49 &#x2F;tmp&#x2F;vagrant-shell 文件类型 首先来看第一">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2016-07-29T03:07:59.000Z">
+<meta property="article:modified_time" content="2022-12-09T11:02:08.583Z">
+<meta property="article:author" content="Netcan">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/site.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-174901164-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d2c292719a76d8c0fa7f9874379cfd25";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"] > svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body>
+
+
+  
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+  
+
+  <link rel="stylesheet" href="/css/prism.css">
+
+<div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">ROOT</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E7%B1%BB%E5%9E%8B"><span class="toc-text">文件类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90"><span class="toc-text">文件权限</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E5%BD%92%E5%B1%9E"><span class="toc-text">文件归属</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86"><span class="toc-text">权限管理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E6%9D%83%E9%99%90"><span class="toc-text">设置权限</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SUID%E3%80%81SGID%E3%80%81Sticky-bit"><span class="toc-text">SUID、SGID、Sticky bit</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9B%B4%E6%94%B9%E5%BD%92%E5%B1%9E%E7%94%A8%E6%88%B7%E3%80%81%E5%BD%92%E5%B1%9E%E7%BB%84"><span class="toc-text">更改归属用户、归属组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="toc-text">参考链接</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-Linux权限管理" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">Linux 权限管理</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2016.07.29</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Netcan</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p>Linux 权限管理非常灵活，不像 windows 那一坨那么混乱。</p>
+<p>现在来谈谈 Linux 下的权限管理吧。</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">vagrant@lucid32:/tmp$ <span class="token function">ls</span> -l /tmp/vagrant-shell
+-<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>rwx<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>r-x<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span>r-x<span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span> <span class="token number">1</span> vagrant<span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span> vagrant<span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">)</span> <span class="token number">95</span> <span class="token number">2016</span>-07-29 04:49 /tmp/vagrant-shell</code></pre>
+<h3 id="文件类型">文件类型</h3>
+<p>首先来看第一部分，第一部分 <code>-</code> 表示文件类型，有以下几种文件类型：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">符号</th>
+<th style="text-align:center">类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">-</td>
+<td style="text-align:center">普通文件</td>
+</tr>
+<tr>
+<td style="text-align:center">d</td>
+<td style="text-align:center">文件夹</td>
+</tr>
+<tr>
+<td style="text-align:center">l</td>
+<td style="text-align:center">符号链接</td>
+</tr>
+<tr>
+<td style="text-align:center">b</td>
+<td style="text-align:center">块设备文件</td>
+</tr>
+<tr>
+<td style="text-align:center">c</td>
+<td style="text-align:center">字符设备文件</td>
+</tr>
+<tr>
+<td style="text-align:center">s</td>
+<td style="text-align:center">套接文件</td>
+</tr>
+<tr>
+<td style="text-align:center">p</td>
+<td style="text-align:center">管道文件</td>
+</tr>
+</tbody>
+</table>
+<h3 id="文件权限">文件权限</h3>
+<p>剩下的 9 个字符分为 3 组：分别是 <strong> 归属用户 </strong>、<strong> 归属群组 </strong>、<strong> 其它用户 </strong> 对于该文件的权限。<code>-</code>表示没有相应权限。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">符号</th>
+<th style="text-align:center">权限</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">r</td>
+<td style="text-align:center">可读</td>
+</tr>
+<tr>
+<td style="text-align:center">w</td>
+<td style="text-align:center">可写</td>
+</tr>
+<tr>
+<td style="text-align:center">x</td>
+<td style="text-align:center">可执行</td>
+</tr>
+</tbody>
+</table>
+<h3 id="文件归属">文件归属</h3>
+<p>第 5、6 部分分别代表归属用户、归属群组，也就是 vagrant:vagrant。
+其他部分不在讨论范围内。。</p>
+<h3 id="权限管理">权限管理</h3>
+<p>重点来了，如果用户没有执行权限，那么他执行的时候会提示：</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">Permission denied</code></pre>
+<p>曾经的我多么幼稚，遇到这种情况就扔到 <code>vFAT</code> 分区执行 = =</p>
+<p>对于文件夹，必须拥有它的可执行权限，才能够使用 <code>cd</code> 命令进入该文件夹，我刚刚作死把 <code>/usr/bin</code> 的执行权限去掉了，和 <code>rm -rf /usr/bin</code> 效果雷同。。</p>
+<p>拥有可读权限，才能够使用 <code>ls</code> 命令查看该文件夹的文件列表。</p>
+<p>有了权限管理，就可以限制哪些人、哪些组能够访问文件了，而 <code>root</code> 拥有最高权限，可以无视一切 = =</p>
+<p>综上，应该对权限管理有个认识了，那么下面来说说怎么设置权限。</p>
+<p>可以用 3 位 <strong> 二进制 </strong> 来表示权限，拥有什么权限那一位就为 <code>1</code>，或者用一位<strong> 八进制 </strong> 来表示，如下</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">权限</th>
+<th style="text-align:center">r</th>
+<th style="text-align:center">w</th>
+<th style="text-align:center">x</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">二进制</td>
+<td style="text-align:center">100</td>
+<td style="text-align:center">010</td>
+<td style="text-align:center">001</td>
+</tr>
+<tr>
+<td style="text-align:center">八进制</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">1</td>
+</tr>
+</tbody>
+</table>
+<p>比如，<code>r-x</code>权限，可以表示成二进制的<code>101</code>，也可以表示成八进制的<code>5</code>。</p>
+<p>前面说到，一个文件的权限有 3 组，分别为：<strong>归属用户 </strong>、<strong> 归属组 </strong>、<strong> 其他用户 </strong> 对应的权限，虽然用 9 位二进制来表示比较直观，但是用 3 位八进制来表示比较方便。</p>
+<p>现在应该能明白常见的 <code>755</code> 权限了吧，其实就是：<code>rwxr-xr-x</code>权限。</p>
+<h3 id="设置权限">设置权限</h3>
+<p>设置权限用 <code>chmod</code> 命令，比如，我想要一个文件只有我能访问，其他人都不能访问，那么我可以这样：</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">vagrant@lucid32:/tmp$ <span class="token function">chmod</span> <span class="token number">700</span> vagrant-shell
+vagrant@lucid32:/tmp$ <span class="token function">ls</span> -l
+total <span class="token number">4</span>
+-rwx------ <span class="token number">1</span> vagrant vagrant <span class="token number">95</span> <span class="token number">2016</span>-07-29 04:49 vagrant-shell</code></pre>
+<p><code>chmod</code>还有几个常用的选项，如下</p>
+<ul>
+<li>a 所有用户  u 归属用户  g 归属群组  o 其它用户</li>
+<li>= 具有权限  + 增加权限  - 去除权限</li>
+<li>r 可读权限  w 可写权限  x 可执行权限</li>
+</ul>
+<p>那么上述的情况也可以这样写：</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">chmod</span> go-rwx vagrant-shell</code></pre>
+<p>以上表示归属组、其他用户去掉 <code>rwx</code> 权限。</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">chmod</span> a+rwx vagrant-shell</code></pre>
+<p>以上表示所有人都有 <code>rwx</code> 权限。</p>
+<h3 id="SUID、SGID、Sticky-bit">SUID、SGID、Sticky bit</h3>
+<p>某些情况下，需要以可执行文件归属用户的身份执行该文件，可以为该文件设置 <code>SUID</code>。同样，设置<code>SGID</code> 能够以该文件归属群组的身份执行它。</p>
+<p>例如：用户自行设定密码。出于安全方面的考虑，<code>/etc/shadow</code>只能由 <code>root</code> 用户直接修改。
+<code>-rw------- root root /etc/shadow</code></p>
+<p>这个时候，可以为程序 <code>/usr/bin/passwd</code> 设置 <code>SUID</code>，当普通用户执行<code>passwd</code> 命令时，便能够以该程序归属用户 <code>root</code> 的身份修改 <code>/etc/shadow</code> 文件。而 <code>passwd</code> 程序自身带有身份验证机制，不能通过验证时拒绝执行，从而保证了安全。</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">ls</span> -l /usr/bin/passwd
+-r-s--x--x root root /usr/bin/passwd    </code></pre>
+<p>我们发现，归属用户的可执行权限位使用<code>s</code>，表示<code>SUID</code>。同样，归属群组的可执行权限位使用<code>s</code>，表示<code>SGID</code>。任何用户或群组都拥有 “其它用户” 的权限，所以不需要以其它用户身份执行文件，其它用户的可执行权限位便不会出现<code>s</code>。该权限位可能出现的属性为<code>t</code> ，也就是粘着位<code>Sticky bit</code>。</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">ls</span> -ld /tmp
+drwxrwxrwt root root /tmp    </code></pre>
+<p>粘着位表示任何用户都可能具有写权限，但只有该归属用户或 <code>root</code> 用户才能够删除。</p>
+<p><code>SUID</code>、<code>SGID</code>、<code>Sticky bit</code>也可以像权限一样，使用一个八进制数表示，如下：</p>
+<ul>
+<li>4	SUID</li>
+<li>2	SGID</li>
+<li>1	Sticky bit</li>
+</ul>
+<p>通过在 <code>chmod</code> 命令中使用 4 个八进制数的表达式，如 <code>4755</code>，用第一位表示<code>SUID</code>、<code>SGID</code> 或<code>Sticky bit</code>，便能够为文件设置这些特殊权限。示例：</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">chmod</span> -R <span class="token number">4755</span> path</code></pre>
+<h3 id="更改归属用户、归属组">更改归属用户、归属组</h3>
+<p>更改归属用户、组可以用 <code>chown</code> 命令来实现，例如</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">vagrant@lucid32:/tmp$ <span class="token function">sudo</span> <span class="token function">chown</span> netcan:netcan vagrant-shell
+vagrant@lucid32:/tmp$ <span class="token function">ls</span> -l
+total <span class="token number">4</span>
+-rwxrwxrwx <span class="token number">1</span> netcan netcan <span class="token number">95</span> <span class="token number">2016</span>-07-29 04:49 vagrant-shell</code></pre>
+<h3 id="参考链接">参考链接</h3>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://i.linuxtoy.org/docs/guide/ch17s08.html">权限管理</a></li>
+</ul>
+
+    
+  </div>
+
+</article>
+
+
+   
+       <div class="original">
+    <ul>
+        <li>本文标题：Linux 权限管理</li>
+        <li>本文字数：1.3k</li>
+        <li>本文作者：Netcan</li>
+        <li>发布时间：2016年07月29日 - 11时07分</li>
+        <li>最后更新：2022年12月09日 - 19时02分</li>
+        <li>原始链接：<a href="https://netcan.github.io/2016/07/29/Linux%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/">https://netcan.github.io/2016/07/29/Linux权限管理/</a></li>
+        <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
+    </ul>
+</div>
+
+   
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持Netcan</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2016/07/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%98%AF%E5%A6%82%E4%BD%95%E5%90%AF%E5%8A%A8%E7%9A%84/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2016/08/17/Laravel%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B-%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84Ajax%E7%9A%84CRUD%E9%A1%B5%E9%9D%A2/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '893a4103795fc66cd8e7',
+  clientSecret: '35c92c3dca938831b67dc22e46d64bc9073ebacf',
+  repo: 'netcan.github.io',
+  owner: 'Netcan',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: md5(location.pathname),
+  admin: ['Netcan'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

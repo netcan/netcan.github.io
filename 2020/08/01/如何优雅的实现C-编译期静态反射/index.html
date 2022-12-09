@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>如何优雅的实现 C++ 编译期静态反射 | Netcan on Programming</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="C/C++,元编程," />
+  
+
+  <meta name="description" content="部门请来了软件专家袁英杰咨询师指导我们软件开发，从中我也学到了很多姿势，在此记录下来宝贵的经验。苹果的 mbp 品控真是差劲，写这个东西把 LShift 键 按坏了，真是难受。 反射能做什么 最近和大师聊软件设计，其中一个点是关于反射，反射最大的作用就是序列化、解序列化一个结构体，然后就能够在各个模块之间进行通信交互，不管是跨进程也好，还是跨机器也好，都缺不了反射这个功能，这也是 OO 世界对象交">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何优雅的实现 C++ 编译期静态反射">
+<meta property="og:url" content="https://netcan.github.io/2020/08/01/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E7%9A%84%E5%AE%9E%E7%8E%B0C-%E7%BC%96%E8%AF%91%E6%9C%9F%E9%9D%99%E6%80%81%E5%8F%8D%E5%B0%84/index.html">
+<meta property="og:site_name" content="Netcan on Programming">
+<meta property="og:description" content="部门请来了软件专家袁英杰咨询师指导我们软件开发，从中我也学到了很多姿势，在此记录下来宝贵的经验。苹果的 mbp 品控真是差劲，写这个东西把 LShift 键 按坏了，真是难受。 反射能做什么 最近和大师聊软件设计，其中一个点是关于反射，反射最大的作用就是序列化、解序列化一个结构体，然后就能够在各个模块之间进行通信交互，不管是跨进程也好，还是跨机器也好，都缺不了反射这个功能，这也是 OO 世界对象交">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-08-01T10:49:31.000Z">
+<meta property="article:modified_time" content="2022-12-09T11:02:08.588Z">
+<meta property="article:author" content="Netcan">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="元编程">
+<meta name="twitter:card" content="summary">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/site.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-174901164-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d2c292719a76d8c0fa7f9874379cfd25";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"] > svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body>
+
+
+  
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+  
+
+  <link rel="stylesheet" href="/css/prism.css">
+
+<div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">ROOT</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8D%E5%B0%84%E8%83%BD%E5%81%9A%E4%BB%80%E4%B9%88"><span class="toc-text">反射能做什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E5%AD%90"><span class="toc-text">引子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E6%B1%82%E5%AE%8F%E7%9A%84%E5%8F%AF%E5%8F%98%E5%8F%82%E6%95%B0%E4%B8%AA%E6%95%B0%EF%BC%9F"><span class="toc-text">如何求宏的可变参数个数？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E4%B8%80%E5%A5%97%E4%BC%98%E9%9B%85%E7%9A%84%E5%8F%8D%E5%B0%84%E7%B3%BB%E7%BB%9F"><span class="toc-text">实现一套优雅的反射系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%81%8D%E5%8E%86%E6%9F%A5%E8%AF%A2%E5%8F%8D%E5%B0%84%E4%BF%A1%E6%81%AF"><span class="toc-text">遍历查询反射信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8D%E5%B0%84%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%BA%94%E7%94%A8"><span class="toc-text">反射系统的应用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AE%BA%E3%80%81%E5%B1%95%E6%9C%9B%E6%9C%AA%E6%9D%A5"><span class="toc-text">结论、展望未来</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-如何优雅的实现C-编译期静态反射" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">如何优雅的实现 C++ 编译期静态反射</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2020.08.01</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Netcan</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p>部门请来了软件专家袁英杰咨询师指导我们软件开发，从中我也学到了很多姿势，在此记录下来宝贵的经验。苹果的 mbp 品控真是差劲，写这个东西把 <code>LShift 键</code> 按坏了，真是难受。</p>
+<h2 id="反射能做什么">反射能做什么</h2>
+<p>最近和大师聊软件设计，其中一个点是关于反射，反射最大的作用就是序列化、解序列化一个结构体，然后就能够在各个模块之间进行通信交互，不管是跨进程也好，还是跨机器也好，都缺不了反射这个功能，这也是 OO 世界对象交互的载体。</p>
+<p>不然就需要人工手写一堆序列化、反序列代码，不仅代码难看，而且工作量大，容易出错。印象最深的一个例子是，大师在一个电信项目，模块之间通过 TLV 格式的消息进行通信，而这些 TLV 格式也是内部实现的，还不是标准的，然后大师定义了一套机制，只需要统一声明一次元数据的信息，然后通过 <code>include</code> 不同头文件，就能对同一个元数据进行不同的解释，比如序列化、解序列到数据库，序列化、解序列到网络，这也是预编译多态技术，仅用 <code>C++98</code> 的特性就能做到。</p>
+<p>举一个直观一点的例子，比如打印一个结构体内容（其实就是把结构体转换成字符串）：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">struct</span> <span class="token class-name">Point</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">double</span> x<span class="token punctuation">;</span>
+    <span class="token keyword">double</span> y<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+Point p <span class="token punctuation">&#123;</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span> <span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
+<p>那么你可能会这样写：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Point x = %d y = %d"</span><span class="token punctuation">,</span> p<span class="token punctuation">.</span>x<span class="token punctuation">,</span> p<span class="token punctuation">.</span>y<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>如果有成千上百个结构体，对应的打印函数（序列化到字符串）也就成千上百个，如果利用反射手段，只需要写一次，就能给所有反射对象自动生成打印函数（转换）代码。</p>
+<h2 id="引子">引子</h2>
+<p>后来我在 C++ 社区看到一个讨论，说 <code>C++20</code> 在元编程方面提供了很多便利，其中最大的遍历就是 <code>if-constexpr</code>，再也不用模式匹配写一堆<code>enable_if</code> 了，然后题主给了一个例子，用 <code>C++20</code> 的模板元求结构体的字段数量，代码如下：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">struct</span> <span class="token class-name">AnyType</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">T</span><span class="token operator">></span>
+    <span class="token keyword">operator</span> <span class="token function">T</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+<span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">T</span><span class="token operator">></span>
+<span class="token keyword">consteval</span> size_t <span class="token function">CountMember</span><span class="token punctuation">(</span><span class="token keyword">auto</span><span class="token operator">&amp;&amp;</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> Args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token keyword">constexpr</span> <span class="token punctuation">(</span><span class="token operator">!</span> <span class="token keyword">requires</span> <span class="token punctuation">&#123;</span> T<span class="token punctuation">&#123;</span> Args<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">&#125;</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// (1)</span>
+        <span class="token keyword">return</span> <span class="token keyword">sizeof</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">(</span>Args<span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> CountMember<span class="token operator">&lt;</span>T<span class="token operator">></span><span class="token punctuation">(</span>Args<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> AnyType<span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// (2)</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">int</span> argc<span class="token punctuation">,</span> <span class="token keyword">char</span><span class="token operator">*</span><span class="token operator">*</span> argv<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">struct</span> <span class="token class-name">Test</span> <span class="token punctuation">&#123;</span> <span class="token keyword">int</span> a<span class="token punctuation">;</span> <span class="token keyword">int</span> b<span class="token punctuation">;</span> <span class="token keyword">int</span> c<span class="token punctuation">;</span> <span class="token keyword">int</span> d<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+    <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%zu\n"</span><span class="token punctuation">,</span> CountMember<span class="token operator">&lt;</span>Test<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre>
+<p>看到这坨代码，我愣了一会，然后问大师这个求结构体字段数量是怎么做到呢？C++ 目前最大缺陷是缺少静态反射能力（这里指的是语言层面提供的静态反射信息，<code>C++23</code>估计会落地），应该很难做到的，分析了一会，终于看懂了，太巧妙了：</p>
+<ul>
+<li><code>AnyType</code>声明了类型转换操作符（《C++ Modern design》书中的术语是稻草人函数），可以转换成任意类型</li>
+<li>分支 (2) 通过不断构造所求类型 <code>T = Test</code>，当无法构造时(1)，也就是输入的参数过多，这时候<code> 参数个数 - 1</code>就是字段个数。</li>
+</ul>
+<p>那么只能 <code>C++20</code> 才能做到么？这里主要用到了 <code>C++17</code> 的<code>if-constexpr</code>特性，<code>C++11</code>可以通过 <code>enable-if</code> 做到，而最主要的是那个 <code>requires</code>，<code>C++20</code> 才支持 <code>concept</code>，<code>C++17</code> 都无法做到。</p>
+<p>然后我思考了一下，类型构造，《C++ Modern design》这本书讲过，用 <code>sizeof</code> 做类型推导，给的一个例子是判断一个类是否是另一个类的基类，仅通过 <code>C++98</code> 实现。</p>
+<p>C++11 编译期有有两大神器：<code>sizeof</code> + <code>decltype</code>，然后用这两者就能实现同样的功能，这里我用 <code>decltype</code> 来解决上述的 <code>concept</code> 问题：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">T</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token operator">=</span> <span class="token keyword">void</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>Ts<span class="token operator">></span>
+<span class="token keyword">struct</span> <span class="token class-name">CountMember</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">constexpr</span> <span class="token keyword">static</span> size_t value <span class="token operator">=</span> <span class="token keyword">sizeof</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">(</span>Ts<span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+<span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">T</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>Ts<span class="token operator">></span>
+<span class="token keyword">struct</span> <span class="token class-name">CountMember</span><span class="token operator">&lt;</span>T<span class="token punctuation">,</span> std<span class="token operator">::</span>void_t<span class="token operator">&lt;</span><span class="token keyword">decltype</span><span class="token punctuation">(</span>T<span class="token punctuation">&#123;</span>Ts<span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token operator">></span><span class="token punctuation">,</span> Ts<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">constexpr</span> <span class="token keyword">static</span> size_t value <span class="token operator">=</span> CountMember<span class="token operator">&lt;</span>T<span class="token punctuation">,</span> <span class="token keyword">void</span><span class="token punctuation">,</span> Ts<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> AnyType<span class="token operator">></span><span class="token operator">::</span>value<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">int</span> argc<span class="token punctuation">,</span> <span class="token keyword">char</span><span class="token operator">*</span><span class="token operator">*</span> argv<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">struct</span> <span class="token class-name">Test</span> <span class="token punctuation">&#123;</span> <span class="token keyword">int</span> a<span class="token punctuation">;</span> <span class="token keyword">int</span> b<span class="token punctuation">;</span> <span class="token keyword">int</span> c<span class="token punctuation">;</span> <span class="token keyword">int</span> d<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+    <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%zu\n"</span><span class="token punctuation">,</span> CountMember<span class="token operator">&lt;</span>Test<span class="token operator">></span><span class="token operator">::</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre>
+<p>同样两种情况，用 <code>decltype(T&#123;Ts&#123;&#125;...&#125;)</code> 来判断是否能够构造对象 T。</p>
+<h2 id="如何求宏的可变参数个数？">如何求宏的可变参数个数？</h2>
+<p>其实这个问题价值不大，而且强依赖平凡构造函数，最大价值在后面的讨论，大师给我出了一道题，如何求宏的可变参数个数？虽然一时半会写不出来，但是之前还是看过一些框架代码的，最终实现方式如下：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token expression"><span class="token function">GET_NTH_ARG</span><span class="token punctuation">(</span>                                                                        </span><span class="token punctuation">\</span>
+    <span class="token expression">_1<span class="token punctuation">,</span>  _2<span class="token punctuation">,</span>  _3<span class="token punctuation">,</span>  _4<span class="token punctuation">,</span>  _5<span class="token punctuation">,</span>  _6<span class="token punctuation">,</span>  _7<span class="token punctuation">,</span>  _8<span class="token punctuation">,</span>  _9<span class="token punctuation">,</span>  _10<span class="token punctuation">,</span> _11<span class="token punctuation">,</span> _12<span class="token punctuation">,</span> _13<span class="token punctuation">,</span> _14<span class="token punctuation">,</span> _15<span class="token punctuation">,</span> _16<span class="token punctuation">,</span>         </span><span class="token punctuation">\</span>
+    <span class="token expression">_17<span class="token punctuation">,</span> _18<span class="token punctuation">,</span> _19<span class="token punctuation">,</span> _20<span class="token punctuation">,</span> _21<span class="token punctuation">,</span> _22<span class="token punctuation">,</span> _23<span class="token punctuation">,</span> _24<span class="token punctuation">,</span> _25<span class="token punctuation">,</span> _26<span class="token punctuation">,</span> _27<span class="token punctuation">,</span> _28<span class="token punctuation">,</span> _29<span class="token punctuation">,</span> _30<span class="token punctuation">,</span> _31<span class="token punctuation">,</span> _32<span class="token punctuation">,</span>         </span><span class="token punctuation">\</span>
+    <span class="token expression">_33<span class="token punctuation">,</span> _34<span class="token punctuation">,</span> _35<span class="token punctuation">,</span> _36<span class="token punctuation">,</span> _37<span class="token punctuation">,</span> _38<span class="token punctuation">,</span> _39<span class="token punctuation">,</span> _40<span class="token punctuation">,</span> _41<span class="token punctuation">,</span> _42<span class="token punctuation">,</span> _43<span class="token punctuation">,</span> _44<span class="token punctuation">,</span> _45<span class="token punctuation">,</span> _46<span class="token punctuation">,</span> _47<span class="token punctuation">,</span> _48<span class="token punctuation">,</span>         </span><span class="token punctuation">\</span>
+    <span class="token expression">_49<span class="token punctuation">,</span> _50<span class="token punctuation">,</span> _51<span class="token punctuation">,</span> _52<span class="token punctuation">,</span> _53<span class="token punctuation">,</span> _54<span class="token punctuation">,</span> _55<span class="token punctuation">,</span> _56<span class="token punctuation">,</span> _57<span class="token punctuation">,</span> _58<span class="token punctuation">,</span> _59<span class="token punctuation">,</span> _60<span class="token punctuation">,</span> _61<span class="token punctuation">,</span> _62<span class="token punctuation">,</span> _63<span class="token punctuation">,</span> _64<span class="token punctuation">,</span> n<span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> n</span></span>
+
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token expression"><span class="token function">GET_ARG_COUNT</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token function">GET_NTH_ARG</span><span class="token punctuation">(</span>__VA_ARGS__<span class="token punctuation">,</span>                     </span><span class="token punctuation">\</span>
+        <span class="token expression"><span class="token number">64</span><span class="token punctuation">,</span> <span class="token number">63</span><span class="token punctuation">,</span> <span class="token number">62</span><span class="token punctuation">,</span> <span class="token number">61</span><span class="token punctuation">,</span> <span class="token number">60</span><span class="token punctuation">,</span> <span class="token number">59</span><span class="token punctuation">,</span> <span class="token number">58</span><span class="token punctuation">,</span> <span class="token number">57</span><span class="token punctuation">,</span> <span class="token number">56</span><span class="token punctuation">,</span> <span class="token number">55</span><span class="token punctuation">,</span> <span class="token number">54</span><span class="token punctuation">,</span> <span class="token number">53</span><span class="token punctuation">,</span> <span class="token number">52</span><span class="token punctuation">,</span> <span class="token number">51</span><span class="token punctuation">,</span> <span class="token number">50</span><span class="token punctuation">,</span> <span class="token number">49</span><span class="token punctuation">,</span> </span><span class="token punctuation">\</span>
+        <span class="token expression"><span class="token number">48</span><span class="token punctuation">,</span> <span class="token number">47</span><span class="token punctuation">,</span> <span class="token number">46</span><span class="token punctuation">,</span> <span class="token number">45</span><span class="token punctuation">,</span> <span class="token number">44</span><span class="token punctuation">,</span> <span class="token number">43</span><span class="token punctuation">,</span> <span class="token number">42</span><span class="token punctuation">,</span> <span class="token number">41</span><span class="token punctuation">,</span> <span class="token number">40</span><span class="token punctuation">,</span> <span class="token number">39</span><span class="token punctuation">,</span> <span class="token number">38</span><span class="token punctuation">,</span> <span class="token number">37</span><span class="token punctuation">,</span> <span class="token number">36</span><span class="token punctuation">,</span> <span class="token number">35</span><span class="token punctuation">,</span> <span class="token number">34</span><span class="token punctuation">,</span> <span class="token number">33</span><span class="token punctuation">,</span> </span><span class="token punctuation">\</span>
+        <span class="token expression"><span class="token number">32</span><span class="token punctuation">,</span> <span class="token number">31</span><span class="token punctuation">,</span> <span class="token number">30</span><span class="token punctuation">,</span> <span class="token number">29</span><span class="token punctuation">,</span> <span class="token number">28</span><span class="token punctuation">,</span> <span class="token number">27</span><span class="token punctuation">,</span> <span class="token number">26</span><span class="token punctuation">,</span> <span class="token number">25</span><span class="token punctuation">,</span> <span class="token number">24</span><span class="token punctuation">,</span> <span class="token number">23</span><span class="token punctuation">,</span> <span class="token number">22</span><span class="token punctuation">,</span> <span class="token number">21</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">,</span> <span class="token number">19</span><span class="token punctuation">,</span> <span class="token number">18</span><span class="token punctuation">,</span> <span class="token number">17</span><span class="token punctuation">,</span> </span><span class="token punctuation">\</span>
+        <span class="token expression"><span class="token number">16</span><span class="token punctuation">,</span> <span class="token number">15</span><span class="token punctuation">,</span> <span class="token number">14</span><span class="token punctuation">,</span> <span class="token number">13</span><span class="token punctuation">,</span> <span class="token number">12</span><span class="token punctuation">,</span> <span class="token number">11</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">9</span><span class="token punctuation">,</span>  <span class="token number">8</span><span class="token punctuation">,</span>  <span class="token number">7</span><span class="token punctuation">,</span>  <span class="token number">6</span><span class="token punctuation">,</span>  <span class="token number">5</span><span class="token punctuation">,</span>  <span class="token number">4</span><span class="token punctuation">,</span>  <span class="token number">3</span><span class="token punctuation">,</span>  <span class="token number">2</span><span class="token punctuation">,</span>  <span class="token number">1</span><span class="token punctuation">)</span></span></span></code></pre>
+<p><code>GET_ARG_COUNT(a, b, c)</code>展开后，会调用<code>GET_NTH_ARG</code>，然后得到<code>GET_NTH_ARG(a, b, c, 64, 63, ..., 3, 2, 1) 3</code>，从而得到最终长度 3，进一步延伸，这个宏有什么作用呢？那就是对结构体进行反射，用宏提供结构体的元数据信息，从而生成一些类型信息代码。</p>
+<p>结合之前看到的那个框架，与大师进一步交流，发现新世界，解决多年来 cpp 静态反射问题，一下子让很多事变成了可能。（后来找到这个实现方法的最早出处：<a target="_blank" rel="noopener" href="http://pfultz2.com/blog/2012/07/31/reflection-in-under-100-lines/">http://pfultz2.com/blog/2012/07/31/reflection-in-under-100-lines/</a>）</p>
+<p>来看看大师 <code>actor</code> 框架中的反射例子：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token function">CAF_begin_message_def</span><span class="token punctuation">(</span>Point<span class="token punctuation">)</span>
+    <span class="token function">CAF_msg_field</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> <span class="token keyword">double</span><span class="token punctuation">)</span>
+    <span class="token function">CAF_msg_field</span><span class="token punctuation">(</span>y<span class="token punctuation">,</span> <span class="token keyword">double</span><span class="token punctuation">)</span>
+<span class="token function">CAF_end_message_def</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token function">CAF_begin_message_def</span><span class="token punctuation">(</span>Rect<span class="token punctuation">)</span>
+    <span class="token function">CAF_msg_field</span><span class="token punctuation">(</span>p1<span class="token punctuation">,</span> Point<span class="token punctuation">)</span>
+    <span class="token function">CAF_msg_field</span><span class="token punctuation">(</span>p2<span class="token punctuation">,</span> Point<span class="token punctuation">)</span>
+    <span class="token function">CAF_msg_field</span><span class="token punctuation">(</span>color<span class="token punctuation">,</span> <span class="token keyword">uint32_t</span><span class="token punctuation">)</span>
+<span class="token function">CAF_end_message_def</span><span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+<p>现在可以做到这样：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token function">DEFINE_STRUCT</span><span class="token punctuation">(</span>Point<span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token keyword">double</span><span class="token punctuation">)</span> x<span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token keyword">double</span><span class="token punctuation">)</span> y<span class="token punctuation">)</span>
+
+<span class="token function">DEFINE_STRUCT</span><span class="token punctuation">(</span>Rect<span class="token punctuation">,</span>
+    <span class="token punctuation">(</span>Point<span class="token punctuation">)</span> p1<span class="token punctuation">,</span>
+    <span class="token punctuation">(</span>Point<span class="token punctuation">)</span> p2<span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token keyword">uint32_t</span><span class="token punctuation">)</span> color<span class="token punctuation">)</span>
+
+Rect rect <span class="token punctuation">&#123;</span>
+    <span class="token punctuation">&#123;</span><span class="token number">1.2</span><span class="token punctuation">,</span> <span class="token number">3.4</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#123;</span><span class="token number">5.6</span><span class="token punctuation">,</span> <span class="token number">7.8</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token number">12345678</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token function">dumpObj</span><span class="token punctuation">(</span>rect<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">/* output:
+&#123;
+    p1: &#123;
+        x: 1.2,
+        y: 3.4,
+    &#125;,
+    p2: &#123;
+        x: 5.6,
+        y: 7.8,
+    &#125;,
+    color: 12345678,
+&#125;
+*/</span></code></pre>
+<p>后者和通常结构体定义方式非常接近，不需要再写 <code>begin/end</code> 原语了。完整的代码请见：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/netcan/recipes/blob/master/cpp/metaproggramming/reflection/StaticRefl.hpp">https://github.com/netcan/recipes/blob/master/cpp/metaproggramming/reflection/StaticRefl.hpp</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/netcan/recipes/blob/master/cpp/metaproggramming/reflection/StaticRefl.cpp">https://github.com/netcan/recipes/blob/master/cpp/metaproggramming/reflection/StaticRefl.cpp</a></li>
+</ul>
+<p>接下来我们一步步看看是如何实现这个的。</p>
+<h2 id="实现一套优雅的反射系统">实现一套优雅的反射系统</h2>
+<p>首先来看看 <code>Point</code> 这个用宏声明生成展开的代码，如下：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">struct</span> <span class="token class-name">Point</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span><span class="token punctuation">,</span> size_t<span class="token operator">></span>
+    <span class="token keyword">struct</span> <span class="token class-name">FIELD</span><span class="token punctuation">;</span>
+    <span class="token keyword">static</span> <span class="token keyword">constexpr</span> size_t _field_count_ <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">;</span>
+    <span class="token keyword">double</span> x<span class="token punctuation">;</span>
+    <span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">T</span><span class="token operator">></span>
+    <span class="token keyword">struct</span> <span class="token class-name">FIELD</span><span class="token operator">&lt;</span>T<span class="token punctuation">,</span> <span class="token number">0</span><span class="token operator">></span> <span class="token punctuation">&#123;</span>
+        T <span class="token operator">&amp;</span>obj<span class="token punctuation">;</span>
+        <span class="token function">FIELD</span><span class="token punctuation">(</span>T <span class="token operator">&amp;</span>obj<span class="token punctuation">)</span> <span class="token operator">:</span> <span class="token function">obj</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+        <span class="token keyword">auto</span> <span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-></span> <span class="token keyword">decltype</span><span class="token punctuation">(</span><span class="token keyword">auto</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> <span class="token punctuation">(</span>obj<span class="token punctuation">.</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+        <span class="token keyword">static</span> <span class="token keyword">constexpr</span> <span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span><span class="token function">name</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> <span class="token string">"x"</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+    <span class="token keyword">double</span> y<span class="token punctuation">;</span>
+    <span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">T</span><span class="token operator">></span>
+    <span class="token keyword">struct</span> <span class="token class-name">FIELD</span><span class="token operator">&lt;</span>T<span class="token punctuation">,</span> <span class="token number">0</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token operator">></span> <span class="token punctuation">&#123;</span>
+        T <span class="token operator">&amp;</span>obj<span class="token punctuation">;</span>
+        <span class="token function">FIELD</span><span class="token punctuation">(</span>T <span class="token operator">&amp;</span>obj<span class="token punctuation">)</span> <span class="token operator">:</span> <span class="token function">obj</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+        <span class="token keyword">auto</span> <span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-></span> <span class="token keyword">decltype</span><span class="token punctuation">(</span><span class="token keyword">auto</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> <span class="token punctuation">(</span>obj<span class="token punctuation">.</span>y<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+        <span class="token keyword">static</span> <span class="token keyword">constexpr</span> <span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span><span class="token function">name</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> <span class="token string">"y"</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
+<p><code>Point</code>所需要的元数据都保存在 <code>Point::FIELD&lt;T, N&gt;</code> 里，而所拥有的字段数在 <code>Point::_field_count_</code> 中，反射只需要这两个信息，就能够生成通用的序列化、反序列化代码。</p>
+<p>最核心的 <code>DEFINE_STRUCT</code> 宏定义如下：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token expression"><span class="token function">DEFINE_STRUCT</span><span class="token punctuation">(</span>st<span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span>                                                </span><span class="token punctuation">\</span>
+<span class="token expression"><span class="token keyword">struct</span> <span class="token class-name">st</span> <span class="token punctuation">&#123;</span>                                                                   </span><span class="token punctuation">\</span>
+    <span class="token expression"><span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">typename</span><span class="token punctuation">,</span> size_t<span class="token operator">></span> <span class="token keyword">struct</span> <span class="token class-name">FIELD</span><span class="token punctuation">;</span>                                 </span><span class="token punctuation">\</span>
+    <span class="token expression"><span class="token keyword">static</span> <span class="token keyword">constexpr</span> size_t _field_count_ <span class="token operator">=</span> <span class="token function">GET_ARG_COUNT</span><span class="token punctuation">(</span>__VA_ARGS__<span class="token punctuation">)</span><span class="token punctuation">;</span>       </span><span class="token punctuation">\</span>
+    <span class="token expression"><span class="token function">PASTE</span><span class="token punctuation">(</span>FOR_EACH_<span class="token punctuation">,</span> <span class="token function">GET_ARG_COUNT</span><span class="token punctuation">(</span>__VA_ARGS__<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>FIELD_EACH<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> __VA_ARGS__<span class="token punctuation">)</span> </span><span class="token punctuation">\</span>
+<span class="token expression"><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>                                                                            </span></span>\</code></pre>
+<p><code>_field_count</code>信息就是由之前提到的求宏变参个数获取的：<code>GET_ARG_COUNT</code>。</p>
+<p>接下来是 <code>FOR_EACH</code> 宏，作用是执行元宏 <code>FIELD_EACH</code> 一定次数（字段数量），而 <code>FIELD_EACH</code> 接收两个参数：</p>
+<ul>
+<li>当前字段<code>id</code>（用于生成<code>FIELD&lt;T, id&gt;</code>）</li>
+<li>当前字段声明信息，例如 <code>(double) x</code>（用于定义<code>double x</code>，并实现<code>FIELD&lt;T, id&gt;</code> 内容）</li>
+</ul>
+<p>先来看看 <code>FIELD_EACH</code> 的定义：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token expression"><span class="token function">FIELD_EACH</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> arg<span class="token punctuation">)</span>                    </span><span class="token punctuation">\</span>
+    <span class="token expression"><span class="token function">PAIR</span><span class="token punctuation">(</span>arg<span class="token punctuation">)</span><span class="token punctuation">;</span>                                </span><span class="token punctuation">\</span>
+    <span class="token expression"><span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">T</span><span class="token operator">></span>                     </span><span class="token punctuation">\</span>
+    <span class="token expression"><span class="token keyword">struct</span> <span class="token class-name">FIELD</span><span class="token operator">&lt;</span>T<span class="token punctuation">,</span> i<span class="token operator">></span> <span class="token punctuation">&#123;</span>                      </span><span class="token punctuation">\</span>
+        <span class="token expression">T<span class="token operator">&amp;</span> obj<span class="token punctuation">;</span>                               </span><span class="token punctuation">\</span>
+        <span class="token expression"><span class="token function">FIELD</span><span class="token punctuation">(</span>T<span class="token operator">&amp;</span> obj<span class="token punctuation">)</span><span class="token operator">:</span> <span class="token function">obj</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>            </span><span class="token punctuation">\</span>
+        <span class="token expression"><span class="token keyword">auto</span> <span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-></span> <span class="token keyword">decltype</span><span class="token punctuation">(</span><span class="token keyword">auto</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>      </span><span class="token punctuation">\</span>
+            <span class="token expression"><span class="token keyword">return</span> <span class="token punctuation">(</span>obj<span class="token punctuation">.</span><span class="token function">STRIP</span><span class="token punctuation">(</span>arg<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>          </span><span class="token punctuation">\</span>
+        <span class="token expression"><span class="token punctuation">&#125;</span>                                     </span><span class="token punctuation">\</span>
+        <span class="token expression"><span class="token keyword">static</span> <span class="token keyword">constexpr</span> <span class="token keyword">const</span> <span class="token keyword">char</span><span class="token operator">*</span> <span class="token function">name</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> </span><span class="token punctuation">\</span>
+            <span class="token expression"><span class="token keyword">return</span> <span class="token function">STRING</span><span class="token punctuation">(</span><span class="token function">STRIP</span><span class="token punctuation">(</span>arg<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>        </span><span class="token punctuation">\</span>
+        <span class="token expression"><span class="token punctuation">&#125;</span>                                     </span><span class="token punctuation">\</span>
+    <span class="token expression"><span class="token punctuation">&#125;</span>                                         </span></span>\</code></pre>
+<p><code>PAIR(arg)</code>这个宏比较有意思，定义如下：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token expression"><span class="token function">PAIR</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span> PARE x </span><span class="token comment">// PAIR((double) x) => PARE(double) x => double x</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token expression"><span class="token function">PARE</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> __VA_ARGS__</span></span></code></pre>
+<p>举个例子，<code>PAIR((double) x)</code>会展开成 <code>PARE(double) x</code>，因为<code>PARE(double)</code> 得到的是<code>double</code>，所以最终结果是<code>double x</code>，从而定义字段。</p>
+<p>另一个关键点是 <code>return (obj.STRIP(arg))</code>，看看<code>STRIP</code> 实现：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token expression"><span class="token function">STRIP</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span> EAT x </span><span class="token comment">// STRIP((double) x) => EAT(double) x => x</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token expression"><span class="token function">EAT</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span></span></span></code></pre>
+<p>同样的例子，<code>STRIP((double) x)</code>会展开成 <code>EAT(double) x</code>，而<code>EAT(double)</code> 得到空结果，所以最终结果是 <code>return (obj.x);</code>，这样就能通过<code>value()</code> 函数拿到成员字段的 <strong> 引用</strong>。</p>
+<p>而最后一个 <code>STRING(STRIP(arg))</code> 就比较简单了，通过 <code>STRING</code> 得到对应参数字符串，宏的基本用法了：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token expression"><span class="token function">STRING</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token function">STR</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token expression"><span class="token function">STR</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span> #x</span></span></code></pre>
+<p><code>PASTE(FOR_EACH_, GET_ARG_COUNT(__VA_ARGS__))</code>这句是为了拼出 <code>FOR_EACH_N</code>，<code>PASTE</code> 实现如下：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token expression"><span class="token function">PASTE</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span> <span class="token function">CONCATE</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token expression"><span class="token function">CONCATE</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span> x </span><span class="token punctuation">##</span> <span class="token expression">y</span></span></code></pre>
+<p>比如这个例子最终会展开成 <code>FOR_EACH_2(FIELD_EACH, 0, (double) x, (double) y)</code>，继续看看<code>FOR_EACH_2</code> 定义：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token expression"><span class="token function">FOR_EACH_1</span><span class="token punctuation">(</span>func<span class="token punctuation">,</span> i<span class="token punctuation">,</span> arg<span class="token punctuation">)</span>        <span class="token function">func</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> arg<span class="token punctuation">)</span><span class="token punctuation">;</span></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token expression"><span class="token function">FOR_EACH_2</span><span class="token punctuation">(</span>func<span class="token punctuation">,</span> i<span class="token punctuation">,</span> arg<span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span>   <span class="token function">func</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> arg<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token function">FOR_EACH_1</span><span class="token punctuation">(</span>func<span class="token punctuation">,</span> i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> __VA_ARGS__<span class="token punctuation">)</span></span></span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span></code></pre>
+<p>也很简单，直接看展开结果吧：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token function">FIELD_EACH</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token keyword">double</span><span class="token punctuation">)</span> x<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">FIELD_EACH</span><span class="token punctuation">(</span><span class="token number">0</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token keyword">double</span><span class="token punctuation">)</span> y<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>最后这一切，通过宏展开拼装在一起，从而得到所有元信息代码。</p>
+<h2 id="遍历查询反射信息">遍历查询反射信息</h2>
+<p>有了宏的一臂之力，接下来就是模板元编程发挥威力的地方了，首先我们需要定义一个高阶函数<code>forEach</code>，实现<em>Vistor 模式</em>，其接受两个参数：</p>
+<ul>
+<li>传递反射的对象<code>T&amp;&amp; obj</code></li>
+<li>一个函数<code>f</code>，对对象各个字段进行访问、操作，签名为<code>void(const char* fieldName, FieldT&amp; value)</code></li>
+</ul>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">T</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">F</span><span class="token punctuation">,</span> size_t<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> Is<span class="token operator">></span> <span class="token comment">// (1)</span>
+<span class="token keyword">inline</span> <span class="token keyword">constexpr</span> <span class="token keyword">void</span> <span class="token function">forEach</span><span class="token punctuation">(</span>T<span class="token operator">&amp;&amp;</span> obj<span class="token punctuation">,</span> F<span class="token operator">&amp;&amp;</span> f<span class="token punctuation">,</span> std<span class="token operator">::</span>index_sequence<span class="token operator">&lt;</span>Is<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">></span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">using</span> TDECAY <span class="token operator">=</span> std<span class="token operator">::</span>decay_t<span class="token operator">&lt;</span>T<span class="token operator">></span><span class="token punctuation">;</span>
+    <span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">(</span><span class="token function">f</span><span class="token punctuation">(</span><span class="token keyword">typename</span> <span class="token class-name">TDECAY</span><span class="token operator">::</span><span class="token keyword">template</span> FIELD<span class="token operator">&lt;</span>TDECAY<span class="token punctuation">,</span> Is<span class="token operator">></span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">name</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+            <span class="token keyword">typename</span> <span class="token class-name">TDECAY</span><span class="token operator">::</span><span class="token keyword">template</span> FIELD<span class="token operator">&lt;</span>TDECAY<span class="token punctuation">,</span> Is<span class="token operator">></span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">T</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">F</span><span class="token operator">></span> <span class="token comment">// (2)</span>
+<span class="token keyword">inline</span> <span class="token keyword">constexpr</span> <span class="token keyword">void</span> <span class="token function">forEach</span><span class="token punctuation">(</span>T<span class="token operator">&amp;&amp;</span> obj<span class="token punctuation">,</span> F<span class="token operator">&amp;&amp;</span> f<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token function">forEach</span><span class="token punctuation">(</span>std<span class="token operator">::</span>forward<span class="token operator">&lt;</span>T<span class="token operator">></span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span><span class="token punctuation">,</span>
+            std<span class="token operator">::</span>forward<span class="token operator">&lt;</span>F<span class="token operator">></span><span class="token punctuation">(</span>f<span class="token punctuation">)</span><span class="token punctuation">,</span>
+            std<span class="token operator">::</span>make_index_sequence<span class="token operator">&lt;</span>std<span class="token operator">::</span>decay_t<span class="token operator">&lt;</span>T<span class="token operator">></span><span class="token operator">::</span>_field_count_<span class="token operator">></span><span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre>
+<p>先看版本 (1)，通过参数包<code>Is...</code> 展开代码，从而将函数 <code>f</code> <code>apply</code> 到各个参数上，还是以 <code>Point</code> 为例，展开代码如下：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token punctuation">(</span><span class="token function">f</span><span class="token punctuation">(</span>Point<span class="token operator">::</span>FIELD<span class="token operator">&lt;</span><span class="token number">0</span><span class="token operator">></span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">name</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> Point<span class="token operator">::</span>FIELD<span class="token operator">&lt;</span><span class="token number">0</span><span class="token operator">></span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token function">f</span><span class="token punctuation">(</span>Point<span class="token operator">::</span>FIELD<span class="token operator">&lt;</span><span class="token number">1</span><span class="token operator">></span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">name</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> Point<span class="token operator">::</span>FIELD<span class="token operator">&lt;</span><span class="token number">1</span><span class="token operator">></span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>而 <code>std::index_sequence&lt;0, 1&gt;</code> 可以通过 <code>std::make_index_sequence</code> 得到，避免用户指定字段个数，这也是最终版本 (2) 所做的事。</p>
+<h2 id="反射系统的应用">反射系统的应用</h2>
+<p>最后来看看反射最基本的一个应用，也就是序列化，将结构体序列化成字符串，从而打印出来，我们通过实现 <code>dumpObj</code> 来做到：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">T</span><span class="token operator">></span>
+<span class="token keyword">void</span> <span class="token function">dumpObj</span><span class="token punctuation">(</span>T<span class="token operator">&amp;&amp;</span> obj<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">char</span><span class="token operator">*</span> fieldName <span class="token operator">=</span> <span class="token string">""</span><span class="token punctuation">,</span> <span class="token keyword">int</span> depth <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">auto</span> indent <span class="token operator">=</span> <span class="token punctuation">[</span>depth<span class="token punctuation">]</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> depth<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">""</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">if</span> <span class="token keyword">constexpr</span><span class="token punctuation">(</span>std<span class="token operator">::</span>is_class_v<span class="token operator">&lt;</span>std<span class="token operator">::</span>decay_t<span class="token operator">&lt;</span>T<span class="token operator">>></span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// (1)</span>
+        <span class="token function">indent</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> fieldName <span class="token operator">&lt;&lt;</span> <span class="token punctuation">(</span><span class="token operator">*</span>fieldName <span class="token operator">?</span> <span class="token string">": &#123;"</span> <span class="token operator">:</span> <span class="token string">"&#123;"</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>
+        <span class="token function">forEach</span><span class="token punctuation">(</span>obj<span class="token punctuation">,</span> <span class="token punctuation">[</span>depth<span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token keyword">auto</span><span class="token operator">&amp;&amp;</span> fieldName<span class="token punctuation">,</span> <span class="token keyword">auto</span><span class="token operator">&amp;&amp;</span> value<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token function">dumpObj</span><span class="token punctuation">(</span>value<span class="token punctuation">,</span> fieldName<span class="token punctuation">,</span> depth <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">indent</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"&#125;"</span> <span class="token operator">&lt;&lt;</span> <span class="token punctuation">(</span>depth <span class="token operator">==</span> <span class="token number">0</span> <span class="token operator">?</span> <span class="token string">""</span> <span class="token operator">:</span> <span class="token string">","</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span> <span class="token comment">// (2)</span>
+        <span class="token function">indent</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> fieldName <span class="token operator">&lt;&lt;</span> <span class="token string">":"</span> <span class="token operator">&lt;&lt;</span> obj <span class="token operator">&lt;&lt;</span> <span class="token string">","</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span></code></pre>
+<p>这是一个递归版本，通过检查是否为基本类型，来判断是否需要递归打印。如果是基本类型，走分支(2)，直接将其打印出来，如果是结构体，走分支(1)，进一步递归遍历结构体各个字段，直到基本类型为止。</p>
+<h2 id="结论、展望未来">结论、展望未来</h2>
+<p>可惜目前 C++ 语言未能提供反射信息，目前只能手动描述对应的元信息，综上是 C++ 反射的优雅实现，仅需要实现一遍，通过宏展开生成代码，结合模板元编程的威力，就能为任意结构体生成对应的序列化、反序列化代码，减少程序员重复劳动、容易出错的问题。</p>
+<p>期待未来 <code>C++23</code> 能提供反射信息，利用其模板元生成局部代码来替代宏，将减少这些 <code>tricky</code> 代码，不过目前该方案已经足够好用。</p>
+<p><code>Rust</code>的宏能力也很强，能够匹配 <code>&#123;</code>, <code>[</code>, <code>(</code>，而 C 的宏只能匹配<code>(</code>，最后定义出来的语句就不够直观了。在 C++ 中需要结合宏与模板元来生成代码，而 Rust 只需要<em> 过程宏 / 属性宏 </em> 和<em>声明宏 </em>，统一的宏机制就能达到类似效果，而且宏内还能做模式匹配。若<code>C++23</code> 的模板能够生成局部代码，那么也能统一用模板机制搞定很多事了。</p>
+<p>最后引用大师说的，<code>C++</code>就像一片大海，给程序员足够的自由，挖掘的越多，乐趣也就越多，每个点都能挖掘出来很多玩法，比如宏，比如模板。世界是复杂的，需要一门大而全的语言来应对这一切复杂。</p>
+
+    
+  </div>
+
+</article>
+
+
+   
+       <div class="original">
+    <ul>
+        <li>本文标题：如何优雅的实现 C++ 编译期静态反射</li>
+        <li>本文字数：3.3k</li>
+        <li>本文作者：Netcan</li>
+        <li>发布时间：2020年08月01日 - 18时49分</li>
+        <li>最后更新：2022年12月09日 - 19时02分</li>
+        <li>原始链接：<a href="https://netcan.github.io/2020/08/01/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E7%9A%84%E5%AE%9E%E7%8E%B0C-%E7%BC%96%E8%AF%91%E6%9C%9F%E9%9D%99%E6%80%81%E5%8F%8D%E5%B0%84/">https://netcan.github.io/2020/08/01/如何优雅的实现C-编译期静态反射/</a></li>
+        <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
+    </ul>
+</div>
+
+   
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持Netcan</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2020/06/07/%E7%94%A8Rust%E5%86%99%E4%B8%80%E4%B8%AA%E6%96%97%E5%85%BD%E6%A3%8B%E6%B8%B8%E6%88%8F/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2020/08/07/%E5%A6%82%E4%BD%95%E4%B8%BAClang%E7%BC%96%E8%AF%91%E5%99%A8%E5%86%99%E6%8F%92%E4%BB%B6%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E5%8C%96%E9%87%8D%E6%9E%84/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '893a4103795fc66cd8e7',
+  clientSecret: '35c92c3dca938831b67dc22e46d64bc9073ebacf',
+  repo: 'netcan.github.io',
+  owner: 'Netcan',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: md5(location.pathname),
+  admin: ['Netcan'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>试着用 yacc 和 lex 编写一个计算器 | Netcan on Programming</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="C/C++,Yacc/Lex," />
+  
+
+  <meta name="description" content="最近在看一本 [日] 前桥和弥写的《自制编程语言》，很感兴趣，里面第二章的案例就是试做一个计算器。 编程语言分为编译型语言和解释型语言两种。 编译语言比较有代表性的是 C&#x2F;C++，最终输出机器码可执行文件。 想要输出机器码的话，必须要掌握机器码才行，即使学习了机器码并写出了编译器，也无法输出其他型号 cpu 运行的文件。 机器码的编程语言优点是运行速度非常快，但是学习起来非常有难度 &#x3D; &#x3D; 所以这">
+<meta property="og:type" content="article">
+<meta property="og:title" content="试着用 yacc 和 lex 编写一个计算器">
+<meta property="og:url" content="https://netcan.github.io/2015/04/09/%E8%AF%95%E7%9D%80%E7%94%A8yacc%E5%92%8Clex%E7%BC%96%E5%86%99%E4%B8%80%E4%B8%AA%E8%AE%A1%E7%AE%97%E5%99%A8/index.html">
+<meta property="og:site_name" content="Netcan on Programming">
+<meta property="og:description" content="最近在看一本 [日] 前桥和弥写的《自制编程语言》，很感兴趣，里面第二章的案例就是试做一个计算器。 编程语言分为编译型语言和解释型语言两种。 编译语言比较有代表性的是 C&#x2F;C++，最终输出机器码可执行文件。 想要输出机器码的话，必须要掌握机器码才行，即使学习了机器码并写出了编译器，也无法输出其他型号 cpu 运行的文件。 机器码的编程语言优点是运行速度非常快，但是学习起来非常有难度 &#x3D; &#x3D; 所以这">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://7xibui.com1.z0.glb.clouddn.com/2015/04/tree.png">
+<meta property="og:image" content="http://7xibui.com1.z0.glb.clouddn.com/2015/04/tree.png">
+<meta property="og:image" content="http://7xibui.com1.z0.glb.clouddn.com/2015/04/blob.png">
+<meta property="article:published_time" content="2015-04-09T09:11:49.000Z">
+<meta property="article:modified_time" content="2015-04-09T09:11:49.000Z">
+<meta property="article:author" content="Netcan">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="Yacc&#x2F;Lex">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://7xibui.com1.z0.glb.clouddn.com/2015/04/tree.png">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/site.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-174901164-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d2c292719a76d8c0fa7f9874379cfd25";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"] > svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body>
+
+
+  
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+  
+
+  <link rel="stylesheet" href="/css/prism.css">
+
+<div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">ROOT</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-试着用yacc和lex编写一个计算器" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">试着用 yacc 和 lex 编写一个计算器</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2015.04.09</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Netcan</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p>最近在看一本 [日] 前桥和弥写的《自制编程语言》，很感兴趣，里面第二章的案例就是试做一个计算器。</p>
+<p>编程语言分为编译型语言和解释型语言两种。</p>
+<p>编译语言比较有代表性的是 C/C++，最终输出机器码可执行文件。</p>
+<p>想要输出机器码的话，必须要掌握机器码才行，即使学习了机器码并写出了编译器，也无法输出其他型号 cpu 运行的文件。</p>
+<p>机器码的编程语言优点是运行速度非常快，但是学习起来非常有难度 = = 所以这本书选择了开发解释性语言 = = 可以用编程语言扩展应用程序。。。</p>
+<p>解释性语言的解释一词来自英语的 interpreter，是“能进行翻译的意思”，程序员编写的代码通过解释器一边解析一边运行，但除了 DOS 的批处理脚本或 Unix 的 SHELL 脚本这么接近该定义，大多数解释型语言都会将源代码临时转换为某种中间形态。</p>
+<p>这有段代码，</p>
+<pre><code>if(a == 10) &#123;
+	printf(&quot;hoge\n&quot;);
+&#125; else &#123;
+	printf(&quot;piyo\n&quot;);
+&#125;
+</code></pre>
+<p>大多数编程语言，都会将上面代码转换成一种叫语法分析树的东西。如上代码做成分析树如下图所示。
+<img src="http://7xibui.com1.z0.glb.clouddn.com/2015/04/tree.png" alt="http://7xibui.com1.z0.glb.clouddn.com/2015/04/tree.png"></p>
+<p>解释器会将源码或者分析树解析为字节码这种中间形态，并且一边解析一边运行，但是解释器并不会将源码翻译为机器码。</p>
+<p>下面开始介绍计算器实例。</p>
+<p>首先介绍 yacc 和 lex 这两个工具，一般编程语言的语法处理，都会有一下的过程。</p>
+<ol>
+<li>词法分析
+将源代码分割为若干个记号（token）的处理</li>
+<li>语法分析
+将从记号构建分析树 (parse tree) 的处理，分析树也叫语法树或者抽象语法树。</li>
+<li>语义分析
+经过语法分析生成的分析树，并不包含数据类型等语义信息，因此在语义分析阶段，会检查程序中是否含有语法正确但是存在逻辑问题的错误。
+一般来说执行语义分析时主要会做数据类型的解析以及错误的检查。</li>
+<li>生成代码
+如果是 C 语言等生成机器码的编译器或 Java 这样生成字节码的编译器，在分析树构建完毕后会进入代码生成阶段。</li>
+</ol>
+<p>比如说有如下代码：</p>
+<pre><code>if(a == 10) &#123;
+	printf(&quot;hoge\n&quot;);
+&#125; else &#123;
+	printf(&quot;piyo\n&quot;);
+&#125;
+</code></pre>
+<p>执行词法分析后，将被分割成如下所示的记号（每一个块就是一个记号）。</p>
+<p>If<code> </code>(<code> </code>a<code> </code>==<code> </code>10<code> </code>)<code> </code>{<code> </code>printf<code> </code>(<code> </code>“ hoge\n”<code> </code>)<code> </code>;<code> </code>}<code> </code>else<code> </code>{<code> </code>printf<code> </code>(<code> </code>“piyo\n”<code> </code>)<code> </code>;<code> </code>}`</p>
+<p>语法分析树如图：
+<img src="http://7xibui.com1.z0.glb.clouddn.com/2015/04/tree.png" alt="http://7xibui.com1.z0.glb.clouddn.com/2015/04/tree.png"></p>
+<p>执行词法分析的程序称为词法分析器（lexical analyzer)，lex 的工作原理就是根据词法规则自动生成的词法分析器。</p>
+<p>执行语法分析的程序称为解析器(parser)，yacc 就是能根据语法规则自动生成解析器程序。</p>
+<p>yacc 和 lex 一起使用可以将一个特殊格式的定义文件输出为 C 语言代码。</p>
+<p>书中第一个例子是制作一个简单的计算器，因为一开始就讲“用 yacc/lex 制作编程语言”肯定会吃不消的。。我们先来看看有什么功能吧。。
+<img src="http://7xibui.com1.z0.glb.clouddn.com/2015/04/blob.png" alt="http://7xibui.com1.z0.glb.clouddn.com/2015/04/blob.png"></p>
+<p>看得出来 mycalc 可按照优先级输出结果。虽然使用了整数，但是内部是用 double 实现的运算。</p>
+<p>lex 是自动生成词法分析器的工具，通过扩展名为.l 的文件，输出词法分析器的 C 语言代码。</p>
+<p>词法分析器是将输入的字符串分割为记号的程序，因此必须首先定义 mycalc 所用到的符号。</p>
+<ol>
+<li>运算符。在这个例子中可以使用四则运算，即 +、-、*、/</li>
+<li>整数，比如 233</li>
+<li>实数，比如 2.33</li>
+<li>换行符。输入换行符进行运算，所以这也是个记号。</li>
+</ol>
+<p>在 lex 中使用正则表达式定义记号。下面是 mycalc.l 文件。</p>
+<pre class="language-none"><code class="language-none">%&#123;
+    #include &lt;stdio.h&gt;
+    #include &quot;mycalc.h&quot;
+    int yywrap(void) &#123;
+        return 1;
+    &#125;
+%&#125;
+%%
+&quot;+&quot; return ADD;
+&quot;-&quot; return SUB;
+&quot;*&quot; return MUL;
+&quot;&#x2F;&quot; return DIV;
+&quot;\n&quot;    return CR;
+(([1-9][0-9]*)|0|([0-9]+\.+[0-9]+)) &#123;
+    double temp;
+    sscanf(yytext, &quot;%lf&quot;, &amp;temp);
+    yylval.double_value &#x3D; temp;
+    return DOUBLE_LITERAL;
+    &#125;
+[\t] ;
+. &#123;
+    fprintf(stderr, &quot;Lexical error!\n&quot;);
+    exit(1);
+    &#125;
+
+%%</code></pre>
+<p>代码第 8 行为 %%，此行之前部分叫做定义区域。在定义区域内，可以定义初始状态或者为正则表达式命名。</p>
+<table>
+<thead>
+<tr>
+<th>记号</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ADD</td>
+<td>加法运算符 +</td>
+</tr>
+<tr>
+<td>SUB</td>
+<td>减法运算符 -</td>
+</tr>
+<tr>
+<td>MUL</td>
+<td>乘法运算符 *</td>
+</tr>
+<tr>
+<td>DIV</td>
+<td>除法运算符 /</td>
+</tr>
+<tr>
+<td>CR</td>
+<td>回车符</td>
+</tr>
+<tr>
+<td>DOUBLE_LITERAL</td>
+<td>double 类型的字面常量</td>
+</tr>
+</tbody>
+</table>
+<p>第 4-6 行定义了 yywrap()函数，没有这个函数的话需要连接 lex 库文件。</p>
+<p>第 9-24 行是规则区域，使用正则表达式描述记号。</p>
+<p>在规则区域中遵循这样的书写方式：一个正则表达式后面紧跟若干个空格，后接 C 代码。如果输入匹配正则表达式，则执行后面的 C 代码。这里的 C 代码部分称为动作(action)。</p>
+<p>第 9-13 行中会找到四则运算符以及换行符，通过 return 返回其特征符，特征符是在 y.tab.h 中用 #define 定义，用来区分记号种类的代号。</p>
+<p>对于 + 或者 - 这样的记号只需要关注其记号种类即可，如果是 DOUBLE_LIBTERAL 记号，则记号的种类和记号的值都必须传递给解析器。</p>
+<p>第 14 行匹配一个数值，记号的原始字符（比如输入 123.45 这个记号的原始字符就是 1&quot;123.45&quot;）会在相应动作中的被名为 yytext 的全局变量引用。</p>
+<p>动作解析的值会存放在名为 yyval 的全局变量中，这个全局变量本质是一个联合体(union)，可以存放各种记号的值（在这个计算器程序只有 double 的值）。联合体的定义部分写在 yacc 的定义文件 mycalc.y 中。</p>
+<p>到 26 行，出现一次 %%。表示规则区域的结束，这之后的代码称为用户代码区域。用户代码区域可以随意编写任意 C 代码，与定义区域不同的是，用户区域无需使用％{％}包裹。</p>
+<p>yacc 是自动生成语法分析器的工具，输入扩展名为.y 的文件，就会输出语法分析器的 C 语言代码。mycalc.y 代码如下。</p>
+<pre class="language-none"><code class="language-none">%&#123;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#define YYDEBUG 1
+%&#125;
+%union &#123;
+    int int_value;
+    double double_value;
+&#125;
+%token &lt;double_value&gt; DOUBLE_LITERAL
+%token ADD SUB MUL DIV CR
+%type &lt;double_value&gt; expression term primary_expression
+%%
+line_list
+    : line
+    | line_list line;
+line
+    : expression CR
+    &#123;
+        printf(&quot;\e[32m[Netcan-Soft]&gt;&gt;\e[0m \e[36m%lf\e[0m\n&quot;, $1);
+    &#125;;
+expression
+    : term
+    | expression ADD term
+    &#123;
+        $$ &#x3D; $1 + $3;
+    &#125;
+    | expression SUB term
+    &#123;
+        $$ &#x3D; $1 - $3;
+    &#125;;
+term
+    : primary_expression
+    | term MUL primary_expression
+    &#123;
+        $$ &#x3D; $1 * $3;
+    &#125;
+    | term DIV primary_expression
+    &#123;
+        $$ &#x3D; $1 &#x2F; $3;
+    &#125;;
+
+primary_expression
+    : DOUBLE_LITERAL;
+%%
+int yyerror(char const *str) &#123;
+    extern char *yytext;
+    fprintf(stderr, &quot;\e[31m 解析错误: %s\e[0m\n&quot;, yytext);
+    return 0;
+&#125;
+
+int main() &#123;
+    extern int yyparse(void);
+    extern FILE * yyin;
+    yyin &#x3D; stdin;
+    if(yyparse()) &#123;
+        fprintf(stderr, &quot;\e[31m 错误！\e[0m\n&quot;);
+        exit(1);
+    &#125;
+&#125;</code></pre>
+<p>第 1-5 行与 lex 相同，使用％{％}包裹一些 C 代码。</p>
+<p>第 6-9 行声明了记号以及非终结符的类型。前面提过记号不仅要包含类型，还需要包含值。记号可能有很多类型，这些类型都声明在集合（共用体）中。</p>
+<p>非终结符是由多个记号共同构成的，即代码中的 line_list、line、expression、term 这些部分。为了分割非终结符，非终结符最后都会以一个特殊记号结尾，这种记号称为终结符。</p>
+<p>10-11 行是记号的声明。ADD、SUB、MUL、DIV、CR 等记号只需要包含记号的类型即可，而值为 DOUBLE_LITERAL 的记号，其类型被指定为 &lt;double_value&gt;，这里的 double_value 来自上面代码中 %union 集合中的一个成员名。</p>
+<p>12 行声明了非终结符的类型。</p>
+<p>与 lex 一样，13 行的 %% 为分界，之后的为规则区域。yacc 的规则区域是由语法规则以及 C 语言编写相应的动作两部分组成。</p>
+<p>可将语法规则简化为下面的格式。</p>
+<pre><code>A
+	: B C
+	| D
+	;
+</code></pre>
+<p>即 A 的定义是 B 和 C 的组合或者 D。</p>
+<p>14-16 行的书写方式，为了表示该语法规则在程序中可能出现一次以上。例如在 mycalc 中，输入一行后回车进行计算，之后还可以继续输入。</p>
+<pre><code>term
+	: primary_expression
+	| term MUL primary_expression
+	&#123;
+		$$ = $1 * $3;
+	&#125;
+</code></pre>
+<p>这些表达式中，<code>$1</code>、<code>$3</code>的意思是分别保存了 term 与 primary_expression 的值。即 yacc 输出解析器的代码时，栈中相应位置的元素将会被转换为一个能表述元素特征的数组引用。<code>$$</code>这里这代表 term 的值。</p>
+<p>如果没有书写动作，例如 43-44 行，yacc 会自动补全一个 <code>&#123; $$ = $1 &#125;</code> 的动作，<code>$$</code>与 <code>$1</code> 的数据类型，分别与其对应的记号或者非终结符的类型一致。例如，DOUBLE_LITERAL 对应的记号被定义为：</p>
+<pre><code>%token &lt;double_value&gt; DOUBLE_LITERAL
+	expression、term、primary_expression 的类型则为：
+
+%type &lt;double_value&gt; expression term primary_expression
+</code></pre>
+<p>这里的类型被指定为<code>&lt;double_value&gt;</code>，其实是使用了 %union 部分声明的联合体 double_value 成员。</p>
+<p>生成可执行文件步骤如下，</p>
+<pre><code># lex mycalc.l
+# yacc -dv mycalc.y
+# gcc y.tab.c lex.yy.c -o mycalc
+</code></pre>
+
+    
+  </div>
+
+</article>
+
+
+   
+       <div class="original">
+    <ul>
+        <li>本文标题：试着用 yacc 和 lex 编写一个计算器</li>
+        <li>本文字数：2.4k</li>
+        <li>本文作者：Netcan</li>
+        <li>发布时间：2015年04月09日 - 17时11分</li>
+        <li>最后更新：2015年04月09日 - 17时11分</li>
+        <li>原始链接：<a href="https://netcan.github.io/2015/04/09/%E8%AF%95%E7%9D%80%E7%94%A8yacc%E5%92%8Clex%E7%BC%96%E5%86%99%E4%B8%80%E4%B8%AA%E8%AE%A1%E7%AE%97%E5%99%A8/">https://netcan.github.io/2015/04/09/试着用yacc和lex编写一个计算器/</a></li>
+        <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
+    </ul>
+</div>
+
+   
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持Netcan</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2015/04/09/CSS%E7%BE%8E%E5%8C%96%E8%A1%A8%E6%A0%BC%E5%92%8C%E8%A1%A8%E5%8D%95%E6%A0%B7%E5%BC%8F/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2015/04/12/%E7%BA%BF%E6%80%A7%E8%A1%A8%E7%9A%84%E9%A1%BA%E5%BA%8F%E5%82%A8%E5%AD%98%E4%B8%8E%E9%93%BE%E5%BC%8F%E5%82%A8%E5%AD%98/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '893a4103795fc66cd8e7',
+  clientSecret: '35c92c3dca938831b67dc22e46d64bc9073ebacf',
+  repo: 'netcan.github.io',
+  owner: 'Netcan',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: md5(location.pathname),
+  admin: ['Netcan'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

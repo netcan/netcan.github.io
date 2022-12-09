@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>数据表的基本操作 | Netcan on Programming</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="MySQL,数据库," />
+  
+
+  <meta name="description" content="在创建数据表时，需要 USE &lt;database_name&gt;; 来选中数据库， mysql&gt; create database test_db; Query OK, 1 row affected (0.02 sec)  mysql&gt; use test_db; Database changed  创建数据表语法规则： CREATE TABLE &lt; 表名 &gt; (字段名">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据表的基本操作">
+<meta property="og:url" content="https://netcan.github.io/2015/03/17/%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/index.html">
+<meta property="og:site_name" content="Netcan on Programming">
+<meta property="og:description" content="在创建数据表时，需要 USE &lt;database_name&gt;; 来选中数据库， mysql&gt; create database test_db; Query OK, 1 row affected (0.02 sec)  mysql&gt; use test_db; Database changed  创建数据表语法规则： CREATE TABLE &lt; 表名 &gt; (字段名">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2015-03-17T08:40:45.000Z">
+<meta property="article:modified_time" content="2015-03-17T08:40:45.000Z">
+<meta property="article:author" content="Netcan">
+<meta property="article:tag" content="MySQL">
+<meta property="article:tag" content="数据库">
+<meta name="twitter:card" content="summary">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/site.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-174901164-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d2c292719a76d8c0fa7f9874379cfd25";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"] > svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body>
+
+
+  
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+  
+
+  <link rel="stylesheet" href="/css/prism.css">
+
+<div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">ROOT</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9C%A8%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E8%A1%A8%E6%97%B6%EF%BC%8C%E9%9C%80%E8%A6%81%20USE-database-name-%20%E6%9D%A5%E9%80%89%E4%B8%AD%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%8C"><span class="toc-text">在创建数据表时，需要 USE &lt;database_name&gt;; 来选中数据库，</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E8%A1%A8%E8%AF%AD%E6%B3%95%E8%A7%84%E5%88%99%EF%BC%9A"><span class="toc-text">创建数据表语法规则：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E6%95%B0%E6%8D%AE%E8%A1%A8%E6%98%AF%E5%90%A6%E5%88%9B%E5%BB%BA%E6%88%90%E5%8A%9F"><span class="toc-text">查看数据表是否创建成功:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8D%95%E5%AD%97%E6%AE%B5%E4%B8%BB%E9%94%AE%EF%BC%8C%E5%9C%A8%E5%AE%9A%E4%B9%89%E8%A1%A8%E7%9A%84%E6%97%B6%E5%80%99%E5%90%8C%E6%97%B6%E6%8C%87%E5%AE%9A%E4%B8%BB%E9%94%AE%EF%BC%9A"><span class="toc-text">单字段主键，在定义表的时候同时指定主键：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%9A%E5%AD%97%E6%AE%B5%E8%81%94%E5%90%88%E4%B8%BB%E9%94%AE%EF%BC%8C"><span class="toc-text">多字段联合主键，</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%A4%96%E9%94%AE%E7%BA%A6%E6%9D%9F%E8%AF%AD%E6%B3%95%EF%BC%9A"><span class="toc-text">创建外键约束语法：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9D%9E%E7%A9%BA%E7%BA%A6%E6%9D%9F%EF%BC%9A"><span class="toc-text">非空约束：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%94%AF%E4%B8%80%E6%80%A7%E7%BA%A6%E6%9D%9F%EF%BC%9A"><span class="toc-text">唯一性约束：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%BB%98%E8%AE%A4%E7%BA%A6%E6%9D%9F%EF%BC%9A"><span class="toc-text">默认约束：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E5%B1%9E%E6%80%A7%E5%80%BC%E8%87%AA%E5%8A%A8%E5%A2%9E%E5%8A%A0"><span class="toc-text">设置属性值自动增加</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E8%A1%A8%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84%EF%BC%9A"><span class="toc-text">查看表的基本结构：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E8%A1%A8%E7%9A%84%E8%AF%A6%E7%BB%86%E7%BB%93%E6%9E%84%EF%BC%9A"><span class="toc-text">查看表的详细结构：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E8%A1%A8%E5%90%8D%EF%BC%9A"><span class="toc-text">修改表名：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E5%AD%97%E6%AE%B5%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%EF%BC%9A"><span class="toc-text">修改字段的数据类型：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E5%AD%97%E6%AE%B5%E5%90%8D%EF%BC%9A"><span class="toc-text">修改字段名：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E5%AD%97%E6%AE%B5%EF%BC%9A"><span class="toc-text">添加字段：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E5%AD%97%E6%AE%B5%EF%BC%9A"><span class="toc-text">删除字段：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E5%AD%97%E6%AE%B5%E6%8E%92%E5%88%97%E4%BD%8D%E7%BD%AE%EF%BC%9A"><span class="toc-text">修改字段排列位置：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E8%A1%A8%E7%9A%84%E5%82%A8%E5%AD%98%E5%BC%95%E6%93%8E%EF%BC%9A"><span class="toc-text">修改表的储存引擎：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E8%A1%A8%E7%9A%84%E5%A4%96%E9%94%AE%E7%BA%A6%E6%9D%9F%EF%BC%9A"><span class="toc-text">删除表的外键约束：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E6%9C%AA%E8%A2%AB%E5%85%B3%E8%81%94%E7%9A%84%E6%95%B0%E6%8D%AE%E8%A1%A8%EF%BC%9A"><span class="toc-text">删除未被关联的数据表：</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-数据表的基本操作" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">数据表的基本操作</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2015.03.17</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Netcan</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h4 id="在创建数据表时，需要 USE-database-name- 来选中数据库，">在创建数据表时，需要 <code>USE &lt;database_name&gt;;</code> 来选中数据库，</h4>
+<pre><code>mysql&gt; create database test_db;
+Query OK, 1 row affected (0.02 sec)
+
+mysql&gt; use test_db;
+Database changed
+</code></pre>
+<h4 id="创建数据表语法规则：">创建数据表语法规则：</h4>
+<pre><code>CREATE TABLE &lt; 表名 &gt;
+(字段名 1 数据类型 [列级别的约束条件][默认值],
+字段名 2 数据类型 [列级别的约束条件][默认值],
+......
+[表级别的约束规则]
+);
+</code></pre>
+<p>Example:</p>
+<pre><code>mysql&gt; create database test_db;
+Query OK, 1 row affected (0.02 sec)
+
+mysql&gt; use test_db;
+Database changed
+mysql&gt; create table tb_emp1
+-&gt; (-&gt; id int(11),
+-&gt; name varchar(25),
+-&gt; deptId int(11),
+-&gt; salary float
+-&gt; );
+Query OK, 0 rows affected (0.13 sec)
+</code></pre>
+<h4 id="查看数据表是否创建成功">查看数据表是否创建成功:</h4>
+<pre><code>SHOW TABLES;
+</code></pre>
+<p>Example:</p>
+<pre><code>mysql&gt; show tables;
++-------------------+
+| Tables_in_test_db |
++-------------------+
+| tb_emp1           |
++-------------------+
+1 row in set (0.00 sec)
+</code></pre>
+<h4 id="单字段主键，在定义表的时候同时指定主键：">单字段主键，在定义表的时候同时指定主键：</h4>
+<pre><code>字段名 数据类型 PRIMARY KEY
+</code></pre>
+<p>如下定义数据表 tb_emp2，其主键为 id，</p>
+<pre><code>mysql&gt; create table tb_emp2
+	-&gt; (-&gt; id int(11) primary key,
+	-&gt; name varchar(25),
+	-&gt; deptId int(11),
+	-&gt; salary float
+	-&gt; );
+Query OK, 0 rows affected (0.11 sec)
+</code></pre>
+<p>或者在定义完之后在指定主键，</p>
+<pre><code>[CONSTRAIN &lt; 约束名 &gt;] PRIMARY KEY [字段名]
+
+mysql&gt; create table tb_emp3
+	-&gt; (-&gt; id int(11),
+	-&gt; name varchar(25),
+	-&gt; deptId int(11),
+	-&gt; salary float,
+	-&gt; primary key(id)
+	-&gt; );
+Query OK, 0 rows affected (0.11 sec)
+</code></pre>
+<h4 id="多字段联合主键，">多字段联合主键，</h4>
+<pre><code>PRIMARY KEY[字段 1, 字段 2,..., 字段 n]
+</code></pre>
+<p>Example:</p>
+<pre><code>mysql&gt; create table tb_emp4
+	-&gt; (-&gt; name varchar(25),
+	-&gt; deptId int(11),
+	-&gt; salary float,
+	-&gt; primary key(name,deptId)
+	-&gt; );
+Query OK, 0 rows affected (0.09 sec)
+</code></pre>
+<h4 id="创建外键约束语法：">创建外键约束语法：</h4>
+<pre><code>[CONSTRAINT &lt; 外键名 &gt;] FOREIGN KEY 字段名 1[, 字段名 2,...] REFERENCES &lt; 主键名 &gt; 主键列 1[, 主键列 2,...]
+</code></pre>
+<p>定义数据表 tb_dept1，tb_emp5，并在 tb_emp5 表上的 deptId 创建外键约束到 tb_dept1 的 id。</p>
+<pre><code>mysql&gt; create table tb_dept1
+	-&gt; (-&gt; id int(11) primary key,
+	-&gt; name varchar(22) not null,
+	-&gt; location varchar(50)
+	-&gt; );
+Query OK, 0 rows affected (0.09 sec)
+
+mysql&gt; create table tb_emp5
+	-&gt; (-&gt; id int(11) primary key,
+	-&gt; name varchar(25),
+	-&gt; deptId int(11),
+	-&gt; salary float,
+	-&gt; constraint fk_emp_dept1 foreign key(deptId) references tb_dept1(id)
+	-&gt; );
+Query OK, 0 rows affected (0.09 sec)
+</code></pre>
+<h4 id="非空约束：">非空约束：</h4>
+<pre><code>字段名 数据类型 NOT NULL
+</code></pre>
+<p>Example:</p>
+<pre><code>mysql&gt; create table tb_emp6
+	-&gt; (-&gt; id int(11) primary key,
+	-&gt; name varchar(25) not null
+	-&gt; );
+Query OK, 0 rows affected (0.14 sec)
+</code></pre>
+<h4 id="唯一性约束：">唯一性约束：</h4>
+<pre><code>字段名 数据类型 UNIQUE
+</code></pre>
+<p>Example:</p>
+<pre><code>mysql&gt; create table tb_dept2
+	-&gt; (-&gt; id int(11) primary key,
+	-&gt; name varchar(22) unique,
+	-&gt; location varchar(50)
+	-&gt; );
+Query OK, 0 rows affected (0.11 sec)
+</code></pre>
+<h4 id="默认约束：">默认约束：</h4>
+<pre><code>字段名 数据类型 DEFAULT 默认值
+</code></pre>
+<p>Example:</p>
+<pre><code>mysql&gt; create table tb_emp7
+	-&gt; (-&gt; id int(11) primary key,
+	-&gt; name varchar(25) not null,
+	-&gt; deptId int(11) default 1111
+	-&gt; );
+Query OK, 0 rows affected (0.08 sec)
+</code></pre>
+<h4 id="设置属性值自动增加">设置属性值自动增加</h4>
+<pre><code>字段名 数据类型 AUTO_INCREMENT
+</code></pre>
+<p>Example:</p>
+<pre><code>mysql&gt; create table tb_emp8
+	-&gt; (-&gt; id int(11) primary key auto_increment
+	-&gt; );
+Query OK, 0 rows affected (0.09 sec)
+</code></pre>
+<h4 id="查看表的基本结构：">查看表的基本结构：</h4>
+<pre><code>DESCRIBE/DESC 表名;
+</code></pre>
+<p>Example:</p>
+<pre><code>mysql&gt; desc tb_dept1;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| id       | int(11)     | NO   | PRI | NULL    |       |
+| name     | varchar(22) | NO   |     | NULL    |       |
+| location | varchar(50) | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+3 rows in set (0.06 sec)
+mysql&gt; desc tb_emp1;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| id     | int(11)     | YES  |     | NULL    |       |
+| name   | varchar(25) | YES  |     | NULL    |       |
+| deptId | int(11)     | YES  |     | NULL    |       |
+| salary | float       | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+4 rows in set (0.02 sec)
+</code></pre>
+<h4 id="查看表的详细结构：">查看表的详细结构：</h4>
+<pre><code>SHOW CREATE TABLE &lt; 表名 \G&gt;;
+</code></pre>
+<p>Example:</p>
+<pre><code>mysql&gt; show create table tb_emp1\G;
+*************************** 1. row ***************************
+	Table: tb_emp1
+Create Table: CREATE TABLE `tb_emp1` (`id` int(11) DEFAULT NULL,
+`name` varchar(25) DEFAULT NULL,
+`deptId` int(11) DEFAULT NULL,
+`salary` float DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=gbk
+1 row in set (0.00 sec)
+</code></pre>
+<h4 id="修改表名：">修改表名：</h4>
+<pre><code>ALTER TABLE &lt; 旧表名 &gt; RANAME [TO] &lt; 新表名 &gt;;
+</code></pre>
+<p>Example:</p>
+<pre><code>mysql&gt; show tables;
++-------------------+
+| Tables_in_test_db |
++-------------------+
+| tb_dept1          |
+| tb_dept2          |
+| tb_emp1           |
+| tb_emp2           |
+| tb_emp3           |
+| tb_emp4           |
+| tb_emp5           |
+| tb_emp6           |
+| tb_emp7           |
+| tb_emp8           |
++-------------------+
+10 rows in set (0.00 sec)
+
+mysql&gt; alter table tb_dept1 rename tb_department1;
+Query OK, 0 rows affected (0.11 sec)
+
+mysql&gt; show tables;
++-------------------+
+| Tables_in_test_db |
++-------------------+
+| tb_department1    |
+| tb_dept2          |
+| tb_emp1           |
+| tb_emp2           |
+| tb_emp3           |
+| tb_emp4           |
+| tb_emp5           |
+| tb_emp6           |
+| tb_emp7           |
+| tb_emp8           |
++-------------------+
+10 rows in set (0.00 sec)
+</code></pre>
+<h4 id="修改字段的数据类型：">修改字段的数据类型：</h4>
+<pre><code>ALTER TABLE &lt; 表名 &gt; MODIFY &lt; 字段名 &gt; &lt; 数据类型 &gt;;
+</code></pre>
+<p>Example:</p>
+<pre><code>mysql&gt; desc tb_dept2;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| id       | int(11)     | NO   | PRI | NULL    |       |
+| name     | varchar(22) | YES  | UNI | NULL    |       |
+| location | varchar(50) | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+3 rows in set (0.02 sec)
+
+mysql&gt; alter table tb_dept2 modify name varchar(30);
+Query OK, 0 rows affected (0.16 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql&gt; desc tb_dept2;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| id       | int(11)     | NO   | PRI | NULL    |       |
+| name     | varchar(30) | YES  | UNI | NULL    |       |
+| location | varchar(50) | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+</code></pre>
+<h4 id="修改字段名：">修改字段名：</h4>
+<pre><code>ALTER TABLE &lt; 表名 &gt; CHANGE &lt; 旧字段名 &gt; &lt; 新字段名 &gt; &lt; 新数据类型 &gt;;
+</code></pre>
+<p>Example:</p>
+<pre><code>mysql&gt; desc tb_dept2;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| id       | int(11)     | NO   | PRI | NULL    |       |
+| name     | varchar(30) | YES  | UNI | NULL    |       |
+| location | varchar(50) | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql&gt; alter table tb_dept2 change location loc varchar(50);
+Query OK, 0 rows affected (0.16 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql&gt; desc tb_dept2;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| id    | int(11)     | NO   | PRI | NULL    |       |
+| name  | varchar(30) | YES  | UNI | NULL    |       |
+| loc   | varchar(50) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+3 rows in set (0.02 sec)
+</code></pre>
+<h4 id="添加字段：">添加字段：</h4>
+<pre><code>ALTER TABLE &lt; 表名 &gt; ADD &lt; 新字段名 &gt; &lt; 数据类型 &gt; [约束条件][FIRST|AFTER 已存在字段名];
+</code></pre>
+<p>Example:</p>
+<pre><code>mysql&gt; alter table tb_dept2 add managerId int(10);
+Query OK, 0 rows affected (0.14 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql&gt; desc tb_dept2;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| id        | int(11)     | NO   | PRI | NULL    |       |
+| name      | varchar(30) | YES  | UNI | NULL    |       |
+| loc       | varchar(50) | YES  |     | NULL    |       |
+| managerId | int(10)     | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+4 rows in set (0.02 sec)
+mysql&gt; alter table tb_dept2 add manager varchar(11) not null after name;
+Query OK, 0 rows affected (0.13 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql&gt; desc tb_dept2;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| id        | int(11)     | NO   | PRI | NULL    |       |
+| name      | varchar(30) | YES  | UNI | NULL    |       |
+| manager   | varchar(11) | NO   |     | NULL    |       |
+| loc       | varchar(50) | YES  |     | NULL    |       |
+| managerId | int(10)     | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+</code></pre>
+<h4 id="删除字段：">删除字段：</h4>
+<pre><code>ALTER TABLE &lt; 表名 &gt; DROP &lt; 字段名 &gt;;
+</code></pre>
+<p>Example:</p>
+<pre><code>mysql&gt; alter table tb_dept2 drop manager;
+Query OK, 0 rows affected (0.14 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql&gt; desc tb_dept2;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| id        | int(11)     | NO   | PRI | NULL    |       |
+| name      | varchar(30) | YES  | UNI | NULL    |       |
+| loc       | varchar(50) | YES  |     | NULL    |       |
+| managerId | int(10)     | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+</code></pre>
+<h4 id="修改字段排列位置：">修改字段排列位置：</h4>
+<pre><code>ALTER TABLE &lt; 表名 &gt; MODIFY &lt; 字段 1&gt; &lt; 数据类型 &gt; FIRST|AFTER &lt; 字段 2&gt;;
+</code></pre>
+<p>Example:</p>
+<pre><code>mysql&gt; alter table tb_dept2 modify managerId int(10) after id;
+Query OK, 0 rows affected (0.13 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql&gt; desc tb_dept2;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| id        | int(11)     | NO   | PRI | NULL    |       |
+| managerId | int(10)     | YES  |     | NULL    |       |
+| name      | varchar(30) | YES  | UNI | NULL    |       |
+| loc       | varchar(50) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+4 rows in set (0.02 sec)
+</code></pre>
+<h4 id="修改表的储存引擎：">修改表的储存引擎：</h4>
+<pre><code>ALTER TABLE &lt; 表名 &gt; ENGINE=&lt; 更改后的引擎名 &gt;
+</code></pre>
+<p>Example:</p>
+<pre><code>mysql&gt; show create table tb_dept2\G;
+*************************** 1. row ***************************
+	Table: tb_dept2
+Create Table: CREATE TABLE `tb_dept2` (`id` int(11) NOT NULL,
+`managerId` int(10) DEFAULT NULL,
+`name` varchar(30) DEFAULT NULL,
+`loc` varchar(50) DEFAULT NULL,
+PRIMARY KEY (`id`),
+UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=gbk
+1 row in set (0.00 sec)
+
+mysql&gt; alter table tb_dept2 engine=myisam;
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql&gt; show create table tb_dept2\G;
+*************************** 1. row ***************************
+	Table: tb_dept2
+Create Table: CREATE TABLE `tb_dept2` (`id` int(11) NOT NULL,
+`managerId` int(10) DEFAULT NULL,
+`name` varchar(30) DEFAULT NULL,
+`loc` varchar(50) DEFAULT NULL,
+PRIMARY KEY (`id`),
+UNIQUE KEY `name` (`name`)
+) ENGINE=MyISAM DEFAULT CHARSET=gbk
+1 row in set (0.00 sec)
+</code></pre>
+<h4 id="删除表的外键约束：">删除表的外键约束：</h4>
+<pre><code>ALTER TABLE &lt; 表名 &gt; DROP FOREIGN KEY &lt; 外键约束名 &gt;
+</code></pre>
+<p>Example:</p>
+<pre><code>mysql&gt; show create table tb_emp5\G;
+*************************** 1. row ***************************
+	Table: tb_emp5
+Create Table: CREATE TABLE `tb_emp5` (`id` int(11) NOT NULL,
+`name` varchar(25) DEFAULT NULL,
+`deptId` int(11) DEFAULT NULL,
+`salary` float DEFAULT NULL,
+PRIMARY KEY (`id`),
+KEY `fk_emp_dept1` (`deptId`),
+CONSTRAINT `fk_emp_dept1` FOREIGN KEY (`deptId`) REFERENCES `tb_department1` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=gbk
+1 row in set (0.00 sec)
+
+mysql&gt; alter table tb_emp5 drop foreign key fk_emp_dept1;
+Query OK, 0 rows affected (0.14 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql&gt; show create table tb_emp5\G;
+*************************** 1. row ***************************
+	Table: tb_emp5
+Create Table: CREATE TABLE `tb_emp5` (`id` int(11) NOT NULL,
+`name` varchar(25) DEFAULT NULL,
+`deptId` int(11) DEFAULT NULL,
+`salary` float DEFAULT NULL,
+PRIMARY KEY (`id`),
+KEY `fk_emp_dept1` (`deptId`)
+) ENGINE=InnoDB DEFAULT CHARSET=gbk
+1 row in set (0.00 sec)
+</code></pre>
+<h4 id="删除未被关联的数据表：">删除未被关联的数据表：</h4>
+<pre><code>DROP TABLE [IF EXISTS] 表 1, 表 2, ..., 表 n;
+</code></pre>
+<p>Example:</p>
+<pre><code>mysql&gt; show tables;
++-------------------+
+| Tables_in_test_db |
++-------------------+
+| tb_department1    |
+| tb_dept2          |
+| tb_emp1           |
+| tb_emp2           |
+| tb_emp3           |
+| tb_emp4           |
+| tb_emp5           |
+| tb_emp6           |
+| tb_emp7           |
+| tb_emp8           |
++-------------------+
+10 rows in set (0.00 sec)
+
+mysql&gt; drop table tb_dept2;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql&gt; show tables;
++-------------------+
+| Tables_in_test_db |
++-------------------+
+| tb_department1    |
+| tb_emp1           |
+| tb_emp2           |
+| tb_emp3           |
+| tb_emp4           |
+| tb_emp5           |
+| tb_emp6           |
+| tb_emp7           |
+| tb_emp8           |
++-------------------+
+9 rows in set (0.00 sec)
+</code></pre>
+<p>若存在关联关系，先删除子表的外键才能删除父表（主表）。</p>
+
+    
+  </div>
+
+</article>
+
+
+   
+       <div class="original">
+    <ul>
+        <li>本文标题：数据表的基本操作</li>
+        <li>本文字数：1.9k</li>
+        <li>本文作者：Netcan</li>
+        <li>发布时间：2015年03月17日 - 16时40分</li>
+        <li>最后更新：2015年03月17日 - 16时40分</li>
+        <li>原始链接：<a href="https://netcan.github.io/2015/03/17/%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/">https://netcan.github.io/2015/03/17/数据表的基本操作/</a></li>
+        <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
+    </ul>
+</div>
+
+   
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持Netcan</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2015/03/17/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2015/03/20/%E6%95%B0%E6%8D%AE%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '893a4103795fc66cd8e7',
+  clientSecret: '35c92c3dca938831b67dc22e46d64bc9073ebacf',
+  repo: 'netcan.github.io',
+  owner: 'Netcan',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: md5(location.pathname),
+  admin: ['Netcan'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

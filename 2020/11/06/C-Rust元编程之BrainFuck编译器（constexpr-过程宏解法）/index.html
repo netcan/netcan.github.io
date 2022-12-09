@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>C++/Rust 元编程之 BrainFuck 编译器（constexpr/ 过程宏解法） | Netcan on Programming</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="C/C++,Rust," />
+  
+
+  <meta name="description" content="引子 接上一篇 C++ 元编程之 BrainFuck 编译器（模板元解法） 挖了个坑：用 constexpr 方式实现，我发现更容易实现了，代码不到 100 行搞定，同时也尝试了一下用 Rust 过程宏来做元编程，最后我会对这两者进行比较。 之前模板元方式解法不支持嵌套循环，同时也不支持输入输出，在这次实现中，支持嵌套循环、输出。 C++ 版本： &#x2F;&#x2F; compile time constexpr">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++&#x2F;Rust 元编程之 BrainFuck 编译器（constexpr&#x2F; 过程宏解法）">
+<meta property="og:url" content="https://netcan.github.io/2020/11/06/C-Rust%E5%85%83%E7%BC%96%E7%A8%8B%E4%B9%8BBrainFuck%E7%BC%96%E8%AF%91%E5%99%A8%EF%BC%88constexpr-%E8%BF%87%E7%A8%8B%E5%AE%8F%E8%A7%A3%E6%B3%95%EF%BC%89/index.html">
+<meta property="og:site_name" content="Netcan on Programming">
+<meta property="og:description" content="引子 接上一篇 C++ 元编程之 BrainFuck 编译器（模板元解法） 挖了个坑：用 constexpr 方式实现，我发现更容易实现了，代码不到 100 行搞定，同时也尝试了一下用 Rust 过程宏来做元编程，最后我会对这两者进行比较。 之前模板元方式解法不支持嵌套循环，同时也不支持输入输出，在这次实现中，支持嵌套循环、输出。 C++ 版本： &#x2F;&#x2F; compile time constexpr">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-11-06T14:42:40.000Z">
+<meta property="article:modified_time" content="2022-12-09T11:02:08.581Z">
+<meta property="article:author" content="Netcan">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="Rust">
+<meta name="twitter:card" content="summary">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/site.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-174901164-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d2c292719a76d8c0fa7f9874379cfd25";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"] > svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body>
+
+
+  
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+  
+
+  <link rel="stylesheet" href="/css/prism.css">
+
+<div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">ROOT</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E5%AD%90"><span class="toc-text">引子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-constexpr%20%E8%A7%A3%E6%B3%95"><span class="toc-text">C++ constexpr 解法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Rust%20%E8%BF%87%E7%A8%8B%E5%AE%8F%E8%A7%A3%E6%B3%95"><span class="toc-text">Rust 过程宏解法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AE%BA"><span class="toc-text">结论</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-C-Rust元编程之BrainFuck编译器（constexpr-过程宏解法）" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">C++/Rust 元编程之 BrainFuck 编译器（constexpr/ 过程宏解法）</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2020.11.06</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Netcan</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h2 id="引子">引子</h2>
+<p>接上一篇 <a href="https://netcan.github.io/2020/11/04/C-%E5%85%83%E7%BC%96%E7%A8%8B%E4%B9%8BBrainFuck%E7%BC%96%E8%AF%91%E5%99%A8%EF%BC%88%E6%A8%A1%E6%9D%BF%E5%85%83%E8%A7%A3%E6%B3%95%EF%BC%89/">C++ 元编程之 BrainFuck 编译器（模板元解法）</a> 挖了个坑：用 constexpr 方式实现，我发现更容易实现了，代码不到 100 行搞定，同时也尝试了一下用 Rust 过程宏来做元编程，最后我会对这两者进行比较。</p>
+<p>之前模板元方式解法不支持嵌套循环，同时也不支持输入输出，在这次实现中，支持嵌套循环、输出。</p>
+<p>C++ 版本：</p>
+<pre class="language-c" data-language="c"><code class="language-c"><span class="token comment">// compile time</span>
+constexpr <span class="token keyword">auto</span> res <span class="token operator">=</span> <span class="token function">brain_fuck</span><span class="token punctuation">(</span>R"<span class="token punctuation">(</span>
+    <span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token punctuation">[</span><span class="token operator">></span><span class="token operator">++</span><span class="token operator">++</span><span class="token punctuation">[</span><span class="token operator">></span><span class="token operator">++</span><span class="token operator">></span><span class="token operator">++</span><span class="token operator">+</span><span class="token operator">></span><span class="token operator">++</span><span class="token operator">+</span><span class="token operator">></span><span class="token operator">+</span><span class="token operator">&lt;&lt;</span><span class="token operator">&lt;&lt;</span><span class="token operator">-</span><span class="token punctuation">]</span><span class="token operator">></span><span class="token operator">+</span><span class="token operator">></span><span class="token operator">+</span><span class="token operator">></span><span class="token operator">-></span><span class="token operator">></span><span class="token operator">+</span><span class="token punctuation">[</span><span class="token operator">&lt;</span><span class="token punctuation">]</span><span class="token operator">&lt;</span><span class="token operator">-</span><span class="token punctuation">]</span><span class="token operator">>></span><span class="token punctuation">.</span>
+    <span class="token operator">></span><span class="token operator">--</span><span class="token operator">-</span><span class="token punctuation">.</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">+</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">++</span><span class="token operator">+</span><span class="token punctuation">.</span><span class="token operator">>></span><span class="token punctuation">.</span><span class="token operator">&lt;</span><span class="token operator">-</span><span class="token punctuation">.</span><span class="token operator">&lt;</span><span class="token punctuation">.</span><span class="token operator">++</span><span class="token operator">+</span><span class="token punctuation">.</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token punctuation">.</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token punctuation">.</span><span class="token operator">>></span><span class="token operator">+</span><span class="token punctuation">.</span><span class="token operator">></span><span class="token operator">++</span><span class="token punctuation">.</span>
+<span class="token punctuation">)</span>"<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">puts</span><span class="token punctuation">(</span>res<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// runtime</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span>argc <span class="token operator">></span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token function">puts</span><span class="token punctuation">(</span><span class="token function">brain_fuck</span><span class="token punctuation">(</span>argv<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>Rust 版本：</p>
+<pre class="language-rust" data-language="rust"><code class="language-rust"><span class="token macro property">println!</span><span class="token punctuation">(</span><span class="token string">"&#123;&#125;"</span><span class="token punctuation">,</span> <span class="token macro property">brain_fuck!</span><span class="token punctuation">(</span>
+    <span class="token operator">+</span><span class="token operator">+</span><span class="token operator">+</span><span class="token operator">+</span><span class="token operator">+</span><span class="token operator">+</span><span class="token operator">+</span><span class="token operator">+</span><span class="token punctuation">[</span><span class="token operator">></span><span class="token operator">+</span><span class="token operator">+</span><span class="token operator">+</span><span class="token operator">+</span><span class="token punctuation">[</span><span class="token operator">></span><span class="token operator">+</span><span class="token operator">+</span><span class="token operator">></span><span class="token operator">+</span><span class="token operator">+</span><span class="token operator">+</span><span class="token operator">></span><span class="token operator">+</span><span class="token operator">+</span><span class="token operator">+</span><span class="token operator">></span><span class="token operator">+</span><span class="token operator">&lt;&lt;</span><span class="token operator">&lt;&lt;</span><span class="token operator">-</span><span class="token punctuation">]</span><span class="token operator">></span><span class="token operator">+</span><span class="token operator">></span><span class="token operator">+</span><span class="token operator">></span><span class="token punctuation">-></span><span class="token operator">></span><span class="token operator">+</span><span class="token punctuation">[</span><span class="token operator">&lt;</span><span class="token punctuation">]</span><span class="token operator">&lt;</span><span class="token operator">-</span><span class="token punctuation">]</span><span class="token operator">>></span><span class="token punctuation">.</span>
+    <span class="token operator">></span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token punctuation">.</span><span class="token operator">+</span><span class="token operator">+</span><span class="token operator">+</span><span class="token operator">+</span><span class="token operator">+</span><span class="token operator">+</span><span class="token operator">+</span><span class="token punctuation">..</span><span class="token operator">+</span><span class="token operator">+</span><span class="token operator">+</span><span class="token punctuation">.</span><span class="token operator">>></span><span class="token punctuation">.</span><span class="token operator">&lt;</span><span class="token operator">-</span><span class="token punctuation">.</span><span class="token operator">&lt;</span><span class="token punctuation">.</span><span class="token operator">+</span><span class="token operator">+</span><span class="token operator">+</span><span class="token punctuation">.</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token punctuation">.</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token punctuation">.</span><span class="token operator">>></span><span class="token operator">+</span><span class="token punctuation">.</span><span class="token operator">></span><span class="token operator">+</span><span class="token operator">+</span><span class="token punctuation">.</span>
+<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>而两者背后实现的算法是一致的。</p>
+<h2 id="C-constexpr 解法">C++ constexpr 解法</h2>
+<p>其实模板元解法和 constexpr 解法能力相同，只是实现代价不同，后者更容易实现，写起来就像普通函数一样。运行结果可看：<a target="_blank" rel="noopener" href="https://godbolt.org/z/EYn7PG">https://godbolt.org/z/EYn7PG</a></p>
+<p>首先定义一个 Stream 类，用于存放输出结果：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span><span class="token operator">&lt;</span>size_t N<span class="token operator">></span>
+<span class="token keyword">class</span> <span class="token class-name">Stream</span> <span class="token punctuation">&#123;</span>
+<span class="token keyword">public</span><span class="token operator">:</span>
+    <span class="token keyword">constexpr</span> <span class="token keyword">void</span> <span class="token function">push</span><span class="token punctuation">(</span><span class="token keyword">char</span> c<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> data_<span class="token punctuation">[</span>idx_<span class="token operator">++</span><span class="token punctuation">]</span> <span class="token operator">=</span> c<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+    <span class="token keyword">constexpr</span> <span class="token keyword">operator</span> <span class="token keyword">const</span> <span class="token keyword">char</span><span class="token operator">*</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">const</span> <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> data_<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+    <span class="token keyword">constexpr</span> size_t <span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> idx_<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+<span class="token keyword">private</span><span class="token operator">:</span>
+    size_t idx_<span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+    <span class="token keyword">char</span> data_<span class="token punctuation">[</span>N<span class="token punctuation">]</span><span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
+<p>然后写一个 parse 函数，解析 BrainFuck 代码，经典的递归下降分析：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">STREAM</span><span class="token operator">></span>
+<span class="token keyword">constexpr</span> <span class="token keyword">auto</span> <span class="token function">parse</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token keyword">char</span><span class="token operator">*</span> input<span class="token punctuation">,</span> <span class="token keyword">bool</span> skip<span class="token punctuation">,</span> <span class="token keyword">char</span><span class="token operator">*</span> cells<span class="token punctuation">,</span>
+        size_t<span class="token operator">&amp;</span> pc<span class="token punctuation">,</span> STREAM<span class="token operator">&amp;&amp;</span> output<span class="token punctuation">)</span> <span class="token operator">-></span> size_t <span class="token punctuation">&#123;</span>
+    <span class="token keyword">const</span> <span class="token keyword">char</span><span class="token operator">*</span> c <span class="token operator">=</span> input<span class="token punctuation">;</span>
+    <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token operator">*</span>c<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">switch</span><span class="token punctuation">(</span><span class="token operator">*</span>c<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">case</span> <span class="token string">'+'</span><span class="token operator">:</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>skip<span class="token punctuation">)</span> <span class="token operator">++</span>cells<span class="token punctuation">[</span>pc<span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token keyword">break</span><span class="token punctuation">;</span>
+            <span class="token keyword">case</span> <span class="token string">'-'</span><span class="token operator">:</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>skip<span class="token punctuation">)</span> <span class="token operator">--</span>cells<span class="token punctuation">[</span>pc<span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token keyword">break</span><span class="token punctuation">;</span>
+            <span class="token keyword">case</span> <span class="token string">'.'</span><span class="token operator">:</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>skip<span class="token punctuation">)</span> output<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>cells<span class="token punctuation">[</span>pc<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token keyword">break</span><span class="token punctuation">;</span>
+            <span class="token keyword">case</span> <span class="token string">'>'</span><span class="token operator">:</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>skip<span class="token punctuation">)</span> <span class="token operator">++</span>pc<span class="token punctuation">;</span> <span class="token keyword">break</span><span class="token punctuation">;</span>
+            <span class="token keyword">case</span> <span class="token string">'&lt;'</span><span class="token operator">:</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>skip<span class="token punctuation">)</span> <span class="token operator">--</span>pc<span class="token punctuation">;</span> <span class="token keyword">break</span><span class="token punctuation">;</span>
+            <span class="token keyword">case</span> <span class="token string">'['</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+                <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token operator">!</span>skip <span class="token operator">&amp;&amp;</span> cells<span class="token punctuation">[</span>pc<span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span>
+                    <span class="token function">parse</span><span class="token punctuation">(</span>c <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">,</span> cells<span class="token punctuation">,</span> pc<span class="token punctuation">,</span> output<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                c <span class="token operator">+=</span> <span class="token function">parse</span><span class="token punctuation">(</span>c <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">,</span> cells<span class="token punctuation">,</span> pc<span class="token punctuation">,</span> output<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span> <span class="token keyword">break</span><span class="token punctuation">;</span>
+            <span class="token keyword">case</span> <span class="token string">']'</span><span class="token operator">:</span> <span class="token keyword">return</span> c <span class="token operator">-</span> input<span class="token punctuation">;</span>
+            <span class="token keyword">default</span><span class="token operator">:</span> <span class="token keyword">break</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token operator">++</span>c<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">return</span> c <span class="token operator">-</span> input<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">constexpr</span> size_t CELL_SIZE <span class="token operator">=</span> <span class="token number">16</span><span class="token punctuation">;</span>
+<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">STREAM</span><span class="token operator">></span>
+<span class="token keyword">constexpr</span> <span class="token keyword">auto</span> <span class="token function">parse</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token keyword">char</span><span class="token operator">*</span> input<span class="token punctuation">,</span> STREAM<span class="token operator">&amp;&amp;</span> output<span class="token punctuation">)</span> <span class="token operator">-></span> STREAM<span class="token operator">&amp;&amp;</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">char</span> cells<span class="token punctuation">[</span>CELL_SIZE<span class="token punctuation">]</span><span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+    size_t pc<span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+    <span class="token function">parse</span><span class="token punctuation">(</span>input<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">,</span> cells<span class="token punctuation">,</span> pc<span class="token punctuation">,</span> output<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> output<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre>
+<p>最后用 brain_fuck 函数串起来：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span><span class="token operator">&lt;</span>size_t OUTPUT_SIZE <span class="token operator">=</span> <span class="token number">15</span><span class="token operator">></span>
+<span class="token keyword">constexpr</span> <span class="token keyword">auto</span> <span class="token function">brain_fuck</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token keyword">char</span><span class="token operator">*</span> input<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    Stream<span class="token operator">&lt;</span>OUTPUT_SIZE<span class="token operator">></span> output<span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token function">parse</span><span class="token punctuation">(</span>input<span class="token punctuation">,</span> output<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre>
+<p>以上就是实现一个 BrainFuck 编译器的所有细节。</p>
+<p>延伸一下，如果你细心的话，你会发现输出大小需要手动指定（默认 15 字节），如果大小过大，那么多余的空间浪费了；如果大小过小，编译报错。思考一下，有什么办法确定大小呢？毕竟 C++20 之前 constexpr 不支持动态分配内存，像链表这种随时扩容的方式暂时不可行。</p>
+<p>我们可以实现一个函数 brain_fuck_output_size 来提前计算好所需要大小：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">// calculate output size</span>
+<span class="token keyword">constexpr</span> <span class="token keyword">auto</span> <span class="token function">brain_fuck_output_size</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token keyword">char</span><span class="token operator">*</span> input<span class="token punctuation">)</span> <span class="token operator">-></span> size_t <span class="token punctuation">&#123;</span>
+    <span class="token keyword">struct</span> <span class="token punctuation">&#123;</span>
+        size_t sz<span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+        <span class="token keyword">constexpr</span> <span class="token keyword">void</span> <span class="token function">push</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token operator">++</span>sz<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span> dummy<span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token function">parse</span><span class="token punctuation">(</span>input<span class="token punctuation">,</span> dummy<span class="token punctuation">)</span><span class="token punctuation">.</span>sz <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span> <span class="token comment">// include '\0'</span>
+<span class="token punctuation">&#125;</span></code></pre>
+<p>我们实现一个 dummy 对象，其 push 接口只是简单地计数，最终 dummy 的长度就是输出的长度。</p>
+<p>这也是为啥 STREAM 作为模板参数类型的原因，因为只需要依赖 <code>push</code> 接口，而不需要依赖具体的类型，这也是泛型的魅力。</p>
+<pre class="language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token expression"><span class="token function">BRAIN_FUCK</span><span class="token punctuation">(</span>in<span class="token punctuation">)</span> brain_fuck<span class="token operator">&lt;</span><span class="token function">brain_fuck_output_size</span><span class="token punctuation">(</span>in<span class="token punctuation">)</span><span class="token operator">></span><span class="token punctuation">(</span>in<span class="token punctuation">)</span></span></span>
+constexpr <span class="token keyword">auto</span> res <span class="token operator">=</span> <span class="token function">BRAIN_FUCK</span><span class="token punctuation">(</span>R"<span class="token punctuation">(</span>
+    <span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token punctuation">[</span><span class="token operator">></span><span class="token operator">++</span><span class="token operator">++</span><span class="token punctuation">[</span><span class="token operator">></span><span class="token operator">++</span><span class="token operator">></span><span class="token operator">++</span><span class="token operator">+</span><span class="token operator">></span><span class="token operator">++</span><span class="token operator">+</span><span class="token operator">></span><span class="token operator">+</span><span class="token operator">&lt;&lt;</span><span class="token operator">&lt;&lt;</span><span class="token operator">-</span><span class="token punctuation">]</span><span class="token operator">></span><span class="token operator">+</span><span class="token operator">></span><span class="token operator">+</span><span class="token operator">></span><span class="token operator">-></span><span class="token operator">></span><span class="token operator">+</span><span class="token punctuation">[</span><span class="token operator">&lt;</span><span class="token punctuation">]</span><span class="token operator">&lt;</span><span class="token operator">-</span><span class="token punctuation">]</span><span class="token operator">>></span><span class="token punctuation">.</span>
+    <span class="token operator">></span><span class="token operator">--</span><span class="token operator">-</span><span class="token punctuation">.</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">+</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">++</span><span class="token operator">+</span><span class="token punctuation">.</span><span class="token operator">>></span><span class="token punctuation">.</span><span class="token operator">&lt;</span><span class="token operator">-</span><span class="token punctuation">.</span><span class="token operator">&lt;</span><span class="token punctuation">.</span><span class="token operator">++</span><span class="token operator">+</span><span class="token punctuation">.</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token punctuation">.</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token punctuation">.</span><span class="token operator">>></span><span class="token operator">+</span><span class="token punctuation">.</span><span class="token operator">></span><span class="token operator">++</span><span class="token punctuation">.</span>
+<span class="token punctuation">)</span>"<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<h2 id="Rust 过程宏解法">Rust 过程宏解法</h2>
+<p>Rust 做元编程，目前只能通过宏的方式做，而且能力也有限。这里需要用过程宏手段。目前我把 <code>brain_fuck</code> 提交到 cargo 仓库了：<a target="_blank" rel="noopener" href="https://crates.io/crates/brain_fuck">https://crates.io/crates/brain_fuck</a>，可以体验一下。</p>
+<p>同样地写一个 parse 函数：</p>
+<pre class="language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">const</span> <span class="token constant">CELL_SIZE</span><span class="token punctuation">:</span> <span class="token keyword">usize</span> <span class="token operator">=</span> <span class="token number">16</span><span class="token punctuation">;</span>
+<span class="token keyword">fn</span> <span class="token function-definition function">parse</span><span class="token punctuation">(</span>code<span class="token punctuation">:</span> <span class="token operator">&amp;</span><span class="token punctuation">[</span><span class="token keyword">u8</span><span class="token punctuation">]</span><span class="token punctuation">,</span> skip<span class="token punctuation">:</span> <span class="token keyword">bool</span><span class="token punctuation">,</span> cells<span class="token punctuation">:</span> <span class="token operator">&amp;</span><span class="token keyword">mut</span> <span class="token punctuation">[</span><span class="token keyword">u8</span><span class="token punctuation">;</span> <span class="token constant">CELL_SIZE</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    pc<span class="token punctuation">:</span> <span class="token operator">&amp;</span><span class="token keyword">mut</span> <span class="token keyword">usize</span><span class="token punctuation">,</span> output<span class="token punctuation">:</span> <span class="token operator">&amp;</span><span class="token keyword">mut</span> <span class="token class-name">Vec</span><span class="token operator">&lt;</span><span class="token keyword">u8</span><span class="token operator">></span><span class="token punctuation">)</span> <span class="token punctuation">-></span> <span class="token keyword">usize</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">let</span> <span class="token keyword">mut</span> idx <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">while</span> idx <span class="token operator">&lt;</span> code<span class="token punctuation">.</span><span class="token function">len</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">let</span> c <span class="token operator">=</span> code<span class="token punctuation">[</span>idx<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token keyword">match</span> c <span class="token punctuation">&#123;</span>
+            <span class="token char string">b'+'</span> <span class="token keyword">if</span> <span class="token operator">!</span>skip <span class="token operator">=></span> cells<span class="token punctuation">[</span><span class="token operator">*</span>pc<span class="token punctuation">]</span> <span class="token operator">+=</span> <span class="token number">1</span><span class="token punctuation">,</span>
+            <span class="token char string">b'-'</span> <span class="token keyword">if</span> <span class="token operator">!</span>skip <span class="token operator">=></span> cells<span class="token punctuation">[</span><span class="token operator">*</span>pc<span class="token punctuation">]</span> <span class="token operator">-=</span> <span class="token number">1</span><span class="token punctuation">,</span>
+            <span class="token char string">b'.'</span> <span class="token keyword">if</span> <span class="token operator">!</span>skip <span class="token operator">=></span> output<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>cells<span class="token punctuation">[</span><span class="token operator">*</span>pc<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+            <span class="token char string">b'>'</span> <span class="token keyword">if</span> <span class="token operator">!</span>skip <span class="token operator">=></span> <span class="token operator">*</span>pc <span class="token operator">+=</span> <span class="token number">1</span><span class="token punctuation">,</span>
+            <span class="token char string">b'&lt;'</span> <span class="token keyword">if</span> <span class="token operator">!</span>skip <span class="token operator">=></span> <span class="token operator">*</span>pc <span class="token operator">-=</span> <span class="token number">1</span><span class="token punctuation">,</span>
+            <span class="token char string">b'['</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
+                <span class="token keyword">while</span> <span class="token operator">!</span>skip <span class="token operator">&amp;&amp;</span> cells<span class="token punctuation">[</span><span class="token operator">*</span>pc<span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token number">0</span> <span class="token punctuation">&#123;</span>
+                    <span class="token function">parse</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>code<span class="token punctuation">[</span>idx<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">..</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">,</span> cells<span class="token punctuation">,</span> pc<span class="token punctuation">,</span> output<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">&#125;</span>
+                idx <span class="token operator">+=</span> <span class="token function">parse</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>code<span class="token punctuation">[</span>idx<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">..</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">,</span> cells<span class="token punctuation">,</span> pc<span class="token punctuation">,</span> output<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+            <span class="token char string">b']'</span> <span class="token operator">=></span> <span class="token keyword">return</span> idx<span class="token punctuation">,</span>
+            _ <span class="token operator">=></span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+        idx <span class="token operator">+=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    idx
+<span class="token punctuation">&#125;</span></code></pre>
+<p>用过程宏 brain_fuck 包装一下：</p>
+<pre class="language-rust" data-language="rust"><code class="language-rust"><span class="token attribute attr-name">#[proc_macro]</span>
+<span class="token keyword">pub</span> <span class="token keyword">fn</span> <span class="token function-definition function">brain_fuck</span><span class="token punctuation">(</span>_item<span class="token punctuation">:</span> <span class="token class-name">TokenStream</span><span class="token punctuation">)</span> <span class="token punctuation">-></span> <span class="token class-name">TokenStream</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">let</span> input <span class="token operator">=</span> _item<span class="token punctuation">.</span><span class="token function">to_string</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">let</span> <span class="token keyword">mut</span> cells<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token keyword">u8</span><span class="token punctuation">;</span> <span class="token constant">CELL_SIZE</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">;</span> <span class="token constant">CELL_SIZE</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">let</span> <span class="token keyword">mut</span> pc <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">let</span> <span class="token keyword">mut</span> output <span class="token operator">=</span> <span class="token class-name">Vec</span><span class="token punctuation">::</span><span class="token operator">&lt;</span><span class="token keyword">u8</span><span class="token operator">></span><span class="token punctuation">::</span><span class="token function">new</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token function">parse</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>input<span class="token punctuation">.</span><span class="token function">as_bytes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span><span class="token keyword">mut</span> cells<span class="token punctuation">,</span> <span class="token operator">&amp;</span><span class="token keyword">mut</span> pc<span class="token punctuation">,</span> <span class="token operator">&amp;</span><span class="token keyword">mut</span> output<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token class-name">TokenStream</span><span class="token punctuation">::</span><span class="token function">from_str</span><span class="token punctuation">(</span>
+        <span class="token operator">&amp;</span><span class="token macro property">format!</span><span class="token punctuation">(</span><span class="token string">"\"&#123;&#125;\""</span><span class="token punctuation">,</span> <span class="token function">from_utf8</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>output<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">unwrap</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">unwrap</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span></code></pre>
+<h2 id="结论">结论</h2>
+<p>对比 C++ 和 Rust 版本，实现代价一样。</p>
+<p>C++ 版本实现过程中可以先不加 constexpr 关键字，通过打印等 debug 手段调试通过后，最终加上 constexpr 关键字即可，最后既可以在运行时使用，也可以在编译时使用。如果在编译期出现内存越界（cells 越界）情况下，编译报错，即避免了 ub。</p>
+<p>Rust 实现过程宏只能通过 lib 方式做，同样地也可以直接加打印，在编译的时候输出，最终将打印去掉。输出结果可以直接用 <code>Vec</code> 这种动态容器存，C++20 之前暂时得通过定长（预留长度或提前计算）数组搞。而 Rust 的过程宏只能用在编译时，无法用在运行时，而且只支持字面量方式，不支持变量传参给过程宏。</p>
+<p>而本质上 Rust 宏是在预处理期做替换，而不是在编译期，能做的事有限。例如过程宏无法组合，实现如下效果：</p>
+<pre class="language-rust" data-language="rust"><code class="language-rust"><span class="token macro property">decode!</span><span class="token punctuation">(</span><span class="token macro property">encode!</span><span class="token punctuation">(</span><span class="token string">"hello world"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>而 C++ 的 constexpr 函数是可以随意组合的，这点只能期待 Rust 的 const fn 发力了。</p>
+<p>从生成的汇编结果来看，C++ 版本更加简单粗暴，g++ 编译器生成的汇编字符串结果直接存到 8 字节整型中，clang 则比较直观，main 和数据只有 15 行：</p>
+<pre class="language-nasm" data-language="nasm"><code class="language-nasm"><span class="token label function">main:</span>                                   # @main
+        subq    <span class="token number">$24</span>, <span class="token operator">%</span><span class="token register variable">rsp</span>
+        movq    .L__const.main.res<span class="token operator">+</span><span class="token number">16</span>(<span class="token operator">%</span>rip), <span class="token operator">%</span><span class="token register variable">rax</span>
+        movq    <span class="token operator">%</span><span class="token register variable">rax</span>, <span class="token number">16</span>(<span class="token operator">%</span><span class="token register variable">rsp</span>)
+        movups  .L__const.main.res(<span class="token operator">%</span>rip), <span class="token operator">%</span><span class="token register variable">xmm0</span>
+        movaps  <span class="token operator">%</span><span class="token register variable">xmm0</span>, (<span class="token operator">%</span><span class="token register variable">rsp</span>)
+        leaq    <span class="token number">8</span>(<span class="token operator">%</span><span class="token register variable">rsp</span>), <span class="token operator">%</span><span class="token register variable">rdi</span>
+        callq   puts
+        xorl    <span class="token operator">%</span><span class="token register variable">eax</span>, <span class="token operator">%</span><span class="token register variable">eax</span>
+        addq    <span class="token number">$24</span>, <span class="token operator">%</span><span class="token register variable">rsp</span>
+        retq
+<span class="token label function">.L__const.main.res:</span>
+        .quad   <span class="token number">13</span>                              # <span class="token number">0xd</span>
+        .asciz  <span class="token string">"Hello World!\n\000"</span>
+        .zero   <span class="token number">1</span></code></pre>
+<p>而 Rust 编译器生成的汇编结果就不够 C++ 那么简洁紧凑，这里就不贴出来了。</p>
+
+    
+  </div>
+
+</article>
+
+
+   
+       <div class="original">
+    <ul>
+        <li>本文标题：C++/Rust 元编程之 BrainFuck 编译器（constexpr/ 过程宏解法）</li>
+        <li>本文字数：1.5k</li>
+        <li>本文作者：Netcan</li>
+        <li>发布时间：2020年11月06日 - 22时42分</li>
+        <li>最后更新：2022年12月09日 - 19时02分</li>
+        <li>原始链接：<a href="https://netcan.github.io/2020/11/06/C-Rust%E5%85%83%E7%BC%96%E7%A8%8B%E4%B9%8BBrainFuck%E7%BC%96%E8%AF%91%E5%99%A8%EF%BC%88constexpr-%E8%BF%87%E7%A8%8B%E5%AE%8F%E8%A7%A3%E6%B3%95%EF%BC%89/">https://netcan.github.io/2020/11/06/C-Rust元编程之BrainFuck编译器（constexpr-过程宏解法）/</a></li>
+        <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
+    </ul>
+</div>
+
+   
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持Netcan</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2020/11/04/C-%E5%85%83%E7%BC%96%E7%A8%8B%E4%B9%8BBrainFuck%E7%BC%96%E8%AF%91%E5%99%A8%EF%BC%88%E6%A8%A1%E6%9D%BF%E5%85%83%E8%A7%A3%E6%B3%95%EF%BC%89/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2021/01/08/%E5%86%8D%E8%A7%812020%EF%BC%8C2021%E4%BD%A0%E5%A5%BD/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '893a4103795fc66cd8e7',
+  clientSecret: '35c92c3dca938831b67dc22e46d64bc9073ebacf',
+  repo: 'netcan.github.io',
+  owner: 'Netcan',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: md5(location.pathname),
+  admin: ['Netcan'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

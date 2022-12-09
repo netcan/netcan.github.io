@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>CSAPP 第四章总结：Processor Architecture | Netcan on Programming</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="操作系统," />
+  
+
+  <meta name="description" content="这章主要讲如何设计一个处理器，可以更好的理解计算机的运作过程。 设计处理器的指令集为 Y86，比较简单，适合学习，与x86 类似。然后用 HCL(Hardware Control Language) 设计其电路结构。利用连续的指令（每条指令细分为 5 步）实现流水线pipelined，就可同时执行多条指令。 The Y86 Instruction Set Architecture 这部分定义了 Y">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSAPP 第四章总结：Processor Architecture">
+<meta property="og:url" content="https://netcan.github.io/2017/02/06/CSAPP%E7%AC%AC%E5%9B%9B%E7%AB%A0%E6%80%BB%E7%BB%93%EF%BC%9AProcessor-Architecture/index.html">
+<meta property="og:site_name" content="Netcan on Programming">
+<meta property="og:description" content="这章主要讲如何设计一个处理器，可以更好的理解计算机的运作过程。 设计处理器的指令集为 Y86，比较简单，适合学习，与x86 类似。然后用 HCL(Hardware Control Language) 设计其电路结构。利用连续的指令（每条指令细分为 5 步）实现流水线pipelined，就可同时执行多条指令。 The Y86 Instruction Set Architecture 这部分定义了 Y">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-02-06T06:36:24.000Z">
+<meta property="article:modified_time" content="2022-12-09T11:02:08.582Z">
+<meta property="article:author" content="Netcan">
+<meta property="article:tag" content="操作系统">
+<meta name="twitter:card" content="summary">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/site.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-174901164-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d2c292719a76d8c0fa7f9874379cfd25";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"] > svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body>
+
+
+  
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+  
+
+  <link rel="stylesheet" href="/css/prism.css">
+
+<div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">ROOT</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#The-Y86-Instruction-Set-Architecture"><span class="toc-text">The Y86 Instruction Set Architecture</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Programmer-Visible-State"><span class="toc-text">Programmer-Visible State</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Y86-Instructions"><span class="toc-text">Y86 Instructions</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Instruction-Encoding"><span class="toc-text">Instruction Encoding</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Y86-Exceptions"><span class="toc-text">Y86 Exceptions</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Y86-Programs"><span class="toc-text">Y86 Programs</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Some-Y86-Instruction-Details"><span class="toc-text">Some Y86 Instruction Details</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Logic-Design-and-the-Hardware-Control-Language-HCL"><span class="toc-text">Logic Design and the Hardware Control Language HCL</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Logic-Gates"><span class="toc-text">Logic Gates</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Combinational-Circuits-and-HCL-Boolean-Expressions"><span class="toc-text">Combinational Circuits and HCL Boolean Expressions</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Word-Level-Combinational-Circuits-and-HCL-Integer-Expressions"><span class="toc-text">Word-Level Combinational Circuits and HCL Integer Expressions</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Set-Membership"><span class="toc-text">Set Membership</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Memory-and-Clocking"><span class="toc-text">Memory and Clocking</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Sequential-Y86-Implementations"><span class="toc-text">Sequential Y86 Implementations</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Organizing-Processing-into-Stages"><span class="toc-text">Organizing Processing into Stages</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SEQ-Hardware-Structure"><span class="toc-text">SEQ Hardware Structure</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SEQ-Timing"><span class="toc-text">SEQ Timing</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SEQ-Stage-Implementations"><span class="toc-text">SEQ Stage Implementations</span></a></li></ol></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-CSAPP第四章总结：Processor-Architecture" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">CSAPP 第四章总结：Processor Architecture</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2017.02.06</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Netcan</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p>这章主要讲如何设计一个处理器，可以更好的理解计算机的运作过程。</p>
+<p>设计处理器的指令集为 <em>Y86</em>，比较简单，适合学习，与<em>x86</em> 类似。然后用 <em>HCL(Hardware Control Language)<em> 设计其电路结构。利用连续的指令（每条指令细分为 5 步）实现流水线</em>pipelined</em>，就可同时执行多条指令。</p>
+<h2 id="The-Y86-Instruction-Set-Architecture">The Y86 Instruction Set Architecture</h2>
+<p>这部分定义了 <em>Y86</em> 的一些数据结构、指令集、编码、协议、异常处理。</p>
+<h3 id="Programmer-Visible-State">Programmer-Visible State</h3>
+<p>337 页图 4.1 给出了 <em>Y86</em> 的数据结构。</p>
+<ul>
+<li>其中有 8 个 32 位寄存器，名称和 <em>IA32</em> 一致。</li>
+<li>同样也有 <em>ZF</em>, <em>SF</em>, <em>OF</em> 这 3 个 <em>condition</em> 单位寄存器。</li>
+<li>有 <em>PC</em> 计数器寄存器，还有 <em>DMEM</em> 内存，可以看作一个数组。</li>
+<li>有 <em>Stat</em> 状态码标志事件类型。</li>
+</ul>
+<p>同样的，<code>%esp</code>作为栈指针，用于 <em>push</em>, <em>pop</em>, <em>call</em>, <em>ret</em> 等指令。</p>
+<h3 id="Y86-Instructions">Y86 Instructions</h3>
+<p>这一部分介绍了 <em>Y86</em> 的指令集和编码，见 338 页图 4.2。</p>
+<p>可以看出 <em>Y86</em> 指令集类似于 <em>IA32</em> 指令集，但是比较简单，它的数据类型都是 4 字节的。</p>
+<p><em>Y86</em>指令集有这么几类：</p>
+<ul>
+<li>halt</li>
+<li>nop</li>
+<li>movl</li>
+<li>OPl(addl, subl, andl, xorl)</li>
+<li>jXX(jmp, jle, jl, je, jne, jge, jg)</li>
+<li>cmovXX(rrmovl, cmovle, cmovl, cmove, cmovne, cmovge, cmovg)</li>
+<li>call</li>
+<li>ret</li>
+<li>push/pop</li>
+</ul>
+<p>但是还是有些地方和 <em>IA32</em> 不同的，这里说明下。</p>
+<p>将 <em>IA32</em> 的<em>movl</em>指令拆开了，拆成这四个：<code>irmovl</code>, <code>rrmovl</code>, <code>mrmovl</code>, <code>rmmovl</code>，其中第一个字母表示源操作数（i 立即数、r 寄存器、m 内存），第二个字母表示目标操作数（r 寄存器、m 内存），拆成这样有助于实现。比如 <code>movl $233, %eax</code> 写成 <code>irmovl $233, %eax</code>，明显后者更好实现（更具体），而前者<code>movl</code> 有多种操作，需要分析具体是哪一种。</p>
+<p><em>Y86</em>内存引用只有 <code>i(r)</code> 这种形式，亦即基于一个寄存器 r 的值，加上一个偏移量立即数 i 得到最终地址。</p>
+<p>同样 2 个操作数最多只能有 1 个内存引用，另外不支持直接将立即数存到内存中（可以配合 <code>irmovl</code>,<code>rmmovl</code> 实现）。</p>
+<p><em>Y86</em>对于 <code>OPl</code> 类指令，操作数只能在寄存器中。虽然 <em>IA32</em> 支持内存、立即数。</p>
+<p><code>cmovXX</code>类指令，源操作数和目标操作数都是在寄存器中，和 <code>rrmovle</code> 指令同类，和 <em>IA32</em> 一样只有满足条件才更新数据。</p>
+<p><code>halt</code>指令停止处理器执行，然后设置状态码为 <code>HLT</code>。<em>IA32</em> 也有类似的指令叫<code>hlt</code>，它会导致整个系统停机，所以程序都不允许执行这条指令。</p>
+<p>其他类指令和 <em>IA32</em> 差不多，不再概述。</p>
+<h3 id="Instruction-Encoding">Instruction Encoding</h3>
+<p><em>Y86</em>指令集编码长度在 1-6 字节，依赖于具体字段。其中第一个字节表明了具体指令，而第一个字节又分为两部分：高 4 位（<em>code</em>部分）和低 4 位（<em>function</em>部分）。高 4 位指明了指令的种类，（<code>0-0xB</code>），低 4 位指明了某一类的具体指令。例如 <em>OPl</em> 类指令，高 4 位为 <code>0x6</code>，低 4 位指明了具体的指令，例如<code>addl</code> 为<code>0</code>，拼起来第一字节就是 <code>0x60</code>。有些指令类只有一条，例如<code>ret</code> 类只有 <code>ret</code> 指令，高 4 位为<code>0x9</code>，低 4 位为<code>0</code>，拼起来就是<code>0x90</code>。</p>
+<p>339 页图 4.3 给出了 <code>OPl</code>,<code>jmpXX</code>,<code>cmovXX</code> 类的具体指令编码。</p>
+<p>340 页图 4.4 给出了寄存器的编码（4 位），<code>0-7</code>与对于的 8 个寄存器，<code>F</code>表示没有指定寄存器，相当于占位符。有些指令如 <code>irmovl</code> 只需要一个寄存器，而 <code>rmmovl</code> 需要 2 个寄存器，可能为了对齐吧，<code>irmovl</code>需要用一个 <code>F</code> 来指明另一个寄存器不存在，这样也好实现。具体可看图 4.2，图中的 <code>F</code> 有点像占位符。</p>
+<p>立即数都是 4 字节编码，注意字节序。<code>call</code>指令使用绝对地址，可能因为绝对地址编码长度都是 4 字节。</p>
+<p>举个编码的例子，<code>rmmovl %esp,0x12345(%edx)</code>，首先 <code>rmmovl</code> 第一字节为 <code>0x40</code>，<code>%esp</code> 的编码为 <code>0x4</code>，<code>%edx</code> 的编码为 <code>0x2</code>，拼起来为<code>0x42</code>，<code>0x12345</code> 的<code>little-endian</code>为<code>0x45230100</code>，所以最后编码为<code>404245230100</code>。</p>
+<p>需要注意，设计指令编码的时候，需要保证其唯一性，不能有任何歧义，亦即指令只能有唯一编码，编码对应唯一一条指令。无法解码的序列为非法序列。</p>
+<p>因为 <em>Y86</em> 第一字节就指明了为哪条指令，这条性质可以保证处理器执行二进制代码的时候不会发生歧义。即使指令嵌入其他序列中，我们也能通过从序列第一字节开始，如果不从第一个字节开始执行，那么就无法判断具体是哪条指令了，反汇编也会有问题。</p>
+<h3 id="Y86-Exceptions">Y86 Exceptions</h3>
+<p>345 页图 4.5 给出了异常代码，总共 4 类。</p>
+<h3 id="Y86-Programs">Y86 Programs</h3>
+<p>这节给出了 <em>Y86</em> 指令集的代码实例。对比 346 页代码，我们几乎可以看到和 <em>IA32</em> 程序差不多，除了 <em>IA32</em> 的一条指令在 <em>Y86</em> 中要多条来代替。</p>
+<p>347 页给出了一个完整 <em>Y86</em> 程序的代码。348 页给出了程序运行过程中的寄存器、内存空间变化值。349 页给出了汇编器汇编的二进制代码。</p>
+<p>首先 <code>.pos 0</code> 指明了汇编器应该调整地址从 0 开始。在初始化栈帧寄存器（<code>.pos 0x100</code>）的时候，由于栈空间往低地址分配，需要注意以免栈空间把代码、数据覆盖。同样也使用了 <code>.align 4</code> 来对数组进行地址对齐。</p>
+<h3 id="Some-Y86-Instruction-Details">Some Y86 Instruction Details</h3>
+<p>这里给了关于 <em>Y86</em> 和<em>IA32</em>汇编的细节问题。</p>
+<p>例如，<code>pushl %esp</code>后，<code>%esp</code>的值为多少？这里有 2 个答案：</p>
+<ul>
+<li><code>pushl</code>前 <code>%esp</code> 的值</li>
+<li><code>pushl</code>后 <code>%esp</code> 的值，亦即 <code>-4</code> 后的值</li>
+</ul>
+<p>似乎 2 个都对，<em>IA32</em>对这种问题有约定答案，<em>Y86</em>也遵循这些约定。</p>
+<pre class="language-asm" data-language="asm"><code class="language-asm">.text
+.globl pushtest
+pushtest:
+	pushl %ebp
+	movl %esp, %ebp
+	movl %esp, %eax
+	pushl %esp
+	popl %edx
+	subl %edx,%eax
+	leave
+	ret</code></pre>
+<p>运行以上代码，结果总是 0，那么答案就是第一种可能。<em>INTEL</em>文档约定了这个问题的答案：</p>
+<ul>
+<li>从 <em>I286</em> 开始，<code>pushl %esp</code>的值为 <code>%esp</code> 的旧值。</li>
+<li><em>I8086</em>的结果为新值，即更新后 <em>SP</em>(<code>-2</code>) 的值。</li>
+</ul>
+<p>对于<code>pop %esp</code>，也有 2 个答案：</p>
+<ul>
+<li><code>pop</code>后 <code>%esp</code> 的值，即 <code>+4</code> 后的值。</li>
+<li>将 <code>%esp</code> 栈指针指向的内存的值赋值为<code>%esp</code>，即<code>movl (%esp), %esp</code></li>
+</ul>
+<p>有趣的是结果没有二义性，为第二个答案。</p>
+<p>为什么要纠结这种问题？答案很简单，为了一致性，为了更好的可移植性，为了文档更简洁，从长远看来，能减少很多问题。</p>
+<h2 id="Logic-Design-and-the-Hardware-Control-Language-HCL">Logic Design and the Hardware Control Language HCL</h2>
+<p>这节介绍了点关于数电的内容，和 <em>HCL</em> 语言。毕竟是从程序员角度来学习操作系统，所以硬件方面介绍的不是很深。</p>
+<h3 id="Logic-Gates">Logic Gates</h3>
+<p>353 页图 4.9 给出了 3 个门：与或非门。</p>
+<p><em>HCL</em>表达式的逻辑运算和 C 语言差不多，用 <code>&amp;&amp;</code> 代表与，<code>||</code>代表或，<code>!</code>代表非。但是有点不同，C 语言的单位操作是用 <code>&amp;</code>, <code>|</code>, <code>~</code> 等，而 <em>HCL</em> 都是用前面说的那 3 个符号。</p>
+<p>比如一个与门有 3 个输入端<em>A</em>, <em>B</em>, <em>C</em>，那么输出端可以写成<code>out = a &amp;&amp; b &amp;&amp; c</code>。</p>
+<h3 id="Combinational-Circuits-and-HCL-Boolean-Expressions">Combinational Circuits and HCL Boolean Expressions</h3>
+<p>组合逻辑电路就是将一些逻辑门连接在一起，以实现某些功能。有 2 个约束：</p>
+<ul>
+<li>多个输入端不能连在一起，否则会出现冲突。。</li>
+<li>组合电路中不能出现圈，也会导致歧义。</li>
+</ul>
+<p>354 页图 4.10 给出了同或的组合电路，写成 <em>HCL</em> 表达式如下：</p>
+<pre><code>bool eq = (a &amp;&amp; b) || (!a &amp;&amp; !b);
+</code></pre>
+<p>看起来和 C 语言差不多，需要注意的是 <code>eq</code> 为表达式的名字，不是一个变量，可以理解成函数。</p>
+<p>355 页图 4.11 给出了二路选择器 (<em>MUX</em>) 的例子，通过 <em>s</em> 控制端来选择输出是 <em>a</em> 还是 <em>b</em>，写成<em>HCL</em> 表达式如下：</p>
+<pre><code>bool out = (s &amp;&amp; a) || (!s &amp;&amp; b);
+</code></pre>
+<p>这里还有要注意的是，</p>
+<ul>
+<li><em>HCL</em>的表达式（对应组合电路）结果可能需要一定延迟才会更新，而不是像 C 表达式那样立即计算出结果。</li>
+<li><em>HCL</em>表达式的逻辑门只有 0 或者 1。</li>
+<li>在 C 语言的逻辑表达式中，如果 <code>&amp;&amp;</code> 或者 <code>||</code> 一开始就能计算出结果，那么后面的部分就不会计算了，而 <em>HCL</em> 没有这个说法。</li>
+</ul>
+<h3 id="Word-Level-Combinational-Circuits-and-HCL-Integer-Expressions">Word-Level Combinational Circuits and HCL Integer Expressions</h3>
+<p><em>HCL</em>不仅支持以位为单位，还支持以字为单位。一个字就是一系列的位组合，可以表示一个整数、地址、操作码等等。</p>
+<p>356 页图 4.12 给出了判断 2 个字 A, B 是否相等的逻辑电路，它是通过每位同或的结果，然后与运算来判断。在 <em>HCL</em> 直接写成 <code>bool eq = (A=B)</code> 就行了，<em>HCL</em>把每个字当做 <code>int</code> 来看待，不需要指定字长。</p>
+<p>357 页图 4.13 给出了二路选择器的逻辑电路，输入信号是 2 个字 A, B，控制端是 s。在 <em>HCL</em> 可以用<em>case expressions</em>。如下：</p>
+<pre><code>[
+	select_1: expr 1
+	select_2: expr 2
+
+	select_k: expr k
+]
+</code></pre>
+<p>其中 <code>select_i</code> 为逻辑表达式，<code>expr_i</code>为对应的返回值。<em>HCL</em>会依次运算各个表达式，直到 <code>select_i</code> 表达式为 1，将 <code>expr_i</code> 作为结果。那么前面的二路选择器可以写成：</p>
+<pre><code>int Out = [
+	s: A;
+	1: B;
+];
+</code></pre>
+<p>当 s 为 1 的时候，输出 A；当 s 为 0 的时候跳过，最后输出 B。最后一条表达式 <code>1</code> 可看作默认表达式，当前面的表达式都没 <code>1</code> 时，那么就选择这条表达式了。</p>
+<p>举个例子，4 路选择器，2 个控制端<em>s1</em>, <em>s2</em>，4 个输入端<em>A</em>, <em>B</em>, <em>C</em>, <em>D</em>，那么：</p>
+<pre><code>int Out4 = [
+	!s1 &amp;&amp; !s0 : A; # 00
+	!s1 : B; # 01
+	!s0 : C; # 10
+	1 : D; # 11
+];
+</code></pre>
+<p>359 页图 4.15 给出了算数逻辑单元 <em>ALU</em> 的例子。它有 2 个输入端 A, B，一个控制端，根据控制端的值来选择哪种运算。这 4 种运算的编码和前面的 <code>OPl</code> 指令的 <em>function</em> 部分对应的一致，同样源操作数和目标操作数的位置与 <em>ALU</em> 的位置也对应起来。</p>
+<h3 id="Set-Membership">Set Membership</h3>
+<p>在设计处理器的时候，需要匹配一些指令的类型。<em>HCL</em>有个更简单集合写法，如下：</p>
+<pre><code>iexpr in &#123;iexpr_1 , iexpr_2 , . . . , iexpr_k&#125;
+</code></pre>
+<p>当被测试的 <code>iexpr</code> 在集合中，返回值就为<code>1</code>。那么前面的 2 路选择器的高位<code>s1</code>，之前这么写：</p>
+<pre><code>bool s1 = code == 2 || code == 3;
+</code></pre>
+<p>现在可以写成：</p>
+<pre><code>bool s1 = code in &#123;2, 3&#125;;
+</code></pre>
+<h3 id="Memory-and-Clocking">Memory and Clocking</h3>
+<p>这节介绍了点关于时序电路的内容。组合电路不存储信息（状态）；而时序电路能够保持状态，根据状态来计算。这里介绍了 2 种存储设备：</p>
+<ul>
+<li><em>Clocked registers</em>: 可以存储单个字，值由时钟信号来控制更新。</li>
+<li><em>Random-access memories</em>: 可以存储多个字，使用 <strong> 地址 </strong> 来选择读写哪个字。举个例子:
+<ul>
+<li>虚拟内存，由软硬件来确定地址访问某个字</li>
+<li><em>register file</em>，寄存器的 id 作为地址，来选中某个寄存器（字）。在 <em>IA32</em> 和<em>Y86</em>处理器中，有 8 个寄存器。</li>
+</ul>
+</li>
+</ul>
+<p>362 页图 4.16 给出了 (<em>Clocked registers</em>) 寄存器的更新。大多数时间寄存器的值 (x) 保持，尽管输入端有新值(y)，只要时钟信号是低电平，那么寄存器的值不变。直到时钟信号上升沿，才更新寄存器的值(y)。</p>
+<p>我们的 <em>Y86</em> 处理器会使用这些时序寄存器来保存程序计数器 (PC)，<em>condition</em> 单位寄存器(CC)，程序状态(Stat)。</p>
+<p>362 页给出了典型的 <em>register file</em> 结构。其中有 2 个读端 (A, B)，1 个写端(W)，可以同时读写。读端的 srcA, srcB 相当于寄存器地址(ID)，指定了哪个寄存器要读，valA, valB 分别是指定寄存器的值；写端的 dstW 也是寄存器地址，通过 valW 来写。需要注意<em>register file</em> 不是组合电路，而是个时序电路。假如设置 srcA 为 3，那么过段时间，会读取寄存器 <code>%ebx</code> 的值，输出到 valA。写一个字也受到时钟信号的影响，和前面说的 <em>Clocked registers</em> 一样，当时钟信号上升沿时，将 valW 写到 dstW 指定的寄存器 ID 上。如果<code>dstW == 0xF</code>，说明啥都不写。</p>
+<p>363 页给出了 <em>Random-access memory</em> 的结构，用来存储程序的数据。其中有一个地址线，一个输入线（写），一个输出（读）线。当 write 控制端信号为 0，并且地址有效，那么就会输出指定的字（读）；写受到时钟信号的影响，当 write 控制端信号为 1，并且地址有效，那么过段延迟对应的地址内容将会更新。若地址无效，error 端输出 1。</p>
+<p>综上所述，读可以随时读，但是写需要一定的延迟（时钟上升沿触发）。</p>
+<p>设计的处理器有个只读存储器，用来读取指令。</p>
+<h2 id="Sequential-Y86-Implementations">Sequential Y86 Implementations</h2>
+<p>这一部分讲了下关于串行 <em>Y86</em> 指令的 <em>HCL</em> 实现和硬件实现，也就是说每一个时钟周期执行一条指令，后面会接着实现<em>pipelined</em>。</p>
+<h3 id="Organizing-Processing-into-Stages">Organizing Processing into Stages</h3>
+<p>处理一条指令分为好几个阶段，设计的时候应该保证每条指令的每个阶段 <strong> 相似</strong>，如下：</p>
+<ul>
+<li>Fetch: 这个阶段从内存中读取一条 <em>PC</em> 指向的地址上的指令，然后根据指令第一个字节，分为高 4 位（<em>code</em>部分）和低 4 位（<em>function</em>部分），来判断是否接着读取寄存器 id: rA, rB，和 4 字节的立即数。然后计算新的 <em>PC</em> 值：<em>valP = PC+ 指令长度</em>。</li>
+<li>Decode: 这个阶段通常从寄存器中读取值，分别为寄存器 <em>rA</em>, <em>rB</em> 指向的 <em>valA, valB</em>。而有些指令只读取 *%esp<em> 寄存器的值（例如</em>push/pop*）</li>
+<li>Execute: 这个阶段通过算数逻辑单元 (<em>ALU</em>) 来进行运算，得到结果<em>valE</em>：
+<ul>
+<li>根据相应指令 (<em>OPl, rrmovl, irmovl, cmovXX</em>) 的<em>function</em>部分来执行相应的运算：<em>add, sub, and, xor</em></li>
+<li>根据相应指令 (<em>rmmovl, mrmovl</em>) 来计算有效地址</li>
+<li>根据相应指令 (<em>pushl, popl, call, ret</em>) 来计算栈指针 +4/+(-4)</li>
+<li>根据相应指令 (<em>jXX</em>) 通过 <em>condition code</em> 判断是否跳转。</li>
+</ul>
+</li>
+<li>Memory: 这个阶段通常从内存中读 (<em>valM</em>) 或者写内存。</li>
+<li>Write back: 这个阶段更新寄存器的值。</li>
+<li>PC update: 这个阶段更新 <em>PC</em> 的值。</li>
+</ul>
+<p>处理器不断根据执行以上步骤，直到遇到异常 /<em>halt</em>指令。当然有可能有些指令某一阶段什么都不做的，只要保证每个指令对应阶段都相似就能减少硬件设计复杂度了。</p>
+<p>365 页图 4.17 给了个 <em>Y86</em> 指令的代码，然后书上接着介绍每一条指令的每个阶段执行细节：图 4.18 到图 4.21，这些步骤和硬件图相对应的。</p>
+<h3 id="SEQ-Hardware-Structure">SEQ Hardware Structure</h3>
+<p>这一部分讲硬件实现。376 页图 4.22，378 页图 4.23 给出了硬件细节。</p>
+<p>前面说过，<em>Y86</em>实现用了一个只读内存，专门用于 Fetch 阶段来读取指令，而 Memory 阶段专门读写数据内存。电路图的灰色方块可以看作一个选择器 (<em>MUX</em>)，从多个输入选择一个作为输出，而白色椭圆上的标签(eg. valA,valB) 对应于上面“读取”的值。</p>
+<h3 id="SEQ-Timing">SEQ Timing</h3>
+<p>这部分讲了关于串行执行的时序问题，一个时钟周期是如何工作的。</p>
+<p>关于设计处理器，书上有这么一句话：</p>
+<blockquote>
+<p>The processor never needs to read back the state updated by an instruction in order to complete the processing of this instruction.</p>
+</blockquote>
+<p>大概意思应该是（有点绕口了。。）：</p>
+<blockquote>
+<p>处理器不能读取被当前指令更新的值而为了完成当前指令。</p>
+</blockquote>
+<p>简而言之，因为电路采用的是时序电路，那么内存、寄存器更新需要等到下一个时钟周期才能更新。也就是说在上面各个阶段读取（读取的时候随时可读，写的时候要下一个时钟周期的上升沿）的是“旧值”(eg. valA, valB, valM)，然后产生一系列“新值”(eg. valP, valE)，等到下一个上升沿，将会 <strong> 同时 </strong> 更新产生的 <strong> 新值</strong>，周而复始。382 图 4.25 给出了详细的过程。</p>
+<h3 id="SEQ-Stage-Implementations">SEQ Stage Implementations</h3>
+<p>这一部分就是 <em>HCL</em> 代码了，配合电路图、指令执行细节表来看，更容易理解。<em>HCL</em>代码主要就是描述各个端口的选择器–根据不同指令选择不同的数据。</p>
+<p>接下来一部分就是讲关于 <em>pipelined</em> 的实现了，因为串行执行实在是太慢了。举个例子，一个简单的 <em>ret</em> 指令，在时钟周期的开始，首先从指令内存中读取一条指令，然后从寄存器中读取栈指针，<em>ALU</em>对栈指针 +(-4)，将新的 *PC(valP)* 值写入数据内存中，所有步骤都在一个时钟周期完成的。然而这么做不能充分利用好各个部件，因为一个时钟周期中只有一部分部件工作而已。</p>
+<p>待续</p>
+
+    
+  </div>
+
+</article>
+
+
+   
+       <div class="original">
+    <ul>
+        <li>本文标题：CSAPP 第四章总结：Processor Architecture</li>
+        <li>本文字数：4.4k</li>
+        <li>本文作者：Netcan</li>
+        <li>发布时间：2017年02月06日 - 14时36分</li>
+        <li>最后更新：2022年12月09日 - 19时02分</li>
+        <li>原始链接：<a href="https://netcan.github.io/2017/02/06/CSAPP%E7%AC%AC%E5%9B%9B%E7%AB%A0%E6%80%BB%E7%BB%93%EF%BC%9AProcessor-Architecture/">https://netcan.github.io/2017/02/06/CSAPP第四章总结：Processor-Architecture/</a></li>
+        <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
+    </ul>
+</div>
+
+   
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持Netcan</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2017/01/31/CSAPP%E7%AC%AC%E4%B8%89%E7%AB%A0%E6%80%BB%E7%BB%93%EF%BC%9AMachine-Level-Representation-of-Programs/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2017/03/17/Linux%E5%A4%9A%E6%98%BE%E7%A4%BA%E5%99%A8%E9%85%8D%E5%90%88i3wm%E7%AA%97%E5%8F%A3%E7%AE%A1%E7%90%86%E5%99%A8/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '893a4103795fc66cd8e7',
+  clientSecret: '35c92c3dca938831b67dc22e46d64bc9073ebacf',
+  repo: 'netcan.github.io',
+  owner: 'Netcan',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: md5(location.pathname),
+  admin: ['Netcan'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

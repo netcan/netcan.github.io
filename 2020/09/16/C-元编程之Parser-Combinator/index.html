@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>C++ 元编程之 Parser Combinator | Netcan on Programming</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="C/C++,元编程," />
+  
+
+  <meta name="description" content="引子 前不久在 CppCon 上看到一个 Talk：constexpr All the things，这个演讲主题令我非常震撼，在编译期解析 json 字符串，进而提出了编译期构造正则表达式（编译期构建 FSM），现场掌声一片，而背后依靠的是 C++ 强大的 constexpr 特性，从而大大提高了编译期计算威力。 早在 C++11 的时候就有 constexpr 特性，那时候约束比较多，只能有一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++ 元编程之 Parser Combinator">
+<meta property="og:url" content="https://netcan.github.io/2020/09/16/C-%E5%85%83%E7%BC%96%E7%A8%8B%E4%B9%8BParser-Combinator/index.html">
+<meta property="og:site_name" content="Netcan on Programming">
+<meta property="og:description" content="引子 前不久在 CppCon 上看到一个 Talk：constexpr All the things，这个演讲主题令我非常震撼，在编译期解析 json 字符串，进而提出了编译期构造正则表达式（编译期构建 FSM），现场掌声一片，而背后依靠的是 C++ 强大的 constexpr 特性，从而大大提高了编译期计算威力。 早在 C++11 的时候就有 constexpr 特性，那时候约束比较多，只能有一">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-09-16T10:26:25.000Z">
+<meta property="article:modified_time" content="2022-12-09T11:02:08.581Z">
+<meta property="article:author" content="Netcan">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="元编程">
+<meta name="twitter:card" content="summary">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/site.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-174901164-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d2c292719a76d8c0fa7f9874379cfd25";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"] > svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body>
+
+
+  
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+  
+
+  <link rel="stylesheet" href="/css/prism.css">
+
+<div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">ROOT</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E5%AD%90"><span class="toc-text">引子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%20Parser"><span class="toc-text">什么是 Parser</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%20Parser-Combinator"><span class="toc-text">什么是 Parser Combinator</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E6%88%98"><span class="toc-text">实战</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E6%9E%90%E6%95%B0%E5%80%BC"><span class="toc-text">解析数值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Json%20%E8%A7%A3%E6%9E%90%E5%AF%BC%E8%AF%BB"><span class="toc-text">Json 解析导读</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E8%AE%B0"><span class="toc-text">后记</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-C-元编程之Parser-Combinator" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">C++ 元编程之 Parser Combinator</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2020.09.16</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Netcan</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h2 id="引子">引子</h2>
+<p>前不久在 CppCon 上看到一个 Talk：<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=PJwd4JLYJJY">constexpr All the things</a>，这个演讲主题令我非常震撼，在编译期解析 json 字符串，进而提出了编译期构造正则表达式（编译期构建 FSM），现场掌声一片，而背后依靠的是 C++ 强大的 constexpr 特性，从而大大提高了编译期计算威力。</p>
+<p>早在 C++11 的时候就有 constexpr 特性，那时候约束比较多，只能有一条 return 语句，能做的事情只有简单的递归实现一些数学、hash 函数；而到了 C++14 的时候这个约束放开了，允许像普通函数那样，进而社区产生了一系列 constexpr 库；而在 C++17，更加泛化了 constexpr，允许 <code>if constexpr</code> 来代替元编程的 SFINAE 手法，STL 库的一些算法支持 constexpr，甚至连 lambda 都默认是 constexpr 的了；到 C++20，更加难以想象，居然支持了 constexpr new，STL 的 vector 都是 constexpr 的了，若用 constexpr allocator 和 constexpr destructor，那么就能统一所有 constexpr 容器了。</p>
+<p>借助 C++ 的 constexpr + lambda 能力，可以轻而易举的构造 Parser Combinator，实现一个 Parser 也没那么繁杂了，对用户定义的字符串（User defined literal）释放了巨大的潜力，这也是本文的重点。</p>
+<h2 id="什么是 Parser">什么是 Parser</h2>
+<p>Parser 是一个解析器函数，输入一个字符串，输出解析后的类型值集合，函数签名如下：</p>
+<pre class="language-haskell" data-language="haskell"><code class="language-haskell"><span class="token constant">Parser</span> <span class="token hvariable">a</span> <span class="token operator">::</span> <span class="token constant">String</span> <span class="token operator">-></span> <span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token hvariable">a</span><span class="token punctuation">,</span> <span class="token constant">String</span><span class="token punctuation">)</span><span class="token punctuation">]</span></code></pre>
+<p>简单起见，这里我们考虑只输出零或一个类型值结果，而不是集合，那么签名如下：</p>
+<pre class="language-haskell" data-language="haskell"><code class="language-haskell"><span class="token constant">Parser</span> <span class="token hvariable">a</span> <span class="token operator">::</span> <span class="token constant">String</span> <span class="token operator">-></span> <span class="token constant">Maybe</span> <span class="token punctuation">(</span><span class="token hvariable">a</span><span class="token punctuation">,</span> <span class="token constant">String</span><span class="token punctuation">)</span></code></pre>
+<p>举个例子，一个数字 Parser，解析输入字符串<code>&quot;123456&quot;</code>，输出结果为<code>Just (1, &quot;23456&quot;)</code>，即得到了数字 1 和剩余字符串<code>&quot;23456&quot;</code>，从而可以供下一个 Parser 使用；若解析失败，输出<code>None</code>。</p>
+<p>对应 C++ 的函数签名，如下：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">// Parser a :: String -> Maybe (a, String)</span>
+<span class="token keyword">using</span> ParserInput <span class="token operator">=</span> std<span class="token operator">::</span>string_view<span class="token punctuation">;</span>
+<span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">T</span><span class="token operator">></span>
+<span class="token keyword">using</span> ParserResult <span class="token operator">=</span> std<span class="token operator">::</span>optional<span class="token operator">&lt;</span>std<span class="token operator">::</span>pair<span class="token operator">&lt;</span>T<span class="token punctuation">,</span> ParserInput<span class="token operator">>></span><span class="token punctuation">;</span>
+<span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">T</span><span class="token operator">></span>
+<span class="token keyword">using</span> Parser <span class="token operator">=</span> <span class="token keyword">auto</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span><span class="token punctuation">(</span>ParserInput<span class="token punctuation">)</span> <span class="token operator">-></span> ParserResult<span class="token operator">&lt;</span>T<span class="token operator">></span><span class="token punctuation">;</span></code></pre>
+<p>这就是 Parser 的定义了。</p>
+<p>根据定义可以实现几个最基本的 Parser，例如匹配给定的字符：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">constexpr</span> <span class="token keyword">auto</span> <span class="token function">makeCharParser</span><span class="token punctuation">(</span><span class="token keyword">char</span> c<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">// CharParser :: Parser Char</span>
+    <span class="token keyword">return</span> <span class="token punctuation">[</span><span class="token operator">=</span><span class="token punctuation">]</span><span class="token punctuation">(</span>ParserInput s<span class="token punctuation">)</span> <span class="token operator">-></span> ParserResult<span class="token operator">&lt;</span><span class="token keyword">char</span><span class="token operator">></span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>s<span class="token punctuation">.</span><span class="token function">empty</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">||</span> c <span class="token operator">!=</span> s<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token keyword">return</span> std<span class="token operator">::</span>nullopt<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> std<span class="token operator">::</span><span class="token function">make_pair</span><span class="token punctuation">(</span>s<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token function">ParserInput</span><span class="token punctuation">(</span>s<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> s<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
+<p><code>makeCharParser</code>相当于一个工厂，给定字符 <code>c</code>，创建匹配<code>c</code> 的 Parser。</p>
+<p>匹配给定集合中的字符：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">constexpr</span> <span class="token keyword">auto</span> <span class="token function">oneOf</span><span class="token punctuation">(</span>std<span class="token operator">::</span>string_view chars<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">// OneOf :: Parser Char</span>
+    <span class="token keyword">return</span> <span class="token punctuation">[</span><span class="token operator">=</span><span class="token punctuation">]</span><span class="token punctuation">(</span>ParserInput s<span class="token punctuation">)</span> <span class="token operator">-></span> ParserResult<span class="token operator">&lt;</span><span class="token keyword">char</span><span class="token operator">></span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>s<span class="token punctuation">.</span><span class="token function">empty</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">||</span> chars<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span>s<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">==</span> std<span class="token operator">::</span>string<span class="token operator">::</span>npos<span class="token punctuation">)</span> <span class="token keyword">return</span> std<span class="token operator">::</span>nullopt<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> std<span class="token operator">::</span><span class="token function">make_pair</span><span class="token punctuation">(</span>s<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token function">ParserInput</span><span class="token punctuation">(</span>s<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> s<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre>
+<h2 id="什么是 Parser-Combinator">什么是 Parser Combinator</h2>
+<p>Parser 是可组合的最小单元，Parser 与 Parser 之间可以组合成任意复杂的 Parser，而 Parser Combinator 就是一个高阶函数，输入一系列 Parser，输出复合后的新 Parser。</p>
+<p>根据定义，可以实现一个 Combinator 组合两个 Parser，同时根据两个 Parser 的结果计算出新的结果，从而得到新的 Parser：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">// combine :: Parser a -> Parser b -> (a -> b -> c) -> Parser c</span>
+<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">P1</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">P2</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">F</span><span class="token punctuation">,</span>
+    <span class="token keyword">typename</span> <span class="token class-name">R</span> <span class="token operator">=</span> std<span class="token operator">::</span>invoke_result_t<span class="token operator">&lt;</span>F<span class="token punctuation">,</span> Parser_t<span class="token operator">&lt;</span>P1<span class="token operator">></span><span class="token punctuation">,</span> Parser_t<span class="token operator">&lt;</span>P2<span class="token operator">>></span><span class="token operator">></span>
+<span class="token keyword">constexpr</span> <span class="token keyword">auto</span> <span class="token function">combine</span><span class="token punctuation">(</span>P1<span class="token operator">&amp;&amp;</span> p1<span class="token punctuation">,</span> P2<span class="token operator">&amp;&amp;</span> p2<span class="token punctuation">,</span> F<span class="token operator">&amp;&amp;</span> f<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> <span class="token punctuation">[</span><span class="token operator">=</span><span class="token punctuation">]</span><span class="token punctuation">(</span>ParserInput s<span class="token punctuation">)</span> <span class="token operator">-></span> ParserResult<span class="token operator">&lt;</span>R<span class="token operator">></span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">auto</span> r1 <span class="token operator">=</span> <span class="token function">p1</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>r1<span class="token punctuation">)</span> <span class="token keyword">return</span> std<span class="token operator">::</span>nullopt<span class="token punctuation">;</span>
+        <span class="token keyword">auto</span> r2 <span class="token operator">=</span> <span class="token function">p2</span><span class="token punctuation">(</span>r1<span class="token operator">-></span>second<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>r2<span class="token punctuation">)</span> <span class="token keyword">return</span> std<span class="token operator">::</span>nullopt<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> std<span class="token operator">::</span><span class="token function">make_pair</span><span class="token punctuation">(</span><span class="token function">f</span><span class="token punctuation">(</span>r1<span class="token operator">-></span>first<span class="token punctuation">,</span> r2<span class="token operator">-></span>first<span class="token punctuation">)</span><span class="token punctuation">,</span> r2<span class="token operator">-></span>second<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
+<p>由于 C++ 支持操作符重载，那么可以重载一个二元操作符来组合两个 Parser，比如从两个 Parser 里取出其中一个 Parser 的结果产生新的 Parser：</p>
+<p>取左边 Parser 的结果：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">// operator> :: Parser a -> Parser b -> Parser a</span>
+<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">P1</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">P2</span><span class="token operator">></span>
+<span class="token keyword">constexpr</span> <span class="token keyword">auto</span> <span class="token keyword">operator</span><span class="token operator">></span><span class="token punctuation">(</span>P1<span class="token operator">&amp;&amp;</span> p1<span class="token punctuation">,</span> P2<span class="token operator">&amp;&amp;</span> p2<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> <span class="token function">combine</span><span class="token punctuation">(</span>std<span class="token operator">::</span>forward<span class="token operator">&lt;</span>P1<span class="token operator">></span><span class="token punctuation">(</span>p1<span class="token punctuation">)</span><span class="token punctuation">,</span>
+                   std<span class="token operator">::</span>forward<span class="token operator">&lt;</span>P2<span class="token operator">></span><span class="token punctuation">(</span>p2<span class="token punctuation">)</span><span class="token punctuation">,</span>
+                   <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token keyword">auto</span><span class="token operator">&amp;&amp;</span> l<span class="token punctuation">,</span> <span class="token keyword">auto</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> l<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
+<p>取右边 Parser 的结果：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">// operator&lt; :: Parser a -> Parser b -> Parser b</span>
+<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">P1</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">P2</span><span class="token operator">></span>
+<span class="token keyword">constexpr</span> <span class="token keyword">auto</span> <span class="token keyword">operator</span><span class="token operator">&lt;</span><span class="token punctuation">(</span>P1<span class="token operator">&amp;&amp;</span> p1<span class="token punctuation">,</span> P2<span class="token operator">&amp;&amp;</span> p2<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> <span class="token function">combine</span><span class="token punctuation">(</span>std<span class="token operator">::</span>forward<span class="token operator">&lt;</span>P1<span class="token operator">></span><span class="token punctuation">(</span>p1<span class="token punctuation">)</span><span class="token punctuation">,</span>
+                   std<span class="token operator">::</span>forward<span class="token operator">&lt;</span>P2<span class="token operator">></span><span class="token punctuation">(</span>p2<span class="token punctuation">)</span><span class="token punctuation">,</span>
+                   <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token keyword">auto</span><span class="token punctuation">,</span> <span class="token keyword">auto</span><span class="token operator">&amp;&amp;</span> r<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> r<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
+<p>有时候需要对同一个 Parser 进行多次匹配，类似正则表达式的 <code>*/+</code> 操作，这个操作可以看做是<code>fold</code>，执行多次 Parser 直到匹配失败，每次结果传递给一个函数运算：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">// foldL :: Parser a -> b -> (b -> a -> b) -> ParserInput -> ParserResult b</span>
+<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">P</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">R</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">F</span><span class="token operator">></span>
+<span class="token keyword">constexpr</span> <span class="token keyword">auto</span> <span class="token function">foldL</span><span class="token punctuation">(</span>P<span class="token operator">&amp;&amp;</span> p<span class="token punctuation">,</span> R acc<span class="token punctuation">,</span> F<span class="token operator">&amp;&amp;</span> f<span class="token punctuation">,</span> ParserInput in<span class="token punctuation">)</span>
+    <span class="token operator">-></span> ParserResult<span class="token operator">&lt;</span>R<span class="token operator">></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">auto</span> r <span class="token operator">=</span> <span class="token function">p</span><span class="token punctuation">(</span>in<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>r<span class="token punctuation">)</span> <span class="token keyword">return</span> std<span class="token operator">::</span><span class="token function">make_pair</span><span class="token punctuation">(</span>acc<span class="token punctuation">,</span> in<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        acc <span class="token operator">=</span> <span class="token function">f</span><span class="token punctuation">(</span>acc<span class="token punctuation">,</span> r<span class="token operator">-></span>first<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        in <span class="token operator">=</span> r<span class="token operator">-></span>second<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
+<p>有了 <code>fold</code> 函数，那么可以很容易实现函数来匹配任意多次<code>many</code>，匹配至少一次<code>atLeast</code>：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">// many :: Parser a -> Parser monostate</span>
+<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">P</span><span class="token operator">></span>
+<span class="token keyword">constexpr</span> <span class="token keyword">auto</span> <span class="token function">many</span><span class="token punctuation">(</span>P<span class="token operator">&amp;&amp;</span> p<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> <span class="token punctuation">[</span>p<span class="token operator">=</span>std<span class="token operator">::</span>forward<span class="token operator">&lt;</span>P<span class="token operator">></span><span class="token punctuation">(</span>p<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">(</span>ParserInput s<span class="token punctuation">)</span>
+        <span class="token operator">-></span> ParserResult<span class="token operator">&lt;</span>std<span class="token operator">::</span>monostate<span class="token operator">></span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> detail<span class="token operator">::</span><span class="token function">FoldL</span><span class="token punctuation">(</span>p<span class="token punctuation">,</span> std<span class="token operator">::</span>monostate<span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+            <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token keyword">auto</span> acc<span class="token punctuation">,</span> <span class="token keyword">auto</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> acc<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">// atLeast :: Parser a -> b -> (b -> a -> b) -> Parser b</span>
+<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">P</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">R</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">F</span><span class="token operator">></span>
+<span class="token keyword">constexpr</span> <span class="token keyword">auto</span> <span class="token function">atLeast</span><span class="token punctuation">(</span>P<span class="token operator">&amp;&amp;</span> p<span class="token punctuation">,</span> R<span class="token operator">&amp;&amp;</span> init<span class="token punctuation">,</span> F<span class="token operator">&amp;&amp;</span> f<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">static_assert</span><span class="token punctuation">(</span>std<span class="token operator">::</span>is_same_v<span class="token operator">&lt;</span>std<span class="token operator">::</span>invoke_result_t<span class="token operator">&lt;</span>F<span class="token punctuation">,</span> R<span class="token punctuation">,</span> Parser_t<span class="token operator">&lt;</span>P<span class="token operator">>></span><span class="token punctuation">,</span> R<span class="token operator">></span><span class="token punctuation">,</span>
+            <span class="token string">"type mismatch!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token punctuation">[</span>p<span class="token operator">=</span>std<span class="token operator">::</span>forward<span class="token operator">&lt;</span>P<span class="token operator">></span><span class="token punctuation">(</span>p<span class="token punctuation">)</span><span class="token punctuation">,</span>
+           f<span class="token operator">=</span>std<span class="token operator">::</span>forward<span class="token operator">&lt;</span>F<span class="token operator">></span><span class="token punctuation">(</span>f<span class="token punctuation">)</span><span class="token punctuation">,</span>
+           init<span class="token operator">=</span>std<span class="token operator">::</span>forward<span class="token operator">&lt;</span>R<span class="token operator">></span><span class="token punctuation">(</span>init<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">(</span>ParserInput s<span class="token punctuation">)</span> <span class="token operator">-></span> ParserResult<span class="token operator">&lt;</span>R<span class="token operator">></span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">auto</span> r <span class="token operator">=</span> <span class="token function">p</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>r<span class="token punctuation">)</span> <span class="token keyword">return</span> std<span class="token operator">::</span>nullopt<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> detail<span class="token operator">::</span><span class="token function">foldL</span><span class="token punctuation">(</span>p<span class="token punctuation">,</span> <span class="token function">f</span><span class="token punctuation">(</span>init<span class="token punctuation">,</span> r<span class="token operator">-></span>first<span class="token punctuation">)</span><span class="token punctuation">,</span> f<span class="token punctuation">,</span> r<span class="token operator">-></span>second<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
+<p>还有种操作是匹配零到一次，类似于正则表达式的 <code>?</code> 操作，这里我定义为 <code>option</code> 操作：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">// option :: Parser a -> a -> Parser a</span>
+<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">P</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">R</span> <span class="token operator">=</span> Parser_t<span class="token operator">&lt;</span>P<span class="token operator">>></span>
+<span class="token keyword">constexpr</span> <span class="token keyword">auto</span> <span class="token function">option</span><span class="token punctuation">(</span>P<span class="token operator">&amp;&amp;</span> p<span class="token punctuation">,</span> R<span class="token operator">&amp;&amp;</span> defaultV<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> <span class="token punctuation">[</span><span class="token operator">=</span><span class="token punctuation">]</span><span class="token punctuation">(</span>ParserInput s<span class="token punctuation">)</span> <span class="token operator">-></span> ParserResult<span class="token operator">&lt;</span>R<span class="token operator">></span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">auto</span> r <span class="token operator">=</span> <span class="token function">p</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span> r<span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token function">make_pair</span><span class="token punctuation">(</span>defaultV<span class="token punctuation">,</span> s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> r<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
+<p>有了以上基本操作，接下来看看如何运用。</p>
+<h2 id="实战">实战</h2>
+<h3 id="解析数值">解析数值</h3>
+<p>项目中模板元编程比较多，而 C++17 之前模板 Dependent type（非类型参数）不支持 double，得 C++20 才支持 double，临时方案就是用 <code>template&lt;char... C&gt; struct NumWrapper &#123;&#125;;</code> 和 User defined literal 来模拟 double 的类型，而需要获取其值的时候，就需要解析字符串了，这些工作应该在编译期确定。</p>
+<p>首先是匹配符号<code>+/-</code>，若没有符号，则认为是<code>+</code>：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">constexpr</span> <span class="token keyword">auto</span> sign <span class="token operator">=</span> <span class="token function">Option</span><span class="token punctuation">(</span><span class="token function">OneOf</span><span class="token punctuation">(</span><span class="token string">"+-"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">'+'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>其次是整数部分，也可能没有，若没有，则认为是 0：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">constexpr</span> <span class="token keyword">auto</span> number <span class="token operator">=</span> <span class="token function">AtLeast</span><span class="token punctuation">(</span><span class="token function">OneOf</span><span class="token punctuation">(</span><span class="token string">"1234567890"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">0l</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token keyword">long</span> acc<span class="token punctuation">,</span> <span class="token keyword">char</span> c<span class="token punctuation">)</span> <span class="token operator">-></span> <span class="token keyword">long</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> acc <span class="token operator">*</span> <span class="token number">10</span> <span class="token operator">+</span> <span class="token punctuation">(</span>c <span class="token operator">-</span> <span class="token string">'0'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">constexpr</span> <span class="token keyword">auto</span> integer <span class="token operator">=</span> <span class="token function">Option</span><span class="token punctuation">(</span>number<span class="token punctuation">,</span> <span class="token number">0l</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>然后是小数点 <code>.</code>，若没有小数点，为了不丢失精度，则返回一个<code>long</code> 值。</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">constexpr</span> <span class="token keyword">auto</span> point <span class="token operator">=</span> <span class="token function">MakeCharParser</span><span class="token punctuation">(</span><span class="token string">'.'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// integer</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span> <span class="token punctuation">(</span>sign <span class="token operator">&lt;</span> integer <span class="token operator">&lt;</span> point<span class="token punctuation">)</span><span class="token punctuation">(</span>in<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> <span class="token function">Combine</span><span class="token punctuation">(</span>sign<span class="token punctuation">,</span> integer<span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token keyword">char</span> sign<span class="token punctuation">,</span> <span class="token keyword">long</span> number<span class="token punctuation">)</span> <span class="token operator">-></span> R <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> sign <span class="token operator">==</span> <span class="token string">'+'</span> <span class="token operator">?</span> number <span class="token operator">:</span> <span class="token operator">-</span>number<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">(</span>in<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre>
+<p>若有小数点，认为是浮点数，返回其 <code>double</code> 值。</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">// floating</span>
+<span class="token keyword">constexpr</span> <span class="token keyword">auto</span> decimal <span class="token operator">=</span> point <span class="token operator">&lt;</span> <span class="token function">Option</span><span class="token punctuation">(</span>number<span class="token punctuation">,</span> <span class="token number">0l</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">constexpr</span> <span class="token keyword">auto</span> value <span class="token operator">=</span> <span class="token function">Combine</span><span class="token punctuation">(</span>integer<span class="token punctuation">,</span> decimal<span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token keyword">long</span> integer<span class="token punctuation">,</span> <span class="token keyword">long</span> decimal<span class="token punctuation">)</span> <span class="token operator">-></span> <span class="token keyword">double</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">double</span> d <span class="token operator">=</span> <span class="token number">0.0</span><span class="token punctuation">;</span>
+    <span class="token keyword">while</span> <span class="token punctuation">(</span>decimal<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        d <span class="token operator">=</span> <span class="token punctuation">(</span>d <span class="token operator">+</span> <span class="token punctuation">(</span>decimal <span class="token operator">%</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">0.1</span><span class="token punctuation">;</span>
+        decimal <span class="token operator">/=</span> <span class="token number">10</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">return</span> integer <span class="token operator">+</span> d<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">return</span> <span class="token function">Combine</span><span class="token punctuation">(</span>sign<span class="token punctuation">,</span> value<span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token keyword">char</span> sign<span class="token punctuation">,</span> <span class="token keyword">double</span> d<span class="token punctuation">)</span> <span class="token operator">-></span> R <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> sign <span class="token operator">==</span> <span class="token string">'+'</span> <span class="token operator">?</span> d <span class="token operator">:</span> <span class="token operator">-</span>d<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">(</span>in<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>由于该 Parser 可能返回 <code>long</code> 或者 <code>double</code> 类型，所以可以统一成和类型<code>std::variant</code>：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">constexpr</span> <span class="token keyword">auto</span> <span class="token function">ParseNum</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">using</span> R <span class="token operator">=</span> std<span class="token operator">::</span>variant<span class="token operator">&lt;</span><span class="token keyword">double</span><span class="token punctuation">,</span> <span class="token keyword">long</span><span class="token operator">></span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">(</span>ParserInput in<span class="token punctuation">)</span> <span class="token operator">-></span> ParserResult<span class="token operator">&lt;</span>R<span class="token operator">></span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">// ...</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre>
+<p>最后我们的 <code>NumWrapper</code> 实现如下，从而可以混入模板类型体系：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">char</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> Cs<span class="token operator">></span>
+<span class="token keyword">constexpr</span> std<span class="token operator">::</span>array<span class="token operator">&lt;</span><span class="token keyword">char</span><span class="token punctuation">,</span> <span class="token keyword">sizeof</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">(</span>Cs<span class="token punctuation">)</span><span class="token operator">></span> ToArr <span class="token operator">=</span> <span class="token punctuation">&#123;</span>Cs<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">char</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>Cs<span class="token operator">></span>
+<span class="token keyword">class</span> <span class="token class-name">NumberWrapper</span> <span class="token punctuation">&#123;</span>
+<span class="token keyword">public</span><span class="token operator">:</span>
+    <span class="token keyword">constexpr</span> <span class="token keyword">static</span> <span class="token keyword">auto</span> numStr <span class="token operator">=</span> ToArr<span class="token operator">&lt;</span>Cs<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">></span><span class="token punctuation">;</span>
+    <span class="token keyword">constexpr</span> <span class="token keyword">static</span> <span class="token keyword">auto</span> res <span class="token operator">=</span>
+        <span class="token function">ParseNum</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">(</span>std<span class="token operator">::</span><span class="token function">string_view</span><span class="token punctuation">(</span>numStr<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> numStr<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">static_assert</span><span class="token punctuation">(</span>res<span class="token punctuation">.</span><span class="token function">has_value</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> res<span class="token operator">-></span>second<span class="token punctuation">.</span><span class="token function">empty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"parse failed!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">public</span><span class="token operator">:</span>
+    <span class="token keyword">constexpr</span> <span class="token keyword">static</span> <span class="token keyword">auto</span> value <span class="token operator">=</span>
+        std<span class="token operator">::</span>get<span class="token operator">&lt;</span>res<span class="token operator">-></span>first<span class="token punctuation">.</span><span class="token function">index</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">></span><span class="token punctuation">(</span>res<span class="token operator">-></span>first<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// long or double</span>
+<span class="token punctuation">&#125;</span></code></pre>
+<p>如果仅仅是用于解析数字，那也杀鸡用牛刀了，因为在 <code>Parser Combinator</code> 之前的版本，我就是在一个普通的 <code>constexpr</code> 函数中完成解析的，代码很无趣，但现在我可能想回退代码了。</p>
+<h3 id="Json 解析导读">Json 解析导读</h3>
+<p>这次的 CppCon 主题是编译期解析 <code>json</code> 字符串，当然直接用 <code>string_view</code> 承载字符串即可。然后构造一些 constexpr 容器，例如固定长度的 constexpr vector，由于是 17 年的 talk 了，在还不支持 constexpr new 的情况下，只能这么做。有了 constexpr vector，进而可以构造 map 容器，也是很简单的 pair vector 集合。</p>
+<p>进而提出 Parser Combinator，解析字符串，<code>fmap</code>到 json 数据结构中。</p>
+<p>最初实现的时候，json 数据结构也是一个大的 <code>template&lt;size_t Depth&gt; struct Json_Value;</code> 模板承载，导致只能指定最大递归层数，那就不够实用了。然后 talker 想了个很巧妙的办法去掉层数约束，就是先递归 <code>sizes()</code> 扫描一遍，计算出所有值个数，这样就能确定需要多少个 <code>Value</code> 容器来存储，其次计算出字符串长度，由于 <code>UTF8</code>、转义字符串的影响，最终要解析的长度其实是可能小于输入长度的。有了确定空间后，进行第二遍递归<code>value_recur&lt;NumObjects, StringSize&gt;::value_parser()</code> 扫描，每次解析完整值时候填一下 <code>Value</code> 数据结构。而由于数组和对象类似，可能嵌套，这时候进行第三遍递归 <code>extent_recur&lt;&gt;::value_parser()</code> 扫描，相当于做一次宽度优先搜索，确定最外层的元素个数，从而依次解析填值。</p>
+<h2 id="后记">后记</h2>
+<p>关于编译速度，很多人觉得可能会很慢，实际上不会，talker 用他 5 年前的笔记本电脑编译解析那么复杂的 json，才花了 5 秒时间，而在我的 MBP 编译，也是秒级。何况牺牲编译速度换来零成本运行时，是值得的。</p>
+<p>这也是 C++ 多年来的进步，据说曾经的 boost.sprit 库解析一个简单的 url 字符串都需要编译 1 分多钟，可想而知这个进步速度多大了。</p>
+
+    
+  </div>
+
+</article>
+
+
+   
+       <div class="original">
+    <ul>
+        <li>本文标题：C++ 元编程之 Parser Combinator</li>
+        <li>本文字数：2.4k</li>
+        <li>本文作者：Netcan</li>
+        <li>发布时间：2020年09月16日 - 18时26分</li>
+        <li>最后更新：2022年12月09日 - 19时02分</li>
+        <li>原始链接：<a href="https://netcan.github.io/2020/09/16/C-%E5%85%83%E7%BC%96%E7%A8%8B%E4%B9%8BParser-Combinator/">https://netcan.github.io/2020/09/16/C-元编程之Parser-Combinator/</a></li>
+        <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
+    </ul>
+</div>
+
+   
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持Netcan</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2020/09/05/C-20%E5%8D%8F%E7%A8%8B/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2020/09/23/C-%E5%85%83%E7%BC%96%E7%A8%8B%E4%B9%8B%E6%B1%82%E8%A7%A3%E5%85%A8%E5%B1%80%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '893a4103795fc66cd8e7',
+  clientSecret: '35c92c3dca938831b67dc22e46d64bc9073ebacf',
+  repo: 'netcan.github.io',
+  owner: 'Netcan',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: md5(location.pathname),
+  admin: ['Netcan'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

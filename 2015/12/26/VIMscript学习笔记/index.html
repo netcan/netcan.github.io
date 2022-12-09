@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>VIMscript 学习笔记 | Netcan on Programming</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Linux,vim," />
+  
+
+  <meta name="description" content="之前的 vim 一直在用这个项目：kvim，但是用习惯了也想有一份自己的 vim 配置，为了提高效率，于是就学起了 vimscript（主要是为了~&#x2F;.vimrc）。 vi 之大道如我心之禅， vi 之漫路即为禅修， vi 之命令禅印于心， 未得此道者视之怪诞， 与之为伴者洞其真谛， 长修此道者巨变人生。 作：reddy@lion.austin.com 译：yangyangwithgnu@yeah">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VIMscript 学习笔记">
+<meta property="og:url" content="https://netcan.github.io/2015/12/26/VIMscript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="Netcan on Programming">
+<meta property="og:description" content="之前的 vim 一直在用这个项目：kvim，但是用习惯了也想有一份自己的 vim 配置，为了提高效率，于是就学起了 vimscript（主要是为了~&#x2F;.vimrc）。 vi 之大道如我心之禅， vi 之漫路即为禅修， vi 之命令禅印于心， 未得此道者视之怪诞， 与之为伴者洞其真谛， 长修此道者巨变人生。 作：reddy@lion.austin.com 译：yangyangwithgnu@yeah">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://7xibui.com1.z0.glb.clouddn.com/%40%2F2015%2F12%2Fscreenshot-window-2015-12-26-100743.png">
+<meta property="article:published_time" content="2015-12-26T01:06:53.000Z">
+<meta property="article:modified_time" content="2022-12-09T11:02:08.585Z">
+<meta property="article:author" content="Netcan">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="vim">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://7xibui.com1.z0.glb.clouddn.com/%40%2F2015%2F12%2Fscreenshot-window-2015-12-26-100743.png">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/site.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-174901164-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d2c292719a76d8c0fa7f9874379cfd25";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"] > svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body>
+
+
+  
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+  
+
+  <link rel="stylesheet" href="/css/prism.css">
+
+<div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">ROOT</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0"><span class="toc-text">学习笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%93%E5%8D%B0%E4%BF%A1%E6%81%AF"><span class="toc-text">打印信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E9%87%8A"><span class="toc-text">注释</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E9%80%89%E9%A1%B9"><span class="toc-text">设置选项</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%83%E5%B0%94%E9%80%89%E9%A1%B9"><span class="toc-text">布尔选项</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%89%93%E5%BC%80%E5%85%B3%E9%97%AD%E5%B8%83%E5%B0%94%E9%80%89%E9%A1%B9"><span class="toc-text">打开关闭布尔选项</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%88%87%E6%8D%A2%E5%B8%83%E5%B0%94%E9%80%89%E9%A1%B9%E5%BC%80%E5%85%B3"><span class="toc-text">切换布尔选项开关</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E5%BD%93%E5%89%8D%E5%80%BC"><span class="toc-text">查看当前值</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%94%AE%E5%80%BC%E9%80%89%E9%A1%B9"><span class="toc-text">键值选项</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%98%A0%E5%B0%84"><span class="toc-text">基本映射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%BC%8F%E6%98%A0%E5%B0%84"><span class="toc-text">模式映射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E6%98%A0%E5%B0%84"><span class="toc-text">删除映射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%92%E5%BD%92"><span class="toc-text">递归</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9D%9E%E9%80%92%E5%BD%92%E6%98%A0%E5%B0%84"><span class="toc-text">非递归映射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Leaders"><span class="toc-text">Leaders</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Local-Leader"><span class="toc-text">Local Leader</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E8%BE%91%20-%20%E5%8A%A0%E8%BD%BD%20vimrc%20%E6%98%A0%E5%B0%84"><span class="toc-text">编辑 &#x2F; 加载 vimrc 映射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Abbreviations%EF%BC%88%E7%BC%A9%E5%86%99%EF%BC%89"><span class="toc-text">Abbreviations（缩写）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%86%9F%E6%82%89%E8%87%AA%E5%AE%9A%E4%B9%89%E6%98%A0%E5%B0%84"><span class="toc-text">熟悉自定义映射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E7%BC%93%E5%86%B2%E5%8C%BA%E7%9A%84%E6%98%A0%E5%B0%84%E5%92%8C%E9%80%89%E9%A1%B9%E8%AE%BE%E7%BD%AE"><span class="toc-text">本地缓冲区的映射和选项设置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%98%A0%E5%B0%84"><span class="toc-text">映射</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%89%B9%E6%80%A7"><span class="toc-text">特性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BC%A9%E5%86%99"><span class="toc-text">缩写</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%89%E9%A1%B9%E8%AE%BE%E7%BD%AE"><span class="toc-text">选项设置</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%8A%A8%E5%91%BD%E4%BB%A4"><span class="toc-text">自动命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%8A%A8%E5%91%BD%E4%BB%A4%E7%BB%93%E6%9E%84"><span class="toc-text">自动命令结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FileType%20%E4%BA%8B%E4%BB%B6"><span class="toc-text">FileType 事件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%8A%A8%E5%91%BD%E4%BB%A4%E7%BC%A9%E5%86%99"><span class="toc-text">自动命令缩写</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%8A%A8%E5%91%BD%E4%BB%A4%E7%BB%84"><span class="toc-text">自动命令组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Operator-Pending%20%E6%98%A0%E5%B0%84"><span class="toc-text">Operator-Pending 映射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Movement%20%E6%98%A0%E5%B0%84"><span class="toc-text">Movement 映射</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%8E%E5%BD%93%E5%89%8D%E5%85%89%E6%A0%87%E4%BD%8D%E7%BD%AE%E5%BC%80%E5%A7%8B"><span class="toc-text">从当前光标位置开始</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%94%B9%E5%8F%98%E5%BC%80%E5%A7%8B%E4%BD%8D%E7%BD%AE"><span class="toc-text">改变开始位置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E6%88%98"><span class="toc-text">实战</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-text">参考资料</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-VIMscript学习笔记" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">VIMscript 学习笔记</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2015.12.26</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Netcan</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p>之前的 vim 一直在用这个项目：<a target="_blank" rel="noopener" href="https://github.com/wklken/k-vim">kvim</a>，但是用习惯了也想有一份自己的 vim 配置，为了提高效率，于是就学起了 vimscript（主要是为了<code>~/.vimrc</code>）。</p>
+<pre><code>vi 之大道如我心之禅，
+vi 之漫路即为禅修，
+vi 之命令禅印于心，
+未得此道者视之怪诞，
+与之为伴者洞其真谛，
+长修此道者巨变人生。
+作：reddy@lion.austin.com
+译：yangyangwithgnu@yeah.net
+</code></pre>
+<h2 id="学习笔记">学习笔记</h2>
+<h3 id="打印信息">打印信息</h3>
+<p>打印信息有 <code>echo</code> 和<code>echom</code>两个，但是使用 <code>echom</code> 会把打印的消息存到历史记录，用 <code>message</code> 可查看。</p>
+<h3 id="注释">注释</h3>
+<p>在编写 vimscript 脚本 (<code>~/.vimrc</code>) 的时候，可用 <code>&quot;</code> 来注释，但是不一定有效，例如</p>
+<pre><code>echo &quot;Hello World!&quot; &quot;hellowrld
+</code></pre>
+<h3 id="设置选项">设置选项</h3>
+<h4 id="布尔选项">布尔选项</h4>
+<h5 id="打开关闭布尔选项">打开关闭布尔选项</h5>
+<p>可用 <code>set</code> 来打开布尔选项，例如 <code>set number</code>, <code>set nonumber</code>，所有布尔选项都可以用<code>set &lt;name&gt;</code> 打开，<code>set no&lt;name&gt;</code>关闭。</p>
+<h5 id="切换布尔选项开关">切换布尔选项开关</h5>
+<p><code>set &lt;name&gt;!</code>可切换开关状态，例如<code>set number!</code>，若当前显示（隐藏）行号可关闭（打开）。</p>
+<h5 id="查看当前值">查看当前值</h5>
+<p><code>set &lt;name&gt;?</code>可显示当前值，例如<code>set number?</code>，若行号已打开则输出<code>number</code>，否则输出<code>nonumber</code>。</p>
+<h4 id="键值选项">键值选项</h4>
+<p>有些选项不只有 <code>on</code> 和<code>off</code>两种选项，需要一个值，可通过<code>set &lt;name&gt;=&lt;value&gt;</code>，例如<code>set numberwidth=2</code>。</p>
+<p>同样可用 <code>set &lt;name&gt;?</code> 来查看值。</p>
+<h3 id="基本映射">基本映射</h3>
+<p>用 <code>map KEY CMD</code> 可以映射按键到指定功能，例如 <code>map - dd</code>，这时在<code>normal</code> 模式下按下 <code>-</code> 即可删除一行。</p>
+<p>需要注意 <code>map</code> 在<code>normal</code>和 <code>visual</code> 模式下有用，在 <code>insert</code> 模式下无用。</p>
+<p><code>&lt;keyname&gt;</code>可告诉 vim 一些特殊的按键，比如 <code>&lt;space&gt;</code> 代表空格键。例如 <code>map &lt;c-d&gt; dd</code> 表示按下 <code>ctrl+d</code> 删除一行。</p>
+<h3 id="模式映射">模式映射</h3>
+<p>前面提到 <code>map</code> 在<code>normal</code>和 <code>visual</code> 模式下有用，在 <code>insert</code> 模式下无用。</p>
+<p>这时可以使用 <code>nmap</code>, <code>vmap</code>, <code>imap</code> 分别指定仅在 <code>normal</code>,<code>visual</code>,<code>insert</code> 模式下生效。</p>
+<p>这里举个例子，<code>imap &lt;c-d&gt; &lt;esc&gt;ddi</code>可在 <code>insert</code> 模式下，按下 <code>ctrl+d</code> 即可删除一行。</p>
+<h3 id="删除映射">删除映射</h3>
+<p>用 <code>*unmap KEY</code> 能删除映射，例如</p>
+<pre><code>nmap - dd
+nunmap -
+</code></pre>
+<h3 id="递归">递归</h3>
+<p>运行命令</p>
+<pre><code>nmap dd 0&lt;esc&gt;jddk
+</code></pre>
+<p>这时会进入递归状态永不终止，导致出现一些奇怪的问题。</p>
+<h3 id="非递归映射">非递归映射</h3>
+<p><code>*map</code>系列存在递归的危险，还有若重定义一个按键不同行为冲突会导致前面映射无效。</p>
+<p>所以 <code>vim</code> 提供了一组非递归映射指令 <code>*noremap</code>，在创建映射的时候不会进行递归。所以尽量用<code>*noremap</code> 指令，能省很多麻烦。</p>
+<h3 id="Leaders">Leaders</h3>
+<p><code>vim</code>强大之处在于可随意映射键位，为了解决重定义键位带来的冲突，这里可用前缀 <code>&lt;leader&gt;</code> 来触发。</p>
+<p>首先定义 <code>&lt;leader&gt;</code>，我习惯用<code>,</code> 做<code>&lt;leader&gt;</code></p>
+<pre><code>let mapleader = ','
+</code></pre>
+<p>在键盘映射的时候，可以这样</p>
+<pre><code>nnoremap &lt;leader&gt;d dd
+</code></pre>
+<p>这样可以通过按 <code>,d</code> 来删除一行。</p>
+<h3 id="Local-Leader">Local Leader</h3>
+<p><code>vim</code>还可以设置 <code>&lt;localleader&gt;</code> 来针对于某些文件设置映射，使用方法和 <code>&lt;leader&gt;</code> 一样。</p>
+<pre><code>let maplocalleader = ','
+</code></pre>
+<h3 id="编辑 - 加载 vimrc 映射">编辑 / 加载 vimrc 映射</h3>
+<pre><code>:nnoremap &lt;leader&gt;ev :vsplit $MYVIMRC&lt;cr&gt;
+:nnoremap &lt;leader&gt;rv :source $MYVIMRC&lt;cr&gt;
+</code></pre>
+<p>这样可以在编辑文件的时候通过按 <code>&lt;leader&gt;ev</code>，<code>&lt;leader&gt;rv</code> 来打开 <code>.vimrc</code> 文件进行编辑 / 加载。
+<img src="http://7xibui.com1.z0.glb.clouddn.com/%40%2F2015%2F12%2Fscreenshot-window-2015-12-26-100743.png" alt="编辑 / 加载 vimrc"></p>
+<h3 id="Abbreviations（缩写）">Abbreviations（缩写）</h3>
+<p><code>vim</code>还有灵活的缩写功能，这里只介绍 <code>insert</code> 模式下的缩写功能。</p>
+<pre><code>iabbrev blog http://www.netcan666.com
+</code></pre>
+<p>在 <code>insert</code> 下输入 <code>blog</code> 就会替换成 <code>http://www.netcan666.com</code> 了。</p>
+<p>那为啥不用映射呢？</p>
+<pre><code>inoremap blog http://www.netcan666.com
+</code></pre>
+<p>因为用映射的话，但你输入 <code>myblog</code> 就会变成 <code>myhttp://www.netcan666.com</code>，而<code>abbrev</code> 是不会替换的。</p>
+<h3 id="熟悉自定义映射">熟悉自定义映射</h3>
+<p>当你定义了一个快捷键的时候，例如</p>
+<pre><code>inoremap jk &lt;esc&gt;
+</code></pre>
+<p>试图在 <code>insert</code> 模式下快速按下 <code>jk</code> 来进入 <code>normal</code> 模式，可是以前都习惯了直接按 <code>&lt;esc&gt;</code> 进入，这时可以这样：</p>
+<pre><code>inoremap &lt;esc&gt; &lt;nop&gt;
+</code></pre>
+<p><code>&lt;nop&gt;</code>即 <code>no operation</code>，这样在<code>insert</code> 模式下 <code>&lt;esc&gt;</code> 即无效了。可强迫自己使用自定义快捷键<code>jk</code>。</p>
+<h3 id="本地缓冲区的映射和选项设置">本地缓冲区的映射和选项设置</h3>
+<h4 id="映射">映射</h4>
+<p>当设置一个映射后，开一个 <code>buffer</code> 你会发现会继承之前定义的映射，比如说</p>
+<pre><code>nnoremap &lt;buffer&gt; &lt;leader&gt;x dd
+</code></pre>
+<p>当你在这个 <code>buffer</code> 下设置之后，切换到另一个 <code>buffer</code>，<code>&lt;leader&gt;x</code> 将不生效。</p>
+<p>那么这里的 <code>&lt;leader&gt;</code> 是一个本地缓冲区 <code>&lt;leader&gt;</code>，一般使用<code>&lt;localleader&gt;</code> 而不是<code>&lt;leader&gt;</code></p>
+<p>这样在你编写一个其他人可能会用到的插件时，用 <code>&lt;localleader&gt;</code> 可防止覆盖他人的 <code>&lt;leader&gt;</code> 全局映射。</p>
+<h4 id="特性">特性</h4>
+<pre><code>:nnoremap &lt;buffer&gt; Q x
+:nnoremap          Q dd
+</code></pre>
+<p>按下 <code>Q</code> 将会使用第一个，因为第一个更具体，然而切换 <code>buffer</code> 之后将使用第二个，因为第一个未定义。</p>
+<h4 id="缩写">缩写</h4>
+<pre><code>iabbrev &lt;buffer&gt; --- &amp;mdash;
+</code></pre>
+<p>这里的 <code>---</code> 缩写将在当前 <code>&lt;buffer&gt;</code> 中生效。</p>
+<h4 id="选项设置">选项设置</h4>
+<p>同样的，在当前 <code>buffer</code> 设置选项可以用<code>setlocal OPTION</code>。</p>
+<h3 id="自动命令">自动命令</h3>
+<blockquote>
+<p>自动命令可以让 Vim 自动执行某些指定的命令，这些指定的命令会在某些事件发生的时候执行。</p>
+</blockquote>
+<p>比如</p>
+<pre><code>autocmd BufNewFile * :write
+</code></pre>
+<p>将在你创建文件的时候就保存。（PS: 自动命令需要关闭 <code>vim</code> 才能删除）</p>
+<h3 id="自动命令结构">自动命令结构</h3>
+<pre><code>:autocmd 事件 1, 事件 2 * :write
+			^       ^	^
+			|       |	|
+			|       |	要执行的命令
+			|       |
+			|       用于事件过滤的“模式（pattern）”
+			|
+			要监听的“事件”
+</code></pre>
+<p><code>:help autocmd-events</code>可参看所有绑定的事件。</p>
+<p>例如</p>
+<pre><code>:autocmd BufNewFile,BufRead *.html setlocal nowrap
+</code></pre>
+<p>这样打开或者创建 <code>html</code> 文件将设置 <code>nowrap</code> 选项。</p>
+<h3 id="FileType 事件">FileType 事件</h3>
+<p>这个可以为不同文件类型创建不同的映射，例如</p>
+<pre><code>:autocmd FileType javascript nnoremap &lt;buffer&gt; &lt;localleader&gt;c I//&lt;esc&gt;
+:autocmd FileType python     nnoremap &lt;buffer&gt; &lt;localleader&gt;c I#&lt;esc&gt;
+</code></pre>
+<p>在 <code>buffer</code> 打开 <code>*.js</code> 文件，可按 <code>&lt;leader&gt;c</code> 注释 <code>//</code> 一行，而在 <code>buffer</code> 新开 <code>*.py</code> 文件，可用 <code>#</code> 注释一行。</p>
+<h3 id="自动命令缩写">自动命令缩写</h3>
+<pre><code>autocmd FileType python     :iabbrev &lt;buffer&gt; iff if:&lt;left&gt;
+autocmd FileType javascript :iabbrev &lt;buffer&gt; iff if ()&lt;left&gt;
+</code></pre>
+<p>将在不同文件类型采用不同缩写。</p>
+<p>同样可以禁用之前的写法，例如</p>
+<pre><code>iabbrev &lt;buffer&gt; if &quot;233333333333333&quot;
+</code></pre>
+<p>这样就不得不逼自己使用 <code>iff</code> 缩写了。</p>
+<h3 id="自动命令组">自动命令组</h3>
+<blockquote>
+<p>自动命令组主要就是可以为一组命令命名，多组相同的名称可以组合。</p>
+</blockquote>
+<p>例如</p>
+<pre><code>augroup testgroup
+    autocmd BufWrite * :echom &quot;Foo&quot;
+    autocmd BufWrite * :echom &quot;Bar&quot;
+augroup END
+augroup testgroup
+    autocmd BufWrite * :echom &quot;Baz&quot;
+augroup END
+</code></pre>
+<p>将结合这三个命令。当你保存文件的时候，就会输出</p>
+<pre><code>Foo
+Bar
+Baz
+</code></pre>
+<p>这里有个重要的用法，就是当你创建的自动命令触发的事件一致的时候，<code>vim</code>并不会覆盖之前的事件，也就是说当你触发事件的时候，会执行所有定义过的自动命令。</p>
+<p>例如</p>
+<pre><code>	autocmd BufWrite * :sleep 200m
+	autocmd BufWrite * :sleep 200m
+	autocmd BufWrite * :sleep 200m
+</code></pre>
+<p>保存文件会依次执行三次<code>sleep 200m</code>。</p>
+<p>用命令组 <code>autocmd!</code> 可以删除之前定义过的事件，</p>
+<pre><code>augroup testgroup
+    autocmd BufWrite * :echom &quot;Foo&quot;
+    autocmd BufWrite * :echom &quot;Bar&quot;
+augroup END
+augroup testgroup
+&quot;&quot; 用 autocmd! 即可清除前面同名组的命令
+	autocmd!
+    autocmd BufWrite * :echom &quot;Baz&quot;
+augroup END
+</code></pre>
+<p>保存文件的时候将只输出<code>Baz</code>。</p>
+<h3 id="Operator-Pending 映射">Operator-Pending 映射</h3>
+<p>这部分比较难了。</p>
+<blockquote>
+<p>一个 Operator（操作）就是一个命令，你可以在这个命令的后面输入一个 Movement（移动）命令，然后 Vim 开始对文本执行前面的操作命令，这个操作命令会从你当前所在的位置开始执行，一直到这个移动命令会把你带到的位置结束。</p>
+</blockquote>
+<p>常用到的 Operator 有 d，y 和 c。例如：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">按键</th>
+<th style="text-align:center">操作</th>
+<th style="text-align:center">移动</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">dw</td>
+<td style="text-align:center">删除</td>
+<td style="text-align:center">到下一个单词</td>
+</tr>
+<tr>
+<td style="text-align:center">ci(</td>
+<td style="text-align:center">修改</td>
+<td style="text-align:center">在括号内</td>
+</tr>
+<tr>
+<td style="text-align:center">yt,</td>
+<td style="text-align:center">复制</td>
+<td style="text-align:center">到逗号</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Movement 映射">Movement 映射</h3>
+<blockquote>
+<p>Vim 允许你创建任何新的 movements，这些 movements 可以跟所有命令一起工作。</p>
+</blockquote>
+<p>例如</p>
+<pre><code>onoremap p i(</code></pre>
+<p>这样就可以用 <code>dp</code> 代替 <code>di(</code> 了，也就是删除括号内的文字。</p>
+<h4 id="从当前光标位置开始">从当前光标位置开始</h4>
+<blockquote>
+<p>当你想搞清楚怎么定义一个新的 operator-pending movement 的时候，你可以从下面几个步骤来思考：</p>
+</blockquote>
+<ol>
+<li>在光标所在的位置开始。</li>
+<li>进入可视模式(charwise)。</li>
+<li>… 把映射的按键放到这里 …</li>
+<li>所有你想包含在 movement 中的文字都会被选中。</li>
+</ol>
+<p>你所要做的工作就是在第三步中填上合适的按键。</p>
+<p>例如</p>
+<pre><code>onoremap p :&lt;c-u&gt; normal! vllll&lt;cr&gt;
+</code></pre>
+<p>执行 <code>dp</code> 后，就会删除当前光标后四个字符。</p>
+<p>这里的 <code>normal</code> 可以看做模拟按键操作（加个 <code>!</code> 是为了不使用映射），即按了四下<code>llll</code>。</p>
+<p><code>&lt;c-u&gt;</code>原文并没指出具体作用，Google 了一下好像可以清除命令行，不用理会这个。</p>
+<h4 id="改变开始位置">改变开始位置</h4>
+<p>只要移动到指定位置，在 <code>visual</code> 模式下选中，即可操作选中的文本。</p>
+<blockquote>
+<p>下面两条规则可以让你可以很直观的以多种方式创建 operator-pending 映射：</p>
+</blockquote>
+<ol>
+<li>如果你的 operator-pending 映射以在可视模式下选中文本结束，Vim 会操作这些文本。</li>
+<li>否则，Vim 会操作从光标的原始位置到一个新位置之间的文本。</li>
+</ol>
+<h4 id="实战">实战</h4>
+<p>这里我将用到前面介绍的 <code>Movement</code> 映射，来快速修改电子邮件地址。</p>
+<pre><code>onoremap in@ :&lt;c-u&gt;execute &quot;normal! /[0-9A-Za-z_-]\\+@\r:nohlsearch\rvt@&quot;&lt;cr&gt;
+</code></pre>
+<p>比如文本中有 <code>123456789@xx.xx</code>，当你按下<code>cin@</code>，就会删除<code>123456789</code> 部分，并进入 <code>insert</code> 模式进行修改。</p>
+<p>这里又有个新命令 <code>execute</code>，为什么不直接用<code>normal</code> 呢？</p>
+<p>因为 <code>normal</code> 不能模拟特殊按键，例如<code>:normal! /a&lt;cr&gt;</code>，并没有反应，因为他不能识别<code>&lt;cr&gt;</code>。。。</p>
+<blockquote>
+<p>当 execute 碰到任何你想让它执行的字符串的时候。它会先替换这个字符串中的所有特殊字符。在这个示例中，\r 是一个转义字符，它表示的是 &quot; 回车符（carriage return）&quot;。两个反斜线也是一个转义字符，它会将一个反斜线当作一般字符放到字符串中。</p>
+</blockquote>
+<p>所以按照这个说法来理解，就可以搞清楚这个映射怎么执行了。</p>
+<pre><code>normal! /[0-9A-Za-z_-]\\+@\r:nohlsearch\rvt@
+                      ^    ^            ^
+					  |    |            |
+normal! /[0-9A-Za-z_-]\+@&lt;cr&gt;:nohlsearch&lt;cr&gt;vt@
+</code></pre>
+<p>接着分析 <code>normal!</code> 部分，和键盘输入一样：</p>
+<pre><code>/[0-9A-Za-z_-]\+@
+:nohlsearch
+vt@
+</code></pre>
+<ol>
+<li>第一部分正则是匹配电子邮件 <code>@</code> 前面部分，并跳转到匹配的第一个字符</li>
+<li>然后紧接着清除匹配的字符高亮</li>
+<li>进入 <code>visual</code> 模式并选中 <code>@</code> 前面的部分</li>
+</ol>
+<p>前面说了，如果你的 operator-pending 映射以在可视模式下选中文本结束，Vim 会操作这些文本。</p>
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://learnvimscriptthehardway.onefloweroneworld.com/">笨方法学 Vimscript</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/yangyangwithgnu/use_vim_as_ide">所需即所获：像 IDE 一样使用 vim</a></li>
+</ul>
+
+    
+  </div>
+
+</article>
+
+
+   
+       <div class="original">
+    <ul>
+        <li>本文标题：VIMscript 学习笔记</li>
+        <li>本文字数：2.8k</li>
+        <li>本文作者：Netcan</li>
+        <li>发布时间：2015年12月26日 - 09时06分</li>
+        <li>最后更新：2022年12月09日 - 19时02分</li>
+        <li>原始链接：<a href="https://netcan.github.io/2015/12/26/VIMscript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">https://netcan.github.io/2015/12/26/VIMscript学习笔记/</a></li>
+        <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
+    </ul>
+</div>
+
+   
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持Netcan</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2015/12/21/%E5%BF%AB%E9%80%9F%E5%B9%82%E8%BF%90%E7%AE%97/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2016/01/02/%E9%9B%86%E5%90%88%E7%9A%84%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%93%8D%E4%BD%9C/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '893a4103795fc66cd8e7',
+  clientSecret: '35c92c3dca938831b67dc22e46d64bc9073ebacf',
+  repo: 'netcan.github.io',
+  owner: 'Netcan',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: md5(location.pathname),
+  admin: ['Netcan'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

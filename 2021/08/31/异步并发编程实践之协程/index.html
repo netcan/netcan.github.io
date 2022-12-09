@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>异步并发编程实践之协程 | Netcan on Programming</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Python," />
+  
+
+  <meta name="description" content="线程 vs 协程 并发编程是整个计算机科学中相当复杂的领域之一，它们往往涉及线程与锁，进而引入一系列 状态爆炸 、数据竞争、死锁、不确定 bug、回调噩梦 等问题。 我很早就关注协程这一技术，业界诸如微信使用协程服务于上亿用户。在今年部门举办的编程大赛中，给了我使用协程这一“新技术”编写服务端的机会。本文将以这个游戏服务端为例介绍协程的概念与使用，它能够并发处理数个游戏客户端的对抗。 早在上世纪">
+<meta property="og:type" content="article">
+<meta property="og:title" content="异步并发编程实践之协程">
+<meta property="og:url" content="https://netcan.github.io/2021/08/31/%E5%BC%82%E6%AD%A5%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%AE%9E%E8%B7%B5%E4%B9%8B%E5%8D%8F%E7%A8%8B/index.html">
+<meta property="og:site_name" content="Netcan on Programming">
+<meta property="og:description" content="线程 vs 协程 并发编程是整个计算机科学中相当复杂的领域之一，它们往往涉及线程与锁，进而引入一系列 状态爆炸 、数据竞争、死锁、不确定 bug、回调噩梦 等问题。 我很早就关注协程这一技术，业界诸如微信使用协程服务于上亿用户。在今年部门举办的编程大赛中，给了我使用协程这一“新技术”编写服务端的机会。本文将以这个游戏服务端为例介绍协程的概念与使用，它能够并发处理数个游戏客户端的对抗。 早在上世纪">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-08-31T10:56:38.000Z">
+<meta property="article:modified_time" content="2022-12-09T11:02:08.588Z">
+<meta property="article:author" content="Netcan">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/site.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-174901164-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d2c292719a76d8c0fa7f9874379cfd25";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"] > svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body>
+
+
+  
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+  
+
+  <link rel="stylesheet" href="/css/prism.css">
+
+<div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">ROOT</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%20-vs-%20%E5%8D%8F%E7%A8%8B"><span class="toc-text">线程 vs 协程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89%E5%8D%8F%E7%A8%8B"><span class="toc-text">定义协程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B6%88%E9%99%A4%E5%9B%9E%E8%B0%83"><span class="toc-text">消除回调</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B6%88%E9%99%A4%E7%8A%B6%E6%80%81%E6%9C%BA"><span class="toc-text">消除状态机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B6%88%E9%99%A4%E9%94%81"><span class="toc-text">消除锁</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8C%E6%AD%A5%E5%8E%9F%E8%AF%AD"><span class="toc-text">同步原语</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-text">注意事项</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E6%8A%BD%E8%B1%A1%E6%89%8B%E6%AE%B5"><span class="toc-text">其他抽象手段</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86"><span class="toc-text">异常处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A3%85%E9%A5%B0%E5%99%A8%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F"><span class="toc-text">装饰器设计模式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E7%A8%8B%E9%9B%86%E6%88%90"><span class="toc-text">工程集成</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="toc-text">参考链接</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-异步并发编程实践之协程" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">异步并发编程实践之协程</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2021.08.31</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Netcan</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h2 id="线程 -vs- 协程">线程 vs 协程</h2>
+<p>并发编程是整个计算机科学中相当复杂的领域之一，它们往往涉及线程与锁，进而引入一系列 状态爆炸 、数据竞争、死锁、不确定 bug、回调噩梦 等问题。</p>
+<p>我很早就关注协程这一技术，业界诸如微信使用协程服务于上亿用户。在今年部门举办的编程大赛中，给了我使用协程这一“新技术”编写服务端的机会。本文将以这个游戏服务端为例介绍协程的概念与使用，它能够并发处理数个游戏客户端的对抗。</p>
+<p>早在上世纪 50 年代便出现了协程这一概念，发扬光大却在 21 世纪后，它的流行大大简化了编写并发程序的难度，并且提高了程序的健壮性。</p>
+<p>尽管协程的思想和语言无关，但它们需要语言特性级别的支持，仅仅通过框架实现协程，或多或少很蹩脚。</p>
+<p>在 C++20 中便支持了协程特性，而它是作为框架开发者使用的特性，由框架开发者构造一些协程库，并提供给用户使用。一些协程标准库的支持需要到 C++23 中。</p>
+<p>越来越多的现代语言都支持协程这一机制，例如 Python 3.7 起开始支持协程，还有 C#、Go、NodeJs 等都提供了一定程度的支持。我最终选型使用 Python 作为开发语言，标准库中的 <code>asyncio</code> 足够完成这一任务，并且开发效率足够高。</p>
+<p>协程是并发编程的一种模式，相对于多线程而言，它通常以单线程的调度器为根基，并发调度不同的协程，以完成复杂的任务。因此使用协程的好处是可以做到无锁并发编程，没有死锁，没有回调，没有竞争，也就无需大量的状态，在这种环境下编写程序，关注点更聚焦，降低了编程的心智负担。</p>
+<p>可能有人会觉得反直觉，单线程如何做到并发？并发从微观上看分时复用的，而从宏观角度看是同时进行的。早在单核时代便支持了线程机制，使用线程做并发，由操作系统进行调度实现并发。即便是单核，你也摆脱不了锁，因为一旦你是用了多线程编程，就不能对核数有任何假设，或许哪天你的机器升级后程序就异常了。</p>
+<p>使用协程没有这个问题，协程调度器充当了操作系统协程调度的角色，因此操作系统不感知上层应用的情况，也就不会涉及昂贵的上下文切换代价。</p>
+<p>从用户角度而言，使用线程，你的执行过程随时可能被切换，导致你不得不加锁、状态；使用协程，你的协程切换由你决定（使用 <code>await</code> 关键字）。这便是线程与协程的核心区别：前者切换权通常在操作系统上，后者切换权在用户手上（抢占与非抢占）。</p>
+<h2 id="定义协程">定义协程</h2>
+<p>协程相比普通的过程（函数）而言，多了两个动作，主动挂起（<code>await</code>）与恢复（<code>resume</code>）。</p>
+<p>其中挂起由用户发起，它通知调度器当前协程在异步等待（async wait）一个结果，要求调度器调度下一个协程。简而言之，每一个 <code>await</code> 点便是协程的一个潜在切换点。</p>
+<p>恢复是由调度器执行的，当挂起后的协程收到结果后，由调度器恢复协程的控制流。因此对于用户而言，只需要关注 <code>await</code> 动作。</p>
+<p>正因为它比过程多了两个动作，编程语言、框架需要区分一个协程与一个函数，通常在定义协程的时候使用关键字 <code>async</code> 修饰（C++20 通过返回类型区分协程与普通函数）。</p>
+<p>在我设计与实现的服务端中，使用 TCP socket，选择 TCP 是因为它是可靠的字节流传输，但它不像 UDP 那样以报文为单位，因此自定义的通讯消息需要接收端自行组包。</p>
+<p>那么就这涉及到一个问题，如何区分一个消息的边界，以及组包？通讯协议参考了 18 年软件大赛的方式，消息使用 json 数据格式，并在前 5 个字节标明了 json 数据的长度。</p>
+<pre class="language-none"><code class="language-none">00065&#123;&quot;msg_type&quot;: &quot;registration&quot;, &quot;msg_data&quot;: &#123;&quot;player_name&quot;: &quot;test&quot;&#125;&#125;</code></pre>
+<p>使用 json 的一个好处在于，一来它是结构化的文本数据，相对于二进制数据无需关注大小端问题；二来它与编程语言无关（虽然起源于 js），因此可以支持任意编程语言客户端的参与。</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">async</span> <span class="token keyword">def</span> <span class="token function">load_message</span><span class="token punctuation">(</span>reader<span class="token punctuation">:</span> asyncio<span class="token punctuation">.</span>StreamReader<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    length <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">await</span> reader<span class="token punctuation">.</span>read<span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>decode<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">if</span> <span class="token keyword">not</span> length<span class="token punctuation">:</span> <span class="token keyword">raise</span> Disconnected<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> <span class="token keyword">await</span> reader<span class="token punctuation">.</span>readexactly<span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">(</span>length<span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+<p><code>load_message</code>定义的时候通过 <code>async</code> 修饰，表示它是一个协程，因此也就支持 <code>await</code> 动作。</p>
+<h3 id="消除回调">消除回调</h3>
+<p>Linux 的 io 一般都是同步 IO，例如 <code>read</code> 操作要么阻塞调用者，要么非阻塞调用者，无论如何都需要调用者亲自去获取结果：前者通过阻塞调用者得到结果，后者需要调用者通过轮询方式。</p>
+<p>这就是同步与异步的差别，异步无需调用者去获取结果，它是被动的接受结果。当然将同步 io 改成异步 io 也很简单，起一些线程专门做这件事，并通过回调通知，这是很典型的编程模式。异步使得回调的存在，回调又可能进一步导致竞争问题。</p>
+<p>在协程 <code>load_message</code> 通过 <code>await read</code> 表明异步地等待 read 的结果，并通知调度器调度下一个协程，例如这里的 <code>read</code> 就是一个协程，调度器每次根据调度策略来决定是调度其他协程，还是轮询 io 结果等。一旦有了轮询的结果，恢复协程 <code>load_message</code> 的控制流。</p>
+<p><code>load_message</code>没有回调，也没有被阻塞，整个过程非常连贯，以直观的序列模型编写异步代码。</p>
+<h3 id="消除状态机">消除状态机</h3>
+<p>对于这个服务端而言，可能有人觉得即便不用协程，直接使用单线程，并使用 <code>epoll/select</code> 等接口监听是否收到消息，收到消息后分发给消息处理函数也能完成整个任务，这种方式是经典的事件驱动、Reactor 模式。</p>
+<p>然而这个分发过程涉及到状态机，例如收到客户端的一条消息，然后根据消息进入状态机所设定的一系列处理函数。</p>
+<p>如果一个完整的行为涉及消息种类比较多，且大量的消息交互，那么需要维护一个巨大的状态机，而状态的迁移却被割裂在代码各个地方，无法看透一个完整的流程。</p>
+<p>状态模型和序列模型都能较好的反映一件事情的本质，但不同的是，序列模型更加专注于目标系统的行为，而状态模型更关注被操作对象的状态迁移。</p>
+<p>但从实现的角度来看，如果你选择序列模型，当然，你需要实现目标系统的行为；而如果你选择状态模型，那么除了需要管理状态机之外，你仍然需要处理目标系统的行为。这就意味着，在实现层面，一旦选择状态模型，就需要做许多额外的工作。</p>
+<p>因此，为了在代码层面理解一个状态机的设计，必须仔细的阅读相关代码，并在不同代码间来回跳转（因为状态一直在跳转），才能理解一个状态机的全貌。</p>
+<p>对于的复杂的系统而言，由于各种并发，及并发的丰富组合，要么会导致状态的急剧膨胀，以至于状态机及其的晦涩，难以理解和维护。</p>
+<p>以这个游戏服务端为例，一个完整的过程涉及三大部分：用户注册、游戏开始、游戏结束。使用协程可以很好的看到整个过程，无需状态机。</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">async</span> <span class="token keyword">def</span> <span class="token function">handle_connection</span><span class="token punctuation">(</span>reader<span class="token punctuation">:</span> asyncio<span class="token punctuation">.</span>StreamReader<span class="token punctuation">,</span>
+                            writer<span class="token punctuation">:</span> asyncio<span class="token punctuation">.</span>StreamWriter<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">try</span><span class="token punctuation">:</span>
+        player <span class="token operator">=</span> <span class="token keyword">await</span> game_service<span class="token punctuation">.</span>handle_registration<span class="token punctuation">(</span>reader<span class="token punctuation">,</span> writer<span class="token punctuation">)</span> <span class="token comment"># 注册</span>
+        <span class="token keyword">await</span> game_service<span class="token punctuation">.</span>game_loop<span class="token punctuation">(</span>player<span class="token punctuation">,</span> reader<span class="token punctuation">,</span> writer<span class="token punctuation">)</span> <span class="token comment"># 游戏开始</span>
+        <span class="token keyword">await</span> game_service<span class="token punctuation">.</span>handle_game_over<span class="token punctuation">(</span>player<span class="token punctuation">,</span> writer<span class="token punctuation">)</span> <span class="token comment"># 游戏结束</span>
+
+    <span class="token keyword">except</span> Disconnected<span class="token punctuation">:</span>
+        logger<span class="token punctuation">.</span>info<span class="token punctuation">(</span><span class="token string">"peer closed connection"</span><span class="token punctuation">)</span>
+    <span class="token keyword">except</span> StatusError<span class="token punctuation">:</span>
+        logger<span class="token punctuation">.</span>info<span class="token punctuation">(</span><span class="token string">"current game isn't registration state"</span><span class="token punctuation">)</span>
+    <span class="token keyword">except</span> ErrMsgType <span class="token keyword">as</span> err<span class="token punctuation">:</span>
+        logger<span class="token punctuation">.</span>warn<span class="token punctuation">(</span><span class="token string">"receive error msg type: &#123;&#125;"</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>err<span class="token punctuation">.</span>_type<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">finally</span><span class="token punctuation">:</span>
+        logger<span class="token punctuation">.</span>info<span class="token punctuation">(</span><span class="token string">"disconnect client"</span><span class="token punctuation">)</span>
+        writer<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token keyword">async</span> <span class="token keyword">def</span> <span class="token function">game_loop</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> player<span class="token punctuation">:</span> Player<span class="token punctuation">,</span>
+                    reader<span class="token punctuation">:</span> asyncio<span class="token punctuation">.</span>StreamReader<span class="token punctuation">,</span>
+                    writer<span class="token punctuation">:</span> asyncio<span class="token punctuation">.</span>StreamWriter<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">while</span> self<span class="token punctuation">.</span>_round <span class="token operator">&lt;=</span> MAX_ROUND<span class="token punctuation">:</span>
+        writer<span class="token punctuation">.</span>write<span class="token punctuation">(</span>self<span class="token punctuation">.</span>inquire<span class="token punctuation">(</span>player<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment"># 向客户端发送查询消息</span>
+        <span class="token keyword">await</span> writer<span class="token punctuation">.</span>drain<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+        <span class="token keyword">await</span> self<span class="token punctuation">.</span>_handle_action<span class="token punctuation">(</span>player<span class="token punctuation">,</span> reader<span class="token punctuation">)</span> <span class="token comment"># 客户端回复游戏指令</span>
+        self<span class="token punctuation">.</span>_checkout_actions<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+<p>如无必要，请勿引入多余的状态。</p>
+<h3 id="消除锁">消除锁</h3>
+<p>既然使用协程，那么可以进行无锁编程，应用程序无需再考虑死锁、竞争问题。当指定的客户端数量注册就绪后，游戏将进入开始阶段。开始游戏后，如果有其他客户端连接，那么会拒绝接入，因此需要一个状态表明当前游戏的阶段。</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">GameService</span><span class="token punctuation">:</span>
+    ST_REGISTRATION <span class="token operator">=</span> <span class="token number">1</span>
+    ST_STARTED      <span class="token operator">=</span> <span class="token number">2</span></code></pre>
+<p>在所有的客户端从注册状态并发进入开始状态，对状态的置位无需加锁，即便与此同时可能会存在新的客户端接入对此状态的判断。</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token decorator annotation punctuation">@serialize_json</span>
+<span class="token keyword">def</span> <span class="token function">game_start</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> player<span class="token punctuation">:</span> Player<span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token comment"># 所有客户端都会并发进入该函数</span>
+    <span class="token keyword">def</span> <span class="token function">_start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> self<span class="token punctuation">.</span>_status <span class="token operator">==</span> GameService<span class="token punctuation">.</span>ST_STARTED<span class="token punctuation">:</span> <span class="token keyword">return</span> <span class="token comment"># 状态判断</span>
+        logger<span class="token punctuation">.</span>info<span class="token punctuation">(</span><span class="token string">"current players: &#123;&#125;"</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>_players<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>_game_map<span class="token punctuation">.</span>alloca_object_id<span class="token punctuation">(</span>self<span class="token punctuation">.</span>_players<span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>_game_map<span class="token punctuation">.</span>dump<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>_status <span class="token operator">=</span> GameService<span class="token punctuation">.</span>ST_STARTED <span class="token comment"># 状态置位</span>
+    _start<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">return</span> <span class="token punctuation">&#123;</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
+<p><code>game_start</code>是一个普通的函数，在函数结束前都不会被切换，它独占着整个调度器的线程，好在这个函数没有耗时的操作，也没有多余的等待。</p>
+<p>无锁编程从根本上避免了死锁的问题。</p>
+<h3 id="同步原语">同步原语</h3>
+<p>前面提到，在指定数量的客户端都注册后，游戏才进入开始阶段。因此需要处理客户端的协程等待，等到数量集齐后，才同步执行后边的流程。</p>
+<p>因此协程需要提供一定的同步手段，和传统的并发编程一样，它提供了条件变量等同步原语。</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">async</span> <span class="token keyword">def</span> <span class="token function">handle_registration</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> player_id<span class="token punctuation">:</span> <span class="token builtin">int</span><span class="token punctuation">,</span>
+                            reader<span class="token punctuation">:</span> asyncio<span class="token punctuation">.</span>StreamReader<span class="token punctuation">,</span>
+                            writer<span class="token punctuation">:</span> asyncio<span class="token punctuation">.</span>StreamWriter<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> self<span class="token punctuation">.</span>_status <span class="token operator">!=</span> GameService<span class="token punctuation">.</span>ST_REGISTRATION<span class="token punctuation">:</span> <span class="token keyword">raise</span> StatusError
+    message <span class="token operator">=</span> <span class="token keyword">await</span> load_message<span class="token punctuation">(</span>reader<span class="token punctuation">)</span>
+    player <span class="token operator">=</span> <span class="token keyword">await</span> self<span class="token punctuation">.</span>registration<span class="token punctuation">(</span>message<span class="token punctuation">,</span> player_id<span class="token punctuation">)</span>
+    <span class="token keyword">async</span> <span class="token keyword">with</span> self<span class="token punctuation">.</span>_players_cond<span class="token punctuation">:</span> <span class="token comment"># 条件变量做同步</span>
+        <span class="token keyword">await</span> self<span class="token punctuation">.</span>_players_cond<span class="token punctuation">.</span>wait_for<span class="token punctuation">(</span><span class="token keyword">lambda</span><span class="token punctuation">:</span>
+            <span class="token builtin">len</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>_players<span class="token punctuation">)</span> <span class="token operator">>=</span> MAX_PLAYER_NUM<span class="token punctuation">)</span> <span class="token comment"># 异步地等待所有客户端集齐</span>
+
+    writer<span class="token punctuation">.</span>write<span class="token punctuation">(</span>self<span class="token punctuation">.</span>game_start<span class="token punctuation">(</span>player<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment"># 给客户端发送开始消息</span>
+    <span class="token keyword">await</span> writer<span class="token punctuation">.</span>drain<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> player</code></pre>
+<p>另一个比较有意思的设计，每回合服务端收集所有客户端的指令，并在这个回合内依次结算。这就要求所有客户端在指定时间内响应，提前收集完则提前进入结算阶段，或者直到有一方超时，将只处理收到的指令。如何实现？</p>
+<p>我们可以异步等待一个接受客户端指令的协程，并要求在指定时间内响应，否则抛出超时异常。与此同时，我们不能一收到客户端的指令就处理，还得在指定时间内收集完其他客户端的指令。因此可以起一个协程专门等待是否收集完所有指令，并同时（concurrent/gather 语义）等待它们。</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">async</span> <span class="token keyword">def</span> <span class="token function">_handle_action</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> player<span class="token punctuation">:</span> Player<span class="token punctuation">,</span> reader<span class="token punctuation">:</span> asyncio<span class="token punctuation">.</span>StreamReader<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token decorator annotation punctuation">@parse_json</span>
+    <span class="token keyword">def</span> <span class="token function">action</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> data
+
+    <span class="token keyword">async</span> <span class="token keyword">def</span> <span class="token function">_waitAction</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token comment"># 指定时间内收集当前客户端的指令，否则超时异常</span>
+        message <span class="token operator">=</span> <span class="token keyword">await</span> asyncio<span class="token punctuation">.</span>wait_for<span class="token punctuation">(</span>load_message<span class="token punctuation">(</span>reader<span class="token punctuation">)</span><span class="token punctuation">,</span>
+                                         ACTION_TIME_OUT<span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>_actions<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token punctuation">(</span>player<span class="token punctuation">,</span> action<span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment"># 指令暂存</span>
+        <span class="token keyword">async</span> <span class="token keyword">with</span> self<span class="token punctuation">.</span>_actions_cond<span class="token punctuation">:</span>
+            self<span class="token punctuation">.</span>_actions_cond<span class="token punctuation">.</span>notify_all<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment"># 同步原语</span>
+
+    <span class="token keyword">async</span> <span class="token keyword">def</span> <span class="token function">_waitAllAction</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token comment"># 同时收集所有客户端的指令，超时正常返回</span>
+        <span class="token keyword">try</span><span class="token punctuation">:</span>
+            <span class="token keyword">async</span> <span class="token keyword">with</span> self<span class="token punctuation">.</span>_actions_cond<span class="token punctuation">:</span>
+                <span class="token keyword">await</span> asyncio<span class="token punctuation">.</span>wait_for<span class="token punctuation">(</span>
+                    self<span class="token punctuation">.</span>_actions_cond<span class="token punctuation">.</span>wait_for<span class="token punctuation">(</span><span class="token keyword">lambda</span><span class="token punctuation">:</span>
+                        <span class="token builtin">len</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>_actions<span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token builtin">len</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>_players<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                    ACTION_TIME_OUT <span class="token operator">+</span> <span class="token number">1e</span><span class="token operator">-</span><span class="token number">3</span><span class="token punctuation">)</span> <span class="token comment"># 条件变量，判断是否集齐指令</span>
+        <span class="token keyword">except</span> asyncio<span class="token punctuation">.</span>TimeoutError<span class="token punctuation">:</span>
+            logger<span class="token punctuation">.</span>warn<span class="token punctuation">(</span><span class="token string">"wait all action timeout, checking actions..."</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">try</span><span class="token punctuation">:</span>
+        <span class="token comment"># 同时等待这两个协程的结果</span>
+        <span class="token keyword">await</span> asyncio<span class="token punctuation">.</span>gather<span class="token punctuation">(</span>_waitAction<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> _waitAllAction<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">except</span> asyncio<span class="token punctuation">.</span>TimeoutError<span class="token punctuation">:</span>
+        player<span class="token punctuation">.</span>_timeout_times <span class="token operator">+=</span> <span class="token number">1</span>
+        logger<span class="token punctuation">.</span>warn<span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"player </span><span class="token interpolation"><span class="token punctuation">&#123;</span>player<span class="token punctuation">.</span>_name<span class="token punctuation">&#125;</span></span><span class="token string"> action timeout!"</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        logger<span class="token punctuation">.</span>warn<span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"(times: </span><span class="token interpolation"><span class="token punctuation">&#123;</span>player<span class="token punctuation">.</span>_timeout_times<span class="token punctuation">&#125;</span></span><span class="token string">)"</span></span><span class="token punctuation">)</span></code></pre>
+<p>同步原语是必须的，当它们并不是为了防止资源竞争。</p>
+<h3 id="注意事项">注意事项</h3>
+<p>协程不能有任何阻塞的行为，因为它使得调度器被白白浪费在空等的协程上，使得其他协程没机会被调度到，调度效率也大大降低了。</p>
+<p>因此协程使用的 io 接口都是协程化的，这些 io 协程在系统调用封装之上，避免了阻塞和等待。在这个游戏服务器里边需要服务端自行退出，当游戏达到结束状态时，如何自行退出？</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">async</span> <span class="token keyword">def</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    robot_server<span class="token punctuation">.</span>game_service <span class="token operator">=</span>  robot_server<span class="token punctuation">.</span>GameService<span class="token punctuation">(</span>game_map<span class="token punctuation">)</span>
+    server <span class="token operator">=</span> <span class="token keyword">await</span> asyncio<span class="token punctuation">.</span>start_server<span class="token punctuation">(</span>robot_server<span class="token punctuation">.</span>handle_connection<span class="token punctuation">,</span>
+                                        <span class="token string">"0.0.0.0"</span><span class="token punctuation">,</span> <span class="token number">6789</span><span class="token punctuation">)</span>
+    <span class="token keyword">async</span> <span class="token keyword">with</span> server<span class="token punctuation">:</span>
+        <span class="token keyword">await</span> server<span class="token punctuation">.</span>serve_forever<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment"># 如何在指定条件下结束？</span></code></pre>
+<p><code>asyncio</code>文档中提到，需要 <code>cancel</code> 掉<code>server_forever</code>协程，才能正确的退出。</p>
+<blockquote>
+<p>coroutine serve_forever()</p>
+<p>Start accepting connections until the coroutine is cancelled. Cancellation of serve_forever task causes the server to be closed.</p>
+</blockquote>
+<p>因此可以并发起一个协程在背后检测游戏服务端的状态，以便结束的时候对上述协程进行<code>cancel</code>。</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">async</span> <span class="token keyword">with</span> server<span class="token punctuation">:</span>
+    forever_task <span class="token operator">=</span> asyncio<span class="token punctuation">.</span>create_task<span class="token punctuation">(</span>server<span class="token punctuation">.</span>serve_forever<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">async</span> <span class="token keyword">def</span> <span class="token function">check_exit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">while</span> robot_server<span class="token punctuation">.</span>game_service<span class="token punctuation">.</span>_status <span class="token operator">!=</span> GameService<span class="token punctuation">.</span>ST_END<span class="token punctuation">:</span>
+            <span class="token keyword">await</span> asyncio<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token comment"># 必须的</span>
+        forever_task<span class="token punctuation">.</span>cancel<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    asyncio<span class="token punctuation">.</span>create_task<span class="token punctuation">(</span>check_exit<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">try</span><span class="token punctuation">:</span>
+        <span class="token keyword">await</span> forever_task
+    <span class="token keyword">except</span> asyncio<span class="token punctuation">.</span>CancelledError<span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"game server exit..."</span><span class="token punctuation">)</span></code></pre>
+<p>在协程 <code>check_exit</code> 是一个 <code>while</code> 循环，循环体内使用了 <code>await sleep(0)</code>，<code>sleep</code> 本身就是一个协程，它表明主动放弃控制权，让调度器调度其他协程。如果不使用<code>await</code>，那么这个协程将会一直运行，其他协程没有任何执行的可能。</p>
+<blockquote>
+<p>sleep() always suspends the current task, allowing other tasks to run.</p>
+<p>Setting the delay to 0 provides an optimized path to allow other tasks to run. This can be used by long-running functions to avoid blocking the event loop for the full duration of the function call.</p>
+</blockquote>
+<p>除了 <code>asyncio</code> 提供对系统 io 封装后的协程，用户可能会遇到一些真正耗时的计算协程，或者其他阻塞调用，这时候可以通过库提供的线程池、进程池接口<code>run_in_executor</code>，将这些耗时任务扔到线程池、进程池上运行，以避免阻塞调度线程。</p>
+<h2 id="其他抽象手段">其他抽象手段</h2>
+<h3 id="异常处理">异常处理</h3>
+<p>传统的错误码方式虽然执行效率高，但每一条语句面临着判断错误码、满屏代码中有一半的代码都在判断错误的尴尬场景。这也是开发效率与执行效率的权衡。</p>
+<p>介于错误码方式与异常方式之间的手段还有 Result Monad 抽象，但它不是本节讨论的范围。</p>
+<p>使用异常处理的代码更聚焦于逻辑，没有其他的噪音，你无需在编写代码的时候考虑异常，因为异常关注点被分离，要么你专注于处理异常，要么你专注于编写逻辑。</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">async</span> <span class="token keyword">def</span> <span class="token function">handle_connection</span><span class="token punctuation">(</span>reader<span class="token punctuation">:</span> asyncio<span class="token punctuation">.</span>StreamReader<span class="token punctuation">,</span>
+                            writer<span class="token punctuation">:</span> asyncio<span class="token punctuation">.</span>StreamWriter<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">try</span><span class="token punctuation">:</span>
+        player <span class="token operator">=</span> <span class="token keyword">await</span> game_service<span class="token punctuation">.</span>handle_registration<span class="token punctuation">(</span>reader<span class="token punctuation">,</span> writer<span class="token punctuation">)</span> <span class="token comment"># 注册</span>
+        <span class="token keyword">await</span> game_service<span class="token punctuation">.</span>game_loop<span class="token punctuation">(</span>player<span class="token punctuation">,</span> reader<span class="token punctuation">,</span> writer<span class="token punctuation">)</span> <span class="token comment"># 游戏开始</span>
+        <span class="token keyword">await</span> game_service<span class="token punctuation">.</span>handle_game_over<span class="token punctuation">(</span>player<span class="token punctuation">,</span> writer<span class="token punctuation">)</span> <span class="token comment"># 游戏结束</span>
+
+    <span class="token keyword">except</span> Disconnected<span class="token punctuation">:</span>
+        logger<span class="token punctuation">.</span>info<span class="token punctuation">(</span><span class="token string">"peer closed connection"</span><span class="token punctuation">)</span>
+    <span class="token keyword">except</span> StatusError<span class="token punctuation">:</span>
+        logger<span class="token punctuation">.</span>info<span class="token punctuation">(</span><span class="token string">"current game isn't registration state"</span><span class="token punctuation">)</span>
+    <span class="token keyword">except</span> ErrMsgType <span class="token keyword">as</span> err<span class="token punctuation">:</span>
+        logger<span class="token punctuation">.</span>warn<span class="token punctuation">(</span><span class="token string">"receive error msg type: &#123;&#125;"</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>err<span class="token punctuation">.</span>_type<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">finally</span><span class="token punctuation">:</span>
+        logger<span class="token punctuation">.</span>info<span class="token punctuation">(</span><span class="token string">"disconnect client"</span><span class="token punctuation">)</span>
+        writer<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+<p>如果条件允许，请使用异常处理异常。</p>
+<h3 id="装饰器设计模式">装饰器设计模式</h3>
+<p>装饰器设计模式可以在不改变功能的前提下扩展功能，例如要求在每个函数调用前、后分别执行其他动作。</p>
+<p>对于每次收到数据包，解析动作可以被分离出去，函数只关注对数据的处理，可以在对数据处理之前，使用装饰器进行解析，然后扔给处理函数。发送数据包也是类似的。</p>
+<p>Python 自带了装饰器特性，因此无需我们编写一大堆样板代码。装饰器是一个高阶函数，接受一个被装饰的函数。</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">serialize_json</span><span class="token punctuation">(</span>func<span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token comment"># 定义装饰器，装饰函数 func</span>
+    <span class="token keyword">def</span> <span class="token function">wrapper</span><span class="token punctuation">(</span><span class="token operator">*</span>argv<span class="token punctuation">,</span> <span class="token operator">**</span>kw<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        buf <span class="token operator">=</span> json<span class="token punctuation">.</span>dumps<span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+            <span class="token string">"msg_type"</span><span class="token punctuation">:</span> func<span class="token punctuation">.</span>__name__<span class="token punctuation">,</span>
+            <span class="token string">"msg_data"</span><span class="token punctuation">:</span> func<span class="token punctuation">(</span><span class="token operator">*</span>argv<span class="token punctuation">,</span> <span class="token operator">**</span>kw<span class="token punctuation">)</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+        packed <span class="token operator">=</span> <span class="token string">"&#123;:05d&#125;&#123;&#125;"</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>buf<span class="token punctuation">)</span><span class="token punctuation">,</span> buf<span class="token punctuation">)</span><span class="token punctuation">.</span>encode<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        logger<span class="token punctuation">.</span>info<span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f'packed message `</span><span class="token interpolation"><span class="token punctuation">&#123;</span>packed<span class="token punctuation">&#125;</span></span><span class="token string">`'</span></span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> packed
+    <span class="token keyword">return</span> wrapper
+
+<span class="token decorator annotation punctuation">@serialize_json</span>
+<span class="token keyword">def</span> <span class="token function">game_over</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> <span class="token punctuation">[</span><span class="token punctuation">&#123;</span>
+        <span class="token string">"team_name"</span><span class="token punctuation">:</span> team<span class="token punctuation">.</span>_name<span class="token punctuation">,</span>
+        <span class="token string">"shield_num"</span><span class="token punctuation">:</span> team<span class="token punctuation">.</span>_registry<span class="token punctuation">.</span>_shield_num
+    <span class="token punctuation">&#125;</span> <span class="token keyword">for</span> team <span class="token keyword">in</span> self<span class="token punctuation">.</span>_teams<span class="token punctuation">]</span></code></pre>
+<p>在 <code>game_over</code> 函数执行后，对函数返回的数据进行序列化。</p>
+<h2 id="工程集成">工程集成</h2>
+<p>最终服务端需要上线，以便参赛者能够参与进来。假设有 100 个参赛者，每局一个玩家且需要 1 分钟的比赛，那么需要 100 分钟才能跑完一轮。而服务器是 192 核的，它能并行处理 192 个任务，如何提高服务器效率？</p>
+<p>我的答案是使用传统的 Makefile 方式，依赖关系是 参赛者 -&gt; 比赛日志，参赛者之间没有任何依赖，因此可以利用多核的优势并行进行，可能在 1 分钟内便能得到上百场比赛的结果。</p>
+<pre class="language-sh" data-language="sh"><code class="language-sh">make -f wildcard.mk all</code></pre>
+<h2 id="参考链接">参考链接</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://docs.python.org/3/library/asyncio.html#module-asyncio">https://docs.python.org/3/library/asyncio.html#module-asyncio</a></li>
+<li><a target="_blank" rel="noopener" href="https://realpython.com/async-io-python/">https://realpython.com/async-io-python/</a></li>
+<li><a target="_blank" rel="noopener" href="https://trans-dsl-2.readthedocs.io/zh_CN/latest/motivation.html">https://trans-dsl-2.readthedocs.io/zh_CN/latest/motivation.html</a></li>
+</ul>
+
+    
+  </div>
+
+</article>
+
+
+   
+       <div class="original">
+    <ul>
+        <li>本文标题：异步并发编程实践之协程</li>
+        <li>本文字数：4.4k</li>
+        <li>本文作者：Netcan</li>
+        <li>发布时间：2021年08月31日 - 18时56分</li>
+        <li>最后更新：2022年12月09日 - 19时02分</li>
+        <li>原始链接：<a href="https://netcan.github.io/2021/08/31/%E5%BC%82%E6%AD%A5%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%AE%9E%E8%B7%B5%E4%B9%8B%E5%8D%8F%E7%A8%8B/">https://netcan.github.io/2021/08/31/异步并发编程实践之协程/</a></li>
+        <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
+    </ul>
+</div>
+
+   
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持Netcan</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2021/07/29/%E4%BD%BF%E7%94%A8C-20-Ranges%E6%A0%87%E5%87%86%E5%BA%93%E5%AE%9E%E7%8E%B0%E6%97%A5%E5%8E%86%E7%A8%8B%E5%BA%8F/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2021/12/04/C-20%E5%8D%8F%E7%A8%8B%E7%89%B9%E6%80%A7%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '893a4103795fc66cd8e7',
+  clientSecret: '35c92c3dca938831b67dc22e46d64bc9073ebacf',
+  repo: 'netcan.github.io',
+  owner: 'Netcan',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: md5(location.pathname),
+  admin: ['Netcan'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

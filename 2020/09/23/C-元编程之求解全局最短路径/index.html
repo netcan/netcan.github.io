@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>C++ 元编程之求解全局最短路径 | Netcan on Programming</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="C/C++,元编程," />
+  
+
+  <meta name="description" content="背景 项目中某个模块需要描述状态之间的迁移关系，根据外界条件得到目标状态，然后再根据当前状态到目的状态之间找到最短路进行迁移，同时状态迁移过程中执行一系列动作。 原先做法是定义一个巨大的数据头文件，描述边集（两两状态之间的连接关系），同时根据已有边集人肉算出所有状态之间的最短路径并补充到头文件中去，不仅工作量大、容易出错，而且当状态数一多，头文件便难以维护，可读性也差。当状态的字段一多，头文件变化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++ 元编程之求解全局最短路径">
+<meta property="og:url" content="https://netcan.github.io/2020/09/23/C-%E5%85%83%E7%BC%96%E7%A8%8B%E4%B9%8B%E6%B1%82%E8%A7%A3%E5%85%A8%E5%B1%80%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/index.html">
+<meta property="og:site_name" content="Netcan on Programming">
+<meta property="og:description" content="背景 项目中某个模块需要描述状态之间的迁移关系，根据外界条件得到目标状态，然后再根据当前状态到目的状态之间找到最短路进行迁移，同时状态迁移过程中执行一系列动作。 原先做法是定义一个巨大的数据头文件，描述边集（两两状态之间的连接关系），同时根据已有边集人肉算出所有状态之间的最短路径并补充到头文件中去，不仅工作量大、容易出错，而且当状态数一多，头文件便难以维护，可读性也差。当状态的字段一多，头文件变化">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://netcan.github.io/2020/09/23/C-%E5%85%83%E7%BC%96%E7%A8%8B%E4%B9%8B%E6%B1%82%E8%A7%A3%E5%85%A8%E5%B1%80%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/find_shortest_path.svg">
+<meta property="article:published_time" content="2020-09-23T11:02:14.000Z">
+<meta property="article:modified_time" content="2022-12-09T11:02:08.581Z">
+<meta property="article:author" content="Netcan">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="元编程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://netcan.github.io/2020/09/23/C-%E5%85%83%E7%BC%96%E7%A8%8B%E4%B9%8B%E6%B1%82%E8%A7%A3%E5%85%A8%E5%B1%80%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/find_shortest_path.svg">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/site.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-174901164-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d2c292719a76d8c0fa7f9874379cfd25";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"] > svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body>
+
+
+  
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+  
+
+  <link rel="stylesheet" href="/css/prism.css">
+
+<div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">ROOT</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%8C%E6%99%AF"><span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%8E%9F%E5%9E%8B"><span class="toc-text">代码原型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="toc-text">实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#constexpr%20%E6%88%96%E6%A8%A1%E6%9D%BF%E5%85%83%EF%BC%9F"><span class="toc-text">constexpr 或模板元？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E6%9E%84%E8%BE%B9%E9%9B%86"><span class="toc-text">解构边集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%9B%E5%8D%A1%E5%B0%94%E7%A7%AF"><span class="toc-text">笛卡尔积</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2"><span class="toc-text">深度优先搜索</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A8%E9%9D%99%E7%BB%93%E5%90%88"><span class="toc-text">动静结合</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A3%80%E8%A7%86%E6%B1%87%E7%BC%96"><span class="toc-text">检视汇编</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%BE%E5%A3%B0"><span class="toc-text">尾声</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-C-元编程之求解全局最短路径" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">C++ 元编程之求解全局最短路径</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2020.09.23</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Netcan</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h2 id="背景">背景</h2>
+<p>项目中某个模块需要描述状态之间的迁移关系，根据外界条件得到目标状态，然后再根据当前状态到目的状态之间找到最短路进行迁移，同时状态迁移过程中执行一系列动作。</p>
+<p>原先做法是定义一个巨大的数据头文件，描述边集（两两状态之间的连接关系），同时根据已有边集人肉算出所有状态之间的最短路径并补充到头文件中去，不仅工作量大、容易出错，而且当状态数一多，头文件便难以维护，可读性也差。当状态的字段一多，头文件变化更大，容易冲突。</p>
+<p>若不想在运行时计算最短路径，又想解决数据头文件的问题，这时候元编程派上了用场，编译时根据边集数据，计算出图所有节点（状态）之间的最短路数据，同时提供接口供运行时查询。</p>
+<h2 id="代码原型">代码原型</h2>
+<p>首先看看设计的用户界面如何，再进一步探讨如何实现。完整代码可以见：<a target="_blank" rel="noopener" href="https://github.com/netcan/recipes/blob/master/cpp/metaproggramming/FindShortestPath.cpp">FindShortestPath.cpp</a>，感兴趣的也可以看看这个在线编译的结果：<a target="_blank" rel="noopener" href="https://godbolt.org/z/WW6o93">https://godbolt.org/z/WW6o93</a>。</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">struct</span> <span class="token class-name">A</span><span class="token operator">:</span> Node<span class="token operator">&lt;</span><span class="token string">'A'</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token keyword">struct</span> <span class="token class-name">B</span><span class="token operator">:</span> Node<span class="token operator">&lt;</span><span class="token string">'B'</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token keyword">struct</span> <span class="token class-name">C</span><span class="token operator">:</span> Node<span class="token operator">&lt;</span><span class="token string">'C'</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token keyword">struct</span> <span class="token class-name">D</span><span class="token operator">:</span> Node<span class="token operator">&lt;</span><span class="token string">'D'</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token keyword">struct</span> <span class="token class-name">E</span><span class="token operator">:</span> Node<span class="token operator">&lt;</span><span class="token string">'E'</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token keyword">using</span> g <span class="token operator">=</span> Graph<span class="token operator">&lt;</span>
+    <span class="token function">__link</span><span class="token punctuation">(</span><span class="token function">__node</span><span class="token punctuation">(</span>A<span class="token punctuation">)</span> <span class="token operator">-&gt;</span> <span class="token function">__node</span><span class="token punctuation">(</span>B<span class="token punctuation">)</span> <span class="token operator">-&gt;</span> <span class="token function">__node</span><span class="token punctuation">(</span>C<span class="token punctuation">)</span> <span class="token operator">-&gt;</span> <span class="token function">__node</span><span class="token punctuation">(</span>D<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token function">__link</span><span class="token punctuation">(</span><span class="token function">__node</span><span class="token punctuation">(</span>A<span class="token punctuation">)</span> <span class="token operator">-&gt;</span> <span class="token function">__node</span><span class="token punctuation">(</span>C<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>   <span class="token comment">// test shortest path: A -&gt; C -&gt; D</span>
+    <span class="token function">__link</span><span class="token punctuation">(</span><span class="token function">__node</span><span class="token punctuation">(</span>B<span class="token punctuation">)</span> <span class="token operator">-&gt;</span> <span class="token function">__node</span><span class="token punctuation">(</span>A<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>   <span class="token comment">// test cycle</span>
+    <span class="token function">__link</span><span class="token punctuation">(</span><span class="token function">__node</span><span class="token punctuation">(</span>A<span class="token punctuation">)</span> <span class="token operator">-&gt;</span> <span class="token function">__node</span><span class="token punctuation">(</span>E<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">&gt;</span><span class="token punctuation">;</span> <span class="token comment">// test D -&gt; E unreachable</span>
+
+<span class="token keyword">static_assert</span><span class="token punctuation">(</span>g<span class="token operator">::</span><span class="token function">getPath</span><span class="token punctuation">(</span><span class="token string">'A'</span><span class="token punctuation">,</span> <span class="token string">'D'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>sz <span class="token operator">==</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// compile-time</span>
+<span class="token keyword">static_assert</span><span class="token punctuation">(</span>g<span class="token operator">::</span><span class="token function">getPath</span><span class="token punctuation">(</span><span class="token string">'A'</span><span class="token punctuation">,</span> <span class="token string">'A'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>sz <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">static_assert</span><span class="token punctuation">(</span>g<span class="token operator">::</span><span class="token function">getPath</span><span class="token punctuation">(</span><span class="token string">'B'</span><span class="token punctuation">,</span> <span class="token string">'D'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>sz <span class="token operator">==</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">static_assert</span><span class="token punctuation">(</span>g<span class="token operator">::</span><span class="token function">getPath</span><span class="token punctuation">(</span><span class="token string">'B'</span><span class="token punctuation">,</span> <span class="token string">'E'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>sz <span class="token operator">==</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">static_assert</span><span class="token punctuation">(</span>g<span class="token operator">::</span><span class="token function">getPath</span><span class="token punctuation">(</span><span class="token string">'D'</span><span class="token punctuation">,</span> <span class="token string">'E'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>sz <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">int</span> argc<span class="token punctuation">,</span> <span class="token keyword">char</span><span class="token operator">*</span><span class="token operator">*</span> argv<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">char</span> from <span class="token operator">=</span> <span class="token string">'A'</span><span class="token punctuation">;</span>
+    <span class="token keyword">char</span> to <span class="token operator">=</span> <span class="token string">'D'</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>argc <span class="token operator">&gt;</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        from <span class="token operator">=</span> argv<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment">// A</span>
+        to <span class="token operator">=</span> argv<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment">// D</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">auto</span> path <span class="token operator">=</span> g<span class="token operator">::</span><span class="token function">getPath</span><span class="token punctuation">(</span>from<span class="token punctuation">,</span> to<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// runtime</span>
+    std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"from"</span> <span class="token operator">&lt;&lt;</span> from <span class="token operator">&lt;&lt;</span> <span class="token string">"to"</span> <span class="token operator">&lt;&lt;</span> to
+        <span class="token operator">&lt;&lt;</span> <span class="token string">"path size:"</span> <span class="token operator">&lt;&lt;</span> path<span class="token punctuation">.</span>sz <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>size_t i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> path<span class="token punctuation">.</span>sz<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> path<span class="token punctuation">.</span>path<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>i <span class="token operator">!=</span> path<span class="token punctuation">.</span>sz <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"-&gt;"</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>
+
+    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>上述代码描述的图如下：</p>
+<p><img src="find_shortest_path.svg" alt="find_shortest_path.svg"></p>
+<p>这幅图把所有场景都覆盖到了：</p>
+<ul>
+<li>存在环：<code>A-&gt;B-&gt;A</code></li>
+<li><code>A-&gt;D</code>最短路径其实是<code>A-&gt;C-&gt;D</code></li>
+<li><code>D-&gt;E</code>不可达</li>
+<li>通过给程序传参 <strong> 运行时 </strong> 查询任意节点间的最短路径</li>
+</ul>
+<h2 id="实现">实现</h2>
+<h3 id="constexpr 或模板元？">constexpr 或模板元？</h3>
+<p>图的所有节点之间最短路径其实有成熟算法，比如 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Floyd%E2%80%93Warshall_algorithm">Floyd–Warshall</a> 算法，可以在 <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.566ex" xmlns="http://www.w3.org/2000/svg" width="6.273ex" height="2.451ex" role="img" focusable="false" viewBox="0 -833.2 2772.9 1083.2"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D442" d="M740 435Q740 320 676 213T511 42T304 -22Q207 -22 138 35T51 201Q50 209 50 244Q50 346 98 438T227 601Q351 704 476 704Q514 704 524 703Q621 689 680 617T740 435ZM637 476Q637 565 591 615T476 665Q396 665 322 605Q242 542 200 428T157 216Q157 126 200 73T314 19Q404 19 485 98T608 313Q637 408 637 476Z"></path></g><g data-mml-node="mo" transform="translate(763, 0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="msup" transform="translate(1152, 0)"><g data-mml-node="mi"><path data-c="1D449" d="M52 648Q52 670 65 683H76Q118 680 181 680Q299 680 320 683H330Q336 677 336 674T334 656Q329 641 325 637H304Q282 635 274 635Q245 630 242 620Q242 618 271 369T301 118L374 235Q447 352 520 471T595 594Q599 601 599 609Q599 633 555 637Q537 637 537 648Q537 649 539 661Q542 675 545 679T558 683Q560 683 570 683T604 682T668 681Q737 681 755 683H762Q769 676 769 672Q769 655 760 640Q757 637 743 637Q730 636 719 635T698 630T682 623T670 615T660 608T652 599T645 592L452 282Q272 -9 266 -16Q263 -18 259 -21L241 -22H234Q216 -22 216 -15Q213 -9 177 305Q139 623 138 626Q133 637 76 637H59Q52 642 52 648Z"></path></g><g data-mml-node="mn" transform="translate(828.3, 363) scale(0.707)"><path data-c="33" d="M127 463Q100 463 85 480T69 524Q69 579 117 622T233 665Q268 665 277 664Q351 652 390 611T430 522Q430 470 396 421T302 350L299 348Q299 347 308 345T337 336T375 315Q457 262 457 175Q457 96 395 37T238 -22Q158 -22 100 21T42 130Q42 158 60 175T105 193Q133 193 151 175T169 130Q169 119 166 110T159 94T148 82T136 74T126 70T118 67L114 66Q165 21 238 21Q293 21 321 74Q338 107 338 175V195Q338 290 274 322Q259 328 213 329L171 330L168 332Q166 335 166 348Q166 366 174 366Q202 366 232 371Q266 376 294 413T322 525V533Q322 590 287 612Q265 626 240 626Q208 626 181 615T143 592T132 580H135Q138 579 143 578T153 573T165 566T175 555T183 540T186 520Q186 498 172 481T127 463Z"></path></g></g><g data-mml-node="mo" transform="translate(2383.9, 0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g></g></g></svg></mjx-container> 的时间复杂度内求出所有节点的最短路径；还有 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm">Dijkstra</a> 算法，可以求出单源最短路径；朴素实现会考虑图的深度、广度优先算法，遍历每个节点并对每个节点求出最短路径。</p>
+<p>考虑编译时计算，可选择的就不那么多了，毕竟编译时一切都是常量计算。而编译时计算有两种做法：</p>
+<ul>
+<li>constexpr，参考我之前一篇文章<a href="/2020/09/16/C-%E5%85%83%E7%BC%96%E7%A8%8B%E4%B9%8BParser-Combinator/">C++ 元编程之 Parser Combinator</a>，构造一个容器存放最短路径结果</li>
+<li>模板元编程，退而求其次</li>
+</ul>
+<p>在 C++20 之前还不支持编译期动态分配内存，导致在 constexpr 可用容器有限（得提前计算容器大小，开大了浪费），那么就没有模板元编程方式那么灵活了，毕竟模板元的基石 List 闭包结构是可以动态任意长度的，不过好处是借助容器可以轻而易举地实现 Floyd-Warshall, Dijkstra, 宽度优先搜索算法，而且编译期 constexpr 是安全的，出现数组越界等内存问题则导致 <strong> 编译错误</strong>，而不是运行错。</p>
+<p>由于 constexpr 的能力有限，可行但实现代价过高，我选择了用模板元编程，后果是只能选择递归版的深度优先搜索算法，而目前编译速度足够快，等出现难以忍受情况下，我会考虑重构成递归版广度优先搜索算法。</p>
+<h3 id="解构边集">解构边集</h3>
+<p>提供给用户描述的其实是一条条链<code>A-&gt;B-&gt;C-&gt;D</code>，我们需要解构成边集：<code>{A-&gt;B, B-&gt;C, C-&gt;D}</code>，这一部分可以参考我之前文章：<a href="/2020/08/30/C-%E5%85%83%E7%BC%96%E7%A8%8B%E4%B9%8B%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90%EF%BC%9A%E8%AE%BE%E8%AE%A1%E5%B9%B6%E5%AE%9E%E7%8E%B0%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84DSL/">C++ 元编程之代码生成：设计并实现图 DSL</a>。</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> Chains<span class="token operator">&gt;</span>
+<span class="token keyword">class</span> <span class="token class-name">Graph</span> <span class="token punctuation">{</span>
+    <span class="token keyword">using</span> AllConnections <span class="token operator">=</span> <span class="token comment">// 边集</span>
+        Unique_t<span class="token operator">&lt;</span>Concat_t<span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">Chain</span><span class="token operator">&lt;</span>Chains<span class="token operator">&gt;</span><span class="token operator">::</span>type<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">&gt;&gt;</span><span class="token punctuation">;</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+<h3 id="笛卡尔积">笛卡尔积</h3>
+<p>若要求出所有节点间的最短路径，首先得得到任意节点之间的两两组合，也就是对源节点集合和目的节点集合求笛卡尔积。</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">using</span> AllPairs <span class="token operator">=</span> CrossProduct_t<span class="token operator">&lt;</span>
+    Unique_t<span class="token operator">&lt;</span>Map_t<span class="token operator">&lt;</span>AllConnections<span class="token punctuation">,</span> ConnectionTrait<span class="token operator">&lt;</span><span class="token operator">&gt;</span><span class="token operator">::</span>GetFrom<span class="token operator">&gt;&gt;</span><span class="token punctuation">,</span>
+    Unique_t<span class="token operator">&lt;</span>Map_t<span class="token operator">&lt;</span>AllConnections<span class="token punctuation">,</span> ConnectionTrait<span class="token operator">&lt;</span><span class="token operator">&gt;</span><span class="token operator">::</span>GetTo<span class="token operator">&gt;&gt;</span><span class="token punctuation">,</span>
+    std<span class="token operator">::</span>pair<span class="token operator">&gt;</span><span class="token punctuation">;</span></code></pre>
+<h3 id="深度优先搜索">深度优先搜索</h3>
+<p>对两点之间求最短路径，首先给出伪代码如下：</p>
+<pre class="language-python" data-language="python"><code class="language-python">find_shortest_path<span class="token punctuation">(</span><span class="token keyword">from</span><span class="token punctuation">,</span> to<span class="token punctuation">,</span> path <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> <span class="token keyword">from</span> <span class="token operator">==</span> to<span class="token punctuation">:</span> <span class="token keyword">return</span> path   <span class="token comment"># reach target</span>
+    <span class="token keyword">if</span> <span class="token keyword">from</span> <span class="token keyword">in</span> path<span class="token punctuation">:</span> <span class="token keyword">return</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>   <span class="token comment"># find cycle</span>
+    <span class="token keyword">for</span> each <span class="token punctuation">(</span><span class="token keyword">from</span><span class="token punctuation">,</span> v<span class="token punctuation">)</span> <span class="token keyword">in</span> edges<span class="token punctuation">:</span> <span class="token comment"># expand next nodes</span>
+        cur_path <span class="token operator">=</span> <span class="token keyword">from</span> <span class="token operator">+</span> find_shortest_path<span class="token punctuation">(</span>v<span class="token punctuation">,</span> to<span class="token punctuation">)</span>
+        path <span class="token operator">=</span> <span class="token builtin">min</span><span class="token punctuation">(</span>path<span class="token punctuation">,</span> cur_path<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> path</code></pre>
+<p>算法很简单，指定两个点，然后递归求出两点间最短路径，注意边界情况有两种：遇到圈了或者到达目的地。</p>
+<p>对照伪代码，元函数声明如下：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">F</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">TARGET</span><span class="token punctuation">,</span>
+    <span class="token keyword">typename</span> <span class="token class-name">PATH</span> <span class="token operator">=</span> TypeList<span class="token operator">&lt;</span><span class="token operator">&gt;</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token operator">=</span> <span class="token keyword">void</span><span class="token operator">&gt;</span>
+<span class="token keyword">struct</span> <span class="token class-name">PathFinder</span><span class="token punctuation">;</span></code></pre>
+<p>考虑到达目的地的情况，通过模式匹配得到一条可行路径：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">// Reach TARGET!</span>
+<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">TARGET</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">PATH</span><span class="token operator">&gt;</span>
+<span class="token keyword">struct</span> <span class="token class-name">PathFinder</span><span class="token operator">&lt;</span>TARGET<span class="token punctuation">,</span> TARGET<span class="token punctuation">,</span> PATH<span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+    <span class="token keyword">using</span> type <span class="token operator">=</span> <span class="token keyword">typename</span> <span class="token class-name">PATH</span><span class="token operator">::</span><span class="token keyword">template</span> appendTo<span class="token operator">&lt;</span>TARGET<span class="token operator">&gt;</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+<p>另一个边界情况是发现环，返回一个空的路径。注意判断条件，若当前节点出现在路径中，说明遇到了环：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">// Skip cycle</span>
+<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">CURR_NODE</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">TARGET</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">PATH</span><span class="token operator">&gt;</span>
+<span class="token keyword">struct</span> <span class="token class-name">PathFinder</span><span class="token operator">&lt;</span>CURR_NODE<span class="token punctuation">,</span> TARGET<span class="token punctuation">,</span> PATH<span class="token punctuation">,</span>
+    std<span class="token operator">::</span>enable_if_t<span class="token operator">&lt;</span><span class="token operator">!</span>IsTypeList_v<span class="token operator">&lt;</span>CURR_NODE<span class="token operator">&gt;</span> <span class="token operator">&amp;&amp;</span>
+        Elem_v<span class="token operator">&lt;</span>PATH<span class="token punctuation">,</span> CURR_NODE<span class="token operator">&gt;&gt;</span><span class="token operator">&gt;</span><span class="token operator">:</span> TypeList<span class="token operator">&lt;</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span> <span class="token comment">// return empty path</span></code></pre>
+<p>比较棘手的是从当前节点出发，到达下一个邻接节点，同时从所有可行路径中求出最短的，这也是伪代码后两句所描述的。</p>
+<p>这里我们分两步实现，首先得到当前节点的邻接节点集合，其次递归遍历集合中的每个点：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">CURR_NODE</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">TARGET</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">PATH</span><span class="token operator">&gt;</span>
+<span class="token keyword">class</span> <span class="token class-name">PathFinder</span><span class="token operator">&lt;</span>CURR_NODE<span class="token punctuation">,</span> TARGET<span class="token punctuation">,</span> PATH<span class="token punctuation">,</span>
+    std<span class="token operator">::</span>enable_if_t<span class="token operator">&lt;</span><span class="token operator">!</span> std<span class="token operator">::</span>is_same_v<span class="token operator">&lt;</span>CURR_NODE<span class="token punctuation">,</span> TARGET<span class="token operator">&gt;</span> <span class="token operator">&amp;&amp;</span>
+        <span class="token operator">!</span>IsTypeList_v<span class="token operator">&lt;</span>CURR_NODE<span class="token operator">&gt;</span> <span class="token operator">&amp;&amp;</span>
+        <span class="token operator">!</span>Elem_v<span class="token operator">&lt;</span>PATH<span class="token punctuation">,</span> CURR_NODE<span class="token operator">&gt;&gt;</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+    <span class="token keyword">using</span> EdgesFrom <span class="token operator">=</span> Filter_t<span class="token operator">&lt;</span>AllConnections<span class="token punctuation">,</span>
+                    ConnectionTrait<span class="token operator">&lt;</span>CURR_NODE<span class="token operator">&gt;</span><span class="token operator">::</span><span class="token keyword">template</span> IsFrom<span class="token operator">&gt;</span><span class="token punctuation">;</span>
+    <span class="token comment">// 得到邻接节点集合</span>
+    <span class="token keyword">using</span> NextNodes <span class="token operator">=</span> Map_t<span class="token operator">&lt;</span>EdgesFrom<span class="token punctuation">,</span> ConnectionTrait<span class="token operator">&lt;</span><span class="token operator">&gt;</span><span class="token operator">::</span>GetTo<span class="token operator">&gt;</span><span class="token punctuation">;</span>
+
+<span class="token keyword">public</span><span class="token operator">:</span>
+    <span class="token keyword">using</span> type <span class="token operator">=</span> <span class="token keyword">typename</span> <span class="token class-name">PathFinder</span><span class="token operator">&lt;</span>NextNodes<span class="token punctuation">,</span> TARGET<span class="token punctuation">,</span>
+            <span class="token keyword">typename</span> <span class="token class-name">PATH</span><span class="token operator">::</span><span class="token keyword">template</span> appendTo<span class="token operator">&lt;</span>CURR_NODE<span class="token operator">&gt;&gt;</span><span class="token operator">::</span>type<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+<p>遍历邻接集合中每个点，并选出最短路径：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">// Expansion NextNodes</span>
+<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">TARGET</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">PATH</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>CURR_NODE<span class="token operator">&gt;</span>
+<span class="token keyword">class</span> <span class="token class-name">PathFinder</span><span class="token operator">&lt;</span>TypeList<span class="token operator">&lt;</span>CURR_NODE<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">&gt;</span><span class="token punctuation">,</span> TARGET<span class="token punctuation">,</span> PATH<span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+    <span class="token keyword">using</span> AllPaths <span class="token operator">=</span> TypeList<span class="token operator">&lt;</span>
+        <span class="token keyword">typename</span> <span class="token class-name">PathFinder</span><span class="token operator">&lt;</span>CURR_NODE<span class="token punctuation">,</span> TARGET<span class="token punctuation">,</span> PATH<span class="token operator">&gt;</span><span class="token operator">::</span>type<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+    <span class="token operator">&gt;</span><span class="token punctuation">;</span>
+    <span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">ACC</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">Path</span><span class="token operator">&gt;</span> <span class="token keyword">struct</span> <span class="token class-name">PathCmp</span> <span class="token punctuation">{</span>
+        <span class="token keyword">using</span> type <span class="token operator">=</span> std<span class="token operator">::</span>conditional_t<span class="token operator">&lt;</span><span class="token punctuation">(</span>ACC<span class="token operator">::</span>size <span class="token operator">==</span> <span class="token number">0</span> <span class="token operator">||</span>
+                <span class="token punctuation">(</span><span class="token punctuation">(</span>ACC<span class="token operator">::</span>size <span class="token operator">&gt;</span> Path<span class="token operator">::</span>size<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> Path<span class="token operator">::</span>size <span class="token operator">&gt;</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                Path<span class="token punctuation">,</span> ACC<span class="token operator">&gt;</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token keyword">public</span><span class="token operator">:</span>
+    <span class="token keyword">using</span> type <span class="token operator">=</span> FoldL_t<span class="token operator">&lt;</span>AllPaths<span class="token punctuation">,</span> TypeList<span class="token operator">&lt;</span><span class="token operator">&gt;</span><span class="token punctuation">,</span> PathCmp<span class="token operator">&gt;</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+<p>以上就是编译期求最短路径代码，但还差最后一步，就是生成路径数据，提供接口供编译期查询。</p>
+<h3 id="动静结合">动静结合</h3>
+<p>这一步最关键了，若无法运行时使用，那么就没多大价值了。</p>
+<p>很容易想到，定义一个数据结构，用于存放路径数据：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">NODE_TYPE</span><span class="token operator">&gt;</span>
+<span class="token keyword">struct</span> <span class="token class-name">Path</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> NODE_TYPE<span class="token operator">*</span> path<span class="token punctuation">;</span>
+    size_t sz<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">NODE</span><span class="token punctuation">,</span> <span class="token keyword">typename</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> NODEs<span class="token operator">&gt;</span>
+<span class="token keyword">class</span> <span class="token class-name">PathStorage</span> <span class="token punctuation">{</span>
+    <span class="token keyword">using</span> NODE_TYPE <span class="token operator">=</span> std<span class="token operator">::</span>decay_t<span class="token operator">&lt;</span><span class="token keyword">decltype</span><span class="token punctuation">(</span>NODE<span class="token operator">::</span>id<span class="token punctuation">)</span><span class="token operator">&gt;</span><span class="token punctuation">;</span>
+    <span class="token keyword">constexpr</span> <span class="token keyword">static</span> NODE_TYPE
+        pathStorage<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">{</span> NODE<span class="token operator">::</span>id<span class="token punctuation">,</span> NODEs<span class="token operator">::</span>id<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token keyword">public</span><span class="token operator">:</span>
+    <span class="token keyword">constexpr</span> <span class="token keyword">static</span> Path<span class="token operator">&lt;</span>NODE_TYPE<span class="token operator">&gt;</span> path <span class="token punctuation">{</span>
+        <span class="token punctuation">.</span>path <span class="token operator">=</span> pathStorage<span class="token punctuation">,</span>
+        <span class="token punctuation">.</span>sz   <span class="token operator">=</span> <span class="token keyword">sizeof</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">(</span>NODEs<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+<p>接着将前两步结合起来，定义一个数据类型 PATH_PAIR：<code>std::pair&lt;std::pair&lt;FROM, TO&gt;, PATH&gt;</code>，第一个类型描述的是起点、终点序对信息，第二个类型存放它们之间的最短路径。</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">PAIR</span><span class="token operator">&gt;</span>
+<span class="token keyword">struct</span> <span class="token class-name">GetPath</span> <span class="token punctuation">{</span>
+    <span class="token keyword">using</span> type <span class="token operator">=</span> std<span class="token operator">::</span>pair<span class="token operator">&lt;</span>PAIR<span class="token punctuation">,</span>
+        <span class="token keyword">typename</span> <span class="token class-name">PathFinder</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">PAIR</span><span class="token operator">::</span>first_type<span class="token punctuation">,</span>
+                            <span class="token keyword">typename</span> <span class="token class-name">PAIR</span><span class="token operator">::</span>second_type<span class="token operator">&gt;</span><span class="token operator">::</span>type<span class="token operator">&gt;</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+<p>别忘了过滤掉不可达节点之间的路径（长度为 0），避免存储不必要的数据：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">PATH_PAIR</span><span class="token operator">&gt;</span>
+<span class="token keyword">struct</span> <span class="token class-name">IsNonEmptyPath</span> <span class="token punctuation">{</span>
+    <span class="token keyword">constexpr</span> <span class="token keyword">static</span> <span class="token keyword">bool</span> value <span class="token operator">=</span> <span class="token punctuation">(</span>PATH_PAIR<span class="token operator">::</span>second_type<span class="token operator">::</span>size <span class="token operator">&gt;</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+<p>将得到的 PATH_PAIR 数据存到之前定义的 PathStorage 类中去：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">PATH_PAIR</span><span class="token operator">&gt;</span>
+<span class="token keyword">struct</span> <span class="token class-name">SavePath</span> <span class="token punctuation">{</span>
+    <span class="token keyword">using</span> type <span class="token operator">=</span> std<span class="token operator">::</span>pair<span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">PATH_PAIR</span><span class="token operator">::</span>first_type<span class="token punctuation">,</span>
+            <span class="token keyword">typename</span> <span class="token class-name">PATH_PAIR</span><span class="token operator">::</span>second_type<span class="token operator">::</span><span class="token keyword">template</span> exportTo<span class="token operator">&lt;</span>PathStorage<span class="token operator">&gt;&gt;</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+<p>所有节点路径串在一起，就是：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">using</span> AllPaths <span class="token operator">=</span> Map_t<span class="token operator">&lt;</span>Filter_t<span class="token operator">&lt;</span>
+    Map_t<span class="token operator">&lt;</span>AllPairs<span class="token punctuation">,</span> GetPath<span class="token operator">&gt;</span><span class="token punctuation">,</span>
+    IsNonEmptyPath<span class="token operator">&gt;</span><span class="token punctuation">,</span> SavePath<span class="token operator">&gt;</span><span class="token punctuation">;</span></code></pre>
+<p>有了数据，就可以提供接口用于查表，通过匹配节点的 ID，得到最终路径：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">NODE_TYPE</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">FROM</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">TO</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">PATH</span><span class="token operator">&gt;</span>
+<span class="token keyword">constexpr</span> <span class="token keyword">static</span> <span class="token keyword">bool</span> <span class="token function">matchPath</span><span class="token punctuation">(</span>NODE_TYPE from<span class="token punctuation">,</span> NODE_TYPE to<span class="token punctuation">,</span>
+        Path<span class="token operator">&lt;</span>NODE_TYPE<span class="token operator">&gt;</span><span class="token operator">&amp;</span> path<span class="token punctuation">,</span> std<span class="token operator">::</span>pair<span class="token operator">&lt;</span>std<span class="token operator">::</span>pair<span class="token operator">&lt;</span>FROM<span class="token punctuation">,</span> TO<span class="token operator">&gt;</span><span class="token punctuation">,</span> PATH<span class="token operator">&gt;</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>FROM<span class="token operator">::</span>id <span class="token operator">==</span> from <span class="token operator">&amp;&amp;</span> TO<span class="token operator">::</span>id <span class="token operator">==</span> to<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        path <span class="token operator">=</span> PATH<span class="token operator">::</span>path<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">NODE_TYPE</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>PATH_PAIRs<span class="token operator">&gt;</span>
+<span class="token keyword">constexpr</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">matchPath</span><span class="token punctuation">(</span>NODE_TYPE from<span class="token punctuation">,</span> NODE_TYPE to<span class="token punctuation">,</span>
+        Path<span class="token operator">&lt;</span>NODE_TYPE<span class="token operator">&gt;</span><span class="token operator">&amp;</span> path<span class="token punctuation">,</span> TypeList<span class="token operator">&lt;</span>PATH_PAIRs<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">&gt;</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token punctuation">(</span><span class="token function">matchPath</span><span class="token punctuation">(</span>from<span class="token punctuation">,</span> to<span class="token punctuation">,</span> path<span class="token punctuation">,</span> PATH_PAIRs<span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">||</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// export compile/run-time interface</span>
+<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">NODE_TYPE</span><span class="token operator">&gt;</span>
+<span class="token keyword">constexpr</span> <span class="token keyword">static</span> Path<span class="token operator">&lt;</span>NODE_TYPE<span class="token operator">&gt;</span> <span class="token function">getPath</span><span class="token punctuation">(</span>NODE_TYPE from<span class="token punctuation">,</span> NODE_TYPE to<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    Path<span class="token operator">&lt;</span>NODE_TYPE<span class="token operator">&gt;</span> path<span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token function">matchPath</span><span class="token punctuation">(</span>from<span class="token punctuation">,</span> to<span class="token punctuation">,</span> path<span class="token punctuation">,</span> AllPaths<span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> path<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<h3 id="检视汇编">检视汇编</h3>
+<p>比较好奇的是最后我们的代码在二进制文件中如何呈现？是否如我们所愿，数据区里存放着所有节点路径信息？这时候可以检视一下编译器生成的汇编代码<a target="_blank" rel="noopener" href="https://godbolt.org/z/WW6o93">https://godbolt.org/z/WW6o93</a>，发现确实如此：</p>
+<pre class="language-nasm" data-language="nasm"><code class="language-nasm">Graph<span class="token operator">&lt;</span>...<span class="token operator">&gt;</span>::PathStorage<span class="token operator">&lt;</span>A, B<span class="token operator">&gt;</span>::pathStorage:
+    .ascii  <span class="token string">"AB"</span>
+Graph<span class="token operator">&lt;</span>...<span class="token operator">&gt;</span>::PathStorage<span class="token operator">&lt;</span>A, C<span class="token operator">&gt;</span>::pathStorage:
+    .ascii  <span class="token string">"AC"</span>
+Graph<span class="token operator">&lt;</span>...<span class="token operator">&gt;</span>::PathStorage<span class="token operator">&lt;</span>A, C, D<span class="token operator">&gt;</span>::pathStorage:
+    .ascii  <span class="token string">"ACD"</span>
+Graph<span class="token operator">&lt;</span>...<span class="token operator">&gt;</span>::PathStorage<span class="token operator">&lt;</span>A<span class="token operator">&gt;</span>::pathStorage:
+    .byte   <span class="token number">65</span>
+Graph<span class="token operator">&lt;</span>...<span class="token operator">&gt;</span>::PathStorage<span class="token operator">&lt;</span>A, E<span class="token operator">&gt;</span>::pathStorage:
+    .ascii  <span class="token string">"AE"</span>
+Graph<span class="token operator">&lt;</span>...<span class="token operator">&gt;</span>::PathStorage<span class="token operator">&lt;</span>B<span class="token operator">&gt;</span>::pathStorage:
+    .byte   <span class="token number">66</span>
+Graph<span class="token operator">&lt;</span>...<span class="token operator">&gt;</span>::PathStorage<span class="token operator">&lt;</span>B, C<span class="token operator">&gt;</span>::pathStorage:
+    .ascii  <span class="token string">"BC"</span>
+Graph<span class="token operator">&lt;</span>...<span class="token operator">&gt;</span>::PathStorage<span class="token operator">&lt;</span>B, C, D<span class="token operator">&gt;</span>::pathStorage:
+    .ascii  <span class="token string">"BCD"</span>
+Graph<span class="token operator">&lt;</span>...<span class="token operator">&gt;</span>::PathStorage<span class="token operator">&lt;</span>B, A<span class="token operator">&gt;</span>::pathStorage:
+    .ascii  <span class="token string">"BA"</span>
+Graph<span class="token operator">&lt;</span>...<span class="token operator">&gt;</span>::PathStorage<span class="token operator">&lt;</span>B, A, E<span class="token operator">&gt;</span>::pathStorage:
+    .ascii  <span class="token string">"BAE"</span>
+Graph<span class="token operator">&lt;</span>...<span class="token operator">&gt;</span>::PathStorage<span class="token operator">&lt;</span>C<span class="token operator">&gt;</span>::pathStorage:
+    .byte   <span class="token number">67</span>
+Graph<span class="token operator">&lt;</span>...<span class="token operator">&gt;</span>::PathStorage<span class="token operator">&lt;</span>C, D<span class="token operator">&gt;</span>::pathStorage:
+    .ascii  <span class="token string">"CD"</span></code></pre>
+<p>而查找路径也是一条条 <code>cmp</code> 语句：</p>
+<pre class="language-nasm" data-language="nasm"><code class="language-nasm">cmpb    <span class="token number">$65</span>, <span class="token operator">%</span><span class="token register variable">cl</span>
+sete    <span class="token operator">%</span><span class="token register variable">dl</span>
+jne     .LBB0_8
+cmpb    <span class="token number">$66</span>, <span class="token operator">%</span><span class="token register variable">al</span>
+jne     .LBB0_8
+movl    <span class="token operator">$</span>Graph<span class="token operator">&lt;</span>...<span class="token operator">&gt;</span>::PathStorage<span class="token operator">&lt;</span>A, B<span class="token operator">&gt;</span>::pathStorage, <span class="token operator">%</span><span class="token register variable">r12d</span>
+movb    <span class="token number">$66</span>, <span class="token operator">%</span>bpl
+jmp     .LBB0_30
+...</code></pre>
+<h2 id="尾声">尾声</h2>
+<p>期待 C++20 的 constexpr，这样算法写起来就简单多了。其实元编程也不是很复杂，如果熟悉函数式编程的话，会发现思路其实很像，只不过是 C++ 元素过多看起来很吓人，所以学函数式编程还是有必要的，能更好的发挥模板元编程的潜力。</p>
+
+    
+  </div>
+
+</article>
+
+
+   
+       <div class="original">
+    <ul>
+        <li>本文标题：C++ 元编程之求解全局最短路径</li>
+        <li>本文字数：2.6k</li>
+        <li>本文作者：Netcan</li>
+        <li>发布时间：2020年09月23日 - 19时02分</li>
+        <li>最后更新：2022年12月09日 - 19时02分</li>
+        <li>原始链接：<a href="https://netcan.github.io/2020/09/23/C-%E5%85%83%E7%BC%96%E7%A8%8B%E4%B9%8B%E6%B1%82%E8%A7%A3%E5%85%A8%E5%B1%80%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/">https://netcan.github.io/2020/09/23/C-元编程之求解全局最短路径/</a></li>
+        <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
+    </ul>
+</div>
+
+   
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持Netcan</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2020/09/16/C-%E5%85%83%E7%BC%96%E7%A8%8B%E4%B9%8BParser-Combinator/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2020/09/30/%E8%AF%A6%E8%A7%A3%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%E4%B9%8BMonad/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '893a4103795fc66cd8e7',
+  clientSecret: '35c92c3dca938831b67dc22e46d64bc9073ebacf',
+  repo: 'netcan.github.io',
+  owner: 'Netcan',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: md5(location.pathname),
+  admin: ['Netcan'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

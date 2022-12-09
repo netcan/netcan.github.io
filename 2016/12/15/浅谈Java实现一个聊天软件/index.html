@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>浅谈 Java 实现一个聊天软件 | Netcan on Programming</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="计算机网络,Java,Socket编程," />
+  
+
+  <meta name="description" content="这是一个 Java 聊天系统（项目地址：https:&#x2F;&#x2F;github.com&#x2F;netcan&#x2F;Talk），作为 Java 实验课的内容，目前已基本完成，支持如下功能：  群聊 私聊 消息提醒 用户状态标记 聊天记录保存 表情支持  效果如下图： 这是私聊的界面，其中可以看到Master，表示群聊大厅，选中可以进行群聊，而选择其他用户，则表示私聊。 名字后面的 (*) 表示消息提醒，切换标签即可查看，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅谈 Java 实现一个聊天软件">
+<meta property="og:url" content="https://netcan.github.io/2016/12/15/%E6%B5%85%E8%B0%88Java%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E8%81%8A%E5%A4%A9%E8%BD%AF%E4%BB%B6/index.html">
+<meta property="og:site_name" content="Netcan on Programming">
+<meta property="og:description" content="这是一个 Java 聊天系统（项目地址：https:&#x2F;&#x2F;github.com&#x2F;netcan&#x2F;Talk），作为 Java 实验课的内容，目前已基本完成，支持如下功能：  群聊 私聊 消息提醒 用户状态标记 聊天记录保存 表情支持  效果如下图： 这是私聊的界面，其中可以看到Master，表示群聊大厅，选中可以进行群聊，而选择其他用户，则表示私聊。 名字后面的 (*) 表示消息提醒，切换标签即可查看，">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/netcan/Talk/master/images/Screenshot%20from%202016-12-15%2020-22-33.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/netcan/Talk/master/images/Screenshot%20from%202016-12-15%2020-24-53.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/netcan/Talk/master/images/Screenshot%20from%202016-12-15%2020-49-07.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/netcan/Talk/master/images/utf-emoji.png">
+<meta property="article:published_time" content="2016-12-15T14:10:02.000Z">
+<meta property="article:modified_time" content="2022-12-09T11:02:08.600Z">
+<meta property="article:author" content="Netcan">
+<meta property="article:tag" content="计算机网络">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="Socket编程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/netcan/Talk/master/images/Screenshot%20from%202016-12-15%2020-22-33.png">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/site.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-174901164-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d2c292719a76d8c0fa7f9874379cfd25";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"] > svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body>
+
+
+  
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+  
+
+  <link rel="stylesheet" href="/css/prism.css">
+
+<div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">ROOT</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF"><span class="toc-text">设计思路</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AC%E7%94%A8%E6%95%B0%E6%8D%AE%E5%8C%85"><span class="toc-text">公用数据包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E7%AB%AF%20pers-netcan-talk-server"><span class="toc-text">服务端pers.netcan.talk.server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%20pers-netcan-talk-client"><span class="toc-text">客户端pers.netcan.talk.client</span></a></li></ol></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-浅谈Java实现一个聊天软件" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">浅谈 Java 实现一个聊天软件</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2016.12.15</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Netcan</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p>这是一个 Java 聊天系统（项目地址：<a target="_blank" rel="noopener" href="https://github.com/netcan/Talk">https://github.com/netcan/Talk</a>），作为 Java 实验课的内容，目前已基本完成，支持如下功能：</p>
+<ul>
+<li>群聊</li>
+<li>私聊</li>
+<li>消息提醒</li>
+<li>用户状态标记</li>
+<li>聊天记录保存</li>
+<li>表情支持</li>
+</ul>
+<p>效果如下图：</p>
+<p>这是私聊的界面，其中可以看到<code>Master</code>，表示群聊大厅，选中可以进行群聊，而选择其他用户，则表示私聊。</p>
+<p>名字后面的 <code>(*)</code> 表示消息提醒，切换标签即可查看，而 <code>(Offline)</code> 则标记用户已经离线。</p>
+<p><img src="https://raw.githubusercontent.com/netcan/Talk/master/images/Screenshot%20from%202016-12-15%2020-22-33.png" alt="私聊"></p>
+<p>同样，可以发送表情，不那么单调。</p>
+<p><img src="https://raw.githubusercontent.com/netcan/Talk/master/images/Screenshot%20from%202016-12-15%2020-24-53.png" alt="表情支持"></p>
+<p>这是服务端界面，主要是记录用户的登入、注销。</p>
+<p><img src="https://raw.githubusercontent.com/netcan/Talk/master/images/Screenshot%20from%202016-12-15%2020-49-07.png" alt="服务端界面"></p>
+<p>下面我就来写下我的设计思路吧。</p>
+<h2 id="设计思路">设计思路</h2>
+<p>首先我要吐槽的是，界面真难写，从代码统计中可以看出，我的服务端 230 行左右，而客户端达到 700 多行，同时客户端也写的一坨，纯粹是面向过程的写法了。</p>
+<p>这里我把客户端和服务端写到一个项目里（有 3 个包，一个客户端，一个服务端，一个公用数据），通过命令行参数来判断是启动客户端，还是服务端<code>--server</code>，同时互不依赖。</p>
+<p>在写客户端的过程中，发现 <code>Swing</code> 比较丑，查了下资料，最后选择了 <code>JavaFX</code> 来构建界面。</p>
+<p>刚开始是用 <code>openjdk</code> 来编写，发现没有内置 <code>JavaFX</code> 库，最后还是老老实实用了<code>Oracle-JDK</code>。</p>
+<p>期间也查了不少资料，全是关于客户端的细节处理。</p>
+<h3 id="公用数据包">公用数据包</h3>
+<p>这里主要定义了 3 个类，分别介绍如下。</p>
+<p><code>Talk</code>类就是程序的主入口了，通过判断是否带 <code>--server</code> 来启动服务端或者客户端。</p>
+<p><code>TalkUser</code>类，主要是为服务端使用的，标记了用户名 <code>userName</code>，以及该用户收到的消息队列<code>message</code>（为<code>[*FROM &lt;from&gt;]</code> 格式，后面会讲）。同时也定义了 <code>sendMsg</code>（存储用户消息）和<code>sendAll</code>（存储群聊消息）方法，来存储消息。可能方法名有点误导，比如说调用<code>usr.sendMsg(from, msg)</code>，其实是<code>usr</code> 存储 <code>from</code> 发来的消息，而不是发送消息 = =。<code>sendAll</code>类似。</p>
+<p><code>TalkEmoji</code>类，这个类比较智障，存储了各个 <code>Emoji</code> 表情的 <code>Unicode</code> 码，这里提前说下，其实早在 2010 年，<code>Unicode</code>编码就已经纳入了 700 多个 <code>Emoji</code> 表情，所以是可以支持表情的，只要加载支持 <code>Emoji</code> 表情的字库即可。参考链接：<a target="_blank" rel="noopener" href="http://www.guigarage.com/2015/01/support-emojis/">How to support Emojis</a></p>
+<p><img src="https://raw.githubusercontent.com/netcan/Talk/master/images/utf-emoji.png" alt="emoji"></p>
+<h3 id="服务端 pers-netcan-talk-server">服务端<code>pers.netcan.talk.server</code></h3>
+<p>服务端接口设计，比较烂大街（传统）的 <code>Master-Worker</code> 模型，设置一个 <code>Master</code> 主线程，专门用来监听客户端请求；当客户端请求时，则创建一系列子线程 <code>Workers</code> 来处理各个客户端的请求。</p>
+<p>需要注意的是 Java 很容易产生 <code>Null</code> 指针异常操作问题，这里要仔细处理。</p>
+<p>之后就是设计一套专用的协议，以实现服务端与客户端的交互。</p>
+<p>我设计的协议如下：</p>
+<ul>
+<li>
+<p>客户端请求</p>
+<ul>
+<li><code>[REGISTER]&lt;username&gt;</code>： 用户注册到服务器，服务器产生一个子线程专门来处理这个用户的请求</li>
+<li><code>[GETUSRS]</code>： 服务端返回在线用户列表<code>[USERS]&lt;uesr1&gt;, &lt;user2&gt;...</code>，用逗号隔开</li>
+<li><code>[SENDTO &lt;to&gt;]&lt;message&gt;</code>： 用户发送 <code>message</code> 消息给名为 <code>to</code> 的用户，若发送给 <code>Master</code>，则<code>[ALLFROM]</code> 响应。</li>
+<li><code>[LOGOUT]</code>：用户注销</li>
+</ul>
+</li>
+<li>
+<p>服务端响应</p>
+<ul>
+<li><code>[USERS]&lt;uesr1&gt;, &lt;user2&gt;...</code>： 响应客户端的 <code>[GETUSRS]</code> 请求，返回各个在线用户名</li>
+<li><code>[OK]</code>： 目前仅表示用户的 <code>[REGISTER]</code> 请求成功，即登录成功</li>
+<li><code>[FAILED]</code>： 目前仅表示用户的 <code>[REGISTER]</code> 请求失败，即登录失败，可能因为重名。</li>
+<li><code>[FROM &lt;from&gt;]&lt;message&gt;</code>： 表示当前用户收到一个名为 <code>from</code> 用户的 <code>message</code> 消息。</li>
+<li><code>[ALLFROM &lt;from&gt;]&lt;message&gt;</code>： 表示当前用户收到一个名为 <code>from</code> 用户的群发（在 <code>Master</code> 标签中显示）<code>message</code>消息。</li>
+</ul>
+</li>
+</ul>
+<p>好吧，应该就那么几条指令，这样对于一个聊天系统来说足够了，需要注意的是发送的时候，用 <code>flush</code> 方法立即将发送缓冲区中的内容发送出去，而不是等到缓冲区满了才发送，这样就没有交互性可言了。</p>
+<p>忘记说一点，我是这么处理用户的消息的，在 <code>Master</code> 中有一个 <code>Users</code> 全局变量（这样所有的线程都能访问了），它的类型为 <code>&lt;TalkUser&gt;</code>，就是前面公用数据包中提到的数据结构，每当接收到用户的发送指令<code>[SENDTO]</code> 时，就调用对应用户的 <code>sendto</code> 方法来存储消息到自己的消息队列中。而每个 <code>Worker</code> 线程，都会在 <code>300ms</code> 内检查各自处理用户的消息队列是否有消息，一有就立刻发送给对应的客户端，让客户端展示出来。</p>
+<p>之前和一个同学讨论这个聊天软件是怎么设计比较合适，他比较纠结一个问题，就是怎么调度各个用户发送的消息，所以考虑用轮询的做法，而我一开始就没考虑过这个问题，因为很简单啊，用户 A 发消息给用户 B，用户 B 直接展示出来就行了，反过来类似，如果同时发，怎么调度？当然是谁网速快就先处理谁的 = =，同理，群聊也是，服务器先收到谁的，就立刻发送给各个用户，先后顺序完全由发送时间和网速来确定，所以不用考虑那么多的。（当然可能每个用户的消息记录显示顺序不一样，这也是有可能的）。</p>
+<h3 id="客户端 pers-netcan-talk-client">客户端<code>pers.netcan.talk.client</code></h3>
+<p>客户端写的就比较凌乱了，它的职责无非就是解析服务器响应，展现给用户，同时将用户的操作（主要是发送命令）发送给服务器处理。</p>
+<p>看起来比较容易，细节还是比较难处理的。客户端开一个线程，每 <code>300ms</code> 发送一个 <code>[GETUSRS]</code> 报文给服务器，服务器响应报文，返回用户列表，也就是说每 <code>300ms</code> 刷新一下用户列表，这里起到 2 个作用，一是相当于心跳包，维持 <code>TCP</code> 长连接，二是实时获取在线用户，之后就是接收消息，每 <code>300ms</code> 接收一条消息是可以接受的。</p>
+<p>然而这个专门用来刷新消息的线程，若修改 <code>UI</code> 会出错，无奈查了大量资料，用 <code>Task&lt;Void&gt;</code> 来处理，将修改<code>UI</code>、刷新消息部分代码放到如下代码块中处理。</p>
+<pre class="language-java" data-language="java"><code class="language-java"><span class="token class-name">Platform</span><span class="token punctuation">.</span><span class="token function">runLater</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Runnable</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	<span class="token annotation punctuation">@Override</span>
+	<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+	<span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>用户状态标记，这里当用户离线的时候，就加个 <code>(Offline)</code> 标记，有新消息，就加个 <code>(*)</code> 标记，用正则表达式 <code>&quot;([\\w\\d]+)(\\((\\*|Offline)\\))?&quot;</code> 来匹配是哪种状态，看起来够难写的。</p>
+<p>发送消息，响应发送按钮点击事件，和回车事件，然后将发送框中的消息 <code>&lt;msg&gt;</code>，用户列表选中的用户<code>&lt;to&gt;</code>，发送<code>[SENDTO &lt;to&gt;]&lt;msg&gt;</code> 指令给服务端。需要注意的是，为了减少特殊字符（例如换行）带来的麻烦，将消息字符串利用 <code>base64</code> 编码再发送，接收的时候再 <code>base64</code> 解码，就不用考虑那么多文本处理细节了。</p>
+<p>接收消息，每 <code>300ms</code> 响应一下服务端，然后检查是否有 <code>[*FROM]</code> 响应，并将消息存储至消息记录中。客户端展现出来。</p>
+<p>表情支持，将一些 <code>Emoji</code> 表情的 <code>Unicode</code> 码存到按钮中，然后响应按钮事件，点击按钮就把表情附加到发送框中，这里又出现一个问题，我将 <code>emojis</code> 定义为一个按钮数组，那么绑定事件会出现问题：</p>
+<pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">&lt;</span><span class="token class-name">TalkEmoji</span><span class="token punctuation">.</span>emoji<span class="token punctuation">.</span>length<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 将表情显示到按钮上</span>
+	emojis<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">setOnAction</span><span class="token punctuation">(</span><span class="token punctuation">(</span>event<span class="token punctuation">)</span> <span class="token operator">-></span> <span class="token punctuation">&#123;</span>
+			sendMsg<span class="token punctuation">.</span><span class="token function">appendText</span><span class="token punctuation">(</span>emojis<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">getText</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre>
+<p>将编译不过去，因为 <code>event</code> 的<code>lambda</code>表达式引用了 <code>i</code> 这个外部变量，这在 <code>Java</code> 中是不允许的（只能将外部变量声明为 <code>final</code>），<code>this</code> 我也想过了，不行，没办法，又查了大量资料，解决如下：</p>
+<pre class="language-java" data-language="java"><code class="language-java"><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token class-name">Button</span><span class="token punctuation">)</span> event<span class="token punctuation">.</span><span class="token function">getSource</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getText</span><span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+<p>利用 <code>event.getSource()</code> 方法获取是哪个对象响应的事件。</p>
+<p>当用户点击退出按钮的时候，就将内存中的聊天记录以用户名为文件名的方式保存到文件中，登录的时候加载一下文件的内容到内存中即可。</p>
+<p>还有一点要注意的是，保存 / 读取文件需要指定编码，否则在 <code>Win</code> 平台下运行，保存 / 读取的内容将乱码。</p>
+
+    
+  </div>
+
+</article>
+
+
+   
+       <div class="original">
+    <ul>
+        <li>本文标题：浅谈 Java 实现一个聊天软件</li>
+        <li>本文字数：2.2k</li>
+        <li>本文作者：Netcan</li>
+        <li>发布时间：2016年12月15日 - 22时10分</li>
+        <li>最后更新：2022年12月09日 - 19时02分</li>
+        <li>原始链接：<a href="https://netcan.github.io/2016/12/15/%E6%B5%85%E8%B0%88Java%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E8%81%8A%E5%A4%A9%E8%BD%AF%E4%BB%B6/">https://netcan.github.io/2016/12/15/浅谈Java实现一个聊天软件/</a></li>
+        <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
+    </ul>
+</div>
+
+   
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持Netcan</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2016/10/21/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E5%AE%9E%E9%AA%8C%E4%B9%8BLR-1-%E5%88%86%E6%9E%90%E5%99%A8%E8%AE%BE%E8%AE%A1/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2016/12/25/%E8%B0%88%E8%B0%88localhost/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '893a4103795fc66cd8e7',
+  clientSecret: '35c92c3dca938831b67dc22e46d64bc9073ebacf',
+  repo: 'netcan.github.io',
+  owner: 'Netcan',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: md5(location.pathname),
+  admin: ['Netcan'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

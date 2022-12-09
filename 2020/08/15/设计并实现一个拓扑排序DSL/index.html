@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>设计并实现一个拓扑排序 DSL | Netcan on Programming</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="C/C++,元编程," />
+  
+
+  <meta name="description" content="背景 最近在重构项目，项目主要和图有关，图描述了各个节点的连接关系，这些连接关系有条件选中，图也会局部变化，而各个具体节点则承载了实际业务。 由于之前的设计的代码通过可视化工具生成表，将连接的边和条件都存到一个表中，运行时根据条件选中节点和边，从而拼凑成一幅完整的图。而这部分代码比较难读，各种容器遍历迭代，才得到最终的图数据结构，而想要知道最终图长啥样，需要运行时抓日志获得。 考虑图结构是静态的，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="设计并实现一个拓扑排序 DSL">
+<meta property="og:url" content="https://netcan.github.io/2020/08/15/%E8%AE%BE%E8%AE%A1%E5%B9%B6%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8FDSL/index.html">
+<meta property="og:site_name" content="Netcan on Programming">
+<meta property="og:description" content="背景 最近在重构项目，项目主要和图有关，图描述了各个节点的连接关系，这些连接关系有条件选中，图也会局部变化，而各个具体节点则承载了实际业务。 由于之前的设计的代码通过可视化工具生成表，将连接的边和条件都存到一个表中，运行时根据条件选中节点和边，从而拼凑成一幅完整的图。而这部分代码比较难读，各种容器遍历迭代，才得到最终的图数据结构，而想要知道最终图长啥样，需要运行时抓日志获得。 考虑图结构是静态的，">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-08-15T06:01:08.000Z">
+<meta property="article:modified_time" content="2022-12-09T11:02:08.604Z">
+<meta property="article:author" content="Netcan">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="元编程">
+<meta name="twitter:card" content="summary">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/site.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-174901164-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d2c292719a76d8c0fa7f9874379cfd25";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"] > svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body>
+
+
+  
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+  
+
+  <link rel="stylesheet" href="/css/prism.css">
+
+<div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">ROOT</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%8C%E6%99%AF"><span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E7%95%8C%E9%9D%A2"><span class="toc-text">用户界面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="toc-text">实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BF%83%E5%BE%97"><span class="toc-text">心得</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-设计并实现一个拓扑排序DSL" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">设计并实现一个拓扑排序 DSL</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2020.08.15</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Netcan</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h2 id="背景">背景</h2>
+<p>最近在重构项目，项目主要和图有关，图描述了各个节点的连接关系，这些连接关系有条件选中，图也会局部变化，而各个具体节点则承载了实际业务。</p>
+<p>由于之前的设计的代码通过可视化工具生成表，将连接的边和条件都存到一个表中，运行时根据条件选中节点和边，从而拼凑成一幅完整的图。而这部分代码比较难读，各种容器遍历迭代，才得到最终的图数据结构，而想要知道最终图长啥样，需要运行时抓日志获得。</p>
+<p>考虑图结构是静态的，只不过连接条件是动态的，那么拼凑成图的过程可以在编译期完成，由于元编程计算得到的类型保存了整个图的连接关系，而类型不耗费额外内存，真正做到零成本抽象，并且还能做些额外检查。</p>
+<p>既然用 C++ 语言了，就应该发挥语言的价值，这样图那部分代码也会更加直观。</p>
+<p>于是我们设计了一套 DSL，通过 DSL 来描述一副图，图的连接关系也能有条件，本文为了简单起见，这里记录一下我设计实现的用于解决 <strong> 拓扑排序 </strong> 问题的 Demo，虽整个 IDEA 比较粗糙简陋，但大方向确定了，更多细节需要在项目中逐步实现。</p>
+<h2 id="用户界面">用户界面</h2>
+<p>我设计的 TaskDSL 的用户界面如下，整个拓扑关系在编译期计算完成：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token function">__task</span><span class="token punctuation">(</span><span class="token function">__job</span><span class="token punctuation">(</span>Plating<span class="token punctuation">)</span> <span class="token operator">-></span> <span class="token function">__job</span><span class="token punctuation">(</span>Servce1<span class="token punctuation">)</span><span class="token punctuation">,</span>
+       <span class="token function">__job</span><span class="token punctuation">(</span>Meat<span class="token punctuation">)</span>    <span class="token operator">-></span> <span class="token function">__job</span><span class="token punctuation">(</span>Plating<span class="token punctuation">)</span><span class="token punctuation">,</span>
+       <span class="token function">__job</span><span class="token punctuation">(</span>Plating<span class="token punctuation">)</span> <span class="token operator">-></span> <span class="token function">__job</span><span class="token punctuation">(</span>Servce2<span class="token punctuation">)</span><span class="token punctuation">,</span>
+       <span class="token function">__job</span><span class="token punctuation">(</span>Garnish<span class="token punctuation">)</span> <span class="token operator">-></span> <span class="token function">__job</span><span class="token punctuation">(</span>Plating<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Run</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>而各个 Job 的实现如下：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">void</span> <span class="token function">Meat</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span> <span class="token function">puts</span><span class="token punctuation">(</span><span class="token string">"肉..."</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+<span class="token keyword">void</span> <span class="token function">Garnish</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span> <span class="token function">puts</span><span class="token punctuation">(</span><span class="token string">"配菜..."</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+<span class="token keyword">void</span> <span class="token function">Plating</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span> <span class="token function">puts</span><span class="token punctuation">(</span><span class="token string">"装配..."</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+<span class="token keyword">void</span> <span class="token function">Servce1</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span> <span class="token function">puts</span><span class="token punctuation">(</span><span class="token string">"送菜 1..."</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+<span class="token keyword">void</span> <span class="token function">Servce2</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span> <span class="token function">puts</span><span class="token punctuation">(</span><span class="token string">"送菜 2..."</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span></code></pre>
+<p>输出结果如下：</p>
+<pre class="language-sh" data-language="sh"><code class="language-sh">肉...
+配菜...
+装配...
+送菜 1...
+送菜 2...</code></pre>
+<h2 id="实现">实现</h2>
+<p>观察整套 DSL，无非就是描述各个 Job 的连接关系，而 C++ 提供的函数后置返回类型箭头 <code>-&gt;</code> 很好的用于表达连接。</p>
+<p>首先是 <code>__task</code> 原语，<code>Task</code>类的封装，保存了边集，提供了一个运行环境 <code>Run</code> 接口：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token expression"><span class="token function">__task</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> Task<span class="token operator">&lt;</span>__VA_ARGS__<span class="token operator">></span><span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span></span></span></code></pre>
+<p>而 <code>__job</code> 原语主要用 <code>JobWrapper</code> 包装了一层，供后续扩展用，同时也可以记录一些额外信息：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token expression"><span class="token function">__job</span><span class="token punctuation">(</span>job<span class="token punctuation">)</span> <span class="token keyword">auto</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>JobWrapper<span class="token operator">&lt;</span>job<span class="token operator">></span><span class="token punctuation">)</span></span></span>
+<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">auto</span> J<span class="token operator">></span>
+<span class="token keyword">struct</span> <span class="token class-name">JobWrapper</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">void</span> <span class="token keyword">operator</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token function">J</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
+<p>那么 <code>__job(Meat) -&gt; __job(Plating)</code> 展开后生成如下代码：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">auto</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>JobWrapper<span class="token operator">&lt;</span>Meat<span class="token operator">></span><span class="token punctuation">)</span> <span class="token operator">-></span> <span class="token keyword">auto</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>JobWrapper<span class="token operator">&lt;</span>Plating<span class="token operator">></span><span class="token punctuation">)</span></code></pre>
+<p>如何获取源 <code>Job</code> 和目的 <code>Job</code> 呢？写一个 <code>Connection</code> 模板萃取一下：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">LINK</span><span class="token operator">></span>
+<span class="token keyword">struct</span> <span class="token class-name">Connection</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">Job1</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">Job2</span><span class="token operator">></span>
+<span class="token keyword">struct</span> <span class="token class-name">Connection</span><span class="token operator">&lt;</span><span class="token keyword">auto</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span><span class="token punctuation">(</span>Job1<span class="token punctuation">)</span> <span class="token operator">-></span> <span class="token keyword">auto</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span><span class="token punctuation">(</span>Job2<span class="token punctuation">)</span><span class="token operator">></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">using</span> FROM <span class="token operator">=</span> Job1<span class="token punctuation">;</span>
+    <span class="token keyword">using</span> DST <span class="token operator">=</span> Job2<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">Con</span><span class="token operator">></span>
+<span class="token keyword">struct</span> <span class="token class-name">GetFrom</span> <span class="token punctuation">&#123;</span> <span class="token keyword">using</span> type <span class="token operator">=</span> <span class="token keyword">typename</span> <span class="token class-name">Con</span><span class="token operator">::</span>FROM<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">Con</span><span class="token operator">></span>
+<span class="token keyword">struct</span> <span class="token class-name">GetDst</span> <span class="token punctuation">&#123;</span> <span class="token keyword">using</span> type <span class="token operator">=</span> <span class="token keyword">typename</span> <span class="token class-name">Con</span><span class="token operator">::</span>DST<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
+<p><code>Connection&lt;LINK&gt;::FROM</code>和 <code>Connection&lt;LINK&gt;::DST</code> 分别得到对应信息。</p>
+<p>来看看 <code>Task</code> 的声明，输入边集：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">typename</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> LINKS<span class="token operator">></span>
+<span class="token keyword">class</span> <span class="token class-name">Task</span><span class="token punctuation">;</span></code></pre>
+<p>将输入的边集存到类型中，并获取所有的 Job，最后去重，关于 Map/Filter/Unique/Find/Sort 实现可以参考我的 <a target="_blank" rel="noopener" href="https://github.com/netcan/recipes/blob/master/cpp/metaproggramming/Typelist.hpp">TypeList.hpp</a>：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">using</span> Connections <span class="token operator">=</span> TypeList<span class="token operator">&lt;</span>Connection<span class="token operator">&lt;</span>LINKS<span class="token operator">></span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">></span><span class="token punctuation">;</span>
+<span class="token keyword">using</span> FromJobs    <span class="token operator">=</span> <span class="token keyword">typename</span> <span class="token class-name">Map</span><span class="token operator">&lt;</span>Connections<span class="token punctuation">,</span> GetFrom<span class="token operator">></span><span class="token operator">::</span>type<span class="token punctuation">;</span>
+<span class="token keyword">using</span> Jobs        <span class="token operator">=</span> <span class="token keyword">typename</span> <span class="token class-name">Map</span><span class="token operator">&lt;</span>Connections<span class="token punctuation">,</span> GetDst<span class="token punctuation">,</span> FromJobs<span class="token operator">></span><span class="token operator">::</span>type<span class="token punctuation">;</span>
+<span class="token keyword">using</span> AllJobs     <span class="token operator">=</span> <span class="token keyword">typename</span> <span class="token class-name">Unique</span><span class="token operator">&lt;</span>Jobs<span class="token operator">></span><span class="token operator">::</span>type<span class="token punctuation">;</span>
+<span class="token keyword">static</span> <span class="token keyword">constexpr</span> size_t JobNums <span class="token operator">=</span> AllJobs<span class="token operator">::</span>size<span class="token punctuation">;</span></code></pre>
+<p>下一步是查找一个 Job 的 <strong> 直接 </strong> 后继 Job 列表，用于构造邻接表。算法很简单，根据输入的 Job 和 Connections，通过 Filter 操作过滤出 From 和该 Job 一致的 Connections，并对得到的 Connections 做 Map 操作，取出 Dst Job List：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">Job</span><span class="token operator">></span>
+<span class="token keyword">class</span> <span class="token class-name">FindJobDependencies</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">C</span><span class="token operator">></span> <span class="token keyword">struct</span> <span class="token class-name">Dependency</span>
+    <span class="token punctuation">&#123;</span> <span class="token keyword">static</span> <span class="token keyword">constexpr</span> <span class="token keyword">bool</span> value <span class="token operator">=</span> std<span class="token operator">::</span>is_same_v<span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">GetFrom</span><span class="token operator">&lt;</span>C<span class="token operator">></span><span class="token operator">::</span>type<span class="token punctuation">,</span> Job<span class="token operator">></span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+    <span class="token keyword">using</span> JobDependencies <span class="token operator">=</span> <span class="token keyword">typename</span> <span class="token class-name">Filter</span><span class="token operator">&lt;</span>Connections<span class="token punctuation">,</span> Dependency<span class="token operator">></span><span class="token operator">::</span>type<span class="token punctuation">;</span>
+<span class="token keyword">public</span><span class="token operator">:</span>
+    <span class="token keyword">using</span> type <span class="token operator">=</span> <span class="token keyword">typename</span> <span class="token class-name">Map</span><span class="token operator">&lt;</span>JobDependencies<span class="token punctuation">,</span> GetDst<span class="token operator">></span><span class="token operator">::</span>type<span class="token operator">::</span><span class="token keyword">template</span> prepend<span class="token operator">&lt;</span>Job<span class="token operator">></span><span class="token punctuation">;</span> <span class="token comment">// prepend FROM node to result front</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
+<p>对得到的 Dst Job List 做 Map 操作，得到所需要的新类型（邻接表）：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">DEP</span><span class="token operator">></span>
+<span class="token keyword">struct</span> <span class="token class-name">Dependency</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">struct</span> <span class="token class-name">type</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">using</span> Job <span class="token operator">=</span> <span class="token keyword">typename</span> <span class="token class-name">DEP</span><span class="token operator">::</span>head<span class="token punctuation">;</span>
+        <span class="token keyword">using</span> Dependencies <span class="token operator">=</span> <span class="token keyword">typename</span> <span class="token class-name">DEP</span><span class="token operator">::</span>tails<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token keyword">using</span> JobDependenciesMap <span class="token operator">=</span> <span class="token keyword">typename</span> <span class="token class-name">Map</span><span class="token operator">&lt;</span>
+        <span class="token keyword">typename</span> <span class="token class-name">Map</span><span class="token operator">&lt;</span>AllJobs<span class="token punctuation">,</span> FindJobDependencies<span class="token operator">></span><span class="token operator">::</span>type<span class="token punctuation">,</span> <span class="token comment">// Dst Job List of List</span>
+        Dependency<span class="token operator">></span><span class="token operator">::</span>type<span class="token punctuation">;</span></code></pre>
+<p>而 JobDependenciesMap 就是我们需要的邻接表。</p>
+<p>有了节点的 <strong> 直接 </strong> 后继还不够，我们需要把 <strong> 间接 </strong> 后继节点也加入，这样才方便做拓扑排序。算法首先展开一个 Job 的直接后继节点列表，对后继中的每个 Job，需进一步递归展开其直接后继并去重，直到终端节点，结束递归。期间也很容易做环的检测，这里我没有做，留给读者思考。整个算法其实是一个 Fold 操作，由于我还没实现 Fold，这里就直接递归展开了。更多细节见注释。</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">DEPS</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">OUT</span> <span class="token operator">=</span> TypeList<span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token operator">=</span> <span class="token keyword">void</span><span class="token operator">></span>
+<span class="token keyword">struct</span> <span class="token class-name">FindAllDependencies</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">using</span> type <span class="token operator">=</span> OUT<span class="token punctuation">;</span> <span class="token comment">// 边界 case，结束递归时直接输出结果</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">DEPS</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">OUT</span><span class="token operator">></span>
+<span class="token keyword">class</span> <span class="token class-name">FindAllDependencies</span><span class="token operator">&lt;</span>DEPS<span class="token punctuation">,</span> OUT<span class="token punctuation">,</span> std<span class="token operator">::</span>void_t<span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">DEPS</span><span class="token operator">::</span>head<span class="token operator">>></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">using</span> J <span class="token operator">=</span> <span class="token keyword">typename</span> <span class="token class-name">DEPS</span><span class="token operator">::</span>head<span class="token punctuation">;</span> <span class="token comment">// 取出后继表中第一个 Job</span>
+    <span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">DEP</span><span class="token operator">></span> <span class="token keyword">struct</span> <span class="token class-name">JDepsCond</span>
+    <span class="token punctuation">&#123;</span> <span class="token keyword">static</span> <span class="token keyword">constexpr</span> <span class="token keyword">bool</span> value <span class="token operator">=</span> std<span class="token operator">::</span>is_same_v<span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">DEP</span><span class="token operator">::</span>Job<span class="token punctuation">,</span> J<span class="token operator">></span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+    <span class="token keyword">using</span> DepsResult <span class="token operator">=</span> <span class="token keyword">typename</span> <span class="token class-name">FindBy</span><span class="token operator">&lt;</span>JobDependenciesMap<span class="token punctuation">,</span> JDepsCond<span class="token operator">></span><span class="token operator">::</span>type<span class="token punctuation">;</span> <span class="token comment">// 从邻接表查找 Job 的后继节点列表</span>
+        <span class="token keyword">using</span> JDeps <span class="token operator">=</span> <span class="token keyword">typename</span> <span class="token class-name">Unique</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">DepsResult</span><span class="token operator">::</span>Dependencies<span class="token operator">></span><span class="token operator">::</span>type<span class="token punctuation">;</span> <span class="token comment">// 去重操作</span>
+<span class="token keyword">public</span><span class="token operator">:</span>
+    <span class="token keyword">using</span> type <span class="token operator">=</span> <span class="token keyword">typename</span> <span class="token class-name">FindAllDependencies</span><span class="token operator">&lt;</span>
+        <span class="token keyword">typename</span> <span class="token class-name">JDeps</span><span class="token operator">::</span><span class="token keyword">template</span> exportTo<span class="token operator">&lt;</span>DEPS<span class="token operator">::</span>tails<span class="token operator">::</span><span class="token keyword">template</span> append<span class="token operator">></span><span class="token operator">::</span>type<span class="token punctuation">,</span>
+        <span class="token keyword">typename</span> <span class="token class-name">OUT</span><span class="token operator">::</span><span class="token keyword">template</span> appendTo<span class="token operator">&lt;</span>J<span class="token operator">>></span><span class="token operator">::</span>type<span class="token punctuation">;</span> <span class="token comment">// 将得到的后继列表合并，进一步递归展开，并输出当前 Job 到列表</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
+<p>和之前一样做 Map 操作，构造出邻接表 JobAllDependenciesMap，其包含节点的所有直接、间接后继。</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">DEP</span><span class="token operator">></span>
+<span class="token keyword">struct</span> <span class="token class-name">FindJobAllDependencies</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">struct</span> <span class="token class-name">type</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">using</span> Job <span class="token operator">=</span> <span class="token keyword">typename</span> <span class="token class-name">DEP</span><span class="token operator">::</span>Job<span class="token punctuation">;</span>
+        <span class="token keyword">using</span> AllDependencies <span class="token operator">=</span> <span class="token keyword">typename</span> <span class="token class-name">FindAllDependencies</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">DEP</span><span class="token operator">::</span>Dependencies<span class="token operator">></span><span class="token operator">::</span>type<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">DEP</span><span class="token operator">></span>
+<span class="token keyword">struct</span> <span class="token class-name">GetJob</span> <span class="token punctuation">&#123;</span> <span class="token keyword">using</span> type <span class="token operator">=</span> <span class="token keyword">typename</span> <span class="token class-name">DEP</span><span class="token operator">::</span>Job<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token keyword">using</span> JobAllDependenciesMap <span class="token operator">=</span> <span class="token keyword">typename</span> <span class="token class-name">Map</span><span class="token operator">&lt;</span>JobDependenciesMap<span class="token punctuation">,</span> FindJobAllDependencies<span class="token operator">></span><span class="token operator">::</span>type<span class="token punctuation">;</span></code></pre>
+<p>有了这个表，我们就可以实现比较函数，定义 <code> 节点 LHS &lt; 节点 RHS</code>，则 <code> 节点 LHS-&gt; 节点 RHS</code>，即 <code> 节点 RHS</code>是 <code> 节点 LHS</code>的后继。</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">LHS</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">RHS</span><span class="token operator">></span>
+<span class="token keyword">struct</span> <span class="token class-name">JobCmp</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">static</span> <span class="token keyword">constexpr</span> <span class="token keyword">bool</span> value <span class="token operator">=</span>
+        Elem<span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">LHS</span><span class="token operator">::</span>AllDependencies<span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">RHS</span><span class="token operator">::</span>Job<span class="token operator">></span><span class="token operator">::</span>value<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
+<p>对 JobAllDependenciesMap 进行排序，并对结果做 Map 操作，取出 Job 节点，从而得到最终的排序的 Job List 结果：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">using</span> SortedJobs <span class="token operator">=</span> <span class="token keyword">typename</span> <span class="token class-name">Map</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">Sort</span><span class="token operator">&lt;</span>JobAllDependenciesMap<span class="token punctuation">,</span> JobCmp<span class="token operator">></span><span class="token operator">::</span>type<span class="token punctuation">,</span> GetJob<span class="token operator">></span><span class="token operator">::</span>type<span class="token punctuation">;</span></code></pre>
+<p>最后就是实现 <code>Task::Run</code> 接口，按照拓扑序执行 Job。首先将 Sorted Job List 整合到一块去，才能依次执行：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>Jobs<span class="token operator">></span>
+<span class="token keyword">struct</span> <span class="token class-name">Runable</span> <span class="token punctuation">&#123;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">auto</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>J<span class="token operator">></span>
+<span class="token keyword">struct</span> <span class="token class-name">Runable</span><span class="token operator">&lt;</span>JobWrapper<span class="token operator">&lt;</span>J<span class="token operator">></span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">void</span> <span class="token keyword">operator</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token punctuation">(</span>JobWrapper<span class="token operator">&lt;</span>J<span class="token operator">></span><span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
+<p>最终将 Sorted Job List 作为模板参数导出到 <code>Runable</code> 并实例化运行：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">void</span> <span class="token function">Run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">using</span> Jobs <span class="token operator">=</span> <span class="token keyword">typename</span> <span class="token class-name">SortedJobs</span><span class="token operator">::</span><span class="token keyword">template</span> exportTo<span class="token operator">&lt;</span>Runable<span class="token operator">></span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> Jobs<span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre>
+<p>以上所有细节都放在了这，需要的话可以进一步阅读。<a target="_blank" rel="noopener" href="https://github.com/netcan/recipes/blob/master/cpp/metaproggramming/TaskDSL.cpp">TaskDSL.cpp</a></p>
+<h2 id="心得">心得</h2>
+<p>以上就是实现一个 TaskDSL 所需要的细节，从中可以看出 C++ 模板元编程的威力，只不过被我们忽略掉了。很多东西都不新鲜了，源自于函数式编程，只不过 C++ 模板语法过于复杂。为了可维护性考虑，可以借鉴 <a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_61_0/libs/hana/doc/html/index.html">hana</a> 这个元编程库，用起来就和普通函数一样，将操作类型转换成操作值。</p>
+
+    
+  </div>
+
+</article>
+
+
+   
+       <div class="original">
+    <ul>
+        <li>本文标题：设计并实现一个拓扑排序 DSL</li>
+        <li>本文字数：1.8k</li>
+        <li>本文作者：Netcan</li>
+        <li>发布时间：2020年08月15日 - 14时01分</li>
+        <li>最后更新：2022年12月09日 - 19时02分</li>
+        <li>原始链接：<a href="https://netcan.github.io/2020/08/15/%E8%AE%BE%E8%AE%A1%E5%B9%B6%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8FDSL/">https://netcan.github.io/2020/08/15/设计并实现一个拓扑排序DSL/</a></li>
+        <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
+    </ul>
+</div>
+
+   
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持Netcan</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2020/08/11/%E4%B8%BAGithub%E6%89%93%E9%80%A0%E4%B8%80%E4%B8%AAGeek%E9%A3%8E%E4%B8%AA%E4%BA%BAProfile/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2020/08/30/C-%E5%85%83%E7%BC%96%E7%A8%8B%E4%B9%8B%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90%EF%BC%9A%E8%AE%BE%E8%AE%A1%E5%B9%B6%E5%AE%9E%E7%8E%B0%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84DSL/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '893a4103795fc66cd8e7',
+  clientSecret: '35c92c3dca938831b67dc22e46d64bc9073ebacf',
+  repo: 'netcan.github.io',
+  owner: 'Netcan',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: md5(location.pathname),
+  admin: ['Netcan'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

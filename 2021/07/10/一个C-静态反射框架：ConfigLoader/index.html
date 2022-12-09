@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>一个 C++ 静态反射框架：ConfigLoader | Netcan on Programming</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="C/C++,元编程," />
+  
+
+  <meta name="description" content="框架地址：https:&#x2F;&#x2F;github.com&#x2F;netcan&#x2F;config-loader 相关技术：如何优雅的实现 C++ 编译期静态反射 config-loader是一个使用 C++17 编写的 解析配置文件  到  原生数据结构 的静态反射框架，它拥有如下特点：  简单的接口，用户通过 定义数据结构  与提供对应的  配置文件 ，框架利用元编程技术生成  读取 接口 设计符合开闭原则，扩展 数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一个 C++ 静态反射框架：ConfigLoader">
+<meta property="og:url" content="https://netcan.github.io/2021/07/10/%E4%B8%80%E4%B8%AAC-%E9%9D%99%E6%80%81%E5%8F%8D%E5%B0%84%E6%A1%86%E6%9E%B6%EF%BC%9AConfigLoader/index.html">
+<meta property="og:site_name" content="Netcan on Programming">
+<meta property="og:description" content="框架地址：https:&#x2F;&#x2F;github.com&#x2F;netcan&#x2F;config-loader 相关技术：如何优雅的实现 C++ 编译期静态反射 config-loader是一个使用 C++17 编写的 解析配置文件  到  原生数据结构 的静态反射框架，它拥有如下特点：  简单的接口，用户通过 定义数据结构  与提供对应的  配置文件 ，框架利用元编程技术生成  读取 接口 设计符合开闭原则，扩展 数">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-07-10T08:37:11.000Z">
+<meta property="article:modified_time" content="2022-12-09T11:02:08.586Z">
+<meta property="article:author" content="Netcan">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="元编程">
+<meta name="twitter:card" content="summary">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/site.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-174901164-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d2c292719a76d8c0fa7f9874379cfd25";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"] > svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body>
+
+
+  
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+  
+
+  <link rel="stylesheet" href="/css/prism.css">
+
+<div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">ROOT</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B"><span class="toc-text">快速上手</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-text">注意事项</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-一个C-静态反射框架：ConfigLoader" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">一个 C++ 静态反射框架：ConfigLoader</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2021.07.10</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Netcan</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p>框架地址：<a target="_blank" rel="noopener" href="https://github.com/netcan/config-loader">https://github.com/netcan/config-loader</a></p>
+<p>相关技术：<a href="/2020/08/01/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E7%9A%84%E5%AE%9E%E7%8E%B0C-%E7%BC%96%E8%AF%91%E6%9C%9F%E9%9D%99%E6%80%81%E5%8F%8D%E5%B0%84/">如何优雅的实现 C++ 编译期静态反射</a></p>
+<p><code>config-loader</code>是一个使用 C++17 编写的 <strong>解析配置文件 </strong> 到 <strong> 原生数据结构</strong> 的静态反射框架，它拥有如下特点：</p>
+<ul>
+<li>简单的接口，用户通过 <strong>定义数据结构 </strong> 与提供对应的 <strong> 配置文件 </strong>，框架利用元编程技术生成 <strong> 读取</strong> 接口</li>
+<li>设计符合开闭原则，扩展 数据结构 无需修改框架</li>
+<li>目前支持 XML 与 JSON 格式的配置文件，多种方式可以 <strong>灵活组合</strong></li>
+<li>轻量级，容易集成，核心代码不到 1000 行</li>
+<li>支持 嵌套的数据结构、STL 容器</li>
+<li>测试用例完备</li>
+</ul>
+<p>将来计划：</p>
+<ul>
+<li>支持 Yaml 配置文件</li>
+<li>支持从原生数据结构写到配置文件、打印数据结构</li>
+<li>通过 CMake 选项来控制支持的格式</li>
+<li>提供额外的 C++20 版本</li>
+</ul>
+<h2 id="快速上手">快速上手</h2>
+<p>使用 <code>DEFINE_STRUCT</code> 定义数据结构：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">// define and reflect a struct</span>
+<span class="token function">DEFINE_STRUCT</span><span class="token punctuation">(</span>Point<span class="token punctuation">,</span>                          <span class="token comment">// struct Point &#123;</span>
+              <span class="token punctuation">(</span><span class="token keyword">double</span><span class="token punctuation">)</span> x<span class="token punctuation">,</span>                     <span class="token comment">//     double x;</span>
+              <span class="token punctuation">(</span><span class="token keyword">double</span><span class="token punctuation">)</span> y<span class="token punctuation">)</span><span class="token punctuation">;</span>                    <span class="token comment">//     double y;</span>
+                                              <span class="token comment">// &#125;;</span>
+
+<span class="token comment">// vector and string</span>
+<span class="token function">DEFINE_STRUCT</span><span class="token punctuation">(</span>SomeOfPoints<span class="token punctuation">,</span>                   <span class="token comment">// struct SomeOfPoints &#123;</span>
+              <span class="token punctuation">(</span>std<span class="token operator">::</span>string<span class="token punctuation">)</span> name<span class="token punctuation">,</span>             <span class="token comment">//     std::string name;</span>
+              <span class="token punctuation">(</span>std<span class="token operator">::</span>vector<span class="token operator">&lt;</span>Point<span class="token operator">></span><span class="token punctuation">)</span> points<span class="token punctuation">)</span><span class="token punctuation">;</span>   <span class="token comment">//     std::vector&lt;Point> points;</span>
+                                              <span class="token comment">// &#125;;</span></code></pre>
+<p>提供配置文件，按需加载：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp">SomeOfPoints someOfPoints<span class="token punctuation">;</span>
+<span class="token keyword">auto</span> res <span class="token operator">=</span> JsonLoader<span class="token operator">&lt;</span>SomeOfPoints<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">load</span><span class="token punctuation">(</span>someOfPoints<span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> <span class="token raw-string string">R"(
+        &#123;
+            "name": "Some of points",
+            "points":[
+                &#123; "x": 1.2, "y": 3.4 &#125;,
+                &#123; "x": 5.6, "y": 7.8 &#125;,
+                &#123; "x": 2.2, "y": 3.3 &#125;
+            ]
+        &#125;
+    )"</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">REQUIRE</span><span class="token punctuation">(</span>res <span class="token operator">==</span> Result<span class="token operator">::</span>SUCCESS<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">REQUIRE_THAT</span><span class="token punctuation">(</span>someOfPoints<span class="token punctuation">.</span>name<span class="token punctuation">,</span> <span class="token function">Equals</span><span class="token punctuation">(</span><span class="token string">"Some of points"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">REQUIRE</span><span class="token punctuation">(</span>someOfPoints<span class="token punctuation">.</span>points<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>又或者，通过 XML 配置文件。</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp">SomeOfPoints someOfPoints<span class="token punctuation">;</span>
+<span class="token keyword">auto</span> res <span class="token operator">=</span> XMLLoader<span class="token operator">&lt;</span>SomeOfPoints<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">load</span><span class="token punctuation">(</span>someOfPoints<span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> <span class="token raw-string string">R"(&lt;?xml version="1.0" encoding="UTF-8"?>
+        &lt;some_of_points>
+            &lt;name>Some of points&lt;/name>
+            &lt;points>
+                &lt;value>&lt;x>1.2&lt;/x>&lt;y>3.4&lt;/y>&lt;/value>
+                &lt;value>&lt;x>5.6&lt;/x>&lt;y>7.8&lt;/y>&lt;/value>
+                &lt;value>&lt;x>2.2&lt;/x>&lt;y>3.3&lt;/y>&lt;/value>
+            &lt;/points>
+        &lt;/some_of_points>
+    )"</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">REQUIRE</span><span class="token punctuation">(</span>res <span class="token operator">==</span> Result<span class="token operator">::</span>SUCCESS<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">REQUIRE_THAT</span><span class="token punctuation">(</span>someOfPoints<span class="token punctuation">.</span>name<span class="token punctuation">,</span> <span class="token function">Equals</span><span class="token punctuation">(</span><span class="token string">"Some of points"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">REQUIRE</span><span class="token punctuation">(</span>someOfPoints<span class="token punctuation">.</span>points<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>有时候，你的软件系统需要一个统一的配置管理模块，管理 所有的数据结构 与 对应的配置文件，这时可以通过组合各个 <code>Loader</code> 来定义管理者。</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">inline</span> Deserializer <span class="token function">ConfigLoaderManager</span><span class="token punctuation">(</span>
+    JsonLoader<span class="token operator">&lt;</span>Point<span class="token operator">></span><span class="token punctuation">(</span><span class="token string">"/etc/configs/Point.json"</span>_path<span class="token punctuation">)</span><span class="token punctuation">,</span>
+    XMLLoader<span class="token operator">&lt;</span>Rect<span class="token operator">></span><span class="token punctuation">(</span><span class="token string">"/etc/configs/Rect.xml"</span>_path<span class="token punctuation">)</span><span class="token punctuation">,</span>
+    JsonLoader<span class="token operator">&lt;</span>SomeOfPoints<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">// 按需提供配置文件</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>同样地，使用 <code>load</code> 接口按需加载，<code>ConfigLoaderManager</code>会自动根据 配置的路径 与 给定的数据结构 进行解析。你的 IDE 应该能够获得所有的 <code>load</code> 接口。</p>
+<pre class="language-text" data-language="text"><code class="language-text"> 82     Deserializer ConfigLoaderManager(83             JsonLoader&lt;Point&gt;(),
+ 84             XMLLoader&lt;Rect&gt;(),
+ 85             JsonLoader&lt;SomeOfPoints&gt;()
+ 86     );
+ 87     ConfigLoaderManager.l
+ 88                         load(Rect &amp;obj)~                                   f [LS]
+ 89                         load(Point &amp;obj)~                                  f [LS]
+ 90 &#125;                       load(SomeOfPoints &amp;obj, GET_CONTENT &amp;&amp;getContent)~ f [LS]
+~                           load(SomeOfPoints &amp;obj)~                           f [LS]
+~                           load(Rect &amp;obj, GET_CONTENT &amp;&amp;getContent)~         f [LS]
+~                           load(Point &amp;obj, GET_CONTENT &amp;&amp;getContent)~        f [LS]</code></pre>
+<h2 id="注意事项">注意事项</h2>
+<p>当前框架依赖如下两个库：</p>
+<ul>
+<li>tinyxml2，解析 xml 配置文件用</li>
+<li>jsoncpp，解析 json 配置文件用</li>
+</ul>
+<p>将来可能通过 CMake 选项来使能这些库，避免在实际使用中产生不必要的依赖：只用 xml 就只依赖 xml 的解析库。</p>
+<p>本框架需要配置文件按规范的格式提供。以 XML 为例，要求字段名与 XML 标签名对应，值与 XML 的文本内容对应；对于 <code>map</code> 数据结构，标签通过属性 <code>name</code> 作为 Key 名。</p>
+<p>当前错误码语义。</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">enum</span> <span class="token keyword">class</span> <span class="token class-name">Result</span> <span class="token punctuation">&#123;</span>
+    SUCCESS<span class="token punctuation">,</span>              <span class="token comment">// 解析成功</span>
+    ERR_EMPTY_CONTENT<span class="token punctuation">,</span>    <span class="token comment">// 解析文件为空</span>
+    ERR_ILL_FORMED<span class="token punctuation">,</span>       <span class="token comment">// 解析文件非法</span>
+    ERR_MISSING_FIELD<span class="token punctuation">,</span>    <span class="token comment">// 丢失字段</span>
+    ERE_EXTRACTING_FIELD<span class="token punctuation">,</span> <span class="token comment">// 解析值失败</span>
+    ERR_TYPE<span class="token punctuation">,</span>             <span class="token comment">// 类型错误</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
+
+    
+  </div>
+
+</article>
+
+
+   
+       <div class="original">
+    <ul>
+        <li>本文标题：一个 C++ 静态反射框架：ConfigLoader</li>
+        <li>本文字数：870</li>
+        <li>本文作者：Netcan</li>
+        <li>发布时间：2021年07月10日 - 16时37分</li>
+        <li>最后更新：2022年12月09日 - 19时02分</li>
+        <li>原始链接：<a href="https://netcan.github.io/2021/07/10/%E4%B8%80%E4%B8%AAC-%E9%9D%99%E6%80%81%E5%8F%8D%E5%B0%84%E6%A1%86%E6%9E%B6%EF%BC%9AConfigLoader/">https://netcan.github.io/2021/07/10/一个C-静态反射框架：ConfigLoader/</a></li>
+        <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
+    </ul>
+</div>
+
+   
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持Netcan</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2021/01/08/%E5%86%8D%E8%A7%812020%EF%BC%8C2021%E4%BD%A0%E5%A5%BD/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2021/07/29/%E4%BD%BF%E7%94%A8C-20-Ranges%E6%A0%87%E5%87%86%E5%BA%93%E5%AE%9E%E7%8E%B0%E6%97%A5%E5%8E%86%E7%A8%8B%E5%BA%8F/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '893a4103795fc66cd8e7',
+  clientSecret: '35c92c3dca938831b67dc22e46d64bc9073ebacf',
+  repo: 'netcan.github.io',
+  owner: 'Netcan',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: md5(location.pathname),
+  admin: ['Netcan'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

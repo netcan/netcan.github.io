@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>CSS 字体与段落属性 | Netcan on Programming</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="CSS," />
+  
+
+  <meta name="description" content="点击属性可跳转到对应的 w3school 手册。 css 文字样式 字体(font-family) font-family 属性用于指定字体的类型，如宋体、黑体、Times New Roman 等，既在网页中展示字体的不同形状，语法如下。 &amp;#123;font-family: name;&amp;#125; &amp;#123;font-family: cursive|fantasy|monospace|seri">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSS 字体与段落属性">
+<meta property="og:url" content="https://netcan.github.io/2015/03/27/CSS%E5%AD%97%E4%BD%93%E4%B8%8E%E6%AE%B5%E8%90%BD%E5%B1%9E%E6%80%A7/index.html">
+<meta property="og:site_name" content="Netcan on Programming">
+<meta property="og:description" content="点击属性可跳转到对应的 w3school 手册。 css 文字样式 字体(font-family) font-family 属性用于指定字体的类型，如宋体、黑体、Times New Roman 等，既在网页中展示字体的不同形状，语法如下。 &amp;#123;font-family: name;&amp;#125; &amp;#123;font-family: cursive|fantasy|monospace|seri">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2015-03-27T14:43:41.000Z">
+<meta property="article:modified_time" content="2015-03-27T14:43:41.000Z">
+<meta property="article:author" content="Netcan">
+<meta property="article:tag" content="CSS">
+<meta name="twitter:card" content="summary">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/site.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-174901164-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d2c292719a76d8c0fa7f9874379cfd25";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"] > svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body>
+
+
+  
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+  
+
+  <link rel="stylesheet" href="/css/prism.css">
+
+<div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">ROOT</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#css%20%E6%96%87%E5%AD%97%E6%A0%B7%E5%BC%8F"><span class="toc-text">css 文字样式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%97%E4%BD%93%20-font-family"><span class="toc-text">字体(font-family)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%97%E5%8F%B7%20-font-size"><span class="toc-text">字号(font-size)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%97%E4%BD%93%E9%A3%8E%E6%A0%BC%20-font-style"><span class="toc-text">字体风格(font-style)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%97%E4%BD%93%E5%8A%A0%E7%B2%97%20-font-weight"><span class="toc-text">字体加粗(font-weight)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B0%8F%E5%86%99%E5%AD%97%E6%AF%8D%E8%BD%AC%E4%B8%BA%E5%A4%A7%E5%86%99%E5%AD%97%E6%AF%8D%20-font-variant"><span class="toc-text">小写字母转为大写字母(font-variant)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%97%E4%BD%93%E5%A4%8D%E5%90%88%E5%B1%9E%E6%80%A7%20-font"><span class="toc-text">字体复合属性(font)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%97%E4%BD%93%E9%A2%9C%E8%89%B2%20-color"><span class="toc-text">字体颜色(color)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#css%20%E6%AE%B5%E8%90%BD%E6%A0%B7%E5%BC%8F"><span class="toc-text">css 段落样式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8D%95%E8%AF%8D%E9%97%B4%E9%9A%94%20-word-spacing"><span class="toc-text">单词间隔(word-spacing)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E9%97%B4%E9%9A%94%20-letter-spacing"><span class="toc-text">字符间隔(letter-spacing)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%87%E6%9C%AC%E4%BF%AE%E9%A5%B0%20-text-decoration"><span class="toc-text">文本修饰(text-decoration)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9E%82%E7%9B%B4%E5%AF%B9%E9%BD%90%E6%96%B9%E5%BC%8F%20-vertical-align"><span class="toc-text">垂直对齐方式(vertical-align)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B0%B4%E5%B9%B3%E5%AF%B9%E9%BD%90%E6%96%B9%E5%BC%8F%20-text-align"><span class="toc-text">水平对齐方式(text-align)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%87%E6%9C%AC%E8%BD%AC%E6%8D%A2%20-text-transform"><span class="toc-text">文本转换(text-transform)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%87%E6%9C%AC%E7%BC%A9%E8%BF%9B%20-text-indent"><span class="toc-text">文本缩进(text-indent)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%87%E6%9C%AC%E8%A1%8C%E9%AB%98%20-line-height"><span class="toc-text">文本行高(line-height)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%84%E7%90%86%E7%A9%BA%E7%99%BD%20-white-spacing"><span class="toc-text">处理空白(white-spacing)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%87%E6%9C%AC%E5%8F%8D%E6%8E%92%20-unicode-bidi%20%E5%92%8C%20direction"><span class="toc-text">文本反排 (unicode-bidi 和direction)</span></a></li></ol></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-CSS字体与段落属性" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">CSS 字体与段落属性</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2015.03.27</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Netcan</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p>点击属性可跳转到对应的 w3school 手册。</p>
+<h3 id="css 文字样式">css 文字样式</h3>
+<h4 id="字体 -font-family">字体(<a target="_blank" rel="noopener" href="http://www.w3school.com.cn/cssref/pr_font_font-family.asp">font-family</a>)</h4>
+<p>font-family 属性用于指定字体的类型，如宋体、黑体、Times New Roman 等，既在网页中展示字体的不同形状，语法如下。</p>
+<pre><code>&#123;font-family: name;&#125;
+&#123;font-family: cursive|fantasy|monospace|serif|sans-serif;&#125;
+</code></pre>
+<h4 id="字号 -font-size">字号(<a target="_blank" rel="noopener" href="http://www.w3school.com.cn/cssref/pr_font_font-size.asp">font-size</a>)</h4>
+<p>通常使用 font-size 设置文字大小。</p>
+<pre><code>&#123;font-size: 数值 |inherit|xx-small|x-small|small|medium|large|x-large|xx-large|larger|smaller|length;&#125;
+</code></pre>
+<h4 id="字体风格 -font-style">字体风格(<a target="_blank" rel="noopener" href="http://www.w3school.com.cn/cssref/pr_font_font-style.asp">font-style</a>)</h4>
+<p>定义字体的风格，即字体的显示样式。</p>
+<pre><code>&#123;font-style: normal|italic|oblique|inherit;&#125;
+</code></pre>
+<h4 id="字体加粗 -font-weight">字体加粗(<a target="_blank" rel="noopener" href="http://www.w3school.com.cn/cssref/pr_font_weight.asp">font-weight</a>)</h4>
+<p>定义字体的粗细程度。</p>
+<pre><code>&#123;font-weight: 100-900|bold|bolder|lighter|normal;&#125;
+</code></pre>
+<h4 id="小写字母转为大写字母 -font-variant">小写字母转为大写字母(<a target="_blank" rel="noopener" href="http://www.w3school.com.cn/cssref/pr_font_font-variant.asp">font-variant</a>)</h4>
+<p>属性设置小型大写字母的字体显示文本，这意味着所有的小写字母均会被转换为大写，但是所有使用小型大写字体的字母与其余文本相比，其字体尺寸更小。</p>
+<pre><code>&#123;font-variant: normal|small-caps|inherit;&#125;
+</code></pre>
+<h4 id="字体复合属性 -font">字体复合属性(<a target="_blank" rel="noopener" href="http://www.w3school.com.cn/cssref/pr_font_font.asp">font</a>)</h4>
+<p>可以一次性使用多个属性的属性值定义文本字体。</p>
+<pre><code>&#123;font: font-style font-variant font-weight font-size font-family;&#125;
+</code></pre>
+<p>其中 font-size 和 font-family 属性必须按照固定顺序出现，缺一不可。font-family 有多个属性值的话用逗号隔开，前三个属性可以自由调换。</p>
+<h4 id="字体颜色 -color">字体颜色(<a target="_blank" rel="noopener" href="http://www.w3school.com.cn/cssref/pr_text_color.asp">color</a>)</h4>
+<p>设置字体的颜色。</p>
+<pre><code>&#123;color: color_name|hex_number|rgb(r,g,b)|inherit;&#125;
+</code></pre>
+<h3 id="css 段落样式">css 段落样式</h3>
+<h4 id="单词间隔 -word-spacing">单词间隔(<a target="_blank" rel="noopener" href="http://www.w3school.com.cn/cssref/pr_text_word-spacing.asp">word-spacing</a>)</h4>
+<p>设定词与词的间隔。</p>
+<pre><code>&#123;word-spacing: nomal|length;&#125;
+</code></pre>
+<p>不能设定于文字间的间隔。</p>
+<h4 id="字符间隔 -letter-spacing">字符间隔(<a target="_blank" rel="noopener" href="http://www.w3school.com.cn/cssref/pr_text_letter-spacing.asp">letter-spacing</a>)</h4>
+<p>设定字符间的距离。</p>
+<pre><code>&#123;letter-spacing: normal|length;&#125;
+</code></pre>
+<h4 id="文本修饰 -text-decoration">文本修饰(<a target="_blank" rel="noopener" href="http://www.w3school.com.cn/cssref/pr_text_text-decoration.asp">text-decoration</a>)</h4>
+<p>可以增加文字的下划线、顶划线、删除线等效果。</p>
+<pre><code>&#123;text-decoration: none|underline|blink|overline|line-through;&#125;
+</code></pre>
+<h4 id="垂直对齐方式 -vertical-align">垂直对齐方式(<a target="_blank" rel="noopener" href="http://www.w3school.com.cn/cssref/pr_pos_vertical-align.asp">vertical-align</a>)</h4>
+<p>设定垂直的对齐方式。</p>
+<pre><code>&#123;vertical-align: baseline|sub|super|top|text-top|middle|bottom|text-bottom|%;&#125;
+</code></pre>
+<h4 id="水平对齐方式 -text-align">水平对齐方式(<a target="_blank" rel="noopener" href="http://www.w3school.com.cn/cssref/pr_text_text-align.asp">text-align</a>)</h4>
+<p>设定水平方向上的对齐方式。</p>
+<pre><code>&#123;text-align: left|right|center|justify|match-parent|inherit;&#125;
+</code></pre>
+<h4 id="文本转换 -text-transform">文本转换(<a target="_blank" rel="noopener" href="http://www.w3school.com.cn/cssref/pr_text_text-transform.asp">text-transform</a>)</h4>
+<p>可以将大写转换为小写，或者将小写转换成大写。</p>
+<pre><code>&#123;text-transform: none|capitalize|uppercase|lowercase;&#125;
+</code></pre>
+<h4 id="文本缩进 -text-indent">文本缩进(<a target="_blank" rel="noopener" href="http://www.w3school.com.cn/cssref/pr_text_text-indent.asp">text-indent</a>)</h4>
+<p>可以使首行以给定的长度或百分比缩进。</p>
+<pre><code>&#123;text-indent: length;&#125;
+</code></pre>
+<h4 id="文本行高 -line-height">文本行高(<a target="_blank" rel="noopener" href="http://www.w3school.com.cn/cssref/pr_dim_line-height.asp">line-height</a>)</h4>
+<p>设置行间距。</p>
+<pre><code>&#123;line-height: normal|length;&#125;
+</code></pre>
+<h4 id="处理空白 -white-spacing">处理空白(<a target="_blank" rel="noopener" href="http://www.w3school.com.cn/cssref/pr_text_white-space.asp">white-spacing</a>)</h4>
+<p>设置对象内的空白字符 (空格,TAB, 换行) 的处理方式。</p>
+<pre><code>&#123;white-spacing: normal|pre|nowrap|pre-wrap|pre-line|inherit;&#125;
+</code></pre>
+<h4 id="文本反排 -unicode-bidi 和 direction">文本反排 (<a target="_blank" rel="noopener" href="http://www.w3school.com.cn/cssref/pr_unicode-bidi.asp">unicode-bidi</a> 和<a target="_blank" rel="noopener" href="http://www.w3school.com.cn/cssref/pr_text_direction.asp">direction</a>)</h4>
+<p>可以更改文本的显示方向方向。direction 设定文本流方向。</p>
+<pre><code>&#123;unicode-bidi: normal|bidi-override|embed;&#125;
+&#123;direction: ltr|rtl|inherit;&#125;
+</code></pre>
+
+    
+  </div>
+
+</article>
+
+
+   
+       <div class="original">
+    <ul>
+        <li>本文标题：CSS 字体与段落属性</li>
+        <li>本文字数：679</li>
+        <li>本文作者：Netcan</li>
+        <li>发布时间：2015年03月27日 - 22时43分</li>
+        <li>最后更新：2015年03月27日 - 22时43分</li>
+        <li>原始链接：<a href="https://netcan.github.io/2015/03/27/CSS%E5%AD%97%E4%BD%93%E4%B8%8E%E6%AE%B5%E8%90%BD%E5%B1%9E%E6%80%A7/">https://netcan.github.io/2015/03/27/CSS字体与段落属性/</a></li>
+        <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
+    </ul>
+</div>
+
+   
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持Netcan</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2015/03/24/CSS%E7%9A%84%E6%8F%92%E5%85%A5%E4%B8%8E%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2015/04/05/CSS%E7%BE%8E%E5%8C%96%E5%9B%BE%E7%89%87/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '893a4103795fc66cd8e7',
+  clientSecret: '35c92c3dca938831b67dc22e46d64bc9073ebacf',
+  repo: 'netcan.github.io',
+  owner: 'Netcan',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: md5(location.pathname),
+  admin: ['Netcan'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

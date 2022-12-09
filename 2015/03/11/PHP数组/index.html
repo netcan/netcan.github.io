@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>PHP 数组 | Netcan on Programming</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="PHP," />
+  
+
+  <meta name="description" content="PHP 数组有两种： 数字索引数组和联合索引数组 数字索引数组定义： $a &#x3D; array(&#39;语文&#39;, &#39;数学&#39;, &#39;英语&#39;, &#39;物理&#39;, &#39;化学&#39;, &#39;生物&#39;); print_r($a);  输出: Array([0] &#x3D;&gt; 语文 [1] &#x3D;&gt; 数学 [2] &#x3D;&gt; 英语 [3] &#x3D;&gt; 物理 [4] &#x3D;&gt; 化学 [5] &#x3D;&gt; 生物)  联合索引数组定义： $b">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP 数组">
+<meta property="og:url" content="https://netcan.github.io/2015/03/11/PHP%E6%95%B0%E7%BB%84/index.html">
+<meta property="og:site_name" content="Netcan on Programming">
+<meta property="og:description" content="PHP 数组有两种： 数字索引数组和联合索引数组 数字索引数组定义： $a &#x3D; array(&#39;语文&#39;, &#39;数学&#39;, &#39;英语&#39;, &#39;物理&#39;, &#39;化学&#39;, &#39;生物&#39;); print_r($a);  输出: Array([0] &#x3D;&gt; 语文 [1] &#x3D;&gt; 数学 [2] &#x3D;&gt; 英语 [3] &#x3D;&gt; 物理 [4] &#x3D;&gt; 化学 [5] &#x3D;&gt; 生物)  联合索引数组定义： $b">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2015-03-11T07:31:19.000Z">
+<meta property="article:modified_time" content="2015-03-11T07:31:19.000Z">
+<meta property="article:author" content="Netcan">
+<meta property="article:tag" content="PHP">
+<meta name="twitter:card" content="summary">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/site.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-174901164-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d2c292719a76d8c0fa7f9874379cfd25";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"] > svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body>
+
+
+  
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+  
+
+  <link rel="stylesheet" href="/css/prism.css">
+
+<div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">ROOT</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#PHP-%20%E6%95%B0%E7%BB%84%E6%9C%89%E4%B8%A4%E7%A7%8D%EF%BC%9A-%20%E6%95%B0%E5%AD%97%E7%B4%A2%E5%BC%95%E6%95%B0%E7%BB%84%E5%92%8C%E8%81%94%E5%90%88%E7%B4%A2%E5%BC%95%E6%95%B0%E7%BB%84"><span class="toc-text">PHP 数组有两种： 数字索引数组和联合索引数组</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E5%AD%97%E7%B4%A2%E5%BC%95%E6%95%B0%E7%BB%84%E5%AE%9A%E4%B9%89%EF%BC%9A"><span class="toc-text">数字索引数组定义：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%81%94%E5%90%88%E7%B4%A2%E5%BC%95%E6%95%B0%E7%BB%84%E5%AE%9A%E4%B9%89%EF%BC%9A"><span class="toc-text">联合索引数组定义：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E7%BB%B4%E6%95%B0%E7%BB%84%E7%9A%84%E9%81%8D%E5%8E%86"><span class="toc-text">一维数组的遍历</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%81%8D%E5%8E%86%E6%95%B0%E5%AD%97%E7%B4%A2%E5%BC%95%E6%95%B0%E7%BB%84%EF%BC%9A"><span class="toc-text">遍历数字索引数组：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%81%8D%E5%8E%86%E8%81%94%E5%90%88%E7%B4%A2%E5%BC%95%E6%95%B0%E7%BB%84%EF%BC%9A"><span class="toc-text">遍历联合索引数组：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E7%9A%84%E6%8E%92%E5%BA%8F"><span class="toc-text">数组的排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%8E%E6%95%B0%E7%BB%84%E7%9A%84%E8%BD%AC%E6%8D%A2"><span class="toc-text">字符串与数组的转换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%91%E6%95%B0%E7%BB%84%E4%B8%AD%E6%B7%BB%E5%8A%A0%20-%20%E5%88%A0%E9%99%A4%E5%85%83%E7%B4%A0"><span class="toc-text">向数组中添加 &#x2F; 删除元素</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E5%85%83%E7%B4%A0"><span class="toc-text">查询数组中的元素</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%9F%E8%AE%A1%E6%95%B0%E7%BB%84%E4%B8%AD%E5%85%83%E7%B4%A0%E4%B8%AA%E6%95%B0"><span class="toc-text">统计数组中元素个数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E6%95%B0%E7%BB%84%E4%B8%AD%E9%87%8D%E5%A4%8D%E5%85%83%E7%B4%A0"><span class="toc-text">删除数组中重复元素</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%83%E6%8D%A2%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E9%94%AE%E5%90%8D%E5%92%8C%E5%85%83%E7%B4%A0%E5%80%BC"><span class="toc-text">调换数组中的键名和元素值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E7%9A%84%E5%BA%8F%E5%88%97%E5%8C%96"><span class="toc-text">数组的序列化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E5%88%B0%E5%90%88%E5%B9%B6%E4%B8%8E%E8%81%94%E5%90%88"><span class="toc-text">数组到合并与联合</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B8%85%E7%90%86%E6%95%B0%E7%BB%84"><span class="toc-text">清理数组</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-PHP数组" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">PHP 数组</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2015.03.11</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Netcan</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h3 id="PHP- 数组有两种：- 数字索引数组和联合索引数组">PHP 数组有两种： 数字索引数组和联合索引数组</h3>
+<h4 id="数字索引数组定义：">数字索引数组定义：</h4>
+<pre><code>$a = array('语文', '数学', '英语', '物理', '化学', '生物');
+print_r($a);
+</code></pre>
+<p>输出:</p>
+<pre><code>Array([0] =&gt; 语文 [1] =&gt; 数学 [2] =&gt; 英语 [3] =&gt; 物理 [4] =&gt; 化学 [5] =&gt; 生物)
+</code></pre>
+<h4 id="联合索引数组定义：">联合索引数组定义：</h4>
+<pre><code>$b = array('语文'=&gt;150, '数学'=&gt;150, '英语'=&gt;150, '物理'=&gt;120, '化学'=&gt;108, '生物'=&gt;72);
+print_r($b);
+</code></pre>
+<p>输出：</p>
+<pre><code>Array ([语文] =&gt; 150 [数学] =&gt; 150 [英语] =&gt; 150 [物理] =&gt; 120 [化学] =&gt; 108 [生物] =&gt; 72 )
+</code></pre>
+<h3 id="一维数组的遍历">一维数组的遍历</h3>
+<h4 id="遍历数字索引数组：">遍历数字索引数组：</h4>
+<pre><code>for($i=0; $i &lt; 6; ++$i)
+        echo $a[$i].&quot; &quot;;
+</code></pre>
+<p>输出</p>
+<pre><code>语文 数学 英语 物理 化学 生物
+</code></pre>
+<h4 id="遍历联合索引数组：">遍历联合索引数组：</h4>
+<pre><code>foreach($b as $v) // 遍历元素值到 V 变量中
+   echo $v . &quot; &quot;;
+   echo &quot;&lt;br&gt;&quot;;
+foreach($b as $k =&gt; $v) // 分别遍历键值和元素值到 $k 和 $V 中
+   echo &quot;$k:$v&quot; . &quot; &quot;;
+echo &quot;&lt;br&gt;&quot;;
+reset($b);               // foreach 遍历后，必须要 reset 重置为开头元素给 while 遍历
+while($e = each($b))     // 两个键值: key, value
+   echo $e['key'] . $e['value'] . &quot; &quot;;
+echo &quot;&lt;br&gt;&quot;;
+reset($b);
+while(list($k, $v) = each($b)) // 用 list 来分别获取键值和元素值 list($key, $value)
+   echo &quot;$k:$v&quot; . &quot; &quot;;
+echo &quot;&lt;br&gt;&quot;;
+</code></pre>
+<p>输出：</p>
+<pre><code>150 150 150 120 108 72 
+语文:150 数学:150 英语:150 物理:120 化学:108 生物:72 
+语文 150 数学 150 英语 150 物理 120 化学 108 生物 72 
+语文:150 数学:150 英语:150 物理:120 化学:108 生物:72
+</code></pre>
+<h3 id="数组的排序">数组的排序</h3>
+<p>排序涉及 <code>sort()</code>, <code>asort()</code>, <code>ksort()</code>, <code>arsort()</code>, <code>krsort()</code></p>
+<p><code>sort()</code>是默认排序 (针对数字索引数组，如果是联合索引数组则会丢失键值，转换为数字索引数组），<code>asort()</code> 根据元素值升序排序，<code>ksort()</code>根据键值升序排序，<code>arsort()</code>和 <code>krsort()</code> 为对应的降序排序。</p>
+<pre><code>sort($a);    // 升序排列 (针对数字索引数组) 元素值
+print_r($a);
+echo &quot;&lt;br&gt;&quot;;
+asort($b);    // 升序排列元素值
+print_r($b);
+echo &quot;&lt;br&gt;&quot;;
+ksort($b);    // 升序排列键值
+print_r($b);
+echo &quot;&lt;br&gt;&quot;;
+</code></pre>
+<p>输出：</p>
+<pre><code>Array ([0] =&gt; 化学 [1] =&gt; 数学 [2] =&gt; 物理 [3] =&gt; 生物 [4] =&gt; 英语 [5] =&gt; 语文 )
+Array ([生物] =&gt; 72 [化学] =&gt; 108 [物理] =&gt; 120 [英语] =&gt; 150 [数学] =&gt; 150 [语文] =&gt; 150 )
+Array ([化学] =&gt; 108 [数学] =&gt; 150 [物理] =&gt; 120 [生物] =&gt; 72 [英语] =&gt; 150 [语文] =&gt; 150 )
+</code></pre>
+<p><code>usort()</code>可以对二维数组进行排序，需要写个比较函数，<code>usort($arr, ‘compare’)</code>;</p>
+<pre><code>function compare($a, $b)
+&#123;
+    return $a['value'] &lt; $b['value']; // 将根据二维数组中的 value 键值对应的元素值进行升序
+&#125;
+</code></pre>
+<h3 id="字符串与数组的转换">字符串与数组的转换</h3>
+<p>采用 <code>explode()</code> 和<code>implode()</code>函数，<code>explode()</code>和 <code>implode()</code> 分别为切分 (返回数组) 和组合 (合并数组) 字符串函数，</p>
+<pre><code> $str = implode(',',$a);
+ echo $str;
+ echo &quot;&lt;br&gt;&quot;;
+ $a = explode(',',$str);
+ print_r($a);
+ echo &quot;&lt;br&gt;&quot;;
+</code></pre>
+<p>输出：</p>
+<pre><code>语文, 数学, 英语, 物理, 化学, 生物
+Array ([0] =&gt; 语文 [1] =&gt; 数学 [2] =&gt; 英语 [3] =&gt; 物理 [4] =&gt; 化学 [5] =&gt; 生物 )
+</code></pre>
+<h3 id="向数组中添加 - 删除元素">向数组中添加 / 删除元素</h3>
+<p>采用<code>array_push($arr, $val1, $val2,)</code>, <code>array_unshift($arr, $val1, $val2, ...)</code>, <code>array_pop($arr)</code>, <code>array_shift($arr)</code>，作用分别是：向数组末尾添加元素，向数组开头添加元素，向数组结尾删除元素，向数组开头删除元素。</p>
+<pre><code>echo &quot; 长度:&quot; . array_push($a, 'C 语言','离散数学') . &quot;&lt;br&gt;&quot;;    // 尾部添加元素，返回数组元素个数
+print_r($a);
+echo &quot;&lt;br&gt;&quot;;
+echo &quot; 长度:&quot; . array_unshift($a,'体育') . &quot;&lt;br&gt;&quot;; // 头部添加元素，返回元素个数
+print_r($a);
+echo &quot;&lt;br&gt;&quot;;
+echo &quot; 删除了:&quot; . array_pop($a) . &quot;&lt;br&gt;&quot;; // 尾部删除，返回删除的元素
+print_r($a);
+echo &quot;&lt;br&gt;&quot;;
+echo &quot; 删除了:&quot; . array_shift($a) . &quot;&lt;br&gt;&quot;; // 头部删除，返回删除到元素
+print_r($a);
+echo &quot;&lt;br&gt;&quot;;
+</code></pre>
+<p>输出：</p>
+<pre><code>长度:8
+Array ([0] =&gt; 语文 [1] =&gt; 数学 [2] =&gt; 英语 [3] =&gt; 物理 [4] =&gt; 化学 [5] =&gt; 生物 [6] =&gt; C 语言 [7] =&gt; 离散数学 )
+长度:9
+Array ([0] =&gt; 体育 [1] =&gt; 语文 [2] =&gt; 数学 [3] =&gt; 英语 [4] =&gt; 物理 [5] =&gt; 化学 [6] =&gt; 生物 [7] =&gt; C 语言 [8] =&gt; 离散数学 )
+删除了: 离散数学
+Array ([0] =&gt; 体育 [1] =&gt; 语文 [2] =&gt; 数学 [3] =&gt; 英语 [4] =&gt; 物理 [5] =&gt; 化学 [6] =&gt; 生物 [7] =&gt; C 语言 )
+删除了: 体育
+Array ([0] =&gt; 语文 [1] =&gt; 数学 [2] =&gt; 英语 [3] =&gt; 物理 [4] =&gt; 化学 [5] =&gt; 生物 [6] =&gt; C 语言 )
+</code></pre>
+<h3 id="查询数组中的元素">查询数组中的元素</h3>
+<p>采用 <code>in_array()</code>, <code>array_key_exists()</code>, <code>array_search()</code>, <code>array_keys()</code>, <code>array_values()</code> 函数。</p>
+<p><code>in_array($value, $arr)</code>判断 <code>$value</code>(元素值) 值是否在数组中</p>
+<p><code>array_key_exists($key, $arr)</code>判断数组中是否有名为 <code>$key</code> 的键名，针对联合索引数组</p>
+<p><code>array_search($value, $arr)</code>判断数组中是否有值为<code>$value</code>，针对联合索引数组</p>
+<p><code>array_keys($arr)</code>返回一个将（联合索引数组）键名作为元素的数字索引数组</p>
+<p><code>array_values($arr)</code>返回一个（联合索引数组）元素值作为元素的数字索引数组</p>
+<pre><code>if(in_array('语文', $a))    // 判断元素值是否在数组中
+    echo &quot;yes&lt;br&gt;&quot;;
+else
+    echo &quot;no&lt;br&gt;&quot;;
+if(array_key_exists('语文', $b)) // 判断键名是否在数组（联合索引数组）中
+    echo &quot;yes&lt;br&gt;&quot;;
+else
+    echo &quot;no&lt;br&gt;&quot;;
+if(array_search('72', $b))    // 判断元素值是否在数组（联合索引数组）中
+    echo &quot;yes&lt;br&gt;&quot;;
+else
+    echo &quot;no&lt;br&gt;&quot;;
+$k = array_keys($b); // 分离键名（联合索引数组）
+print_r($k);
+echo &quot;&lt;br&gt;&quot;;
+$v = array_values($b);     // 分离元素值（联合索引数组）
+print_r($v);
+echo &quot;&lt;br&gt;&quot;
+</code></pre>
+<p>输出：</p>
+<pre><code>yes
+yes
+yes
+Array ([0] =&gt; 语文 [1] =&gt; 数学 [2] =&gt; 英语 [3] =&gt; 物理 [4] =&gt; 化学 [5] =&gt; 生物 )
+Array ([0] =&gt; 150 [1] =&gt; 150 [2] =&gt; 150 [3] =&gt; 120 [4] =&gt; 108 [5] =&gt; 72 )
+</code></pre>
+<h3 id="统计数组中元素个数">统计数组中元素个数</h3>
+<p>采用 <code>count($arr)</code> 函数可以返回数组元素个数，<code>array_count_values($arr)</code>，返回一个数组。</p>
+<pre><code>echo count($a) . &quot; 个元素 &lt;br&gt;&quot;; // 返回元素值个数
+echo count($b) . &quot; 个元素 &lt;br&gt;&quot;;    // 同上
+$c = array_count_values($b);    // 返回一个统计数组元素值的个数的数组
+print_r($c);
+echo &quot;&lt;br&gt;&quot;;
+</code></pre>
+<p>输出：</p>
+<pre><code>6 个元素
+6 个元素
+Array ([150] =&gt; 3 [120] =&gt; 1 [108] =&gt; 1 [72] =&gt; 1 )
+</code></pre>
+<h3 id="删除数组中重复元素">删除数组中重复元素</h3>
+<p>采用 <code>array_unique($arr)</code> 删除数组中重复的元素值（以元素值为准），返回删除重复元素后的数组。</p>
+<pre><code>$c = array('语文', '数学', '英语', '物理', '化学', '生物', '语文', '语文');
+print_r(array_unique($c)); // 返回删除重复元素后的数组。
+echo &quot;&lt;br&gt;&quot;;
+print_r($c);
+echo &quot;&lt;br&gt;&quot;;
+</code></pre>
+<p>输出：</p>
+<pre><code>Array ([0] =&gt; 语文 [1] =&gt; 数学 [2] =&gt; 英语 [3] =&gt; 物理 [4] =&gt; 化学 [5] =&gt; 生物 )
+Array ([0] =&gt; 语文 [1] =&gt; 数学 [2] =&gt; 英语 [3] =&gt; 物理 [4] =&gt; 化学 [5] =&gt; 生物 [6] =&gt; 语文 [7] =&gt; 语文 )
+</code></pre>
+<h3 id="调换数组中的键名和元素值">调换数组中的键名和元素值</h3>
+<p>采用 <code>array_flip($arr)</code> 函数返回调换数组中的键名和元素值后的数组。</p>
+<pre><code>print_r(array_flip($b));    // 返回调换数组中的键名和元素值后的数组
+echo &quot;&lt;br&gt;&quot;;
+print_r($b);
+</code></pre>
+<p>输出：</p>
+<pre><code>Array ([150] =&gt; 英语 [120] =&gt; 物理 [108] =&gt; 化学 [72] =&gt; 生物 )
+Array ([语文] =&gt; 150 [数学] =&gt; 150 [英语] =&gt; 150 [物理] =&gt; 120 [化学] =&gt; 108 [生物] =&gt; 72 )
+</code></pre>
+<h3 id="数组的序列化">数组的序列化</h3>
+<p>数组的序列化就是将数组的数据转换为字符串，与之对应的操作就是反序列化。</p>
+<p>采用 <code>serialize($arr)</code> 返回字符串和 unserialize($str)返回数组的函数。</p>
+<pre><code>$str=serialize($b);
+echo $str . &quot;&lt;br&gt;&quot;;
+print_r(unserialize($str));
+</code></pre>
+<p>输出：</p>
+<pre><code>a:6:&#123;s:6:&quot; 语文 &quot;;i:150;s:6:&quot; 数学 &quot;;i:150;s:6:&quot; 英语 &quot;;i:150;s:6:&quot; 物理 &quot;;i:120;s:6:&quot; 化学 &quot;;i:108;s:6:&quot; 生物 &quot;;i:72;&#125;
+Array ([语文] =&gt; 150 [数学] =&gt; 150 [英语] =&gt; 150 [物理] =&gt; 120 [化学] =&gt; 108 [生物] =&gt; 72 )
+</code></pre>
+<h3 id="数组到合并与联合">数组到合并与联合</h3>
+<p>数组的合并是多个数组的元素值合并为一个数组，而联合是一个数组作为键名，一个数组作为元素值进行合并。</p>
+<p><code>array_merge($arr1, $arr2, ...)</code>合并，<code>array_combine($arr1, $arr2)</code>联合（要求 <code>$arr1</code> 和<code>$arr2</code>的元素个数一致）。</p>
+<pre><code>$a = array('语文', '数学', '英语', '物理', '化学', '生物');
+$c = array(150, 150, 150, 120, 108, 72);
+print_r(array_merge($a, $c)); // 两数组合并
+echo &quot;&lt;br&gt;&quot;;
+print_r(array_combine($a, $c)); // 两数组联合
+</code></pre>
+<p>输出：</p>
+<pre><code>Array ([0] =&gt; 语文 [1] =&gt; 数学 [2] =&gt; 英语 [3] =&gt; 物理 [4] =&gt; 化学 [5] =&gt; 生物 [6] =&gt; 150 [7] =&gt; 150 [8] =&gt; 150 [9] =&gt; 120 [10] =&gt; 108 [11] =&gt; 72 )
+Array ([语文] =&gt; 150 [数学] =&gt; 150 [英语] =&gt; 150 [物理] =&gt; 120 [化学] =&gt; 108 [生物] =&gt; 72 )
+</code></pre>
+<h3 id="清理数组">清理数组</h3>
+<p><code>unset($arr)</code>清理数组，完全释放资源。</p>
+<pre><code>unset($a);
+unset($b);
+</code></pre>
+
+    
+  </div>
+
+</article>
+
+
+   
+       <div class="original">
+    <ul>
+        <li>本文标题：PHP 数组</li>
+        <li>本文字数：2.2k</li>
+        <li>本文作者：Netcan</li>
+        <li>发布时间：2015年03月11日 - 15时31分</li>
+        <li>最后更新：2015年03月11日 - 15时31分</li>
+        <li>原始链接：<a href="https://netcan.github.io/2015/03/11/PHP%E6%95%B0%E7%BB%84/">https://netcan.github.io/2015/03/11/PHP数组/</a></li>
+        <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
+    </ul>
+</div>
+
+   
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持Netcan</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2015/03/10/PHP%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%A4%84%E7%90%86/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2015/03/11/PHP%E6%97%A5%E6%9C%9F%E5%92%8C%E6%97%B6%E9%97%B4/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '893a4103795fc66cd8e7',
+  clientSecret: '35c92c3dca938831b67dc22e46d64bc9073ebacf',
+  repo: 'netcan.github.io',
+  owner: 'Netcan',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: md5(location.pathname),
+  admin: ['Netcan'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

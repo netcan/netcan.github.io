@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>python 之数据挖掘 | Netcan on Programming</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="python,数据挖掘," />
+  
+
+  <meta name="description" content="前言 自用笔记，目前在看《Learning Data Mining with python 2nd Edition》。 在图书馆发现这本书（第一版译本），顿时就吸引了我的注意力，之前学校也开过《数据挖掘》的课，蛮有意思的，也就纯理论相关，一直没实践。 然后通过书上给的源代码链接，发现这本书今年 4 月份出了第二版，就下了电子版来研究了。 Getting Started with Data Mini">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python 之数据挖掘">
+<meta property="og:url" content="https://netcan.github.io/2017/12/25/Python%E4%B9%8B%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98/index.html">
+<meta property="og:site_name" content="Netcan on Programming">
+<meta property="og:description" content="前言 自用笔记，目前在看《Learning Data Mining with python 2nd Edition》。 在图书馆发现这本书（第一版译本），顿时就吸引了我的注意力，之前学校也开过《数据挖掘》的课，蛮有意思的，也就纯理论相关，一直没实践。 然后通过书上给的源代码链接，发现这本书今年 4 月份出了第二版，就下了电子版来研究了。 Getting Started with Data Mini">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://netcan.github.io/2017/12/25/Python%E4%B9%8B%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98/Nearest_neighbors.png">
+<meta property="og:image" content="https://netcan.github.io/2017/12/25/Python%E4%B9%8B%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98/Decision_Tree.png">
+<meta property="article:published_time" content="2017-12-25T02:21:21.000Z">
+<meta property="article:modified_time" content="2022-12-09T11:02:08.584Z">
+<meta property="article:author" content="Netcan">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="数据挖掘">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://netcan.github.io/2017/12/25/Python%E4%B9%8B%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98/Nearest_neighbors.png">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/site.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-174901164-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d2c292719a76d8c0fa7f9874379cfd25";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"] > svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body>
+
+
+  
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+  
+
+  <link rel="stylesheet" href="/css/prism.css">
+
+<div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">ROOT</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">Getting Started with Data Mining</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#affinity-analysis"><span class="toc-text">affinity analysis</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%20OneR%20%E7%AE%97%E6%B3%95"><span class="toc-text">实现 OneR 算法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">用 scikit-learn 的Estimators分类</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Estimators"><span class="toc-text">Estimators</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Nearest-neighbors%20%E7%AE%97%E6%B3%95"><span class="toc-text">Nearest neighbors 算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F"><span class="toc-text">距离度量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%BB%E5%8F%96%E6%95%B0%E6%8D%AE%E9%9B%86"><span class="toc-text">读取数据集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%87%E5%87%86%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="toc-text">标准工作流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Cross-fold-validation-CV"><span class="toc-text">Cross-fold validation(CV)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%83%E5%8F%82"><span class="toc-text">调参</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%84%E5%A4%84%E7%90%86"><span class="toc-text">预处理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%87%E5%87%86%E9%A2%84%E5%A4%84%E7%90%86"><span class="toc-text">标准预处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%94%BE%E5%88%B0%E4%B8%80%E8%B5%B7"><span class="toc-text">放到一起</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Pipelines"><span class="toc-text">Pipelines</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">使用决策树来预测比赛结果</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%BB%E5%8F%96%E6%95%B0%E6%8D%AE%E9%9B%86%20-2"><span class="toc-text">读取数据集</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE%E9%9B%86"><span class="toc-text">获取数据集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%20pandas%20%E8%AF%BB%E5%8F%96%E6%95%B0%E6%8D%AE%E9%9B%86"><span class="toc-text">使用 pandas 读取数据集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B8%85%E6%B4%97%E6%95%B0%E6%8D%AE%E9%9B%86"><span class="toc-text">清洗数据集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%90%E5%8F%96%E7%89%B9%E5%BE%81"><span class="toc-text">提取特征</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%B3%E7%AD%96%E6%A0%91"><span class="toc-text">决策树</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E6%95%B0"><span class="toc-text">参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%86%B3%E7%AD%96%E6%A0%91"><span class="toc-text">使用决策树</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E5%8A%A8%E7%BB%93%E6%9E%9C%E9%A2%84%E6%B5%8B"><span class="toc-text">运动结果预测</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%94%BE%E5%88%B0%E4%B8%80%E8%B5%B7%20-2"><span class="toc-text">放到一起</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9A%8F%E6%9C%BA%E6%A3%AE%E6%9E%97"><span class="toc-text">随机森林</span></a></li></ol></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-Python之数据挖掘" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">python 之数据挖掘</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2017.12.25</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Netcan</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h1>前言</h1>
+<p>自用笔记，目前在看《Learning Data Mining with python 2nd Edition》。</p>
+<p>在图书馆发现这本书（第一版译本），顿时就吸引了我的注意力，之前学校也开过《数据挖掘》的课，蛮有意思的，也就纯理论相关，一直没实践。</p>
+<p>然后通过书上给的源代码链接，发现这本书今年 4 月份出了第二版，就下了电子版来研究了。</p>
+<h1>Getting Started with Data Mining</h1>
+<h2 id="affinity-analysis">affinity analysis</h2>
+<p>第一个例子是关于<em>affinity analysis</em>，给出历史订单，当 X 和 Y 同时购买时，可以找出如下规则：</p>
+<blockquote>
+<p>当用户买了 X(<em>premise</em>)，有多大可能性买 Y(<em>conclusion</em>)。</p>
+</blockquote>
+<ul>
+<li>支持度(<em>support</em>): 历史订单中出现 premise-&gt;conclusion 的个数</li>
+<li>置信度(<em>confidence</em>)：支持度 / 历史订单中出现 premise 的个数</li>
+</ul>
+<p>最后可以根据置信度从大到小排序，从而帮助我们做出决策。</p>
+<h2 id="实现 OneR 算法">实现 OneR 算法</h2>
+<p>第二个例子是分类问题，通过 <code>scikit-learn</code> 库的数据集 IRIS（花的数据集，有 3 种类别）来介绍 OneR(<em>One Rule</em>)算法，也就是通过选择 <strong> 一个 </strong> 最好的特征来判断类别。</p>
+<p>该数据集有 150 个样本，4 个特征，以及每个样本对应的类别。首先对各个特征值进行 <strong> 离散化</strong>，书上是通过各个特征值的均值来作为阈值，大于均值为 1，否则为 0，这样各个特征值只有 2 种数值了。</p>
+<p>然后实现 OneR 算法：</p>
+<ul>
+<li>依次遍历每个特征
+<ul>
+<li>遍历特征的每个值(<code>train_feature_value</code>)
+<ul>
+<li>根据所有样本中的特征为该值找出最频繁的类</li>
+<li>计算错误的样本（不属于最频繁的类）个数</li>
+</ul>
+</li>
+<li>计算该特征总的错误个数</li>
+</ul>
+</li>
+<li>使用错误个数最少的特征来分类</li>
+</ul>
+<pre class="language-python" data-language="python"><code class="language-python">
+<span class="token comment"># X 样本, y_true 样本对应的类别，feature 选择的特征，value 特征的值</span>
+<span class="token keyword">def</span> <span class="token function">train_feature_value</span><span class="token punctuation">(</span>X<span class="token punctuation">,</span> y_true<span class="token punctuation">,</span> feature<span class="token punctuation">,</span> value<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    class_count <span class="token operator">=</span> defaultdict<span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">)</span>
+    <span class="token keyword">for</span> sample<span class="token punctuation">,</span> cls <span class="token keyword">in</span> <span class="token builtin">zip</span><span class="token punctuation">(</span>X<span class="token punctuation">,</span> y_true<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> sample<span class="token punctuation">[</span>feature<span class="token punctuation">]</span> <span class="token operator">==</span> value<span class="token punctuation">:</span>
+            class_count<span class="token punctuation">[</span>cls<span class="token punctuation">]</span> <span class="token operator">+=</span> <span class="token number">1</span>
+    most_frequent_class <span class="token operator">=</span> <span class="token builtin">sorted</span><span class="token punctuation">(</span>class_count<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> key<span class="token operator">=</span>itemgetter<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> reverse<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+    error <span class="token operator">=</span> <span class="token builtin">sum</span><span class="token punctuation">(</span><span class="token punctuation">[</span>cnt <span class="token keyword">for</span> cls<span class="token punctuation">,</span> cnt <span class="token keyword">in</span> class_count<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">if</span> cls <span class="token operator">!=</span> most_frequent_class<span class="token punctuation">]</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> most_frequent_class<span class="token punctuation">,</span> error
+
+<span class="token keyword">def</span> <span class="token function">train</span><span class="token punctuation">(</span>X<span class="token punctuation">,</span> y_true<span class="token punctuation">,</span> feature<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    n_samples<span class="token punctuation">,</span> n_features <span class="token operator">=</span> X<span class="token punctuation">.</span>shape
+    values <span class="token operator">=</span> <span class="token builtin">set</span><span class="token punctuation">(</span>X<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> feature<span class="token punctuation">]</span><span class="token punctuation">)</span>
+    predictors <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+    errors <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    <span class="token keyword">for</span> current_value <span class="token keyword">in</span> values<span class="token punctuation">:</span>
+        most_frequent_class<span class="token punctuation">,</span> error <span class="token operator">=</span> train_feature_value<span class="token punctuation">(</span>X<span class="token punctuation">,</span> y_true<span class="token punctuation">,</span> feature<span class="token punctuation">,</span> current_value<span class="token punctuation">)</span>
+        predictors<span class="token punctuation">[</span>current_value<span class="token punctuation">]</span> <span class="token operator">=</span> most_frequent_class
+        errors<span class="token punctuation">.</span>append<span class="token punctuation">(</span>error<span class="token punctuation">)</span>
+    total_error <span class="token operator">=</span> <span class="token builtin">sum</span><span class="token punctuation">(</span>errors<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> predictors<span class="token punctuation">,</span> total_error
+
+<span class="token keyword">def</span> <span class="token function">OneR</span><span class="token punctuation">(</span>X<span class="token punctuation">,</span> y_true<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    all_predictors <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+    errors <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+    <span class="token keyword">for</span> feature <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>X<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        predictor<span class="token punctuation">,</span> total_error <span class="token operator">=</span> train<span class="token punctuation">(</span>X<span class="token punctuation">,</span> y_true<span class="token punctuation">,</span> feature<span class="token punctuation">)</span>
+        all_predictors<span class="token punctuation">[</span>feature<span class="token punctuation">]</span> <span class="token operator">=</span> predictor
+        errors<span class="token punctuation">[</span>feature<span class="token punctuation">]</span> <span class="token operator">=</span> total_error
+    feature <span class="token operator">=</span> <span class="token builtin">sorted</span><span class="token punctuation">(</span>errors<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> key<span class="token operator">=</span>itemgetter<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+    <span class="token keyword">return</span> <span class="token punctuation">&#123;</span><span class="token string">'feature'</span><span class="token punctuation">:</span> feature<span class="token punctuation">,</span> <span class="token string">'predictor'</span><span class="token punctuation">:</span> all_predictors<span class="token punctuation">[</span>feature<span class="token punctuation">]</span><span class="token punctuation">&#125;</span></code></pre>
+<p>解下来就是测试算法了，需要将数据集划分为两个部分：<strong>训练集 </strong> 和<strong>测试集 </strong>，以防出现<em>overfitting</em> 问题，也就是说训练的模型对训练集能进行很好的分类，但是遇到新的样本效果就会很差了。</p>
+<p>用 <code>sklearn.cross_validation</code>(cross validation 简称<strong>CV</strong>) 的<code>train_test_split</code>来划分数据集，默认随机抽取 75% 样本作为训练集，剩下的为测试集：</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>cross_validation <span class="token keyword">import</span> train_test_split
+Xd_train<span class="token punctuation">,</span> Xd_test<span class="token punctuation">,</span> y_train<span class="token punctuation">,</span> y_test <span class="token operator">=</span> train_test_split<span class="token punctuation">(</span>X_d<span class="token punctuation">,</span> Y<span class="token punctuation">)</span></code></pre>
+<p>测试精度，65.8%，还行：</p>
+<pre class="language-none"><code class="language-none">def predict(X_test, model):
+    var &#x3D; model[&#39;feature&#39;]
+    predictor &#x3D; model[&#39;predictor&#39;]
+    y_predicted &#x3D; np.array([predictor[int(sample[var])] for sample in X_test])
+    return y_predicted
+
+In [371]: np.mean(predict(Xd_test, model) &#x3D;&#x3D;  y_test)
+Out[371]: 0.65789473684210531</code></pre>
+<h1>用 <code>scikit-learn</code> 的<code>Estimators</code>分类</h1>
+<p><code>scikit-learn</code>库与很多数据挖掘算法，这一章介绍如何调用它来运行一些数据挖掘算法（分类）。</p>
+<p>有 3 个概念需要注意：</p>
+<ul>
+<li>Estimators: 用于分类、聚类、回归</li>
+<li>Transformers: 用于预处理、选择数据</li>
+<li>Pipelines: 将工作流程整合到一块复用</li>
+</ul>
+<h2 id="Estimators">Estimators</h2>
+<p>Estimators 有 2 个比较重要的函数：</p>
+<ul>
+<li><code>fit()</code>: 执行训练用算法，设置内部参数。有 2 个输入：训练集和对应的类型（就像前面提到的<code>OneR(X, y_true)</code>）</li>
+<li><code>predict()</code>：只有一个测试集输入，输出预测的分类。（就像前面提到的<code>predict(X_test, model)</code>）</li>
+</ul>
+<h3 id="Nearest-neighbors 算法">Nearest neighbors 算法</h3>
+<p>这个算法根据样本周围最近的几个邻居的计数（复杂点的有权重）来判断类型。</p>
+<p>由于需要计算每个样本的距离，无疑增加了计算量，有很多优化的算法，比如使用树来进行距离计算，这些算法相当复杂，好在 <code>scikit-learn</code> 库实现了这些算法。</p>
+<p>对于 <em>categorical-based</em> 数据集效果比较差，可能需要预处理。</p>
+<h3 id="距离度量">距离度量</h3>
+<p>因为涉及到最近，那么需要距离来度量。书上介绍了 3 种度量的方法：</p>
+<ul>
+<li>Euclidean 距离，也就是每个特征平方差的和的平方根（当特征比较多的时候，各个样本可能都差不多近。。）</li>
+<li>Manhattan 距离，每个特征的绝对差的和（当特征比较大的时候，可能会无视那些比较小的特征值了，可以通过正规化来解决）</li>
+<li>Cosine 距离，特征向量的夹角，丢失了长度信息（由于不考虑向量长度，适合多个特征的情况。比如可以用于文本挖掘）</li>
+</ul>
+<h3 id="读取数据集">读取数据集</h3>
+<p>从这开始，书上介绍了一个利用 <code>Estimators</code> 进行训练的数据集。数据集 (<a target="_blank" rel="noopener" href="http://archive.ics.uci.edu/ml/machine-learning-databases/ionosphere/">http://archive.ics.uci.edu/ml/machine-learning-databases/ionosphere/</a>) 为 csv 格式，共有 351 个样本，每个 34 个特征，2 个分类：good 和 bad。每行前 34 个为特征，最后一个为分类。</p>
+<p>然后读到 X，Y 中：</p>
+<pre class="language-python" data-language="python"><code class="language-python">X <span class="token operator">=</span> np<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token number">351</span><span class="token punctuation">,</span> <span class="token number">34</span><span class="token punctuation">)</span><span class="token punctuation">,</span> dtype<span class="token operator">=</span><span class="token string">'float'</span><span class="token punctuation">)</span>
+y <span class="token operator">=</span> np<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token number">351</span><span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">,</span> dtype<span class="token operator">=</span><span class="token string">'bool'</span><span class="token punctuation">)</span>
+<span class="token keyword">with</span> <span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">'../data/ionosphere.data'</span><span class="token punctuation">,</span> <span class="token string">'r'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> f<span class="token punctuation">:</span>
+    reader <span class="token operator">=</span> csv<span class="token punctuation">.</span>reader<span class="token punctuation">(</span>f<span class="token punctuation">)</span>
+    <span class="token keyword">for</span> i<span class="token punctuation">,</span> row <span class="token keyword">in</span> <span class="token builtin">enumerate</span><span class="token punctuation">(</span>reader<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token builtin">float</span><span class="token punctuation">(</span>dat<span class="token punctuation">)</span> <span class="token keyword">for</span> dat <span class="token keyword">in</span> row<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">]</span>
+        X<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> data
+        Y<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> row<span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token string">'g'</span></code></pre>
+<h3 id="标准工作流程">标准工作流程</h3>
+<p>首先划分数据集，分为训练集和测试集。</p>
+<p>在开始之前，我来测试一下之前的 OneR 算法精度：</p>
+<pre class="language-python" data-language="python"><code class="language-python">Xd <span class="token operator">=</span> <span class="token punctuation">(</span>X <span class="token operator">></span> X<span class="token punctuation">.</span>mean<span class="token punctuation">(</span>axis<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>astype<span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">)</span>
+Xd_train<span class="token punctuation">,</span> Xd_test<span class="token punctuation">,</span> Y_train<span class="token punctuation">,</span> Y_test <span class="token operator">=</span> train_test_split<span class="token punctuation">(</span>Xd<span class="token punctuation">,</span> Y<span class="token punctuation">)</span>
+model <span class="token operator">=</span> OneR<span class="token punctuation">(</span>Xd_train<span class="token punctuation">,</span> Y_train<span class="token punctuation">)</span>
+In <span class="token punctuation">[</span><span class="token number">590</span><span class="token punctuation">]</span><span class="token punctuation">:</span> <span class="token punctuation">(</span>predict<span class="token punctuation">(</span>Xd_test<span class="token punctuation">,</span> model<span class="token punctuation">)</span> <span class="token operator">==</span> Y_test<span class="token punctuation">)</span><span class="token punctuation">.</span>mean<span class="token punctuation">(</span><span class="token punctuation">)</span>
+Out<span class="token punctuation">[</span><span class="token number">590</span><span class="token punctuation">]</span><span class="token punctuation">:</span> <span class="token number">0.76136363636363635</span></code></pre>
+<p>精度 76.14%，还不错啊。。</p>
+<p>现在来试试 estimators 的精度，同样地划分数据集。</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>neighbors <span class="token keyword">import</span> KNeighborsClassifier
+X_train<span class="token punctuation">,</span> X_test<span class="token punctuation">,</span> Y_train<span class="token punctuation">,</span> Y_test <span class="token operator">=</span> train_test_split<span class="token punctuation">(</span>X<span class="token punctuation">,</span> Y<span class="token punctuation">)</span>
+estimator <span class="token operator">=</span> KNeighborsClassifier<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+<p>开始 <strong> 训练</strong>：</p>
+<pre class="language-python" data-language="python"><code class="language-python">In <span class="token punctuation">[</span><span class="token number">593</span><span class="token punctuation">]</span><span class="token punctuation">:</span> estimator<span class="token punctuation">.</span>fit<span class="token punctuation">(</span>X_train<span class="token punctuation">,</span> Y_train<span class="token punctuation">)</span>
+Out<span class="token punctuation">[</span><span class="token number">593</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+KNeighborsClassifier<span class="token punctuation">(</span>algorithm<span class="token operator">=</span><span class="token string">'auto'</span><span class="token punctuation">,</span> leaf_size<span class="token operator">=</span><span class="token number">30</span><span class="token punctuation">,</span> metric<span class="token operator">=</span><span class="token string">'minkowski'</span><span class="token punctuation">,</span>
+           metric_params<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span> n_jobs<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">,</span> n_neighbors<span class="token operator">=</span><span class="token number">5</span><span class="token punctuation">,</span> p<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">,</span>
+           weights<span class="token operator">=</span><span class="token string">'uniform'</span><span class="token punctuation">)</span></code></pre>
+<p>测试精度：</p>
+<pre class="language-python" data-language="python"><code class="language-python">In <span class="token punctuation">[</span><span class="token number">594</span><span class="token punctuation">]</span><span class="token punctuation">:</span> <span class="token punctuation">(</span>estimator<span class="token punctuation">.</span>predict<span class="token punctuation">(</span>X_test<span class="token punctuation">)</span> <span class="token operator">==</span> Y_test<span class="token punctuation">)</span><span class="token punctuation">.</span>mean<span class="token punctuation">(</span><span class="token punctuation">)</span>
+Out<span class="token punctuation">[</span><span class="token number">594</span><span class="token punctuation">]</span><span class="token punctuation">:</span> <span class="token number">0.86363636363636365</span></code></pre>
+<p>86.37%，精度明显提高了。还是默认参数，要是自己对应用比较熟悉的话，调参大法好。后面章节还会介绍参数搜索。(<em>parameter search</em>)</p>
+<p>当然精度提高的代价伴随着运算量的增加。</p>
+<h3 id="Cross-fold-validation-CV">Cross-fold validation(CV)</h3>
+<p>若数据只划分成一组训练集和测试集，那么难免会出现在幸运的情况下结果比较好。</p>
+<p>若将数据划分成多组（<em>fold</em>）训练集和测试集的话，训练每一组求出其精度，在求出平均精度，能够较好的反映出算法的效果。</p>
+<p><strong>cross-fold validation</strong>框架很好地解决这个问题，过程如下：</p>
+<ol>
+<li>将整个数据集划分成 K 个部分(<em>folds</em>)，基本等大</li>
+<li>每部分，执行如下步骤
+<ol>
+<li>将该部分作为测试集</li>
+<li>剩余 (K-1) 部分作为训练集</li>
+<li>评估当前测试集的精度</li>
+</ol>
+</li>
+<li>得出每部分的精度，求出均值</li>
+</ol>
+<p>具体如下，先来看看 <code>OneR</code> 的效果，</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>base <span class="token keyword">import</span> BaseEstimator<span class="token punctuation">,</span> ClassifierMixin
+<span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>cross_validation <span class="token keyword">import</span> cross_val_score
+
+<span class="token keyword">class</span> <span class="token class-name">OneRES</span><span class="token punctuation">(</span>BaseEstimator<span class="token punctuation">,</span> ClassifierMixin<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>model <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+    <span class="token keyword">def</span> <span class="token function">fit</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> X<span class="token punctuation">,</span> Y<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        Xd <span class="token operator">=</span> <span class="token punctuation">(</span>X <span class="token operator">>=</span> X<span class="token punctuation">.</span>mean<span class="token punctuation">(</span>axis<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>astype<span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>model <span class="token operator">=</span> OneR<span class="token punctuation">(</span>Xd<span class="token punctuation">,</span> Y<span class="token punctuation">)</span>
+    <span class="token keyword">def</span> <span class="token function">predict</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> X<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        Xd <span class="token operator">=</span> <span class="token punctuation">(</span>X <span class="token operator">>=</span> X<span class="token punctuation">.</span>mean<span class="token punctuation">(</span>axis<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>astype<span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> predict<span class="token punctuation">(</span>Xd<span class="token punctuation">,</span> self<span class="token punctuation">.</span>model<span class="token punctuation">)</span>
+        
+scores <span class="token operator">=</span> cross_val_score<span class="token punctuation">(</span>estimator<span class="token punctuation">,</span> X<span class="token punctuation">,</span> Y<span class="token punctuation">,</span> scoring<span class="token operator">=</span><span class="token string">'accuracy'</span><span class="token punctuation">)</span>
+In <span class="token punctuation">[</span><span class="token number">669</span><span class="token punctuation">]</span><span class="token punctuation">:</span> scores
+Out<span class="token punctuation">[</span><span class="token number">669</span><span class="token punctuation">]</span><span class="token punctuation">:</span> array<span class="token punctuation">(</span><span class="token punctuation">[</span> <span class="token number">0.66666667</span><span class="token punctuation">,</span>  <span class="token number">0.65811966</span><span class="token punctuation">,</span>  <span class="token number">0.68376068</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+In <span class="token punctuation">[</span><span class="token number">670</span><span class="token punctuation">]</span><span class="token punctuation">:</span> scores<span class="token punctuation">.</span>mean<span class="token punctuation">(</span><span class="token punctuation">)</span>
+Out<span class="token punctuation">[</span><span class="token number">670</span><span class="token punctuation">]</span><span class="token punctuation">:</span> <span class="token number">0.66951566951566954</span></code></pre>
+<p>精度 66.95%，效果很差了。</p>
+<p>再来看看 estimator 的精度：</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>cross_validation <span class="token keyword">import</span> cross_val_score
+scores <span class="token operator">=</span> cross_val_score<span class="token punctuation">(</span>estimator<span class="token punctuation">,</span> X<span class="token punctuation">,</span> Y<span class="token punctuation">,</span> scoring<span class="token operator">=</span><span class="token string">'accuracy'</span><span class="token punctuation">)</span>
+In <span class="token punctuation">[</span><span class="token number">623</span><span class="token punctuation">]</span><span class="token punctuation">:</span> scores
+Out<span class="token punctuation">[</span><span class="token number">623</span><span class="token punctuation">]</span><span class="token punctuation">:</span> array<span class="token punctuation">(</span><span class="token punctuation">[</span> <span class="token number">0.82051282</span><span class="token punctuation">,</span>  <span class="token number">0.78632479</span><span class="token punctuation">,</span>  <span class="token number">0.86324786</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+In <span class="token punctuation">[</span><span class="token number">624</span><span class="token punctuation">]</span><span class="token punctuation">:</span> scores<span class="token punctuation">.</span>mean<span class="token punctuation">(</span><span class="token punctuation">)</span>
+Out<span class="token punctuation">[</span><span class="token number">624</span><span class="token punctuation">]</span><span class="token punctuation">:</span> <span class="token number">0.8233618233618234</span></code></pre>
+<p>得出平均精度 82.34%，很高了。</p>
+<h3 id="调参">调参</h3>
+<p>因为参数可以任意调整，那么当针对特定应用使用特定的参数的效果比使用随意的参数要好。</p>
+<p>就拿这个 Nearest neighbors 算法来说，影响最大的参数应该是被预测样本的邻居数了，邻居过多或过少效果都不好，一般取 5 到 10 个。</p>
+<p>在 scikit-learn 中，邻居参数名为<code>n_neighbors</code>，可以通过设置为一个范围的值，来观察参数对结果的影响。</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> matplotlib <span class="token keyword">import</span> pyplot <span class="token keyword">as</span> plt
+avg_score <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+para_values <span class="token operator">=</span> <span class="token builtin">list</span><span class="token punctuation">(</span><span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">25</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">for</span> n_neighbors <span class="token keyword">in</span> para_values<span class="token punctuation">:</span>
+    estimator <span class="token operator">=</span> KNeighborsClassifier<span class="token punctuation">(</span>n_neighbors<span class="token operator">=</span>n_neighbors<span class="token punctuation">)</span>
+    scores <span class="token operator">=</span> cross_val_score<span class="token punctuation">(</span>estimator<span class="token punctuation">,</span> X<span class="token punctuation">,</span> Y<span class="token punctuation">,</span> scoring<span class="token operator">=</span><span class="token string">'accuracy'</span><span class="token punctuation">)</span>
+    avg_score<span class="token punctuation">.</span>append<span class="token punctuation">(</span>scores<span class="token punctuation">.</span>mean<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    
+plt<span class="token punctuation">.</span>plot<span class="token punctuation">(</span>para_values<span class="token punctuation">,</span> avg_score<span class="token punctuation">,</span> <span class="token string">'-o'</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>xlabel<span class="token punctuation">(</span><span class="token string">'n_neighbors'</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>ylabel<span class="token punctuation">(</span><span class="token string">'accuracy'</span><span class="token punctuation">)</span></code></pre>
+<p>如图，显然随着邻居增加的情况下，精度越来越低了。在 2 个邻居的情况下效果比较好：</p>
+<p><img src="Nearest_neighbors.png" alt="Nearest neighbors"></p>
+<h2 id="预处理">预处理</h2>
+<p>因为有些特征的值比较大，会影响到其他特征。</p>
+<pre class="language-python" data-language="python"><code class="language-python">X_broken <span class="token operator">=</span> X<span class="token punctuation">.</span>copy<span class="token punctuation">(</span><span class="token punctuation">)</span>
+X_broken<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token number">2</span><span class="token punctuation">]</span> <span class="token operator">/=</span> <span class="token number">10</span>
+estimator <span class="token operator">=</span> KNeighborsClassifier<span class="token punctuation">(</span><span class="token punctuation">)</span>
+In <span class="token punctuation">[</span><span class="token number">732</span><span class="token punctuation">]</span><span class="token punctuation">:</span> cross_val_score<span class="token punctuation">(</span>estimator<span class="token punctuation">,</span> X<span class="token punctuation">,</span> Y<span class="token punctuation">,</span> scoring<span class="token operator">=</span><span class="token string">'accuracy'</span><span class="token punctuation">)</span>
+Out<span class="token punctuation">[</span><span class="token number">732</span><span class="token punctuation">]</span><span class="token punctuation">:</span> array<span class="token punctuation">(</span><span class="token punctuation">[</span> <span class="token number">0.82051282</span><span class="token punctuation">,</span>  <span class="token number">0.78632479</span><span class="token punctuation">,</span>  <span class="token number">0.86324786</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+In <span class="token punctuation">[</span><span class="token number">733</span><span class="token punctuation">]</span><span class="token punctuation">:</span> cross_val_score<span class="token punctuation">(</span>estimator<span class="token punctuation">,</span> X_broken<span class="token punctuation">,</span> Y<span class="token punctuation">,</span> scoring<span class="token operator">=</span><span class="token string">'accuracy'</span><span class="token punctuation">)</span>
+Out<span class="token punctuation">[</span><span class="token number">733</span><span class="token punctuation">]</span><span class="token punctuation">:</span> array<span class="token punctuation">(</span><span class="token punctuation">[</span> <span class="token number">0.75213675</span><span class="token punctuation">,</span>  <span class="token number">0.64957265</span><span class="token punctuation">,</span>  <span class="token number">0.74358974</span><span class="token punctuation">]</span><span class="token punctuation">)</span></code></pre>
+<p>所以如果将所有特征缩小到 0-1 范围内的值，就能很好解决这个问题。</p>
+<h3 id="标准预处理">标准预处理</h3>
+<p>将特征正规化，可以用 <code>scikit-learn</code> 的<code>MinMaxScaler</code>类。</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>preprocessing <span class="token keyword">import</span> MinMaxScaler</code></pre>
+<p>默认将特征缩放到 0-1 范围，若设置为其他值，将线性映射到这个范围内。</p>
+<p>进行预处理，使用 <code>transform</code> 函数，首先需要像分类器那样训练，若直接使用 <code>fit_transform</code> 则可以合并那些步骤。</p>
+<pre class="language-python" data-language="python"><code class="language-python">X_transformed <span class="token operator">=</span> MinMaxScaler<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>fit_transform<span class="token punctuation">(</span>X<span class="token punctuation">)</span></code></pre>
+<h3 id="放到一起">放到一起</h3>
+<p>将前面几个步骤整合起来：</p>
+<pre class="language-python" data-language="python"><code class="language-python">X_transformed <span class="token operator">=</span> MinMaxScaler<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>fit_transform<span class="token punctuation">(</span>X_broken<span class="token punctuation">)</span>
+estimator <span class="token operator">=</span> KNeighborsClassifier<span class="token punctuation">(</span><span class="token punctuation">)</span>
+In <span class="token punctuation">[</span><span class="token number">765</span><span class="token punctuation">]</span><span class="token punctuation">:</span> cross_val_score<span class="token punctuation">(</span>estimator<span class="token punctuation">,</span> X_transformed<span class="token punctuation">,</span> Y<span class="token punctuation">,</span> scoring<span class="token operator">=</span><span class="token string">'accuracy'</span><span class="token punctuation">)</span>
+Out<span class="token punctuation">[</span><span class="token number">765</span><span class="token punctuation">]</span><span class="token punctuation">:</span> array<span class="token punctuation">(</span><span class="token punctuation">[</span> <span class="token number">0.82905983</span><span class="token punctuation">,</span>  <span class="token number">0.77777778</span><span class="token punctuation">,</span>  <span class="token number">0.86324786</span><span class="token punctuation">]</span><span class="token punctuation">)</span></code></pre>
+<h2 id="Pipelines">Pipelines</h2>
+<p>使用 Pipelines 可以将几个过程串起来（比如数据预处理、训练），来减少代码复杂度。</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>pipeline <span class="token keyword">import</span> Pipeline</code></pre>
+<p>要求最后一步的结果为一个 Estimator，前面步骤为 Transformers。在 Transformers 中，数据被依次改变，前一步的输出作为下一步的输入。</p>
+<p>前面的例子，可以分为如下两步：</p>
+<ul>
+<li>使用 <code>MinMaxScaler</code> 来缩放特征（Transformer）</li>
+<li>使用 <code>KNeighborsClassifier</code> 来分类（Estimator）</li>
+</ul>
+<p>每步可以用一个元组来描述<code>('name', step)</code>，放到列表作为 Pipeline 的输入：</p>
+<pre class="language-python" data-language="python"><code class="language-python">scaling_pipeline <span class="token operator">=</span> Pipeline<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token string">'scale'</span><span class="token punctuation">,</span> MinMaxScaler<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                             <span class="token punctuation">(</span><span class="token string">'predict'</span><span class="token punctuation">,</span> KNeighborsClassifier<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+In <span class="token punctuation">[</span><span class="token number">776</span><span class="token punctuation">]</span><span class="token punctuation">:</span> cross_val_score<span class="token punctuation">(</span>scaling_pipeline<span class="token punctuation">,</span> X<span class="token punctuation">,</span> Y<span class="token punctuation">,</span> scoring<span class="token operator">=</span><span class="token string">'accuracy'</span><span class="token punctuation">)</span>
+Out<span class="token punctuation">[</span><span class="token number">776</span><span class="token punctuation">]</span><span class="token punctuation">:</span> array<span class="token punctuation">(</span><span class="token punctuation">[</span> <span class="token number">0.82905983</span><span class="token punctuation">,</span>  <span class="token number">0.77777778</span><span class="token punctuation">,</span>  <span class="token number">0.86324786</span><span class="token punctuation">]</span><span class="token punctuation">)</span></code></pre>
+<h1>使用决策树来预测比赛结果</h1>
+<p>这一章介绍用决策树来预测 NBA 比赛的结果，首先使用 pandas 读取、操作数据集，然后使用决策树来分类，再用随机森林优化决策树效果，挖掘现实中的数据，最后创建一个 robust 模型。</p>
+<h2 id="读取数据集 -2">读取数据集</h2>
+<h3 id="获取数据集">获取数据集</h3>
+<p>首先获取数据集，2015-2016 年各月的比赛数据可以到这个网址中获取：<a target="_blank" rel="noopener" href="https://www.basketball-reference.com/leagues/NBA_2016_games.html">https://www.basketball-reference.com/leagues/NBA_2016_games.html</a>，我已经下载好了，一共 1316 场比赛：<a href="basketball.csv">basketball.csv</a></p>
+<h3 id="使用 pandas 读取数据集">使用 pandas 读取数据集</h3>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> pandas <span class="token keyword">as</span> pd
+ds <span class="token operator">=</span> pd<span class="token punctuation">.</span>read_csv<span class="token punctuation">(</span><span class="token string">'basketball.csv'</span><span class="token punctuation">)</span>
+In <span class="token punctuation">[</span><span class="token number">194</span><span class="token punctuation">]</span><span class="token punctuation">:</span> ds<span class="token punctuation">.</span>head<span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span>
+Out<span class="token punctuation">[</span><span class="token number">194</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+              Date Start <span class="token punctuation">(</span>ET<span class="token punctuation">)</span>       Visitor<span class="token operator">/</span>Neutral  PTS  \
+<span class="token number">0</span>  Tue Oct <span class="token number">27</span> <span class="token number">2015</span>    <span class="token number">8</span><span class="token punctuation">:</span><span class="token number">00</span> pm       Detroit Pistons  <span class="token number">106</span>
+<span class="token number">1</span>  Tue Oct <span class="token number">27</span> <span class="token number">2015</span>    <span class="token number">8</span><span class="token punctuation">:</span><span class="token number">00</span> pm   Cleveland Cavaliers   <span class="token number">95</span>
+<span class="token number">2</span>  Tue Oct <span class="token number">27</span> <span class="token number">2015</span>   <span class="token number">10</span><span class="token punctuation">:</span><span class="token number">30</span> pm  New Orleans Pelicans   <span class="token number">95</span>
+<span class="token number">3</span>  Wed Oct <span class="token number">28</span> <span class="token number">2015</span>    <span class="token number">7</span><span class="token punctuation">:</span><span class="token number">30</span> pm    Philadelphia 76ers   <span class="token number">95</span>
+<span class="token number">4</span>  Wed Oct <span class="token number">28</span> <span class="token number">2015</span>    <span class="token number">7</span><span class="token punctuation">:</span><span class="token number">30</span> pm         Chicago Bulls  <span class="token number">115</span>
+
+            Home<span class="token operator">/</span>Neutral  PTS<span class="token punctuation">.</span><span class="token number">1</span> Unnamed<span class="token punctuation">:</span> <span class="token number">6</span> Unnamed<span class="token punctuation">:</span> <span class="token number">7</span> Notes
+<span class="token number">0</span>          Atlanta Hawks     <span class="token number">94</span>  Box Score        NaN   NaN
+<span class="token number">1</span>          Chicago Bulls     <span class="token number">97</span>  Box Score        NaN   NaN
+<span class="token number">2</span>  Golden State Warriors    <span class="token number">111</span>  Box Score        NaN   NaN
+<span class="token number">3</span>         Boston Celtics    <span class="token number">112</span>  Box Score        NaN   NaN
+<span class="token number">4</span>          Brooklyn Nets    <span class="token number">100</span>  Box Score        NaN   NaN</code></pre>
+<h3 id="清洗数据集">清洗数据集</h3>
+<p>仔细观察 ds 的结果发现，日期字段是字符串，我们需要转换成日期对象，还有各个字段的含义不明，这可以在 <code>read_csv</code> 的时候通过参数来解决。</p>
+<pre class="language-python" data-language="python"><code class="language-python">ds <span class="token operator">=</span> pd<span class="token punctuation">.</span>read_csv<span class="token punctuation">(</span><span class="token string">'basketball.csv'</span><span class="token punctuation">,</span> parse_dates<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">"Date"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+ds<span class="token punctuation">.</span>columns <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">"Date"</span><span class="token punctuation">,</span> <span class="token string">"Start (ET)"</span><span class="token punctuation">,</span> <span class="token string">"Visitor Team"</span><span class="token punctuation">,</span> <span class="token string">"VisitorPts"</span><span class="token punctuation">,</span> <span class="token string">"Home Team"</span><span class="token punctuation">,</span> <span class="token string">"HomePts"</span><span class="token punctuation">,</span> <span class="token string">"OT?"</span><span class="token punctuation">,</span> <span class="token string">"Score Type"</span><span class="token punctuation">,</span> <span class="token string">"Notes"</span><span class="token punctuation">]</span>
+In <span class="token punctuation">[</span><span class="token number">200</span><span class="token punctuation">]</span><span class="token punctuation">:</span> ds<span class="token punctuation">.</span>head<span class="token punctuation">(</span><span class="token punctuation">)</span>
+Out<span class="token punctuation">[</span><span class="token number">200</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+        Date Start <span class="token punctuation">(</span>ET<span class="token punctuation">)</span>          Visitor Team  VisitorPts  \
+<span class="token number">0</span> <span class="token number">2015</span><span class="token operator">-</span><span class="token number">10</span><span class="token operator">-</span><span class="token number">27</span>    <span class="token number">8</span><span class="token punctuation">:</span><span class="token number">00</span> pm       Detroit Pistons         <span class="token number">106</span>
+<span class="token number">1</span> <span class="token number">2015</span><span class="token operator">-</span><span class="token number">10</span><span class="token operator">-</span><span class="token number">27</span>    <span class="token number">8</span><span class="token punctuation">:</span><span class="token number">00</span> pm   Cleveland Cavaliers          <span class="token number">95</span>
+<span class="token number">2</span> <span class="token number">2015</span><span class="token operator">-</span><span class="token number">10</span><span class="token operator">-</span><span class="token number">27</span>   <span class="token number">10</span><span class="token punctuation">:</span><span class="token number">30</span> pm  New Orleans Pelicans          <span class="token number">95</span>
+<span class="token number">3</span> <span class="token number">2015</span><span class="token operator">-</span><span class="token number">10</span><span class="token operator">-</span><span class="token number">28</span>    <span class="token number">7</span><span class="token punctuation">:</span><span class="token number">30</span> pm    Philadelphia 76ers          <span class="token number">95</span>
+<span class="token number">4</span> <span class="token number">2015</span><span class="token operator">-</span><span class="token number">10</span><span class="token operator">-</span><span class="token number">28</span>    <span class="token number">7</span><span class="token punctuation">:</span><span class="token number">30</span> pm         Chicago Bulls         <span class="token number">115</span>
+
+               Home Team  HomePts        OT? Score Type Notes
+<span class="token number">0</span>          Atlanta Hawks       <span class="token number">94</span>  Box Score        NaN   NaN
+<span class="token number">1</span>          Chicago Bulls       <span class="token number">97</span>  Box Score        NaN   NaN
+<span class="token number">2</span>  Golden State Warriors      <span class="token number">111</span>  Box Score        NaN   NaN
+<span class="token number">3</span>         Boston Celtics      <span class="token number">112</span>  Box Score        NaN   NaN
+<span class="token number">4</span>          Brooklyn Nets      <span class="token number">100</span>  Box Score        NaN   NaN</code></pre>
+<p>在检查一下数据类型是否正确：</p>
+<pre class="language-python" data-language="python"><code class="language-python">In <span class="token punctuation">[</span><span class="token number">202</span><span class="token punctuation">]</span><span class="token punctuation">:</span> ds<span class="token punctuation">.</span>dtypes
+Out<span class="token punctuation">[</span><span class="token number">202</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+Date            datetime64<span class="token punctuation">[</span>ns<span class="token punctuation">]</span>
+Start <span class="token punctuation">(</span>ET<span class="token punctuation">)</span>              <span class="token builtin">object</span>
+Visitor Team            <span class="token builtin">object</span>
+VisitorPts               int64
+Home Team               <span class="token builtin">object</span>
+HomePts                  int64
+OT?                     <span class="token builtin">object</span>
+Score Type              <span class="token builtin">object</span>
+Notes                   <span class="token builtin">object</span>
+dtype<span class="token punctuation">:</span> <span class="token builtin">object</span></code></pre>
+<h3 id="提取特征">提取特征</h3>
+<p>数据集没有明确告诉我们是哪一方胜利，在篮球比赛中，谁比分高谁获胜，从而可以建立新特征：</p>
+<pre class="language-python" data-language="python"><code class="language-python">ds<span class="token punctuation">[</span><span class="token string">"HomeWin"</span><span class="token punctuation">]</span> <span class="token operator">=</span> ds<span class="token punctuation">[</span><span class="token string">"VisitorPts"</span><span class="token punctuation">]</span> <span class="token operator">&lt;</span> ds<span class="token punctuation">[</span><span class="token string">"HomePts"</span><span class="token punctuation">]</span></code></pre>
+<p>由于后面需要用 scikit-learn 分类，而它不支持从 pandas 读取数据，所以可以先存到 numpy 数组中：</p>
+<pre class="language-python" data-language="python"><code class="language-python">y_true <span class="token operator">=</span> ds<span class="token punctuation">[</span><span class="token string">"HomeWin"</span><span class="token punctuation">]</span><span class="token punctuation">.</span>values</code></pre>
+<p>在体育运动中，Home Team 优势比较大，那么先来预估获胜几率有多大呢：</p>
+<pre class="language-python" data-language="python"><code class="language-python">In <span class="token punctuation">[</span><span class="token number">355</span><span class="token punctuation">]</span><span class="token punctuation">:</span> ds<span class="token punctuation">[</span><span class="token string">'HomeWin'</span><span class="token punctuation">]</span><span class="token punctuation">.</span>mean<span class="token punctuation">(</span><span class="token punctuation">)</span>
+Out<span class="token punctuation">[</span><span class="token number">355</span><span class="token punctuation">]</span><span class="token punctuation">:</span> <span class="token number">0.5942249240121581</span></code></pre>
+<p>达到 0.59，比 50% 要高，也验证了这个说法 = =</p>
+<p>有了 HomeWin 这个新特征，我们可以继续创建特征，用来表示在这一场比赛中的两个参赛队各自在前一场的胜负情况。</p>
+<pre class="language-python" data-language="python"><code class="language-python">won_last <span class="token operator">=</span> defaultdict<span class="token punctuation">(</span><span class="token builtin">bool</span><span class="token punctuation">)</span>
+ds<span class="token punctuation">[</span><span class="token string">"VisitorLastWin"</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token boolean">False</span>
+ds<span class="token punctuation">[</span><span class="token string">"HomeLastWin"</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token boolean">False</span>
+<span class="token keyword">for</span> idx<span class="token punctuation">,</span> row <span class="token keyword">in</span> ds<span class="token punctuation">.</span>sort_values<span class="token punctuation">(</span>by<span class="token operator">=</span><span class="token string">'Date'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>iterrows<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    home_team <span class="token operator">=</span> row<span class="token punctuation">[</span><span class="token string">"Home Team"</span><span class="token punctuation">]</span>
+    visitor_team <span class="token operator">=</span> row<span class="token punctuation">[</span><span class="token string">"Visitor Team"</span><span class="token punctuation">]</span>
+    row<span class="token punctuation">[</span><span class="token string">"HomeLastWin"</span><span class="token punctuation">]</span> <span class="token operator">=</span> won_last<span class="token punctuation">[</span>home_team<span class="token punctuation">]</span>
+    ds<span class="token punctuation">.</span>set_value<span class="token punctuation">(</span>idx<span class="token punctuation">,</span> <span class="token string">"HomeLastWin"</span><span class="token punctuation">,</span> won_last<span class="token punctuation">[</span>home_team<span class="token punctuation">]</span><span class="token punctuation">)</span>
+    ds<span class="token punctuation">.</span>set_value<span class="token punctuation">(</span>idx<span class="token punctuation">,</span> <span class="token string">"VisitorLastWin"</span><span class="token punctuation">,</span> won_last<span class="token punctuation">[</span>visitor_team<span class="token punctuation">]</span><span class="token punctuation">)</span>
+    won_last<span class="token punctuation">[</span>home_team<span class="token punctuation">]</span> <span class="token operator">=</span> row<span class="token punctuation">[</span><span class="token string">"HomeWin"</span><span class="token punctuation">]</span>
+    won_last<span class="token punctuation">[</span>visitor_team<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">not</span> row<span class="token punctuation">[</span><span class="token string">"HomeWin"</span><span class="token punctuation">]</span></code></pre>
+<p>需要注意的是两个参赛队第一次比赛的话，结果都是 False，这个可以从前年的比赛情况中获取:</p>
+<pre class="language-python" data-language="python"><code class="language-python">In <span class="token punctuation">[</span><span class="token number">390</span><span class="token punctuation">]</span><span class="token punctuation">:</span> ds<span class="token punctuation">[</span><span class="token number">1000</span><span class="token punctuation">:</span><span class="token number">1005</span><span class="token punctuation">]</span>
+Out<span class="token punctuation">[</span><span class="token number">390</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+           Date Start <span class="token punctuation">(</span>ET<span class="token punctuation">)</span>           Visitor Team  VisitorPts  \
+<span class="token number">1000</span> <span class="token number">2016</span><span class="token operator">-</span><span class="token number">03</span><span class="token operator">-</span><span class="token number">15</span>    <span class="token number">7</span><span class="token punctuation">:</span><span class="token number">00</span> pm         Denver Nuggets         <span class="token number">110</span>
+<span class="token number">1001</span> <span class="token number">2016</span><span class="token operator">-</span><span class="token number">03</span><span class="token operator">-</span><span class="token number">15</span>    <span class="token number">8</span><span class="token punctuation">:</span><span class="token number">30</span> pm   Los Angeles Clippers          <span class="token number">87</span>
+<span class="token number">1002</span> <span class="token number">2016</span><span class="token operator">-</span><span class="token number">03</span><span class="token operator">-</span><span class="token number">16</span>    <span class="token number">7</span><span class="token punctuation">:</span><span class="token number">00</span> pm  Oklahoma City Thunder         <span class="token number">130</span>
+<span class="token number">1003</span> <span class="token number">2016</span><span class="token operator">-</span><span class="token number">03</span><span class="token operator">-</span><span class="token number">16</span>    <span class="token number">7</span><span class="token punctuation">:</span><span class="token number">00</span> pm          Orlando Magic          <span class="token number">99</span>
+<span class="token number">1004</span> <span class="token number">2016</span><span class="token operator">-</span><span class="token number">03</span><span class="token operator">-</span><span class="token number">16</span>    <span class="token number">7</span><span class="token punctuation">:</span><span class="token number">00</span> pm       Dallas Mavericks          <span class="token number">98</span>
+
+                Home Team  HomePts        OT? Score Type Notes  HomeWin  \
+<span class="token number">1000</span>        Orlando Magic      <span class="token number">116</span>  Box Score        NaN   NaN     <span class="token boolean">True</span>
+<span class="token number">1001</span>    San Antonio Spurs      <span class="token number">108</span>  Box Score        NaN   NaN     <span class="token boolean">True</span>
+<span class="token number">1002</span>       Boston Celtics      <span class="token number">109</span>  Box Score        NaN   NaN    <span class="token boolean">False</span>
+<span class="token number">1003</span>    Charlotte Hornets      <span class="token number">107</span>  Box Score        NaN   NaN     <span class="token boolean">True</span>
+<span class="token number">1004</span>  Cleveland Cavaliers       <span class="token number">99</span>  Box Score        NaN   NaN     <span class="token boolean">True</span>
+
+      HomeLastWin  VisitorLastWin
+<span class="token number">1000</span>        <span class="token boolean">False</span>           <span class="token boolean">False</span>
+<span class="token number">1001</span>         <span class="token boolean">True</span>           <span class="token boolean">False</span>
+<span class="token number">1002</span>        <span class="token boolean">False</span>            <span class="token boolean">True</span>
+<span class="token number">1003</span>        <span class="token boolean">False</span>            <span class="token boolean">True</span>
+<span class="token number">1004</span>        <span class="token boolean">False</span>            <span class="token boolean">True</span></code></pre>
+<h2 id="决策树">决策树</h2>
+<p>先来看看决策树的样子，有点像流程图了，是一个监督算法：</p>
+<p><img src="Decision_Tree.png" alt="Decision Tree"></p>
+<p>大多数分类算法，都有两个阶段：</p>
+<ul>
+<li>训练阶段(training)，使用训练集构建决策树。之前介绍的最近邻居算法是<em>lazy learner</em>，也就是仅在预测的时候才工作，而这个是<em>eager learner</em>，在训练阶段做工作，在预测阶段需要做的就少了。</li>
+<li>预测阶段(predicting)，使用构建好的决策树来预测新样本的类型。</li>
+</ul>
+<p>构建决策树算法大多数一样，从最开始的节点走，选最好的特征来创建下一个节点，再选次好的特征创建，以此类推。</p>
+<p>scikit-learn 实现 **Classification and Regression Tree(CART)** 算法，也就是 <em>dDecision tree</em> 类所默认使用的，它可以使用分类 (categorical) 或连续值 (continuous) 的特征。</p>
+<h3 id="参数">参数</h3>
+<p>决策树中最重要的一个参数是<strong>stopping criterion</strong>，也就是决定了构建树的程度，避免过拟合的问题。</p>
+<p>另一个避免过拟合的是剪枝(<strong>pruning</strong>)，除去一些提供的信息较少的节点。</p>
+<p>在 scikit-learn 中，决策树使用以下参数来决定何时完成构建：</p>
+<ul>
+<li>min_samples_split: 创建一个节点需要多少样本信息</li>
+<li>min_samples_leaf: 保留一个节点需要多少样本信息</li>
+</ul>
+<p>创建决策树过程中，常用的 2 个参数：</p>
+<ul>
+<li>Gini impurity</li>
+<li>Information gain</li>
+</ul>
+<h3 id="使用决策树">使用决策树</h3>
+<p>首先创建一个决策树对象：</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>tree <span class="token keyword">import</span> DecisionTreeClassifier
+clf <span class="token operator">=</span> DecisionTreeClassifier<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+<p>决策树也是 estimators，因此有 <code>fit</code> 和<code>predict</code>方法。可以使用 <code>cross_val_score</code> 方法来测试平均精度。</p>
+<pre class="language-python" data-language="python"><code class="language-python">In <span class="token punctuation">[</span><span class="token number">409</span><span class="token punctuation">]</span><span class="token punctuation">:</span> cross_val_score<span class="token punctuation">(</span>clf<span class="token punctuation">,</span> X_previouswins<span class="token punctuation">,</span> y_true<span class="token punctuation">,</span> scoring<span class="token operator">=</span><span class="token string">'accuracy'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>mean<span class="token punctuation">(</span><span class="token punctuation">)</span>
+Out<span class="token punctuation">[</span><span class="token number">409</span><span class="token punctuation">]</span><span class="token punctuation">:</span> <span class="token number">0.59422445505386179</span></code></pre>
+<p>显然平均精度比瞎猜要高一些，但是和之前预估只采用 Home Team 的精度差不多。。</p>
+<p>特征工程 (<strong>Feature engineering</strong>) 在数据挖掘中相当重要，选择好的特征可以导致好的结果，甚至比算法还重要。</p>
+<h2 id="运动结果预测">运动结果预测</h2>
+<p>接下来可以尝试其他特征了，将各个队输入到算法，检测一下效果。</p>
+<h3 id="放到一起 -2">放到一起</h3>
+<p>首先我们需要创建一个特征，来告诉我们 home team 是否比 visitor team 有优势，这个可以从前一年 2015 年比赛结果获得，<a target="_blank" rel="noopener" href="https://www.basketball-reference.com/leagues/NBA_2015_standings.html#all_expanded_standings">https://www.basketball-reference.com/leagues/NBA_2015_standings.html#all_expanded_standings</a>，数据我已经下载下来了：<a href="standings.csv">standings.csv</a></p>
+<pre class="language-python" data-language="python"><code class="language-python">standings <span class="token operator">=</span> pd<span class="token punctuation">.</span>read_csv<span class="token punctuation">(</span><span class="token string">'standings.csv'</span><span class="token punctuation">,</span> skiprows<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>
+In <span class="token punctuation">[</span><span class="token number">411</span><span class="token punctuation">]</span><span class="token punctuation">:</span> standings<span class="token punctuation">.</span>head<span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span>
+Out<span class="token punctuation">[</span><span class="token number">411</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+   Rk                   Team Overall   Home   Road      E      W     A     C  \
+<span class="token number">0</span>   <span class="token number">1</span>  Golden State Warriors   <span class="token number">67</span><span class="token operator">-</span><span class="token number">15</span>   <span class="token number">39</span><span class="token operator">-</span><span class="token number">2</span>  <span class="token number">28</span><span class="token operator">-</span><span class="token number">13</span>   <span class="token number">25</span><span class="token operator">-</span><span class="token number">5</span>  <span class="token number">42</span><span class="token operator">-</span><span class="token number">10</span>   <span class="token number">9</span><span class="token operator">-</span><span class="token number">1</span>   <span class="token number">7</span><span class="token operator">-</span><span class="token number">3</span>
+<span class="token number">1</span>   <span class="token number">2</span>          Atlanta Hawks   <span class="token number">60</span><span class="token operator">-</span><span class="token number">22</span>   <span class="token number">35</span><span class="token operator">-</span><span class="token number">6</span>  <span class="token number">25</span><span class="token operator">-</span><span class="token number">16</span>  <span class="token number">38</span><span class="token operator">-</span><span class="token number">14</span>   <span class="token number">22</span><span class="token operator">-</span><span class="token number">8</span>  <span class="token number">12</span><span class="token operator">-</span><span class="token number">6</span>  <span class="token number">14</span><span class="token operator">-</span><span class="token number">4</span>
+<span class="token number">2</span>   <span class="token number">3</span>        Houston Rockets   <span class="token number">56</span><span class="token operator">-</span><span class="token number">26</span>  <span class="token number">30</span><span class="token operator">-</span><span class="token number">11</span>  <span class="token number">26</span><span class="token operator">-</span><span class="token number">15</span>   <span class="token number">23</span><span class="token operator">-</span><span class="token number">7</span>  <span class="token number">33</span><span class="token operator">-</span><span class="token number">19</span>   <span class="token number">9</span><span class="token operator">-</span><span class="token number">1</span>   <span class="token number">8</span><span class="token operator">-</span><span class="token number">2</span>
+<span class="token number">3</span>   <span class="token number">4</span>   Los Angeles Clippers   <span class="token number">56</span><span class="token operator">-</span><span class="token number">26</span>  <span class="token number">30</span><span class="token operator">-</span><span class="token number">11</span>  <span class="token number">26</span><span class="token operator">-</span><span class="token number">15</span>  <span class="token number">19</span><span class="token operator">-</span><span class="token number">11</span>  <span class="token number">37</span><span class="token operator">-</span><span class="token number">15</span>   <span class="token number">7</span><span class="token operator">-</span><span class="token number">3</span>   <span class="token number">6</span><span class="token operator">-</span><span class="token number">4</span>
+<span class="token number">4</span>   <span class="token number">5</span>      Memphis Grizzlies   <span class="token number">55</span><span class="token operator">-</span><span class="token number">27</span>  <span class="token number">31</span><span class="token operator">-</span><span class="token number">10</span>  <span class="token number">24</span><span class="token operator">-</span><span class="token number">17</span>  <span class="token number">20</span><span class="token operator">-</span><span class="token number">10</span>  <span class="token number">35</span><span class="token operator">-</span><span class="token number">17</span>   <span class="token number">8</span><span class="token operator">-</span><span class="token number">2</span>   <span class="token number">5</span><span class="token operator">-</span><span class="token number">5</span>
+
+     SE <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>    Post   ≤<span class="token number">3</span>    ≥<span class="token number">10</span>  Oct   Nov   Dec   Jan  Feb   Mar  Apr
+<span class="token number">0</span>   <span class="token number">9</span><span class="token operator">-</span><span class="token number">1</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>    <span class="token number">25</span><span class="token operator">-</span><span class="token number">6</span>  <span class="token number">5</span><span class="token operator">-</span><span class="token number">3</span>   <span class="token number">45</span><span class="token operator">-</span><span class="token number">9</span>  <span class="token number">1</span><span class="token operator">-</span><span class="token number">0</span>  <span class="token number">13</span><span class="token operator">-</span><span class="token number">2</span>  <span class="token number">11</span><span class="token operator">-</span><span class="token number">3</span>  <span class="token number">12</span><span class="token operator">-</span><span class="token number">3</span>  <span class="token number">8</span><span class="token operator">-</span><span class="token number">3</span>  <span class="token number">16</span><span class="token operator">-</span><span class="token number">2</span>  <span class="token number">6</span><span class="token operator">-</span><span class="token number">2</span>
+<span class="token number">1</span>  <span class="token number">12</span><span class="token operator">-</span><span class="token number">4</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>   <span class="token number">17</span><span class="token operator">-</span><span class="token number">11</span>  <span class="token number">6</span><span class="token operator">-</span><span class="token number">4</span>  <span class="token number">30</span><span class="token operator">-</span><span class="token number">10</span>  <span class="token number">0</span><span class="token operator">-</span><span class="token number">1</span>   <span class="token number">9</span><span class="token operator">-</span><span class="token number">5</span>  <span class="token number">14</span><span class="token operator">-</span><span class="token number">2</span>  <span class="token number">17</span><span class="token operator">-</span><span class="token number">0</span>  <span class="token number">7</span><span class="token operator">-</span><span class="token number">4</span>   <span class="token number">9</span><span class="token operator">-</span><span class="token number">7</span>  <span class="token number">4</span><span class="token operator">-</span><span class="token number">3</span>
+<span class="token number">2</span>   <span class="token number">6</span><span class="token operator">-</span><span class="token number">4</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>    <span class="token number">20</span><span class="token operator">-</span><span class="token number">9</span>  <span class="token number">8</span><span class="token operator">-</span><span class="token number">4</span>  <span class="token number">31</span><span class="token operator">-</span><span class="token number">14</span>  <span class="token number">2</span><span class="token operator">-</span><span class="token number">0</span>  <span class="token number">11</span><span class="token operator">-</span><span class="token number">4</span>   <span class="token number">9</span><span class="token operator">-</span><span class="token number">5</span>  <span class="token number">11</span><span class="token operator">-</span><span class="token number">6</span>  <span class="token number">7</span><span class="token operator">-</span><span class="token number">3</span>  <span class="token number">10</span><span class="token operator">-</span><span class="token number">6</span>  <span class="token number">6</span><span class="token operator">-</span><span class="token number">2</span>
+<span class="token number">3</span>   <span class="token number">6</span><span class="token operator">-</span><span class="token number">4</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>    <span class="token number">21</span><span class="token operator">-</span><span class="token number">7</span>  <span class="token number">3</span><span class="token operator">-</span><span class="token number">5</span>   <span class="token number">33</span><span class="token operator">-</span><span class="token number">9</span>  <span class="token number">2</span><span class="token operator">-</span><span class="token number">0</span>   <span class="token number">9</span><span class="token operator">-</span><span class="token number">5</span>  <span class="token number">11</span><span class="token operator">-</span><span class="token number">6</span>  <span class="token number">11</span><span class="token operator">-</span><span class="token number">4</span>  <span class="token number">5</span><span class="token operator">-</span><span class="token number">6</span>  <span class="token number">11</span><span class="token operator">-</span><span class="token number">5</span>  <span class="token number">7</span><span class="token operator">-</span><span class="token number">0</span>
+<span class="token number">4</span>   <span class="token number">7</span><span class="token operator">-</span><span class="token number">3</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>   <span class="token number">16</span><span class="token operator">-</span><span class="token number">13</span>  <span class="token number">9</span><span class="token operator">-</span><span class="token number">3</span>  <span class="token number">26</span><span class="token operator">-</span><span class="token number">13</span>  <span class="token number">2</span><span class="token operator">-</span><span class="token number">0</span>  <span class="token number">13</span><span class="token operator">-</span><span class="token number">2</span>   <span class="token number">8</span><span class="token operator">-</span><span class="token number">6</span>  <span class="token number">12</span><span class="token operator">-</span><span class="token number">4</span>  <span class="token number">7</span><span class="token operator">-</span><span class="token number">4</span>   <span class="token number">9</span><span class="token operator">-</span><span class="token number">8</span>  <span class="token number">4</span><span class="token operator">-</span><span class="token number">3</span>
+
+<span class="token punctuation">[</span><span class="token number">5</span> rows x <span class="token number">24</span> columns<span class="token punctuation">]</span></code></pre>
+<p>创建一个新特征，表明 Home team 比 Visitor Team 有优势：</p>
+<pre class="language-python" data-language="python"><code class="language-python">ds<span class="token punctuation">[</span><span class="token string">"HomeTeamRanksHigher"</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token boolean">False</span>
+<span class="token keyword">for</span> idx<span class="token punctuation">,</span> row <span class="token keyword">in</span> ds<span class="token punctuation">.</span>iterrows<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    home_team <span class="token operator">=</span> row<span class="token punctuation">[</span><span class="token string">"Home Team"</span><span class="token punctuation">]</span>
+    visitor_team <span class="token operator">=</span> row<span class="token punctuation">[</span><span class="token string">"Visitor Team"</span><span class="token punctuation">]</span>
+    home_rank <span class="token operator">=</span> standings<span class="token punctuation">[</span>standings<span class="token punctuation">[</span><span class="token string">"Team"</span><span class="token punctuation">]</span> <span class="token operator">==</span> home_team<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">"Rk"</span><span class="token punctuation">]</span><span class="token punctuation">.</span>values<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+    visitor_rank <span class="token operator">=</span> standings<span class="token punctuation">[</span>standings<span class="token punctuation">[</span><span class="token string">"Team"</span><span class="token punctuation">]</span> <span class="token operator">==</span> visitor_team<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">"Rk"</span><span class="token punctuation">]</span><span class="token punctuation">.</span>values<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+    ds<span class="token punctuation">.</span>set_value<span class="token punctuation">(</span>idx<span class="token punctuation">,</span> <span class="token string">"HomeTeamRanksHigher"</span><span class="token punctuation">,</span> home_rank <span class="token operator">&lt;</span> visitor_rank<span class="token punctuation">)</span></code></pre>
+<p>接下来试试精度，</p>
+<pre class="language-python" data-language="python"><code class="language-python">X_homehigher <span class="token operator">=</span> ds<span class="token punctuation">[</span><span class="token punctuation">[</span> <span class="token string">"HomeTeamRanksHigher"</span><span class="token punctuation">,</span> <span class="token string">"HomeLastWin"</span><span class="token punctuation">,</span> <span class="token string">"VisitorLastWin"</span><span class="token punctuation">,</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">.</span>values
+clf <span class="token operator">=</span> DecisionTreeClassifier<span class="token punctuation">(</span><span class="token punctuation">)</span>
+In <span class="token punctuation">[</span><span class="token number">460</span><span class="token punctuation">]</span><span class="token punctuation">:</span> cross_val_score<span class="token punctuation">(</span>clf<span class="token punctuation">,</span> X_homehigher<span class="token punctuation">,</span> y_true<span class="token punctuation">,</span> scoring<span class="token operator">=</span><span class="token string">'accuracy'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>mean<span class="token punctuation">(</span><span class="token punctuation">)</span>
+Out<span class="token punctuation">[</span><span class="token number">460</span><span class="token punctuation">]</span><span class="token punctuation">:</span> <span class="token number">0.60865985028933201</span></code></pre>
+<p>精度达到 60%，比只选 Home team 好那么一丢丢，应该还能更好吧。</p>
+<p>虽然名次高的参赛队更有优势更有可能获胜，但是不同的队有不同的策略，或者某些队针对另一些队从而更容易获胜。所以可以考虑在创建一个特征，表明这两个参赛队在上一场比赛中两队的获胜情况。</p>
+<pre class="language-python" data-language="python"><code class="language-python">last_match_winner <span class="token operator">=</span> defaultdict<span class="token punctuation">(</span><span class="token builtin">str</span><span class="token punctuation">)</span>
+ds<span class="token punctuation">[</span><span class="token string">"HomeTeamWonLast"</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token boolean">False</span>
+<span class="token keyword">for</span> idx<span class="token punctuation">,</span> row <span class="token keyword">in</span> ds<span class="token punctuation">.</span>iterrows<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    home_team <span class="token operator">=</span> row<span class="token punctuation">[</span><span class="token string">"Home Team"</span><span class="token punctuation">]</span>
+    visitor_team <span class="token operator">=</span> row<span class="token punctuation">[</span><span class="token string">"Visitor Team"</span><span class="token punctuation">]</span>
+    team <span class="token operator">=</span> <span class="token builtin">tuple</span><span class="token punctuation">(</span><span class="token builtin">sorted</span><span class="token punctuation">(</span><span class="token punctuation">[</span>home_team<span class="token punctuation">,</span> visitor_team<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    home_team_won_last <span class="token operator">=</span> last_match_winner<span class="token punctuation">[</span>team<span class="token punctuation">]</span> <span class="token operator">==</span> home_team
+    ds<span class="token punctuation">.</span>set_value<span class="token punctuation">(</span>idx<span class="token punctuation">,</span> <span class="token string">"HomeTeamWonLast"</span><span class="token punctuation">,</span> home_team_won_last<span class="token punctuation">)</span>
+    winner <span class="token operator">=</span> home_team <span class="token keyword">if</span> row<span class="token punctuation">[</span><span class="token string">"HomeWin"</span><span class="token punctuation">]</span> <span class="token keyword">else</span> visitor_team
+    last_match_winner<span class="token punctuation">[</span>team<span class="token punctuation">]</span> <span class="token operator">=</span> winner</code></pre>
+<p>再来看看精度：</p>
+<pre class="language-python" data-language="python"><code class="language-python">X_lastwinner <span class="token operator">=</span> ds<span class="token punctuation">[</span><span class="token punctuation">[</span> <span class="token string">"HomeTeamWonLast"</span><span class="token punctuation">,</span> <span class="token string">"HomeTeamRanksHigher"</span><span class="token punctuation">,</span> <span class="token string">"HomeLastWin"</span><span class="token punctuation">,</span> <span class="token string">"VisitorLastWin"</span><span class="token punctuation">,</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">.</span>values
+clf <span class="token operator">=</span> DecisionTreeClassifier<span class="token punctuation">(</span><span class="token punctuation">)</span>
+In <span class="token punctuation">[</span><span class="token number">479</span><span class="token punctuation">]</span><span class="token punctuation">:</span> cross_val_score<span class="token punctuation">(</span>clf<span class="token punctuation">,</span> X_lastwinner<span class="token punctuation">,</span> y_true<span class="token punctuation">,</span> scoring<span class="token operator">=</span><span class="token string">'accuracy'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>mean<span class="token punctuation">(</span><span class="token punctuation">)</span>
+Out<span class="token punctuation">[</span><span class="token number">479</span><span class="token punctuation">]</span><span class="token punctuation">:</span> <span class="token number">0.62158877759401987</span></code></pre>
+<p>再次提高到一个层次了…</p>
+<p>最后，如果将特征仅仅设为两个参赛队（名）来构建决策树，效果如何呢？</p>
+<p>虽然 scikit-learn 支持分类数据，但是实现的时候需要将它们转换成数值数据，而不是字符串。可以用<code>LabelEncoder</code> transformer 来将参赛队（名）转换成数值数据，给参赛队（名）依次编个号。</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>preprocessing <span class="token keyword">import</span> LabelEncoder
+encoding <span class="token operator">=</span> LabelEncoder<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment"># 为所有参赛队（名）设置编号</span>
+encoding<span class="token punctuation">.</span>fit<span class="token punctuation">(</span>ds<span class="token punctuation">[</span><span class="token string">"Home Team"</span><span class="token punctuation">]</span><span class="token punctuation">.</span>values<span class="token punctuation">)</span>
+home_teams <span class="token operator">=</span> encoding<span class="token punctuation">.</span>transform<span class="token punctuation">(</span>dataset<span class="token punctuation">[</span><span class="token string">"Home Team"</span><span class="token punctuation">]</span><span class="token punctuation">.</span>values<span class="token punctuation">)</span>
+visitor_teams <span class="token operator">=</span> encoding<span class="token punctuation">.</span>transform<span class="token punctuation">(</span>dataset<span class="token punctuation">[</span><span class="token string">"Visitor Team"</span><span class="token punctuation">]</span><span class="token punctuation">.</span>values<span class="token punctuation">)</span>
+
+<span class="token comment"># X_teams 的每一行表示两个参赛队（名）的编号</span>
+X_teams <span class="token operator">=</span> np<span class="token punctuation">.</span>vstack<span class="token punctuation">(</span><span class="token punctuation">(</span>home_teams<span class="token punctuation">,</span> visitor_teams<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>T</code></pre>
+<p>问题来了，这里的参赛队编号都是连续的数值，那么在训练过程中，会将参赛队 1 和参赛队 2 看成是相似的，而参赛队 1 和 10 是不相似的，然而各个参赛队本来就没有相不相似的说法，所以还需要处理一下。</p>
+<p>可以使用<code>OneHotEncoder</code> transformer 来将编号转换成一个个二进制串（长度为编号个数），具体是这样的，有 30 个参赛队，那么编号将从 0, 1, …, 29，二进制串的长度将会是 30，第几个参赛队的那一位将是 1，其他位是 0。比如 7 号参赛队，第 7 位是 1，其他位是 0，从而形成这个队的二进制串。</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>preprocessing <span class="token keyword">import</span> OneHotEncoder
+onehot <span class="token operator">=</span> OneHotEncoder<span class="token punctuation">(</span><span class="token punctuation">)</span>
+X_teams <span class="token operator">=</span> onehot<span class="token punctuation">.</span>fit_transform<span class="token punctuation">(</span>X_teams<span class="token punctuation">)</span><span class="token punctuation">.</span>todense<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+<p>来看看精度：</p>
+<pre class="language-python" data-language="python"><code class="language-python">clf <span class="token operator">=</span> DecisionTreeClassifier<span class="token punctuation">(</span><span class="token punctuation">)</span>
+In <span class="token punctuation">[</span><span class="token number">520</span><span class="token punctuation">]</span><span class="token punctuation">:</span> cross_val_score<span class="token punctuation">(</span>clf<span class="token punctuation">,</span> X_teams<span class="token punctuation">,</span> y_true<span class="token punctuation">,</span> scoring<span class="token operator">=</span><span class="token string">'accuracy'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>mean<span class="token punctuation">(</span><span class="token punctuation">)</span>
+Out<span class="token punctuation">[</span><span class="token number">520</span><span class="token punctuation">]</span><span class="token punctuation">:</span> <span class="token number">0.62538355124244605</span></code></pre>
+<p>似乎又提高了一点点。</p>
+<h2 id="随机森林">随机森林</h2>
+<p>续…</p>
+
+    
+  </div>
+
+</article>
+
+
+   
+       <div class="original">
+    <ul>
+        <li>本文标题：python 之数据挖掘</li>
+        <li>本文字数：4.9k</li>
+        <li>本文作者：Netcan</li>
+        <li>发布时间：2017年12月25日 - 10时21分</li>
+        <li>最后更新：2022年12月09日 - 19时02分</li>
+        <li>原始链接：<a href="https://netcan.github.io/2017/12/25/Python%E4%B9%8B%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98/">https://netcan.github.io/2017/12/25/Python之数据挖掘/</a></li>
+        <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
+    </ul>
+</div>
+
+   
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持Netcan</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2017/10/26/Python%E4%B9%8B%E7%88%AC%E8%99%AB%E5%AD%A6%E4%B9%A0/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2018/05/27/%E4%BB%8E%E5%A4%B4%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E5%BA%93%EF%BC%9A%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0%E7%AF%87/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '893a4103795fc66cd8e7',
+  clientSecret: '35c92c3dca938831b67dc22e46d64bc9073ebacf',
+  repo: 'netcan.github.io',
+  owner: 'Netcan',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: md5(location.pathname),
+  admin: ['Netcan'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

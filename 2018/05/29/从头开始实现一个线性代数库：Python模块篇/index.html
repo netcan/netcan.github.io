@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>从头开始实现一个线性代数库：Python 模块篇 | Netcan on Programming</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="C/C++,Python,数学,线性代数," />
+  
+
+  <meta name="description" content="这两天用 C&#x2F;C++ 实现了一下线性代数库的 Python 模块，大部分操作已经封装完成，剩下的慢慢补坑吧 &#x3D; &#x3D; 关于线性代数库的一些算法实现，可以参考我的前一篇文章  从头开始实现一个线性代数库：算法实现篇。现在主要总结一下如何用 C&#x2F;C++ 编写 Python 模块，代码地址https:&#x2F;&#x2F;github.com&#x2F;netcan&#x2F;LinAlg&#x2F;tree&#x2F;master&#x2F;linalg.module。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从头开始实现一个线性代数库：Python 模块篇">
+<meta property="og:url" content="https://netcan.github.io/2018/05/29/%E4%BB%8E%E5%A4%B4%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E5%BA%93%EF%BC%9APython%E6%A8%A1%E5%9D%97%E7%AF%87/index.html">
+<meta property="og:site_name" content="Netcan on Programming">
+<meta property="og:description" content="这两天用 C&#x2F;C++ 实现了一下线性代数库的 Python 模块，大部分操作已经封装完成，剩下的慢慢补坑吧 &#x3D; &#x3D; 关于线性代数库的一些算法实现，可以参考我的前一篇文章  从头开始实现一个线性代数库：算法实现篇。现在主要总结一下如何用 C&#x2F;C++ 编写 Python 模块，代码地址https:&#x2F;&#x2F;github.com&#x2F;netcan&#x2F;LinAlg&#x2F;tree&#x2F;master&#x2F;linalg.module。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-05-29T09:56:03.000Z">
+<meta property="article:modified_time" content="2022-12-09T11:02:08.587Z">
+<meta property="article:author" content="Netcan">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="数学">
+<meta property="article:tag" content="线性代数">
+<meta name="twitter:card" content="summary">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/site.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-174901164-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d2c292719a76d8c0fa7f9874379cfd25";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"] > svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body>
+
+
+  
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+  
+
+  <link rel="stylesheet" href="/css/prism.css">
+
+<div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">ROOT</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89%E6%A8%A1%E5%9D%97"><span class="toc-text">定义模块</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89%20linalg-Vector%20%E7%B1%BB"><span class="toc-text">定义 linalg.Vector 类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%95%E7%94%A8%E8%AE%A1%E6%95%B0%E5%AF%BC%E8%87%B4%E7%9A%84%20BUG"><span class="toc-text">引用计数导致的 BUG</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E3%80%81%E9%93%BE%E6%8E%A5%E6%A8%A1%E5%9D%97"><span class="toc-text">编译、链接模块</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-从头开始实现一个线性代数库：Python模块篇" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">从头开始实现一个线性代数库：Python 模块篇</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2018.05.29</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Netcan</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p>这两天用 C/C++ 实现了一下线性代数库的 Python 模块，大部分操作已经封装完成，剩下的慢慢补坑吧 = =</p>
+<p>关于线性代数库的一些算法实现，可以参考我的前一篇文章 <a target="_blank" rel="noopener" href="http://www.netcan666.com/2018/05/27/%E4%BB%8E%E5%A4%B4%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E5%BA%93%EF%BC%9A%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0%E7%AF%87/"> 从头开始实现一个线性代数库：算法实现篇</a>。现在主要总结一下如何用 C/C++ 编写 Python 模块，代码地址<a target="_blank" rel="noopener" href="https://github.com/netcan/LinAlg/tree/master/linalg.module">https://github.com/netcan/LinAlg/tree/master/linalg.module</a>。</p>
+<p>先来看看效果：</p>
+<pre class="language-python" data-language="python"><code class="language-python">In <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">:</span> ls
+linalg<span class="token punctuation">.</span>cpython<span class="token operator">-</span>36m<span class="token operator">-</span>darwin<span class="token punctuation">.</span>so<span class="token operator">*</span>
+
+In <span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">:</span> <span class="token keyword">import</span> linalg
+
+In <span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">:</span> m <span class="token operator">=</span> linalg<span class="token punctuation">.</span>Matrix<span class="token punctuation">(</span><span class="token punctuation">[</span>
+   <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">:</span>     <span class="token punctuation">[</span><span class="token number">43</span><span class="token punctuation">,</span> <span class="token number">63</span><span class="token punctuation">,</span> <span class="token number">57</span><span class="token punctuation">,</span> <span class="token number">35</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+   <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">:</span>     <span class="token punctuation">[</span><span class="token number">63</span><span class="token punctuation">,</span> <span class="token number">26</span><span class="token punctuation">,</span> <span class="token number">32</span><span class="token punctuation">,</span> <span class="token number">35</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+   <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">:</span>     <span class="token punctuation">[</span><span class="token number">57</span><span class="token punctuation">,</span> <span class="token number">32</span><span class="token punctuation">,</span> <span class="token number">78</span><span class="token punctuation">,</span> <span class="token number">76</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+   <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">:</span>     <span class="token punctuation">[</span><span class="token number">35</span><span class="token punctuation">,</span> <span class="token number">35</span><span class="token punctuation">,</span> <span class="token number">76</span><span class="token punctuation">,</span> <span class="token number">25</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+   <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">:</span> <span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+In <span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">:</span> m<span class="token punctuation">.</span>Jacobi<span class="token punctuation">(</span><span class="token punctuation">)</span>
+Out<span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">:</span> C<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">19.248723</span> <span class="token number">33.225382</span> <span class="token number">197.775875</span> <span class="token operator">-</span><span class="token number">39.752533</span><span class="token punctuation">)</span>
+
+In <span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">:</span> m<span class="token punctuation">.</span>det<span class="token punctuation">(</span><span class="token punctuation">)</span>
+Out<span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">:</span> <span class="token number">5028170.999999999</span></code></pre>
+<p>编写模块最麻烦的部分应该是引用计数了，如果能够妥善处理，将会事半功倍，我因为这个问题 debug 好久了。紧接着就是异常处理了。主要参考资料还是官方文档：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://docs.python.org/3/extending/extending.html">Extending Python with C or C++</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.python.org/3/extending/newtypes_tutorial.html">Defining Extension Types: Tutorial</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.python.org/3/extending/newtypes.html">Defining Extension Types: Assorted Topics</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.python.org/3/extending/building.html">Building C and C++ Extensions</a></li>
+</ul>
+<h2 id="定义模块">定义模块</h2>
+<p>首先定义一个名为 <code>linalg</code> 的模块，其下有两个类：<code>linalg.Vector</code>和<code>linalg.Matrix</code>。</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">static</span> PyModuleDef linalgmodule <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    PyModuleDef_HEAD_INIT<span class="token punctuation">,</span>
+    <span class="token string">"linalg"</span><span class="token punctuation">,</span>   <span class="token comment">/* name of module */</span>
+    <span class="token constant">NULL</span><span class="token punctuation">,</span>		<span class="token comment">/* module documentation, may be NULL */</span>
+    <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span>			<span class="token comment">/* size of per-interpreter state of the module,
+                 or -1 if the module keeps state in global variables. */</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
+<p>如果需要定义一些模块级方法，需要在定义 <code>linalgmodule</code> 的时候指定<code>m_methods</code>，这里不需要这类方法，就省略了。</p>
+<p>接下来初始化模块，定义名为 <code>PyInit_linalg</code> 的函数：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp">PyMODINIT_FUNC
+<span class="token function">PyInit_linalg</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    PyObject <span class="token operator">*</span>m<span class="token punctuation">;</span>
+    m <span class="token operator">=</span> <span class="token function">PyModule_Create</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>linalgmodule<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>m <span class="token operator">==</span> <span class="token constant">NULL</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token constant">NULL</span><span class="token punctuation">;</span>
+    <span class="token comment">// 添加 Vector/Matrix 类</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">PyType_Ready</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>PyVectorType<span class="token punctuation">)</span> <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token constant">NULL</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">PyType_Ready</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>PyMatrixType<span class="token punctuation">)</span> <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token constant">NULL</span><span class="token punctuation">;</span>
+    <span class="token function">Py_INCREF</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>PyVectorType<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">Py_INCREF</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>PyMatrixType<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">PyModule_AddObject</span><span class="token punctuation">(</span>m<span class="token punctuation">,</span> <span class="token string">"Vector"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>PyObject<span class="token operator">*</span><span class="token punctuation">)</span><span class="token operator">&amp;</span>PyVectorType<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">PyModule_AddObject</span><span class="token punctuation">(</span>m<span class="token punctuation">,</span> <span class="token string">"Matrix"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>PyObject<span class="token operator">*</span><span class="token punctuation">)</span><span class="token operator">&amp;</span>PyMatrixType<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> m<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre>
+<p>可以看到在初始化模块的时候，添加了 <code>linalg.Vector</code> 和<code>linalg.Matrix</code>两个类。接下来定义这两个类，以及类方法。</p>
+<h2 id="定义 linalg-Vector 类">定义 <code>linalg.Vector</code> 类</h2>
+<p>由于 <code>linalg.Matrix</code> 类和 <code>linalg.Vector</code> 类定义的方法基本相同，这里只总结一下 <code>linalg.Vector</code> 类的定义以及实现。</p>
+<p>首先定义 <code>VectorObject</code> 对象类：</p>
+<pre class="language-none"><code class="language-none">typedef struct &#123;
+    PyObject_HEAD;
+	Vector ob_vector; &#x2F;&#x2F; 需要封装的成员
+&#125; PyVectorObject;</code></pre>
+<p>接着是 <code>VectorType</code> 类的定义：</p>
+<pre class="language-none"><code class="language-none">static PyTypeObject PyVectorType &#x3D; &#123;
+    PyObject_HEAD_INIT(NULL)
+    .tp_name &#x3D; &quot;linalg.Vector&quot;, &#x2F;&#x2F; 模块类名
+    .tp_doc &#x3D; &quot;Vector objects&quot;, &#x2F;&#x2F; doc 描述
+    .tp_basicsize &#x3D; sizeof(PyVectorObject), &#x2F;&#x2F; 对象大小
+    .tp_itemsize &#x3D; 0,
+    .tp_dealloc &#x3D; (destructor) PyLinAlg_dealloc, &#x2F;&#x2F; 析构函数
+    .tp_new &#x3D; PyType_GenericNew, &#x2F;&#x2F; 构造函数
+    .tp_init &#x3D; (initproc) PyVector_init, &#x2F;&#x2F; 初始化函数
+    .tp_members &#x3D; PyVector_members, &#x2F;&#x2F; 类成员
+    .tp_methods &#x3D; PyVector_methods, &#x2F;&#x2F; 类方法
+    .tp_flags &#x3D; Py_TPFLAGS_DEFAULT,
+    .tp_str &#x3D; (reprfunc)PyVector_str, &#x2F;&#x2F; str(obj), print 用
+    .tp_repr &#x3D; (reprfunc)PyVector_str,
+    .tp_as_sequence &#x3D; &amp;PyVectorSeq_methods, &#x2F;&#x2F; 一些序列类方法，例如 vec[i]
+    .tp_as_number &#x3D; &amp;PyVectorNum_methods, &#x2F;&#x2F; 基本运算方法，例如 vecA + vecB
+&#125;;</code></pre>
+<p>先来看看 <code>linalg.Vector</code> 的析构函数，若不是单例模式，所有类都需要这个函数在引用计数为 0 的时候来释放对象：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">static</span> <span class="token keyword">void</span>
+<span class="token function">PyLinAlg_dealloc</span><span class="token punctuation">(</span>PyObject <span class="token operator">*</span>self<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token function">Py_TYPE</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token operator">-></span><span class="token function">tp_free</span><span class="token punctuation">(</span><span class="token punctuation">(</span>PyObject <span class="token operator">*</span><span class="token punctuation">)</span>self<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre>
+<p>构造函数使用默认的 <code>PyType_GenericNew</code> 就好，初始化一个 <code>Vector</code> 类，在 C++ 接口中是这样的：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp">Vector <span class="token function">v</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token number">16</span><span class="token punctuation">,</span><span class="token number">22</span><span class="token punctuation">,</span><span class="token number">32</span><span class="token punctuation">,</span><span class="token number">44</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+v<span class="token punctuation">.</span><span class="token function">show</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>现在用 Python 模块方式进行初始化，为了简单起见，这里只支持列表类型初始化，即：</p>
+<pre class="language-python" data-language="python"><code class="language-python">In <span class="token punctuation">[</span><span class="token number">6</span><span class="token punctuation">]</span><span class="token punctuation">:</span> v <span class="token operator">=</span> linalg<span class="token punctuation">.</span>Vector<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+In <span class="token punctuation">[</span><span class="token number">7</span><span class="token punctuation">]</span><span class="token punctuation">:</span> v
+Out<span class="token punctuation">[</span><span class="token number">7</span><span class="token punctuation">]</span><span class="token punctuation">:</span> C<span class="token punctuation">(</span><span class="token number">1.000000</span> <span class="token number">2.000000</span> <span class="token number">3.000000</span> <span class="token number">4.000000</span><span class="token punctuation">)</span></code></pre>
+<p>初始化函数如下：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">static</span> <span class="token keyword">int</span>
+<span class="token function">PyVector_init</span><span class="token punctuation">(</span>PyVectorObject <span class="token operator">*</span>self<span class="token punctuation">,</span> PyObject <span class="token operator">*</span>args<span class="token punctuation">,</span> PyObject <span class="token operator">*</span>kwds<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    PyObject <span class="token operator">*</span>pList<span class="token punctuation">,</span> <span class="token operator">*</span>pItem<span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">PyArg_ParseTuple</span><span class="token punctuation">(</span>args<span class="token punctuation">,</span> <span class="token string">"O!"</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>PyList_Type<span class="token punctuation">,</span> <span class="token operator">&amp;</span>pList<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 初始化参数必须为列表</span>
+        <span class="token function">PyErr_SetString</span><span class="token punctuation">(</span>PyExc_TypeError<span class="token punctuation">,</span> <span class="token string">"parameter must be a list."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span> 
+    Py_ssize_t n <span class="token operator">=</span> <span class="token function">PyList_Size</span><span class="token punctuation">(</span>pList<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 获取列表长度</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span>n <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token function">PyErr_SetString</span><span class="token punctuation">(</span>PyExc_TypeError<span class="token punctuation">,</span> <span class="token string">"size of list must be greater than 0"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    vector<span class="token operator">&lt;</span><span class="token keyword">double</span><span class="token operator">></span> data<span class="token punctuation">;</span>
+    <span class="token keyword">for</span><span class="token punctuation">(</span>Py_ssize_t i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        pItem <span class="token operator">=</span> <span class="token function">PyList_GetItem</span><span class="token punctuation">(</span>pList<span class="token punctuation">,</span> i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span> <span class="token function">isNumber</span><span class="token punctuation">(</span>pItem<span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span> <span class="token comment">// 列表内的元素必须为数字</span>
+        <span class="token keyword">else</span> data<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span><span class="token function">getNumber</span><span class="token punctuation">(</span>pItem<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    self<span class="token operator">-></span>ob_vector <span class="token operator">=</span> <span class="token function">Vector</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 存入封装 Vector 的 VectorObject 类型中</span>
+    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre>
+<p>而对于类支持的方法，需要定义一个数组 <code>PyVector_methods</code> 说明，比如 <code>linalg.Vector</code> 类支持 <code>T()</code>, <code>copy()</code> 方法，那么：</p>
+<pre class="language-none"><code class="language-none">static PyMethodDef PyVector_methods[] &#x3D; &#123;
+    &#123;&quot;T&quot;, (PyCFunction)PyVector_T, METH_NOARGS, &quot;change vector type&quot;&#125;,
+    &#123;&quot;copy&quot;, (PyCFunction)PyVector_Copy, METH_NOARGS, &quot;deep copy of vector&quot;&#125;,
+    &#123;NULL&#125;  &#x2F;* Sentinel *&#x2F;
+&#125;;</code></pre>
+<p>然后实现 <code>PyVector_T()</code> 和<code>PyVector_Copy</code>即可。</p>
+<p>而对于一些 magic 方法，例如 <code>__add__</code>, <code>__getitem__</code> 等等，需要在 <code>PyTypeObject</code> 的<code>.tp_as_number</code>和 <code>.tp_as_sequence</code> 数组中指明。</p>
+<h3 id="引用计数导致的 BUG">引用计数导致的 BUG</h3>
+<p>之前因为返回对象的引用计数导致了非常麻烦的 BUG，这里贴出来一下：</p>
+<pre class="language-none"><code class="language-none">static PyObject *
+PyVector_imul(PyVectorObject *self, PyObject *arg) &#123;
+    if(!arg || ! isNumber(arg)) return NULL;
+    Py_XINCREF(self); &#x2F;&#x2F; 不加这个会崩溃... 因为返回的对象没有被接收会被释放掉
+    self-&gt;ob_vector *&#x3D; getNumber(arg);
+    return (PyObject*)self;
+&#125;</code></pre>
+<p>这里定义了一下 <code>*=</code> 类方法，当执行 <code>v *= 5</code> 等语句，可能导致崩溃，需要增加引用计数来获得所有权，因为操作的对象是 <em>borrowed references</em> 的，那么返回的时候由于没有被其他对象引用，将被释放，而后来要是有对象申请空间也用到这块内存的话，就会出现异常。</p>
+<p>官方文档是这么说明的，对于 <a target="_blank" rel="noopener" href="https://docs.python.org/3/c-api/number.html#PyNumber_InPlaceAdd">PyNumber_InPlaceAdd</a> 这类方法应该返回的是新引用，而不是<em>borrowed references</em>。</p>
+<blockquote>
+<p>PyObject* PyNumber_InPlaceAdd(PyObject *o1, PyObject *o2)
+Return value: <strong>New reference.</strong>
+Returns the result of adding o1 and o2, or NULL on failure. The operation is done in-place when o1 supports it. This is the equivalent of the Python statement o1 += o2.</p>
+</blockquote>
+<p>在 StackOverflow 上有这么一个回答：<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/11897597/implementing-nb-inplace-add-results-in-returning-a-read-only-buffer-object">https://stackoverflow.com/questions/11897597/implementing-nb-inplace-add-results-in-returning-a-read-only-buffer-object</a></p>
+<blockquote>
+<p>According to the documentation, the inplace add operation for an object returns a new reference.
+By returning self directly without calling Py_INCREF on it, your object will be freed while it is still referenced. If some other object is allocated the same piece of memory, those references would now give you the new object.</p>
+</blockquote>
+<h2 id="编译、链接模块">编译、链接模块</h2>
+<p>掌握了如何定义模块、类，剩下的就简单了，最后是通过编写 <code>setup.py</code> 来生成模块，如下：</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> distutils<span class="token punctuation">.</span>core <span class="token keyword">import</span> setup<span class="token punctuation">,</span> Extension
+
+linalgmodule <span class="token operator">=</span> Extension<span class="token punctuation">(</span><span class="token string">'linalg'</span><span class="token punctuation">,</span>
+        extra_compile_args <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'-std=c++14'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+        sources <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'src/linalgmodule.cpp'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+        include_dirs <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'include'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+        libraries <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'linalg'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token punctuation">)</span>
+
+setup <span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">'linalg'</span><span class="token punctuation">,</span>
+        version <span class="token operator">=</span> <span class="token string">'0.1'</span><span class="token punctuation">,</span>
+        author <span class="token operator">=</span> <span class="token string">'netcan'</span><span class="token punctuation">,</span>
+        author_email <span class="token operator">=</span> <span class="token string">'netcan1996@gmail.com'</span><span class="token punctuation">,</span>
+        description <span class="token operator">=</span> <span class="token string">'A Linear Algebra library for studying by netcan'</span><span class="token punctuation">,</span>
+        ext_modules <span class="token operator">=</span> <span class="token punctuation">[</span>linalgmodule<span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token punctuation">)</span></code></pre>
+<p>编译的时候，通过如下编译，</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">python setup.py build</code></pre>
+<p>可能会报错，例如找不到<code>std::move</code>，这时候需要指定标准头文件的位置了：</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token assign-left variable">CFLAGS</span><span class="token operator">=</span><span class="token string">'-I/Library/Developer/CommandLineTools/usr/include/c++/v1/'</span> python setup.py build</code></pre>
+
+    
+  </div>
+
+</article>
+
+
+   
+       <div class="original">
+    <ul>
+        <li>本文标题：从头开始实现一个线性代数库：Python 模块篇</li>
+        <li>本文字数：1.6k</li>
+        <li>本文作者：Netcan</li>
+        <li>发布时间：2018年05月29日 - 17时56分</li>
+        <li>最后更新：2022年12月09日 - 19时02分</li>
+        <li>原始链接：<a href="https://netcan.github.io/2018/05/29/%E4%BB%8E%E5%A4%B4%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E5%BA%93%EF%BC%9APython%E6%A8%A1%E5%9D%97%E7%AF%87/">https://netcan.github.io/2018/05/29/从头开始实现一个线性代数库：Python模块篇/</a></li>
+        <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
+    </ul>
+</div>
+
+   
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持Netcan</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2018/05/27/%E4%BB%8E%E5%A4%B4%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E5%BA%93%EF%BC%9A%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0%E7%AF%87/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2018/07/11/%E4%BB%8E%E5%A4%B4%E5%BC%80%E5%A7%8B%E5%86%99%E4%B8%80%E4%B8%AA%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '893a4103795fc66cd8e7',
+  clientSecret: '35c92c3dca938831b67dc22e46d64bc9073ebacf',
+  repo: 'netcan.github.io',
+  owner: 'Netcan',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: md5(location.pathname),
+  admin: ['Netcan'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>重写 C++ 标准库的价值？ | Netcan on Programming</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="C/C++," />
+  
+
+  <meta name="description" content="众所周知，标准库中的算法容器是普通人很难手写超越的，因为这归功于 C++ 的模板、编译时计算特性，它拥有零成本抽象能力，也就是说无论使用模板机制做多少层抽象，最后生成的代码和手写 C 代码一样高效，这就是为何 C++ 相对于 C 来说拥有  易用  的接口，并且不会导致性能损失。 但本文章的主题不在于模板编程，而在于探讨重写标准库的价值。在这之前需要声明下，C++ 标准中自定义了标准库的接口，以及">
+<meta property="og:type" content="article">
+<meta property="og:title" content="重写 C++ 标准库的价值？">
+<meta property="og:url" content="https://netcan.github.io/2022/03/12/%E9%87%8D%E5%86%99C-%E6%A0%87%E5%87%86%E5%BA%93%E7%9A%84%E4%BB%B7%E5%80%BC%EF%BC%9F/index.html">
+<meta property="og:site_name" content="Netcan on Programming">
+<meta property="og:description" content="众所周知，标准库中的算法容器是普通人很难手写超越的，因为这归功于 C++ 的模板、编译时计算特性，它拥有零成本抽象能力，也就是说无论使用模板机制做多少层抽象，最后生成的代码和手写 C 代码一样高效，这就是为何 C++ 相对于 C 来说拥有  易用  的接口，并且不会导致性能损失。 但本文章的主题不在于模板编程，而在于探讨重写标准库的价值。在这之前需要声明下，C++ 标准中自定义了标准库的接口，以及">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-03-12T01:55:19.000Z">
+<meta property="article:modified_time" content="2022-12-09T11:02:08.605Z">
+<meta property="article:author" content="Netcan">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta name="twitter:card" content="summary">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/site.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-174901164-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d2c292719a76d8c0fa7f9874379cfd25";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"] > svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body>
+
+
+  
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+  
+
+  <link rel="stylesheet" href="/css/prism.css">
+
+<div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">ROOT</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-重写C-标准库的价值？" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">重写 C++ 标准库的价值？</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2022.03.12</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Netcan</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p>众所周知，标准库中的算法容器是普通人很难手写超越的，因为这归功于 C++ 的模板、编译时计算特性，它拥有零成本抽象能力，也就是说无论使用模板机制做多少层抽象，最后生成的代码和手写 C 代码一样高效，这就是为何 C++ 相对于 C 来说拥有 <strong> 易用 </strong> 的接口，并且不会导致性能损失。</p>
+<p>但本文章的主题不在于模板编程，而在于探讨重写标准库的价值。在这之前需要声明下，C++ 标准中自定义了标准库的接口，以及每个接口的时间复杂度，具体实现由各大编译器厂商提供。此外替换标准库的一些容器，即便接口不完全一致，也符合本文讨论的范畴。</p>
+<p>以链表为例，Linux C 语言的经典做法是：</p>
+<pre class="language-c" data-language="c"><code class="language-c"><span class="token keyword">struct</span> <span class="token class-name">list_head</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">struct</span> <span class="token class-name">list_head</span> <span class="token operator">*</span>next<span class="token punctuation">,</span> <span class="token operator">*</span>prev<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+<span class="token keyword">struct</span> <span class="token class-name">io_buffer</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">struct</span> <span class="token class-name">list_head</span> list<span class="token punctuation">;</span>
+    __u64 addr<span class="token punctuation">;</span>
+    __u32 len<span class="token punctuation">;</span>
+    __u16 bid<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
+<p>对链表的操作则是由各种宏实现：</p>
+<pre class="language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token expression"><span class="token function">list_entry</span><span class="token punctuation">(</span>ptr<span class="token punctuation">,</span> type<span class="token punctuation">,</span> member<span class="token punctuation">)</span> <span class="token function">container_of</span><span class="token punctuation">(</span>ptr<span class="token punctuation">,</span> type<span class="token punctuation">,</span> member<span class="token punctuation">)</span></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token expression"><span class="token function">list_for_each_entry</span><span class="token punctuation">(</span>pos<span class="token punctuation">,</span> head<span class="token punctuation">,</span> member<span class="token punctuation">)</span>               </span><span class="token punctuation">\</span>
+    <span class="token expression"><span class="token keyword">for</span> <span class="token punctuation">(</span>pos <span class="token operator">=</span> <span class="token function">list_first_entry</span><span class="token punctuation">(</span>head<span class="token punctuation">,</span> <span class="token keyword">typeof</span><span class="token punctuation">(</span><span class="token operator">*</span>pos<span class="token punctuation">)</span><span class="token punctuation">,</span> member<span class="token punctuation">)</span><span class="token punctuation">;</span> </span><span class="token punctuation">\</span>
+        <span class="token expression"><span class="token operator">!</span><span class="token function">list_entry_is_head</span><span class="token punctuation">(</span>pos<span class="token punctuation">,</span> head<span class="token punctuation">,</span> member<span class="token punctuation">)</span><span class="token punctuation">;</span>              </span><span class="token punctuation">\</span>
+        <span class="token expression">pos <span class="token operator">=</span> <span class="token function">list_next_entry</span><span class="token punctuation">(</span>pos<span class="token punctuation">,</span> member<span class="token punctuation">)</span><span class="token punctuation">)</span></span></span></code></pre>
+<p>而 C++ 标准库中的链表方式则是这样：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">struct</span> <span class="token class-name">io_buffer</span> <span class="token punctuation">&#123;</span>
+    __u64 addr<span class="token punctuation">;</span>
+    __u32 len<span class="token punctuation">;</span>
+    __u16 bid<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+std<span class="token operator">::</span>list<span class="token operator">&lt;</span>io_buffer<span class="token operator">></span> ls<span class="token punctuation">;</span></code></pre>
+<p>这两种方式的区别在哪？唯一区别在于 <code>io_buffer</code> 元素本身是否携带了链表的指针信息，Linux 方式则内嵌 <code>list_head</code> 于元素中，C++ 标准容器的指针信息在哪？</p>
+<p>C++ 标准容器的链表指针信息则是由 <code>std::list</code> 维护，也就是说只有在元素被插入到链表的时候，将发生一次内存分配，这包含了额外的链表指针信息 + 元素本身的内存，然后将元素的内容通过拷贝、移动构造到分配出来的节点。</p>
+<p>也就是说同样是链表，对于插入操作，C++ 标准容器多了 <strong>一次内存分配 </strong> + 一次移动、拷贝构造的开销，其中性能的关键在于那次<strong> 内存分配动作 </strong>。而 C 语言由于<strong> 元素本身 </strong> 携带了链表节点信息，插入动作只是指针的调整。</p>
+<p>有人指出使用 <code>std::list&lt;io_buffer *&gt;</code>，性能就和 Linux C 的链表差不多了。但这只能省移动、拷贝构造开销，省不了额外指针节点的内存分配，关键在于内存分配操作。</p>
+<p>这并不是 C++ 的问题，这是两种不同的思路： <em>侵入式 </em> 与 <em> 非侵入式</em> 链表。侵入式即要求用户定义元素时额外定义链表的节点信息，而非侵入式（C++ 标准库）则没有这个要求，那么就需要额外分配外挂的信息。</p>
+<p>我尝试用 C++ 实现了侵入式链表方案，通过性能测试可以得到如下数据（ARM）：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:right">ns/op</th>
+<th style="text-align:right">op/s</th>
+<th style="text-align:right">err%</th>
+<th style="text-align:right">ins/op</th>
+<th style="text-align:right">total</th>
+<th style="text-align:left">benchmark</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">253.62</td>
+<td style="text-align:right">3,942,909.94</td>
+<td style="text-align:right">22.9%</td>
+<td style="text-align:right">247.25</td>
+<td style="text-align:right">0.00</td>
+<td style="text-align:left"><code>std::forward_list push_front</code></td>
+</tr>
+<tr>
+<td style="text-align:right">208.03</td>
+<td style="text-align:right">4,806,889.46</td>
+<td style="text-align:right">3.7%</td>
+<td style="text-align:right">249.08</td>
+<td style="text-align:right">0.00</td>
+<td style="text-align:left"><code>std::forward_list push_back</code></td>
+</tr>
+<tr>
+<td style="text-align:right">2.03</td>
+<td style="text-align:right">492,790,574.13</td>
+<td style="text-align:right">0.0%</td>
+<td style="text-align:right">5.00</td>
+<td style="text-align:right">0.00</td>
+<td style="text-align:left"><code>SList PushFront</code></td>
+</tr>
+<tr>
+<td style="text-align:right">5.46</td>
+<td style="text-align:right">183,296,000.00</td>
+<td style="text-align:right">0.0%</td>
+<td style="text-align:right">7.00</td>
+<td style="text-align:right">0.00</td>
+<td style="text-align:left"><code>List PushBack</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>std::list</code> 和 <code>std::forward_list</code> 插入一个节点需要 200 到 250ns，而侵入式链表插入一个节点只需要 2 到 5 ns，关键在于动态内存分配比较耗时。在内核中大量依赖链表、树结构，这体现了侵入式方案的优越性。</p>
+<p>侵入式方案相对于非侵入式方案在于接口的 <strong>易用性</strong>，这是牺牲易用性换取性能的优势的一个例子。</p>
+<p>C++ 设计与标准库也未必全是侵入式的，例如智能指针便提供了两种方案，当用户类继承自 <code>enable_share_from_this</code> 时，该类就是侵入式智能指针，引用计数和类融为一体，能够将裸指针提升至智能指针；而用户不继承该类时，则是非侵入式智能指针，构造它需要为引用计数块额外分配一次内存（除非用户使用 <code>make_shared</code> 构造，节省引用计数块的额外内存分配），由于引用计数块和用户类内存分离，也就不允许裸指针到智能指针的转换。</p>
+<p>C++ 的虚表设计也是侵入式的，如果用户需要表现运行时多态性，则需要继承并实现虚接口，这样虚表和用户类便融为一体。在 C++17 时标准库则引入 <code>std::visit</code> 和 <code>std::variant</code>，通过它也能实现运行时多态，并且由元编程技术生成虚表，换句话说虚表是外挂用户类的，调用时生成的虚表信息可以直接使用调用栈内存，也就无需额外为虚表分配内存，性能上也不会有什么损失。那它们的区别就在于使用上了，前者对类扩展开放，对行为扩展封闭；后者对类扩展封闭，对行为扩展开放。</p>
+<p>在链表数据结构中我们看到了侵入式方案性能上的优越性，那么对于一些树结构，有没有性能优势呢？笔者花了两天时间手撸 <strong>红黑树 </strong> 后，经过测试发现性能略逊于标准库的<code>std::set</code>，插入一个节点侵入式红黑树需要 250ns，而 <code>std::set</code> 只需要 200ns，删除略快些，12ns vs 55ns（x86-64）。</p>
+<p>是不是笔者实现的太挫了？经过一番搜索，C++ 的侵入式容器库中实现了 <code>set</code> 只有 Boost.Intrusive 一家，于是尝试使用它做性能测试，得到如下性能测试数据（macOS）：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:right">ns/op</th>
+<th style="text-align:right">op/s</th>
+<th style="text-align:right">err%</th>
+<th style="text-align:right">total</th>
+<th style="text-align:left">benchmark</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">170.48</td>
+<td style="text-align:right">5,865,909.42</td>
+<td style="text-align:right">8.6%</td>
+<td style="text-align:right">1.79</td>
+<td style="text-align:left"><code>std::multiset insert</code></td>
+</tr>
+<tr>
+<td style="text-align:right">94.64</td>
+<td style="text-align:right">10,566,395.80</td>
+<td style="text-align:right">34.7%</td>
+<td style="text-align:right">0.98</td>
+<td style="text-align:left"><code>std::multiset erase</code></td>
+</tr>
+<tr>
+<td style="text-align:right">240.30</td>
+<td style="text-align:right">4,161,400.76</td>
+<td style="text-align:right">6.8%</td>
+<td style="text-align:right">2.41</td>
+<td style="text-align:left"><code>intrusive::multiset insert</code></td>
+</tr>
+<tr>
+<td style="text-align:right">17.44</td>
+<td style="text-align:right">57,345,039.37</td>
+<td style="text-align:right">1.8%</td>
+<td style="text-align:right">0.21</td>
+<td style="text-align:left"><code>intrusive::multiset erase</code></td>
+</tr>
+</tbody>
+</table>
+<p>看来 Boost.Intrusive 的实现比我的还挫啊。因此对于树而言，侵入式方案没有有优势，这时候建议使用 <code>std::set</code> 即可，因为很难超越它的实现了。</p>
+<p>难怪笔者阅读数个调度器的实现（例如 Executors）都只实现了侵入式链表，而没有实现侵入式树，看来大佬们已经知道了这个事实，而且 Boost.Intrusive 谈及性能时，也只提链表。C++ 社区其他的侵入式库都没有提供侵入式红黑树的实现。</p>
+<p>然而链表在应用开发中很少用，除了调度器场景中会需要，他们大多数的情况下可以被更全能的 vector 替代，因为 push 数据时无需频繁地分配内存，而链表每次插入数据都需要分配一次内存，这也是为何 <code>std::queue</code> 和 <code>std::stack</code> 默认用 <code>std::deque</code> 容器实现，也是出于 <strong>内存分配频率</strong> 的考虑。</p>
+<p>而 vector 重写的价值不大，因为他们已经在大多数情况下表现够优秀，如果非要重写，那么可以参考一些常用的思路，例如 SmallVector，在只有几个元素的时候仅使用调用栈的内存，一旦元素过多可以便使用堆内存，即便 LLVM/Clang 等项目重写了标准库，但仍然普遍使用 std 标准库，只有那极少数性能关键的地方使用。</p>
+<p>C++ 标准明确定义了各种数据结构操作的时间复杂度，因此对这些操作的重写价值不大。综上所述，<strong>频繁的内存分配</strong> 操作是性能杀手，因此很多重写标准库的方案都是想法设法避免频繁的内存分配动作，有时候重写 allocator 的价值可能远比重写整个数据结构要大得多。</p>
+<p>在嵌入式场景中内存通常是确定的，它们避免动态内存分配，标准库实现要求异常安全，这会给二进制文件带来一定的大小开销，这时候考虑重写标准库是值得的。</p>
+<p>Rust 有本书专门教你怎么写链表，最终的结论就是尽量不要用链表而是用 Vec，有这精力都能把其他数据结构和算法吃透了：</p>
+<blockquote>
+<p>but all of these cases are super rare for anyone writing a Rust program. 99% of the time you should just use a Vec (array stack), and 99% of the other 1% of the time you should be using a VecDeque (array deque). These are blatantly superior data structures for most workloads due to less frequent allocation, lower memory overhead, true random access, and cache locality.</p>
+</blockquote>
+<p>那么，最后重写标准库的价值留给读者判断。</p>
+<p>参考资料：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://rust-unofficial.github.io/too-many-lists/">https://rust-unofficial.github.io/too-many-lists/</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_78_0/doc/html/intrusive.html">https://www.boost.org/doc/libs/1_78_0/doc/html/intrusive.html</a></li>
+</ul>
+
+    
+  </div>
+
+</article>
+
+
+   
+       <div class="original">
+    <ul>
+        <li>本文标题：重写 C++ 标准库的价值？</li>
+        <li>本文字数：2.2k</li>
+        <li>本文作者：Netcan</li>
+        <li>发布时间：2022年03月12日 - 09时55分</li>
+        <li>最后更新：2022年12月09日 - 19时02分</li>
+        <li>原始链接：<a href="https://netcan.github.io/2022/03/12/%E9%87%8D%E5%86%99C-%E6%A0%87%E5%87%86%E5%BA%93%E7%9A%84%E4%BB%B7%E5%80%BC%EF%BC%9F/">https://netcan.github.io/2022/03/12/重写C-标准库的价值？/</a></li>
+        <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
+    </ul>
+</div>
+
+   
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持Netcan</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2021/12/04/C-20%E5%8D%8F%E7%A8%8B%E7%89%B9%E6%80%A7%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2022/05/16/%E5%A6%99%E7%94%A8-std-optional-%E7%B1%BB%E7%AE%80%E5%8C%96%E7%8A%B6%E6%80%81%E6%9C%BA%E8%AE%BE%E8%AE%A1/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '893a4103795fc66cd8e7',
+  clientSecret: '35c92c3dca938831b67dc22e46d64bc9073ebacf',
+  repo: 'netcan.github.io',
+  owner: 'Netcan',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: md5(location.pathname),
+  admin: ['Netcan'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

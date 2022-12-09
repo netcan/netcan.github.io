@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>PHP 类与异常 | Netcan on Programming</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="PHP," />
+  
+
+  <meta name="description" content="今晚总算把类和对象总结了出来，通过一个例子很好理解，我写了注释。 &lt;?php    class student &amp;#123; &#x2F;&#x2F; 定义一个类  	  private $name;  &#x2F;&#x2F; 私有属性  	  private $id;  	  function __construct($name&#x3D;&quot;user&quot;, $id&#x3D;123456) &amp;#123; &#x2F;&#x2F; 构造函数, 添加默认值  		 $t">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP 类与异常">
+<meta property="og:url" content="https://netcan.github.io/2015/03/15/PHP%E7%B1%BB%E4%B8%8E%E5%BC%82%E5%B8%B8/index.html">
+<meta property="og:site_name" content="Netcan on Programming">
+<meta property="og:description" content="今晚总算把类和对象总结了出来，通过一个例子很好理解，我写了注释。 &lt;?php    class student &amp;#123; &#x2F;&#x2F; 定义一个类  	  private $name;  &#x2F;&#x2F; 私有属性  	  private $id;  	  function __construct($name&#x3D;&quot;user&quot;, $id&#x3D;123456) &amp;#123; &#x2F;&#x2F; 构造函数, 添加默认值  		 $t">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2015-03-14T16:40:08.000Z">
+<meta property="article:modified_time" content="2015-03-14T16:40:08.000Z">
+<meta property="article:author" content="Netcan">
+<meta property="article:tag" content="PHP">
+<meta name="twitter:card" content="summary">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/site.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-174901164-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d2c292719a76d8c0fa7f9874379cfd25";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"] > svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body>
+
+
+  
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+  
+
+  <link rel="stylesheet" href="/css/prism.css">
+
+<div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">ROOT</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-PHP类与异常" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">PHP 类与异常</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2015.03.15</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Netcan</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p> 今晚总算把类和对象总结了出来，通过一个例子很好理解，我写了注释。</p>
+<pre class="language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+   <span class="token keyword">class</span> <span class="token class-name">student</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 定义一个类 </span>
+	  <span class="token keyword">private</span> <span class="token variable">$name</span><span class="token punctuation">;</span>  <span class="token comment">// 私有属性 </span>
+	  <span class="token keyword">private</span> <span class="token variable">$id</span><span class="token punctuation">;</span>
+
+	  <span class="token keyword">function</span> <span class="token function">__construct</span><span class="token punctuation">(</span><span class="token variable">$name</span><span class="token operator">=</span><span class="token double-quoted-string string">"user"</span><span class="token punctuation">,</span> <span class="token variable">$id</span><span class="token operator">=</span><span class="token number">123456</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 构造函数, 添加默认值 </span>
+		 <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">name</span> <span class="token operator">=</span> <span class="token variable">$name</span><span class="token punctuation">;</span>
+		 <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">id</span> <span class="token operator">=</span> <span class="token variable">$id</span><span class="token punctuation">;</span>
+	  <span class="token punctuation">&#125;</span>
+	  <span class="token keyword">function</span> <span class="token function">__destruct</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 构造函数 </span>
+		 <span class="token keyword">echo</span> <span class="token double-quoted-string string">"该类"</span><span class="token punctuation">.</span><span class="token constant">__CLASS__</span><span class="token punctuation">.</span><span class="token double-quoted-string string">"被释放！&lt;br>"</span><span class="token punctuation">;</span>
+	  <span class="token punctuation">&#125;</span>
+	  <span class="token keyword">function</span> <span class="token function">get_name</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 定义方法 </span>
+		 <span class="token keyword">return</span> <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">name</span><span class="token punctuation">;</span>
+	  <span class="token punctuation">&#125;</span>
+	  <span class="token keyword">function</span> <span class="token function">get_id</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		 <span class="token keyword">return</span> <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">id</span><span class="token punctuation">;</span>
+	  <span class="token punctuation">&#125;</span>
+	  <span class="token keyword">function</span> <span class="token function">set_name</span><span class="token punctuation">(</span><span class="token variable">$name</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		 <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">name</span> <span class="token operator">=</span> <span class="token variable">$name</span><span class="token punctuation">;</span>
+	  <span class="token punctuation">&#125;</span>
+	  <span class="token keyword">function</span> <span class="token function">set_id</span><span class="token punctuation">(</span><span class="token variable">$id</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		 <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">id</span> <span class="token operator">=</span> <span class="token variable">$id</span><span class="token punctuation">;</span>
+	  <span class="token punctuation">&#125;</span>
+	  <span class="token keyword">function</span> <span class="token function">__set</span><span class="token punctuation">(</span><span class="token variable">$k</span><span class="token punctuation">,</span> <span class="token variable">$v</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 访问函数，可以通过其访问私有属性 </span>
+		 <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token variable">$k</span> <span class="token operator">=</span> <span class="token variable">$v</span><span class="token punctuation">;</span> <span class="token comment">// 注意 $this->$ 符号 </span>
+	  <span class="token punctuation">&#125;</span>
+	  <span class="token keyword">function</span> <span class="token function">__get</span><span class="token punctuation">(</span><span class="token variable">$v</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		 <span class="token keyword">return</span> <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token variable">$v</span><span class="token punctuation">;</span>
+	  <span class="token punctuation">&#125;</span>
+   <span class="token punctuation">&#125;</span>
+   <span class="token keyword">final</span> <span class="token keyword">class</span> <span class="token class-name">Netcan</span> <span class="token keyword">extends</span> <span class="token class-name">student</span> <span class="token keyword">implements</span> <span class="token class-name">attr</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 继承类和接口类 </span>
+	  <span class="token keyword">private</span> <span class="token variable">$height</span><span class="token punctuation">;</span>
+	  <span class="token keyword">private</span> <span class="token variable">$weight</span><span class="token punctuation">;</span>
+	  <span class="token keyword">function</span> <span class="token function">__construct</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		 <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">name</span> <span class="token operator">=</span> <span class="token double-quoted-string string">"Netcan"</span><span class="token punctuation">;</span>
+		 <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">id</span> <span class="token operator">=</span> <span class="token number">666666</span><span class="token punctuation">;</span>
+		 <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">height</span> <span class="token operator">=</span> <span class="token number">172</span><span class="token punctuation">;</span>
+		 <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">weight</span> <span class="token operator">=</span> <span class="token number">120</span><span class="token punctuation">;</span>
+	  <span class="token punctuation">&#125;</span>
+	  <span class="token keyword">function</span> <span class="token function">__destruct</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		 <span class="token keyword">echo</span> <span class="token double-quoted-string string">"该类"</span><span class="token punctuation">.</span><span class="token constant">__CLASS__</span><span class="token punctuation">.</span><span class="token double-quoted-string string">"被释放！&lt;br>"</span><span class="token punctuation">;</span>
+	  <span class="token punctuation">&#125;</span>
+	  <span class="token keyword">function</span> <span class="token function">show</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 定义子类方法 </span>
+		 <span class="token keyword">echo</span> <span class="token double-quoted-string string">"name:"</span><span class="token punctuation">.</span><span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">name</span><span class="token punctuation">.</span><span class="token double-quoted-string string">"&lt;br>"</span><span class="token punctuation">;</span>
+		 <span class="token keyword">echo</span> <span class="token double-quoted-string string">"id:"</span><span class="token punctuation">.</span><span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">id</span><span class="token punctuation">.</span><span class="token double-quoted-string string">"&lt;br>"</span><span class="token punctuation">;</span>
+		 <span class="token keyword">echo</span> <span class="token double-quoted-string string">"height:"</span><span class="token punctuation">.</span><span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">height</span><span class="token punctuation">.</span><span class="token double-quoted-string string">"&lt;br>"</span><span class="token punctuation">;</span>
+		 <span class="token keyword">echo</span> <span class="token double-quoted-string string">"weight:"</span><span class="token punctuation">.</span><span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">weight</span><span class="token punctuation">.</span><span class="token double-quoted-string string">"&lt;br>"</span><span class="token punctuation">;</span>
+	  <span class="token punctuation">&#125;</span>
+   <span class="token punctuation">&#125;</span>
+   <span class="token keyword">interface</span> <span class="token class-name">attr</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 定义接口类 </span>
+	  <span class="token keyword">function</span> <span class="token function">show</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">&#125;</span>
+   <span class="token shell-comment comment">############### 测试类 ##################</span>
+   <span class="token variable">$s</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">student</span><span class="token punctuation">(</span><span class="token double-quoted-string string">"Netcan"</span><span class="token punctuation">,</span> <span class="token number">666666</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 注意创建对象的方法，$xx = new class();</span>
+   <span class="token keyword">echo</span> <span class="token double-quoted-string string">"name:"</span><span class="token punctuation">.</span><span class="token variable">$s</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">get_name</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token double-quoted-string string">"&lt;br>"</span><span class="token punctuation">;</span>
+   <span class="token keyword">echo</span> <span class="token double-quoted-string string">"id:"</span><span class="token punctuation">.</span><span class="token variable">$s</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">get_id</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token double-quoted-string string">"&lt;br>"</span><span class="token punctuation">;</span>
+   <span class="token variable">$s</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">set_name</span><span class="token punctuation">(</span><span class="token double-quoted-string string">"hello"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 调用方法修改私有属性 </span>
+   <span class="token variable">$s</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">set_id</span><span class="token punctuation">(</span><span class="token number">666666</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token keyword">echo</span> <span class="token double-quoted-string string">"name:"</span><span class="token punctuation">.</span><span class="token variable">$s</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">get_name</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token double-quoted-string string">"&lt;br>"</span><span class="token punctuation">;</span>
+   <span class="token keyword">echo</span> <span class="token double-quoted-string string">"id:"</span><span class="token punctuation">.</span><span class="token variable">$s</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">get_id</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token double-quoted-string string">"&lt;br>"</span><span class="token punctuation">;</span>
+   <span class="token variable">$s</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">name</span> <span class="token operator">=</span> <span class="token double-quoted-string string">"world"</span><span class="token punctuation">;</span> <span class="token comment">// 通过访问函数修改 / 访问私有属性 </span>
+   <span class="token variable">$s</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">id</span> <span class="token operator">=</span> <span class="token number">123456</span><span class="token punctuation">;</span>
+   <span class="token keyword">echo</span> <span class="token double-quoted-string string">"name:"</span><span class="token punctuation">.</span><span class="token variable">$s</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">name</span><span class="token punctuation">.</span><span class="token double-quoted-string string">"&lt;br>"</span><span class="token punctuation">;</span>
+   <span class="token keyword">echo</span> <span class="token double-quoted-string string">"id:"</span><span class="token punctuation">.</span><span class="token variable">$s</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">id</span><span class="token punctuation">.</span><span class="token double-quoted-string string">"&lt;br>"</span><span class="token punctuation">;</span>
+   <span class="token keyword">unset</span><span class="token punctuation">(</span><span class="token variable">$s</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// $s = null; // 销毁对象 </span>
+   <span class="token shell-comment comment">############## 测试子类 ###################</span>
+   <span class="token variable">$netcan</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Netcan</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 创建子类对象 </span>
+   <span class="token variable">$netcan</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">show</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 调用子类方法 </span>
+   <span class="token keyword">unset</span><span class="token punctuation">(</span><span class="token variable">$netcan</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token shell-comment comment">############## 测试异常 ##################</span>
+   <span class="token shell-comment comment"># try &#123;</span>
+   <span class="token shell-comment comment">#	  throw</span>
+   <span class="token shell-comment comment">#   &#125; catch() &#123;</span>
+   <span class="token shell-comment comment">#</span>
+   <span class="token shell-comment comment"># &#125;</span>
+   <span class="token shell-comment comment">########################################</span>
+   <span class="token keyword">try</span> <span class="token punctuation">&#123;</span> 
+	  <span class="token keyword">if</span><span class="token punctuation">(</span>ture<span class="token punctuation">)</span>
+	  	  <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">Exception</span><span class="token punctuation">(</span><span class="token double-quoted-string string">"抛出异常!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+	   <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span><span class="token punctuation">(</span>Exception <span class="token variable">$error</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>    <span class="token comment">// 注意 Exception 后的 $ 号 </span>
+	   <span class="token keyword">echo</span> <span class="token variable">$error</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">getMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token double-quoted-string string">"&lt;br>"</span><span class="token punctuation">;</span>
+	   <span class="token keyword">echo</span> <span class="token double-quoted-string string">"File:"</span><span class="token punctuation">.</span><span class="token variable">$error</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">getFile</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token double-quoted-string string">"&lt;br>"</span><span class="token punctuation">;</span>
+	   <span class="token keyword">echo</span> <span class="token double-quoted-string string">"Line:"</span><span class="token punctuation">.</span><span class="token variable">$error</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">getLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token double-quoted-string string">"&lt;br>"</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+<span class="token delimiter important">?></span></span></code></pre>
+<p> 输出：</p>
+<pre><code>name: Netcan
+id: 666666
+name: hello
+id: 666666
+name: world
+id: 123456
+该类 student 被释放！
+name: Netcan
+id: 666666
+height: 172
+weight: 120
+该类 Netcan 被释放！
+
+Notice: Use of undefined constant ture - assumed 'ture' in F:\workspace\Netcan_web\study\class.php on line 80
+抛出异常!
+File: F:\workspace\Netcan_web\study\class.php
+Line: 81
+</code></pre>
+<p> 好吧，我该去睡觉了 = =</p>
+
+    
+  </div>
+
+</article>
+
+
+   
+       <div class="original">
+    <ul>
+        <li>本文标题：PHP 类与异常</li>
+        <li>本文字数：500</li>
+        <li>本文作者：Netcan</li>
+        <li>发布时间：2015年03月15日 - 00时40分</li>
+        <li>最后更新：2015年03月15日 - 00时40分</li>
+        <li>原始链接：<a href="https://netcan.github.io/2015/03/15/PHP%E7%B1%BB%E4%B8%8E%E5%BC%82%E5%B8%B8/">https://netcan.github.io/2015/03/15/PHP类与异常/</a></li>
+        <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
+    </ul>
+</div>
+
+   
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持Netcan</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2015/03/11/PHP%E6%97%A5%E6%9C%9F%E5%92%8C%E6%97%B6%E9%97%B4/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2015/03/15/PHP%E4%B8%8EWeb%E9%A1%B5%E9%9D%A2%E4%BA%A4%E4%BA%92/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '893a4103795fc66cd8e7',
+  clientSecret: '35c92c3dca938831b67dc22e46d64bc9073ebacf',
+  repo: 'netcan.github.io',
+  owner: 'Netcan',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: md5(location.pathname),
+  admin: ['Netcan'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

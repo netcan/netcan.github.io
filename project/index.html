@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-project">
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>project | Netcan on Programming</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="C/C++,Rust,软件工程,重构,软件架构,DDD" />
+  
+
+  <meta name="description" content="This is where I write about programming-related stuff.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="project">
+<meta property="og:url" content="https://netcan.github.io/project/index.html">
+<meta property="og:site_name" content="Netcan on Programming">
+<meta property="og:description" content="This is where I write about programming-related stuff.">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-12-09T11:02:08.609Z">
+<meta property="article:modified_time" content="2022-12-09T11:02:08.609Z">
+<meta property="article:author" content="Netcan">
+<meta property="article:tag" content="Netcan">
+<meta name="twitter:card" content="summary">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/site.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-174901164-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d2c292719a76d8c0fa7f9874379cfd25";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"] > svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body>
+
+
+  
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+  
+
+  <div class="content content-project">
+  <div class="page-header">
+
+  
+    <div class="breadcrumb">
+      <div class="location">项目</div>
+      <i class="icon-location"></i>
+    </div>
+  
+
+  
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">ROOT</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+
+  <div class="box-blog-info">
+    <a class="avatar" href="/">
+      <img src="/images/avatar.jpg" alt="" />
+    </a>
+    <div class="info">
+      <h3 class="name" style="font-family: calligraffittiregular">
+        Netcan on Programming
+      </h3>
+      <div class="slogan">
+        Coding Life, Hacking World
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+  <ul class="project-list">
+    
+      <li class="project-item">
+
+        <i class="dot dot-0 "></i>
+
+        <div class="text">
+          <a class="project-url" href="https://github.com/netcan/netcan.github.io" rel="noopener noreferrer" target="_blank">netcan.github.io</a>
+          <span class="intro">- My blog for something about programming.</span>
+        </div>
+
+      </li>
+
+      
+
+      
+
+    
+      <li class="project-item">
+
+        <i class="dot dot-1 "></i>
+
+        <div class="text">
+          <a class="project-url" href="https://github.com/netcan/AnimalChess" rel="noopener noreferrer" target="_blank">AnimalChess</a>
+          <span class="intro">- Animal Fight Chess Game（斗兽棋） written in rust.</span>
+        </div>
+
+      </li>
+
+      
+
+      
+
+    
+      <li class="project-item">
+
+        <i class="dot dot-2 "></i>
+
+        <div class="text">
+          <a class="project-url" href="https://github.com/netcan/NetcanOS" rel="noopener noreferrer" target="_blank">NetcanOS</a>
+          <span class="intro">- Netcan OS is an operation system for x86 PCs, for learning how os works.</span>
+        </div>
+
+      </li>
+
+      
+
+      
+
+    
+      <li class="project-item">
+
+        <i class="dot dot-3 "></i>
+
+        <div class="text">
+          <a class="project-url" href="https://github.com/netcan/HFUT_Thesis" rel="noopener noreferrer" target="_blank">HFUT_Thesis</a>
+          <span class="intro">- 合肥工业大学毕业设计（论文）模板</span>
+        </div>
+
+      </li>
+
+      
+
+      
+
+    
+      <li class="project-item">
+
+        <i class="dot dot-4 "></i>
+
+        <div class="text">
+          <a class="project-url" href="https://github.com/netcan/libnetcan-soft.so" rel="noopener noreferrer" target="_blank">libnetcan-soft.so</a>
+          <span class="intro">- A utility library written in junior high school. on birthday 2012-05-23.</span>
+        </div>
+
+      </li>
+
+      
+
+      
+
+    
+      <li class="project-item">
+
+        <i class="dot dot-0 "></i>
+
+        <div class="text">
+          <a class="project-url" href="https://github.com/netcan/FCEmulator" rel="noopener noreferrer" target="_blank">FCEmulator</a>
+          <span class="intro">- 毕业设计项目，FC模拟器。</span>
+        </div>
+
+      </li>
+
+      
+
+      
+
+    
+      <li class="project-item">
+
+        <i class="dot dot-1 "></i>
+
+        <div class="text">
+          <a class="project-url" href="https://github.com/netcan/LinAlg" rel="noopener noreferrer" target="_blank">LinAlg</a>
+          <span class="intro">- 实现一个线性代数库，为Python写扩展。《程序猿的数学3 线性代数》读后笔记。</span>
+        </div>
+
+      </li>
+
+      
+
+      
+
+    
+      <li class="project-item">
+
+        <i class="dot dot-2 "></i>
+
+        <div class="text">
+          <a class="project-url" href="https://github.com/netcan/compilingTheory" rel="noopener noreferrer" target="_blank">compilingTheory</a>
+          <span class="intro">- My course design for compiler theory (Visualization).</span>
+        </div>
+
+      </li>
+
+      
+
+      
+
+    
+      <li class="project-item">
+
+        <i class="dot dot-3 "></i>
+
+        <div class="text">
+          <a class="project-url" href="https://github.com/netcan/LoveCalendar" rel="noopener noreferrer" target="_blank">LoveCalendar</a>
+          <span class="intro">- A calendar to mark something.</span>
+        </div>
+
+      </li>
+
+      
+
+      
+
+    
+      <li class="project-item">
+
+        <i class="dot dot-4 "></i>
+
+        <div class="text">
+          <a class="project-url" href="https://github.com/netcan/HFUT_Market" rel="noopener noreferrer" target="_blank">HFUT_Market</a>
+          <span class="intro">- A databases course design, using python.</span>
+        </div>
+
+      </li>
+
+      
+
+      
+
+    
+      <li class="project-item">
+
+        <i class="dot dot-0 "></i>
+
+        <div class="text">
+          <a class="project-url" href="https://github.com/netcan/Talk" rel="noopener noreferrer" target="_blank">Talk</a>
+          <span class="intro">- A simple Java talk software.</span>
+        </div>
+
+      </li>
+
+      
+
+      
+
+    
+      <li class="project-item">
+
+        <i class="dot dot-1 "></i>
+
+        <div class="text">
+          <a class="project-url" href="https://github.com/netcan/HFUT_Live" rel="noopener noreferrer" target="_blank">HFUT_Live</a>
+          <span class="intro">- 校内直播平台。</span>
+        </div>
+
+      </li>
+
+      
+
+      
+
+    
+      <li class="project-item">
+
+        <i class="dot dot-2 "></i>
+
+        <div class="text">
+          <a class="project-url" href="https://github.com/netcan/baike_contest" rel="noopener noreferrer" target="_blank">baike_contest</a>
+          <span class="intro">- 合工大宣百科竞赛平台</span>
+        </div>
+
+      </li>
+
+      
+
+      
+
+    
+      <li class="project-item">
+
+        <i class="dot dot-3 "></i>
+
+        <div class="text">
+          <a class="project-url" href="https://github.com/netcan/SlidePuzzle" rel="noopener noreferrer" target="_blank">SlidePuzzle</a>
+          <span class="intro">- Slide puzzle game written by Netcan. using the SDL engine and use of A* algorithm.</span>
+        </div>
+
+      </li>
+
+      
+
+      
+
+    
+      <li class="project-item">
+
+        <i class="dot dot-4 "></i>
+
+        <div class="text">
+          <a class="project-url" href="https://github.com/netcan/2017-HUAWEI-Codecraft" rel="noopener noreferrer" target="_blank">2017-HUAWEI-Codecraft</a>
+          <span class="intro">- 2017华为软件精英挑战赛，上合赛区，围墙编队</span>
+        </div>
+
+      </li>
+
+      
+
+      
+
+    
+      <li class="project-item">
+
+        <i class="dot dot-0 "></i>
+
+        <div class="text">
+          <a class="project-url" href="https://github.com/netcan/2018-HUAWEI-Codecraft" rel="noopener noreferrer" target="_blank">2018-HUAWEI-Codecraft</a>
+          <span class="intro">- 2017华为软件精英挑战赛，上合赛区，围墙编队</span>
+        </div>
+
+      </li>
+
+      
+
+      
+
+    
+      <li class="project-item">
+
+        <i class="dot dot-1 "></i>
+
+        <div class="text">
+          <a class="project-url" href="https://github.com/netcan/Laravel_AJAX_CRUD" rel="noopener noreferrer" target="_blank">Laravel_AJAX_CRUD</a>
+          <span class="intro">- A Laravel application for AJAX CRUD page.</span>
+        </div>
+
+      </li>
+
+      
+
+      
+
+    
+      <li class="project-item">
+
+        <i class="dot dot-2 "></i>
+
+        <div class="text">
+          <a class="project-url" href="https://github.com/netcan/HFUT_ChemLab" rel="noopener noreferrer" target="_blank">HFUT_ChemLab</a>
+          <span class="intro">- A Laravel application for HFUT Chemistry lab learning and exam system.</span>
+        </div>
+
+      </li>
+
+      
+
+      
+
+    
+      <li class="project-item">
+
+        <i class="dot dot-3 "></i>
+
+        <div class="text">
+          <a class="project-url" href="https://github.com/netcan/gameOfLife" rel="noopener noreferrer" target="_blank">gameOfLife</a>
+          <span class="intro">- game of life using Javascript and canvas.</span>
+        </div>
+
+      </li>
+
+      
+
+      
+
+    
+  </ul>
+
+</div>
+
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>
