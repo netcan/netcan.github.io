@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://netcan.github.io/2023/01/14/%E5%AE%B6%E7%94%A8%E8%BD%AF%E8%B7%AF%E7%94%B1%E6%8A%98%E8%85%BE%E8%AE%B0/2023-01-14T145223.png">
 <meta property="og:image" content="https://netcan.github.io/2023/01/14/%E5%AE%B6%E7%94%A8%E8%BD%AF%E8%B7%AF%E7%94%B1%E6%8A%98%E8%85%BE%E8%AE%B0/2023-01-14T150325.png">
 <meta property="article:published_time" content="2023-01-14T02:26:46.000Z">
-<meta property="article:modified_time" content="2023-01-14T08:27:24.237Z">
+<meta property="article:modified_time" content="2023-01-14T14:36:06.901Z">
 <meta property="article:author" content="Netcan">
 <meta property="article:tag" content="Linux">
 <meta name="twitter:card" content="summary">
@@ -319,7 +319,7 @@ mjx-container[display="true"] + br {
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%98%E7%94%B1"><span class="toc-text">缘由</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BD%AF%E8%B7%AF%E7%94%B1%E9%80%89%E5%9E%8B"><span class="toc-text">软路由选型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E9%80%89%E5%9E%8B"><span class="toc-text">系统选型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Armbian%20%E6%8A%98%E8%85%BE%E8%AE%B0"><span class="toc-text">Armbian 折腾记</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E7%BD%91%E7%BB%9C"><span class="toc-text">配置网络</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E9%98%B2%E7%81%AB%E5%A2%99"><span class="toc-text">配置防火墙</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%20WireGuard%20%E5%A4%96%E7%BD%91%E8%AE%BF%E9%97%AE"><span class="toc-text">配置 WireGuard 外网访问</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%20OpenZFS"><span class="toc-text">配置 OpenZFS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E7%9B%B8%E5%86%8C%E6%9C%8D%E5%8A%A1"><span class="toc-text">配置相册服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%20Transmission%20%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="toc-text">配置 Transmission 客户端</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="toc-text">参考链接</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%98%E7%94%B1"><span class="toc-text">缘由</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BD%AF%E8%B7%AF%E7%94%B1%E9%80%89%E5%9E%8B"><span class="toc-text">软路由选型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E9%80%89%E5%9E%8B"><span class="toc-text">系统选型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Armbian%20%E6%8A%98%E8%85%BE%E8%AE%B0"><span class="toc-text">Armbian 折腾记</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E7%BD%91%E7%BB%9C"><span class="toc-text">配置网络</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E9%98%B2%E7%81%AB%E5%A2%99"><span class="toc-text">配置防火墙</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%20WireGuard%20%E5%A4%96%E7%BD%91%E8%AE%BF%E9%97%AE"><span class="toc-text">配置 WireGuard 外网访问</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%20DDNS%20%E6%9C%8D%E5%8A%A1"><span class="toc-text">配置 DDNS 服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%20OpenZFS"><span class="toc-text">配置 OpenZFS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2%E7%9B%B8%E5%86%8C%E6%9C%8D%E5%8A%A1"><span class="toc-text">部署相册服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2%20Transmission%20%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="toc-text">部署 Transmission 客户端</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="toc-text">参考链接</span></a></li></ol>
   </div>
 
 
@@ -455,8 +455,12 @@ interface: wg0
 &#125;</code></pre>
 <p>前面提到配置文件里面需要填对端的公钥，也就是手机端的，下载手机的 WireGuard 客户端配置，便能拿到公钥：</p>
 <p><img src="2023-01-14T141040.png" alt="2023-01-14T141040"></p>
-<p>将手机端的公钥填到软路由的 <code>[Peer]</code> 配置中去，将手机的 <code>Peer</code> 公钥填上软路由的公钥，注意保活间隔填一下，这里填 25 秒，然后路由器的 IP 端填上你需要访问家里的 IP 端。</p>
+<p>将手机端的公钥填到软路由的 <code>[Peer]</code> 配置中去，将手机的 <code>Peer</code> 公钥填上软路由的公钥，注意保活间隔填一下，这里填 25 秒，然后路由器的 IP 段填上你需要访问家里的 IP 段。</p>
+<p>简而言之，WireGuard 简化了 vpn 部署过程，只需要连接的双方提供对端的公钥即可。</p>
 <p>开启连接后，手机在外网便能轻轻松松访问家里服务。</p>
+<h3 id="配置 DDNS 服务">配置 DDNS 服务</h3>
+<p>一般家宽的公网 ip 会动态变化，如果在外网环境下，ip 变化将导致无法连入家庭网络，这时候可以考虑购买域名，然后配置 DDNS 服务，每隔一段时间将 ip 上报给 DNS 服务商，这样就只需要通过域名访问即可，也不需要记忆 ip 地址，尤其是 v6 地址相当复杂。</p>
+<p>DDNS 服务一般也是定时任务，通过脚本自动更新，每家 DNS 服务商提供的更新接口都不一样，所以需要自行根据域名所绑定的 DNS 服务商查找相关脚本。</p>
 <h3 id="配置 OpenZFS">配置 OpenZFS</h3>
 <p>使用 zfs 文件系统是为将来组 RAID 做准备的，由于软路由的系统比较完整，所以可以直接通过源码编译：</p>
 <pre class="language-none"><code class="language-none">sudo apt-get install -t bullseye-backports zfs-dkms zfsutils-linux</code></pre>
@@ -468,7 +472,7 @@ interface: wg0
 <p>然后修改 <code>/boot/armbianEnv.txt</code>，将<code>usbstoragequirks</code> 字段加上<code>ID:u</code>：</p>
 <pre class="language-none"><code class="language-none">usbstoragequirks&#x3D;0x2537:0x1066:u,0x2537:0x1068:u,0x1058:0x25a2:u,1d6b:0003:u,174c:1152:u</code></pre>
 <p>最后通过 <code>update-initramfs -u</code> 更新 <code>uboot</code> 后，重启软路由，驱动将从 <code>uas</code> 变成<code>usb-storage</code>。</p>
-<h3 id="配置相册服务">配置相册服务</h3>
+<h3 id="部署相册服务">部署相册服务</h3>
 <p>前面提到可以通过使用 docker 快速部署服务，通过部署 Syncthing 可以将手机上的照片同步到 NAS 上，通过部署 PhotoPrism 服务可以给相册归档、分类、生成精彩瞬间，便于查看：</p>
 <p><img src="2023-01-14T162722.png" alt="2023-01-14T162722"></p>
 <p>具体部署指南可以参考<a target="_blank" rel="noopener" href="https://docs.photoprism.app/getting-started/docker-compose/">https://docs.photoprism.app/getting-started/docker-compose/</a>。</p>
@@ -477,11 +481,11 @@ interface: wg0
 <p>将拷贝到的请求存到一个 <code>sh</code> 脚本中，通过 <code>crontab -e</code> 添加定时任务，例如每天凌晨两点进行索引：</p>
 <pre class="language-none"><code class="language-none"># m h  dom mon dow   command
 2 0 * * * &#x2F;home&#x2F;netcan&#x2F;crontab&#x2F;photo_prism_index.sh</code></pre>
-<h3 id="配置 Transmission 客户端">配置 Transmission 客户端</h3>
+<h3 id="部署 Transmission 客户端">部署 Transmission 客户端</h3>
 <p>有了那么大的硬盘如果闲置就浪费了，可以混 pt 站点，下载感兴趣的资源并保种分享。</p>
 <p>前面提到我曾经使用 aria2 伪装正经客户端保种，但 aria2 无法很好地管理文件，例如增删分类，所以我们可以考虑使用 Transmission 客户端，能够很好地对资源进行管理：</p>
 <p><img src="2023-01-14T150325.png" alt="2023-01-14T150325"></p>
-<p>该客户端安装比较简单，通过 <code>apt</code> 便能安装，感兴趣的可以自行部署。</p>
+<p>该客户端安装比较简单，通过 <code>apt</code> 便能安装，感兴趣的可以自行部署。默认的 WEB 管理页面比较简陋，可以考虑手动装下<a target="_blank" rel="noopener" href="https://github.com/ronggang/transmission-web-control">https://github.com/ronggang/transmission-web-control</a>。</p>
 <h2 id="参考链接">参考链接</h2>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://blog.bling.moe/post/3/">使用 Debian 作为路由器</a></li>
@@ -498,10 +502,10 @@ interface: wg0
        <div class="original">
     <ul>
         <li>本文标题：家用软路由折腾记（技术流）</li>
-        <li>本文字数：2.4k</li>
+        <li>本文字数：2.6k</li>
         <li>本文作者：Netcan</li>
         <li>发布时间：2023年01月14日 - 10时26分</li>
-        <li>最后更新：2023年01月14日 - 16时27分</li>
+        <li>最后更新：2023年01月14日 - 22时36分</li>
         <li>原始链接：<a href="https://netcan.github.io/2023/01/14/%E5%AE%B6%E7%94%A8%E8%BD%AF%E8%B7%AF%E7%94%B1%E6%8A%98%E8%85%BE%E8%AE%B0/">https://netcan.github.io/2023/01/14/家用软路由折腾记/</a></li>
         <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
     </ul>
