@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://netcan.github.io/"/>
-  <updated>2022-12-09T11:15:54.959Z</updated>
+  <updated>2023-01-14T04:10:46.344Z</updated>
   <id>https://netcan.github.io/</id>
   
   <author>
@@ -15,6 +15,35 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>家用软路由折腾记（技术流）</title>
+    <link href="https://netcan.github.io/2023/01/14/%E5%AE%B6%E7%94%A8%E8%BD%AF%E8%B7%AF%E7%94%B1%E6%8A%98%E8%85%BE%E8%AE%B0/"/>
+    <id>https://netcan.github.io/2023/01/14/%E5%AE%B6%E7%94%A8%E8%BD%AF%E8%B7%AF%E7%94%B1%E6%8A%98%E8%85%BE%E8%AE%B0/</id>
+    <published>2023-01-14T02:26:46.000Z</published>
+    <updated>2023-01-14T04:10:46.344Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;缘由&quot;&gt; 缘由 &lt;/h2&gt;
+&lt;p&gt; 最近在折腾软路由，起因是发现家里无线路由器跑科学跑不满带宽，经过观察发现瓶颈在 CPU 上，于是想到要整个更强劲的路由器，经过一番调研，性能强劲的路由器都不便宜，于是决定采用软路由方案。&lt;/p&gt;
+&lt;p&gt;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="随笔" scheme="https://netcan.github.io/categories/%E9%9A%8F%E7%AC%94/"/>
+    
+    
+      <category term="Linux" scheme="https://netcan.github.io/tags/Linux/"/>
+    
+  </entry>
   
   <entry>
     <title>C++ 编译时谓词函数生成</title>
@@ -2100,9 +2129,9 @@
       <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
-    
       <category term="算法" scheme="https://netcan.github.io/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
     
       <category term="数据结构" scheme="https://netcan.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
     
@@ -2133,9 +2162,9 @@
       <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
-    
       <category term="算法" scheme="https://netcan.github.io/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
     
       <category term="数据结构" scheme="https://netcan.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
     
@@ -2167,9 +2196,9 @@
       <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
-    
       <category term="算法" scheme="https://netcan.github.io/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
     
       <category term="数据结构" scheme="https://netcan.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
     
@@ -2758,9 +2787,9 @@
       <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
-    
       <category term="算法" scheme="https://netcan.github.io/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
     
   </entry>
   
@@ -2788,9 +2817,9 @@
       <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
-    
       <category term="算法" scheme="https://netcan.github.io/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
     
   </entry>
   
@@ -2820,9 +2849,9 @@
       <category term="编程" scheme="https://netcan.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
-    
       <category term="算法" scheme="https://netcan.github.io/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="C/C++" scheme="https://netcan.github.io/tags/C-C/"/>
     
   </entry>
   
