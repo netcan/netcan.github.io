@@ -221,7 +221,8 @@ mjx-container[display="true"] + br {
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
   
 
-  <link rel="stylesheet" href="/css/prism.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css"/>
+<link rel="stylesheet" href="/css/prism.css">
 
 <div class="post-header CENTER">
    
@@ -520,6 +521,14 @@ mjx-container[display="true"] + br {
   </a>
 
 
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+<script>
+    $(".article-content img").wrap(function() {
+        return '<a data-fancybox href="' + $(this).attr("src") + '"/>';
+    });
+</script>
 
 
   <div class="modal" id="modal">
