@@ -117,7 +117,7 @@ zroot/ROOT/var     96K  18.9G       96K  /mnt/var
 
 挂载boot分区：
 ```
-mount /dev/vda1 boot
+mount /dev/vda1 /mnt/boot
 ```
 
 设置启动标记：
@@ -188,15 +188,18 @@ done
  `++:.                           `-/+/
  .`                                 `/
 
-[root@archlinux ~]# zfs list -r
-NAME              USED  AVAIL     REFER  MOUNTPOINT
-zroot            4.08G  14.8G       96K  /zroot
-zroot/DATA       94.6M  14.8G       96K  none
-zroot/DATA/home  94.4M  14.8G     94.4M  /home
-zroot/DATA/root   132K  14.8G      132K  /root
-zroot/ROOT       3.98G  14.8G     3.18G  /
-zroot/ROOT/var    826M  14.8G      826M  /var
-[root@archlinux ~]#
+[root@archlinux ~]# df -h
+Filesystem       Size  Used Avail Use% Mounted on
+dev              463M     0  463M   0% /dev
+run              474M  732K  473M   1% /run
+zroot/ROOT        19G  3.2G   16G  18% /
+zroot/ROOT/var    16G  639M   16G   4% /var
+tmpfs            474M     0  474M   0% /dev/shm
+tmpfs            474M     0  474M   0% /tmp
+zroot/DATA/home   16G   44M   16G   1% /home
+zroot/DATA/root   16G  256K   16G   1% /root
+/dev/vda1        499M   90M  410M  18% /boot
+tmpfs             95M     0   95M   0% /run/user/0
 ```
 
 ## 注意事项
