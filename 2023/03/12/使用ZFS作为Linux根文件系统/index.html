@@ -23,7 +23,7 @@
 <meta property="og:description" content="背景 现代文件系统一般支持 CoW、快照等特性，如果将它作为操作系统的根文件系统，那么可靠性能更胜一筹。 本文主要记录将现有的 Arch Linux 转成使用 ZFS 文件系统的过程，注意系统需要提前装上 zfs，这可以通过安装 zfs-dkms 包。 ISO 加载最小系统 重启系统进入 UEFI，选择安装镜像 iso 进入，该最小系统作为操作环境。官方提供的 archlinux-x86_64.i">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-03-12T08:49:43.000Z">
-<meta property="article:modified_time" content="2023-03-12T14:23:45.443Z">
+<meta property="article:modified_time" content="2023-03-13T13:56:55.928Z">
 <meta property="article:author" content="Netcan">
 <meta property="article:tag" content="Linux">
 <meta name="twitter:card" content="summary">
@@ -93,8 +93,7 @@ ga('send', 'pageview');
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
   
 
-<meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml">
-<style>mjx-container[jax="SVG"] {
+<meta name="generator" content="Hexo 5.0.0"><style>mjx-container[jax="SVG"] {
   direction: ltr;
 }
 
@@ -211,7 +210,8 @@ mjx-container[display="true"] {
 mjx-container[display="true"] + br {
   display: none;
 }
-</style><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+</style><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
 
 <body>
 
@@ -429,7 +429,7 @@ zroot&#x2F;ROOT&#x2F;var     96K  18.9G       96K  &#x2F;mnt&#x2F;var</code></pr
 # zfs mount -a
 # rsync -aAXHv &#x2F;mnt2&#x2F; &#x2F;mnt&#x2F;</code></pre>
 <p>挂载 boot 分区：</p>
-<pre class="language-none"><code class="language-none">mount &#x2F;dev&#x2F;vda1 boot</code></pre>
+<pre class="language-none"><code class="language-none">mount &#x2F;dev&#x2F;vda1 &#x2F;mnt&#x2F;boot</code></pre>
 <p>设置启动标记：</p>
 <pre class="language-none"><code class="language-none">zpool set bootfs&#x3D;zroot&#x2F;ROOT zroot</code></pre>
 <h2 id="更新 GRUB">更新 GRUB</h2>
@@ -476,15 +476,18 @@ done</code></pre>
  &#96;++:.                           &#96;-&#x2F;+&#x2F;
  .&#96;                                 &#96;&#x2F;
 
-[root@archlinux ~]# zfs list -r
-NAME              USED  AVAIL     REFER  MOUNTPOINT
-zroot            4.08G  14.8G       96K  &#x2F;zroot
-zroot&#x2F;DATA       94.6M  14.8G       96K  none
-zroot&#x2F;DATA&#x2F;home  94.4M  14.8G     94.4M  &#x2F;home
-zroot&#x2F;DATA&#x2F;root   132K  14.8G      132K  &#x2F;root
-zroot&#x2F;ROOT       3.98G  14.8G     3.18G  &#x2F;
-zroot&#x2F;ROOT&#x2F;var    826M  14.8G      826M  &#x2F;var
-[root@archlinux ~]#</code></pre>
+[root@archlinux ~]# df -h
+Filesystem       Size  Used Avail Use% Mounted on
+dev              463M     0  463M   0% &#x2F;dev
+run              474M  732K  473M   1% &#x2F;run
+zroot&#x2F;ROOT        19G  3.2G   16G  18% &#x2F;
+zroot&#x2F;ROOT&#x2F;var    16G  639M   16G   4% &#x2F;var
+tmpfs            474M     0  474M   0% &#x2F;dev&#x2F;shm
+tmpfs            474M     0  474M   0% &#x2F;tmp
+zroot&#x2F;DATA&#x2F;home   16G   44M   16G   1% &#x2F;home
+zroot&#x2F;DATA&#x2F;root   16G  256K   16G   1% &#x2F;root
+&#x2F;dev&#x2F;vda1        499M   90M  410M  18% &#x2F;boot
+tmpfs             95M     0   95M   0% &#x2F;run&#x2F;user&#x2F;0</code></pre>
 <h2 id="注意事项">注意事项</h2>
 <p>考虑 <code>/var</code> 作为 dataset 存在，在挂载之前 journald 已经往 /var 写日志，因此 zfs 将无法卸载 <code>/var</code>，考虑使用<code>zfs-mount-generator</code> 方案：https://wiki.archlinux.org/title/ZFS#Using_zfs-mount-generator</p>
 <h2 id="参考链接">参考链接</h2>
@@ -504,10 +507,10 @@ zroot&#x2F;ROOT&#x2F;var    826M  14.8G      826M  &#x2F;var
        <div class="original">
     <ul>
         <li>本文标题：使用 ZFS 作为 Linux 根文件系统</li>
-        <li>本文字数：1.2k</li>
+        <li>本文字数：1.3k</li>
         <li>本文作者：Netcan</li>
         <li>发布时间：2023年03月12日 - 16时49分</li>
-        <li>最后更新：2023年03月12日 - 22时23分</li>
+        <li>最后更新：2023年03月13日 - 21时56分</li>
         <li>原始链接：<a href="https://netcan.github.io/2023/03/12/%E4%BD%BF%E7%94%A8ZFS%E4%BD%9C%E4%B8%BALinux%E6%A0%B9%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/">https://netcan.github.io/2023/03/12/使用ZFS作为Linux根文件系统/</a></li>
         <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
     </ul>
