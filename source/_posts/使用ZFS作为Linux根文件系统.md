@@ -25,7 +25,7 @@ categories:
 ```
 # mount /dev/vda2 /mnt
 # mount /dev/vdb /mnt2
-# rsync -aAXHv /mnt /mnt2
+# rsync -aAXHPv /mnt /mnt2
 # umount /mnt
 ```
 
@@ -112,17 +112,17 @@ zroot/ROOT/var     96K  18.9G       96K  /mnt/var
 # zpool import -d /dev/disk/by-partuuid/fb4e1dbd-bf9a-3e41-bef3-f862d0eb699d  -R /mnt zroot -N
 # zfs mount zroot/ROOT
 # zfs mount -a
-# rsync -aAXHv /mnt2/ /mnt/
+# rsync -aAXHPv /mnt2/ /mnt/
 ```
 
 挂载boot分区：
 ```
-mount /dev/vda1 /mnt/boot
+# mount /dev/vda1 /mnt/boot
 ```
 
 设置启动标记：
 ```
-zpool set bootfs=zroot/ROOT zroot
+# zpool set bootfs=zroot/ROOT zroot
 ```
 
 ## 更新GRUB
