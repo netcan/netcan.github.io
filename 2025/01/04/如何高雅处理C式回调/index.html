@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>如何高雅处理 C 式回调 | Netcan on Programming</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="C/C++,元编程," />
+  
+
+  <meta name="description" content="在 C 类接口中，我们经常能看到这种定义： &#x2F;&#x2F; Callback signature for data getter. typedef ImPlotPoint (*ImPlotGetter)(int idx, void* user_data); void PlotLineG(const char* label_id, ImPlotGetter getter_func, void* data, i">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何高雅处理 C 式回调">
+<meta property="og:url" content="https://netcan.github.io/2025/01/04/%E5%A6%82%E4%BD%95%E9%AB%98%E9%9B%85%E5%A4%84%E7%90%86C%E5%BC%8F%E5%9B%9E%E8%B0%83/index.html">
+<meta property="og:site_name" content="Netcan on Programming">
+<meta property="og:description" content="在 C 类接口中，我们经常能看到这种定义： &#x2F;&#x2F; Callback signature for data getter. typedef ImPlotPoint (*ImPlotGetter)(int idx, void* user_data); void PlotLineG(const char* label_id, ImPlotGetter getter_func, void* data, i">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-01-04T13:24:25.000Z">
+<meta property="article:modified_time" content="2025-01-04T13:59:15.187Z">
+<meta property="article:author" content="Netcan">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="元编程">
+<meta name="twitter:card" content="summary">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/site.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-174901164-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?d2c292719a76d8c0fa7f9874379cfd25";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 5.0.0"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"] > svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><link rel="alternate" href="/atom.xml" title="Netcan on Programming" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body>
+
+
+  
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">ROOT</span>
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css"/>
+<link rel="stylesheet" href="/css/prism.css">
+
+<div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">ROOT</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-如何高雅处理C式回调" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">如何高雅处理 C 式回调</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2025.01.04</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Netcan</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p>在 C 类接口中，我们经常能看到这种定义：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">// Callback signature for data getter.</span>
+<span class="token keyword">typedef</span> <span class="token function">ImPlotPoint</span> <span class="token punctuation">(</span><span class="token operator">*</span>ImPlotGetter<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token keyword">int</span> idx<span class="token punctuation">,</span> <span class="token keyword">void</span><span class="token operator">*</span> user_data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">void</span> <span class="token function">PlotLineG</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token keyword">char</span><span class="token operator">*</span> label_id<span class="token punctuation">,</span> ImPlotGetter getter_func<span class="token punctuation">,</span> <span class="token keyword">void</span><span class="token operator">*</span> data<span class="token punctuation">,</span> <span class="token keyword">int</span> count<span class="token punctuation">,</span> ImPlotLineFlags flags<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>虽然这是个 C++ 库，但不得不采用比较恶心的 C 式回调，导致无法传递 lambda，用户必须得手动传递回调所需的 context，这也就是典型的<code>user_data</code>：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">static</span> ImPlotPoint <span class="token function">DataGetter</span><span class="token punctuation">(</span><span class="token keyword">int</span> idx<span class="token punctuation">,</span> <span class="token keyword">void</span><span class="token operator">*</span> user_data<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">auto</span><span class="token operator">&amp;</span> self <span class="token operator">=</span> <span class="token operator">*</span><span class="token keyword">reinterpret_cast</span><span class="token operator">&lt;</span>MyPlot<span class="token operator">*</span><span class="token operator">></span><span class="token punctuation">(</span>user_data<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// &lt;- 变化点 1</span>
+    size_t i <span class="token operator">=</span> idx <span class="token operator">+</span> std<span class="token operator">::</span><span class="token function">lround</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>mXLimit<span class="token punctuation">.</span>Min<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>i <span class="token operator">>=</span> self<span class="token punctuation">.</span>f<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// &lt;- 变化点 2</span>
+        <span class="token keyword">return</span> <span class="token function">ImPlotPoint</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> std<span class="token operator">::</span><span class="token function">nan</span><span class="token punctuation">(</span><span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">return</span> <span class="token function">ImPlotPoint</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> self<span class="token punctuation">.</span>f<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token class-name">ImPlot</span><span class="token operator">::</span><span class="token function">PlotLineG</span><span class="token punctuation">(</span><span class="token string">"F"</span><span class="token punctuation">,</span> DataGetter<span class="token punctuation">,</span> <span class="token operator">&amp;</span><span class="token keyword">this</span><span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token operator">-></span>f<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>问题来了：如果有不同的类，每个类的处理逻辑几乎一样：首先判断是否处于范围内，然后返回有效数据，那么就得写很多这类 <code>DataGetter</code> 函数，并且对于同一类的 <code>DataGetter</code> 函数，又需要处理不同的数据字段，有没有什么很好的办法能够复用代码呢？</p>
+<p>假如是 C++ 接口，那么很容易通过捕获 this 指针的方式构造各种各样的 lambda 传递。针对这种 C 式回调，也有很优雅的处理方式：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token class-name">ImPlot</span><span class="token operator">::</span><span class="token function">PlotLineG</span><span class="token punctuation">(</span><span class="token string">"F"</span><span class="token punctuation">,</span> DataGetterBuilder<span class="token operator">&lt;</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">(</span>MyPlot<span class="token operator">&amp;</span> self<span class="token punctuation">,</span> <span class="token keyword">int</span> idx<span class="token punctuation">)</span>
+                       <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> <span class="token function">ImPlotPoint</span><span class="token punctuation">(</span>idx<span class="token punctuation">,</span> self<span class="token punctuation">.</span>ma<span class="token punctuation">[</span>idx<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span><span class="token operator">></span><span class="token punctuation">,</span>
+                  <span class="token keyword">this</span><span class="token punctuation">,</span> mXLimit<span class="token punctuation">.</span><span class="token function">Size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>可以看到上面这种方式，能够将变化点（类、数据）剥离出来，不变点（校验）封装到 <code>DataGetterBuilder</code> 中，接下来重点就是如何实现<code>DataGetterBuilder</code>，签名如下：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">auto</span> Func<span class="token operator">></span>
+<span class="token keyword">constexpr</span> ImPlotGetter DataGetterBuilder <span class="token operator">=</span> <span class="token comment">/* implementation */</span></code></pre>
+<p><code>DataGetterBuilder</code>是一个编译期常量，它接受一个（类成员）函数指针，并生成一个 <code>ImPlotGetter</code> 签名的函数，从而能够被传递，这也是高阶函数：返回函数的函数。</p>
+<p>在使用的时候 <code>Func</code> 函数指针需要为无捕获的 lambda 函数，这样它才能保留函数指针的性质，一旦携带了捕获，那么就无法转成函数指针，自然也无法被 C 式回调所接受：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">auto</span> Func<span class="token operator">></span>
+<span class="token keyword">constexpr</span> ImPlotGetter DataGetterBuilder <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token keyword">int</span> idx<span class="token punctuation">,</span> <span class="token keyword">void</span><span class="token operator">*</span> user_data<span class="token punctuation">)</span> <span class="token operator">-></span> ImPlotPoint<span class="token punctuation">&#123;</span>
+    <span class="token keyword">using</span> Self <span class="token operator">=</span> std<span class="token operator">::</span>decay_t<span class="token operator">&lt;</span>FirstArgT<span class="token operator">&lt;</span><span class="token keyword">decltype</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token keyword">decltype</span><span class="token punctuation">(</span>Func<span class="token punctuation">)</span><span class="token operator">::</span><span class="token keyword">operator</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">>></span><span class="token punctuation">;</span>
+    <span class="token keyword">auto</span><span class="token operator">&amp;</span> self <span class="token operator">=</span> <span class="token operator">*</span><span class="token keyword">static_cast</span><span class="token operator">&lt;</span>Self<span class="token operator">*</span><span class="token operator">></span><span class="token punctuation">(</span>user_data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    size_t i <span class="token operator">=</span> idx <span class="token operator">+</span> std<span class="token operator">::</span><span class="token function">lround</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>mXLimit<span class="token punctuation">.</span>Min<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>i <span class="token operator">>=</span> self<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token function">ImPlotPoint</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> std<span class="token operator">::</span><span class="token function">nan</span><span class="token punctuation">(</span><span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">return</span> <span class="token function">Func</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre>
+<p>第二个有意思的是如何获得 <code>Func</code> 函数的第一个类型，从而能够完成 <code>void*</code> 到自定义类型的转换呢？C++17 之前可以通过 <code>std::function&lt;F&gt;::first_argument_type</code> 来拿到，但是在 C++20 中被废弃掉了，这里不得不重新造轮子：<code>FirstArgT</code>：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">F</span><span class="token operator">></span>
+<span class="token keyword">struct</span> <span class="token class-name">FirstArgType</span><span class="token punctuation">;</span>
+
+<span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">R</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">C</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">A1</span><span class="token punctuation">,</span> <span class="token keyword">typename</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> Args<span class="token operator">></span>
+<span class="token keyword">struct</span> <span class="token class-name">FirstArgType</span><span class="token operator">&lt;</span><span class="token function">R</span> <span class="token punctuation">(</span>C<span class="token operator">::</span><span class="token operator">*</span><span class="token punctuation">)</span><span class="token punctuation">(</span>A1<span class="token punctuation">,</span> Args<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token keyword">const</span><span class="token operator">></span> <span class="token operator">:</span> std<span class="token operator">::</span>type_identity<span class="token operator">&lt;</span>A1<span class="token operator">></span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+<span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">R</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">C</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">A1</span><span class="token punctuation">,</span> <span class="token keyword">typename</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> Args<span class="token operator">></span>
+<span class="token keyword">struct</span> <span class="token class-name">FirstArgType</span><span class="token operator">&lt;</span><span class="token function">R</span> <span class="token punctuation">(</span>C<span class="token operator">::</span><span class="token operator">*</span><span class="token punctuation">)</span><span class="token punctuation">(</span>A1<span class="token punctuation">,</span> Args<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span><span class="token operator">></span> <span class="token operator">:</span> std<span class="token operator">::</span>type_identity<span class="token operator">&lt;</span>A1<span class="token operator">></span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+<span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">R</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">A1</span><span class="token punctuation">,</span> <span class="token keyword">typename</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> Args<span class="token operator">></span>
+<span class="token keyword">struct</span> <span class="token class-name">FirstArgType</span><span class="token operator">&lt;</span><span class="token function">R</span> <span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span><span class="token punctuation">(</span>A1<span class="token punctuation">,</span> Args<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span><span class="token operator">></span> <span class="token operator">:</span> std<span class="token operator">::</span>type_identity<span class="token operator">&lt;</span>A1<span class="token operator">></span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">F</span><span class="token operator">></span>
+<span class="token keyword">using</span> FirstArgT <span class="token operator">=</span> FirstArgType<span class="token operator">&lt;</span>F<span class="token operator">></span><span class="token operator">::</span>type<span class="token punctuation">;</span></code></pre>
+<p>通过 <code>decltype(Func)</code> 可以得到具体的 lambda 类型，其成员 <code>decltype(Func)::operator()</code> 就是最终用户传递的函数签名，通过它来拿到第一个函数参数类型为何，这样就能做到 <code>void*</code> 对自定义类型的转换。</p>
+<p>通过以上技巧，就能够优雅解决传递 C 式回调传递 context 问题，以及 <code>void*</code> 自动地转换成所需类型。</p>
+
+    
+  </div>
+
+</article>
+
+
+   
+       <div class="original">
+    <ul>
+        <li>本文标题：如何高雅处理 C 式回调</li>
+        <li>本文字数：814</li>
+        <li>本文作者：Netcan</li>
+        <li>发布时间：2025年01月04日 - 21时24分</li>
+        <li>最后更新：2025年01月04日 - 21时59分</li>
+        <li>原始链接：<a href="https://netcan.github.io/2025/01/04/%E5%A6%82%E4%BD%95%E9%AB%98%E9%9B%85%E5%A4%84%E7%90%86C%E5%BC%8F%E5%9B%9E%E8%B0%83/">https://netcan.github.io/2025/01/04/如何高雅处理C式回调/</a></li>
+        <li>版权声明：<i class="icon icon-cc"></i><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" rel="external nofollow noopener noreferrer" target="_blank">"署名-非商用-相同方式共享 3.0"</a>转载请保留原文链接及作者。</li>
+    </ul>
+</div>
+
+   
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持Netcan</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2023/05/09/What-did-I-learn-from-TypeScript/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="hide pull-right" href="/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+<script>
+    $(".article-content img").wrap(function() {
+        return '<a data-fancybox href="' + $(this).attr("src") + '"/>';
+    });
+</script>
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '893a4103795fc66cd8e7',
+  clientSecret: '35c92c3dca938831b67dc22e46d64bc9073ebacf',
+  repo: 'netcan.github.io',
+  owner: 'Netcan',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: md5(location.pathname),
+  admin: ['Netcan'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>
